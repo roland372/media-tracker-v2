@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "rootDirs": ["src"],
+    "outDir": "dist",
+    "lib": ["es2020"],
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    // "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "types": ["node"]
+  }, 
+  "exclude": ["node_modules"]
+}
