@@ -1,11 +1,11 @@
 import mongoose, { Schema } from 'mongoose';
-import { TAnime, EAnimeStatus, EAnimeType } from '../../types';
+import { TManga, EMangaStatus, EMangaType } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
-const AnimeSchema: Schema = new Schema<TAnime>(
+const MangaSchema: Schema = new Schema<TManga>(
 	{
-		episodesMax: { type: Number, default: 0, min: 0 },
-		episodesMin: { type: Number, default: 0, min: 0 },
+		chaptersMax: { type: Number, default: 0, min: 0 },
+		chaptersMin: { type: Number, default: 0, min: 0 },
 		favourites: { type: Boolean, default: false },
 		id: { type: String, default: uuidv4() },
 		imageURL: { type: String, default: '' },
@@ -19,17 +19,19 @@ const AnimeSchema: Schema = new Schema<TAnime>(
 		rating: { type: Number, default: 0, min: 0, max: 10 },
 		status: {
 			type: String,
-			enum: EAnimeStatus,
-			default: EAnimeStatus.PLAN_TO_WATCH,
+			enum: EMangaStatus,
+			default: EMangaStatus.PLAN_TO_READ,
 		},
 		title: { type: String, required: true },
 		type: {
 			type: String,
-			enum: EAnimeType,
-			default: EAnimeType.TV_SHOW,
+			enum: EMangaType,
+			default: EMangaType.MANGA,
 		},
+    volumesMax: { type: Number, default: 0, min: 0 },
+		volumesMin: { type: Number, default: 0, min: 0 },
 	},
-	{ versionKey: false, collection: 'anime' }
+	{ versionKey: false, collection: 'manga' }
 );
 
-export default mongoose.model('Anime', AnimeSchema);
+export default mongoose.model('Manga', MangaSchema);
