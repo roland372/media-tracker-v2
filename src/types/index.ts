@@ -211,3 +211,54 @@ export type TCharacterInput = {
 	};
 	ID: string;
 };
+
+//? <----- Emotes ----->
+export type TEmote = {
+	favourites: boolean;
+	id: string;
+	ID: string;
+	lastModified: number;
+	name: string;
+	url: string;
+};
+
+export type TEmoteInput = {
+	emoteInput: {
+		favourites: boolean;
+		name: string;
+		url: string;
+	};
+	ID: string;
+};
+
+//? <----- Notes ----->
+export enum ENoteColor {
+	PRIMARY = 'Primary',
+	SECONDARY = 'Secondary',
+	SUCCESS = 'Success',
+	DANGER = 'Danger',
+	WARNING = 'Warning',
+	INFO = 'Info',
+	LIGHT = 'Light',
+	DARK = 'Dark',
+	MUTED = 'Muted',
+	WHITE = 'White',
+}
+
+export type TNote = {
+	color: ENoteColor;
+	id: string;
+	ID: string;
+	lastModified: number;
+	note: string;
+	title: string;
+};
+
+export type TNoteInput = {
+	noteInput: {
+		color: ENoteColor;
+		note: string;
+		title: string;
+	};
+	ID: string;
+};
