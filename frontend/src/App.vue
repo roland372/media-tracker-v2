@@ -4,9 +4,9 @@
 </template>
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useMediaTrackerStore } from "@/stores/useMediaTrackerStore";
+import { useMediaStore } from "@/stores/useMediaStore";
 
-const mediaTrackerStore = useMediaTrackerStore();
+const mediaTrackerStore = useMediaStore();
 const { count } = storeToRefs(mediaTrackerStore);
 
 setInterval(() => {
