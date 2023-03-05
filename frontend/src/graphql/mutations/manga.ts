@@ -5,8 +5,8 @@ import gql from "graphql-tag";
 export const addManga = async (variables: { mangaInput: TMangaInput }) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation Mutation {
-        addManga {
+      mutation AddManga($mangaInput: MangaInput) {
+        addManga(mangaInput: $mangaInput) {
           chaptersMax
           chaptersMin
           favourites
@@ -39,8 +39,8 @@ export const editManga = async (variables: {
 }) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation EditManga($id: ID!) {
-        editManga(ID: $id)
+      mutation EditManga($id: ID!, $mangaInput: MangaInput) {
+        editManga(ID: $id, mangaInput: $mangaInput)
       }
     `,
     variables,

@@ -1,14 +1,12 @@
 import { apolloClient } from "@/graphql";
-import { TAnimeInput } from "@/types";
+import { TGameInput } from "@/types";
 import gql from "graphql-tag";
 
-export const addAnime = async (variables: { animeInput: TAnimeInput }) => {
+export const addGame = async (variables: { gameInput: TGameInput }) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation AddAnime($animeInput: AnimeInput) {
-        addAnime(animeInput: $animeInput) {
-          episodesMax
-          episodesMin
+      mutation AddGame($gameInput: GameInput) {
+        addGame(gameInput: $gameInput) {
           favourites
           _id
           id
@@ -18,8 +16,8 @@ export const addAnime = async (variables: { animeInput: TAnimeInput }) => {
           link1Name
           link2
           link2Name
-          mal_id
           owner
+          playtime
           rating
           status
           title
@@ -31,25 +29,25 @@ export const addAnime = async (variables: { animeInput: TAnimeInput }) => {
   });
 };
 
-export const editAnime = async (variables: {
+export const editGame = async (variables: {
   id: string;
-  animeInput: TAnimeInput;
+  gameInput: TGameInput;
 }) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation EditAnime($id: ID!, $animeInput: AnimeInput) {
-        editAnime(ID: $id, animeInput: $animeInput)
+      mutation EditGame($id: ID!, $gameInput: GameInput) {
+        editGame(ID: $id, gameInput: $gameInput)
       }
     `,
     variables,
   });
 };
 
-export const deleteAnime = async (variables: { id: string }) => {
+export const deleteGame = async (variables: { id: string }) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation DeleteAnime($id: ID!) {
-        deleteAnime(ID: $id)
+      mutation DeleteGame($id: ID!) {
+        deleteGame(ID: $id)
       }
     `,
     variables,
