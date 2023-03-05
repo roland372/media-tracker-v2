@@ -30,3 +30,5 @@ export const apolloClient = new ApolloClient({
 
 export * from "./queries/anime";
 export * from "./mutations/anime";
+export * from "./queries/manga";
+export * from "./mutations/manga";
