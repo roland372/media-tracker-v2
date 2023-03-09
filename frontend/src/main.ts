@@ -1,12 +1,14 @@
 import App from "./App.vue";
 import { createApp, provide, h } from "vue";
 import { createPinia } from "pinia";
-import { Quasar } from "quasar";
-import quasarUserOptions from "./quasar-user-options";
+import vuetify from "./plugins/vuetify";
+import { loadFonts } from "./plugins/webfontloader";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import { apolloClient } from "@/graphql";
 
 const pinia = createPinia();
+
+loadFonts();
 
 const app = createApp({
   setup() {
@@ -16,4 +18,4 @@ const app = createApp({
   render: () => h(App),
 });
 
-app.use(pinia).use(Quasar, quasarUserOptions).mount("#app");
+app.use(pinia).use(vuetify).mount("#app");

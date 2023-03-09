@@ -1,4 +1,4 @@
-# frontend
+# media-tracker-v2
 
 ## Project setup
 ```

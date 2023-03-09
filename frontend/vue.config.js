@@ -1,10 +1,8 @@
 const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
   pluginOptions: {
-    quasar: {
-      importStrategy: "kebab",
-      rtlSupport: false,
+    vuetify: {
+      // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
     },
   },
-  transpileDependencies: ["quasar"],
 });
