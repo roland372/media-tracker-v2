@@ -244,3 +244,15 @@ export type TNoteInput = {
   note?: string;
   title: string;
 };
+
+//? <----- UTILS ----->
+export type TNavLinks = {
+  route: string;
+  url: string;
+  text: string;
+};
+
+export type TUsefulLinks = {
+  url: string;
+  text: string;
+};
