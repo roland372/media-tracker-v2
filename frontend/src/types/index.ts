@@ -247,6 +247,7 @@ export type TNoteInput = {
 
 //? <----- UTILS ----->
 export type TNavLinks = {
+  name: string;
   route: string;
   url: string;
   text: string;
