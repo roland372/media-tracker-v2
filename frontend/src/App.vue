@@ -1,31 +1,17 @@
 <template>
-  <div>hello</div>
-  <div>store test {{ notes[0] }}</div>
-  <div>{{ singleNote }}</div>
+  <div class="text-center ma-2">
+    <ButtonComponent :on-click="handleClick" text="hello" />
+  </div>
 </template>
 <script setup lang="ts">
-import { storeToRefs } from "pinia";
-import { useMediaStore } from "@/stores/useMediaStore";
 import { onMounted } from "vue";
+import ButtonComponent from "@/components/ButtonComponent.vue";
 
-const mediaStore = useMediaStore();
-const {
-  fetchNotes,
-  // fetchSingleNote,
-  // submitAddNote,
-  // submitEditNote,
-  // submitDeleteNote,
-} = mediaStore;
-const { notes, singleNote } = storeToRefs(mediaStore);
+const handleClick = () => {
+  console.log("hello");
+};
 
 onMounted(async () => {
   console.log("MOUNTED");
-  await fetchNotes();
-  // await fetchSingleNote("123");
-  // await submitAddNote({ title: "new Anime" });
-  // await submitEditNote("123", {
-  //   title: "edited Anime",
-  // });
-  // await submitDeleteNote("123");
 });
 </script>
