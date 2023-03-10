@@ -8,22 +8,22 @@ export const navLinks: TNavLinks[] = [
   },
   {
     route: "protected",
-    url: "media/anime",
+    url: "anime",
     text: "Anime",
   },
   {
     route: "protected",
-    url: "media/games",
+    url: "games",
     text: "Games",
   },
   {
     route: "protected",
-    url: "media/manga",
+    url: "manga",
     text: "Manga",
   },
   {
     route: "protected",
-    url: "media/characters",
+    url: "characters",
     text: "Characters",
   },
   {

@@ -1,0 +1,1 @@
+<template>charts page</template>

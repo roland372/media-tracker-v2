@@ -1,0 +1,1 @@
+<template>emotes page</template>
