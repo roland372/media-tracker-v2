@@ -37,6 +37,8 @@ import {
   addNote,
   editNote,
   deleteNote,
+  //* <----- ALL MEDIA ----->
+  getAllMedia,
 } from "@/graphql";
 import {
   TAnime,
@@ -377,6 +379,22 @@ export const useMediaStore = defineStore("media", () => {
     }
   };
 
+  //* <----- ALL MEDIA ----->
+  const fetchAllMedia = async () => {
+    try {
+      const { data, loading } = await getAllMedia();
+      isLoading.value = loading;
+      setAnime(data.getAllAnime);
+      setManga(data.getAllManga);
+      setGames(data.getAllGames);
+      setCharacters(data.getAllCharacters);
+      setEmotes(data.getAllEmotes);
+      setNotes(data.getAllNotes);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return {
     //* <----- UTILS ----->
     isLoading,
@@ -441,5 +459,7 @@ export const useMediaStore = defineStore("media", () => {
     submitAddNote,
     submitEditNote,
     submitDeleteNote,
+    //* <----- ALL MEDIA ----->
+    fetchAllMedia,
   };
 });
