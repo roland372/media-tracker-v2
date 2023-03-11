@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="mb-13 pb-13">
+  <v-layout class="mb-10 pb-10">
     <v-app-bar app color="white">
       <template v-slot:append>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="mdAndDown" />
