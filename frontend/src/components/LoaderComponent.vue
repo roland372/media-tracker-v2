@@ -3,11 +3,7 @@
     <v-progress-circular :size="50" indeterminate color="primary" />
   </div>
 </template>
-<script setup lang="ts">
-import { onMounted } from "vue";
-
-onMounted(() => console.log("LOADER MOUNTED"));
-</script>
+<script setup lang="ts"></script>
 <style scoped>
 div {
   min-height: 100vh;

@@ -1,3 +1,3 @@
 <template>
-  <v-divider color="black" thickness="2"></v-divider>
+  <v-divider class="border-opacity-50" color="black" thickness="1" />
 </template>

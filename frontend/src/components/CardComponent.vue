@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-green rounded mb-4 pa-4">
+  <section class="bg-purple-lighten-5 rounded mb-4 pa-4">
     <h2 class="bg-blue rounded pa-2 text-center mb-2">
       {{ props.title }}
     </h2>
