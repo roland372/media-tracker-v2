@@ -1,46 +1,47 @@
 <template>
-  <CardComponent :title="props.title">
-    <DisplayFilterSearchPanel v-if="props.allMedia" />
-    <div>main content</div>
-    <div class="grid-container">
-      <div
+  <CardComponent :title="title">
+    <DisplayFilterSearchPanel v-if="allMedia" />
+    <section class="grid-container">
+      <section
         v-for="(image, index) in images"
         :key="index"
         class="d-flex align-center justify-center"
       >
-        <v-img class="media-img-card rounded" cover :src="image.imageURL" />
-      </div>
-    </div>
-    <ButtonText v-if="props.allMedia" text="Display All" />
+        <MediaCard
+          class="media-img-card"
+          :media="image"
+          :media-type="mediaType"
+        />
+      </section>
+    </section>
+    <ButtonText v-if="allMedia" text="Display All" />
   </CardComponent>
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue";
 import CardComponent from "./CardComponent.vue";
 import DisplayFilterSearchPanel from "./DisplayFilterSearchPanel.vue";
+import MediaCard from "./MediaCard.vue";
 import ButtonText from "./ButtonText.vue";
 
 const props = defineProps({
   allMedia: { type: Boolean, default: false },
   media: { type: Object },
+  mediaType: { type: String, required: true },
   title: { type: String, required: true },
 });
 
-const images = props.media?.slice(20, 98);
-
-console.log(props.media?.[20]?.imageURL);
+const images = props.media?.slice(20, 23);
 </script>
-
-<style scoped>
+<style>
 .media-img-card {
-  height: 189px;
+  height: 275px;
 }
 .grid-container {
   display: grid;
-  /* grid-template-columns: repeat(8, auto); */
+  grid-template-columns: repeat(12, auto);
   grid-gap: 10px;
 }
-
 @media (max-width: 3250px) {
   .media-img-card {
     height: 275px;

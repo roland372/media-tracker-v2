@@ -6,20 +6,26 @@
         <p>or</p>
       </div>
       <v-text-field
-        @click:append-inner="handleAnimeSearch"
         v-model="animeSearch"
+        @click:append-inner="handleAnimeSearch"
         append-inner-icon="mdi-magnify"
         clearable
         density="compact"
         hide-details="auto"
         label="Search for Anime"
+        variant="outlined"
       />
     </section>
   </HeaderComponent>
   <StatsComponent media="Anime" />
   <!-- <MediaComponent title="All Anime" all-media /> -->
-  <MediaComponent :media="sortedAnime" title="Recent Anime" />
-  <!-- <MediaComponent title="Favourite Anime" /> -->
+  <MediaComponent
+    all-media
+    :media="sortedAnime"
+    media-type="anime"
+    title="Recent Anime"
+  />
+  <!-- <MediaComponent :media="favouriteAnime" title="Favourite Anime" /> -->
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
@@ -29,13 +35,14 @@ import StatsComponent from "@/components/StatsComponent.vue";
 import MediaComponent from "@/components/MediaComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { sortMediaByDate } from "@/utils/mediaUtils";
+import { sortMediaByDate, favouriteMedia } from "@/utils/mediaUtils";
 
 const mediaStore = useMediaStore();
 const { anime } = storeToRefs(mediaStore);
 
 const animeSearch = ref<string>("");
 const sortedAnime = sortMediaByDate(anime);
+const favouriteAnime = favouriteMedia(anime);
 
 const handleAnimeSearch = () => {
   console.log(animeSearch.value);
