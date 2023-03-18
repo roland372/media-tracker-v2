@@ -17,123 +17,16 @@
       />
     </section>
   </HeaderComponent>
-  <StatsComponent media="Anime">
-    <v-progress-linear
-      color="green"
-      height="20"
-      :model-value="calculatePercentage(watching, anime.length)"
-      ><strong
-        >{{ Math.ceil(calculatePercentage(watching, anime.length)) }}%</strong
-      ></v-progress-linear
-    >
-    <v-progress-linear
-      color="blue"
-      height="20"
-      :model-value="calculatePercentage(completed, anime.length)"
-      ><strong
-        >{{ Math.ceil(calculatePercentage(completed, anime.length)) }}%</strong
-      ></v-progress-linear
-    >
-    <v-progress-linear
-      color="yellow"
-      height="20"
-      :model-value="calculatePercentage(onHold, anime.length)"
-      ><strong
-        >{{ Math.ceil(calculatePercentage(onHold, anime.length)) }}%</strong
-      ></v-progress-linear
-    >
-    <v-progress-linear
-      color="red"
-      height="20"
-      :model-value="calculatePercentage(dropped, anime.length)"
-      ><strong
-        >{{ Math.ceil(calculatePercentage(dropped, anime.length)) }}%</strong
-      ></v-progress-linear
-    >
-    <v-progress-linear
-      color="white"
-      height="20"
-      :model-value="calculatePercentage(planToWatch, anime.length)"
-      ><strong
-        >{{
-          Math.ceil(calculatePercentage(planToWatch, anime.length))
-        }}%</strong
-      ></v-progress-linear
-    >
-    <br />
-    <section class="d-flex justify-space-between">
-      <div><b>Days:</b> {{ round(watchedEpisodesSum / 60, 1) }}</div>
-      <div>
-        <b>Mean Score:</b>
-        {{
-          filterZeroRating === 0 ? 0 : round(totalRating / filterZeroRating, 2)
-        }}
-      </div>
-    </section>
-    <br />
-    <section class="d-flex justify-space-between">
-      <section class="text-start">
-        <div class="d-flex align-center justify-space-between">
-          <div class="d-flex align-center">
-            <v-icon color="green" icon="mdi-circle" />
-            <div class="ms-2"><b>Watching</b></div>
-          </div>
-          <span class="ms-4">{{ watching }}</span>
-        </div>
-        <div class="d-flex align-center justify-space-between">
-          <div class="d-flex align-center">
-            <v-icon color="blue" icon="mdi-circle" />
-            <div class="ms-2"><b>Completed</b></div>
-          </div>
-          <span class="ms-4">{{ completed }}</span>
-        </div>
-        <div class="d-flex align-center justify-space-between">
-          <div class="d-flex align-center">
-            <v-icon color="yellow" icon="mdi-circle" />
-            <div class="ms-2"><b>On-Hold</b></div>
-          </div>
-          <span class="ms-4">{{ onHold }}</span>
-        </div>
-        <div class="d-flex align-center justify-space-between">
-          <div class="d-flex align-center">
-            <v-icon color="red" icon="mdi-circle" />
-            <div class="ms-2"><b>Dropped</b></div>
-          </div>
-          <span class="ms-4">{{ dropped }}</span>
-        </div>
-        <div class="d-flex align-center justify-space-between">
-          <div class="d-flex align-center">
-            <v-icon color="white" icon="mdi-circle" />
-            <div class="ms-2"><b>Plan to Watch</b></div>
-          </div>
-          <span class="ms-4">{{ planToWatch }}</span>
-        </div>
-      </section>
-
-      <section class="d-flex flex-column">
-        <div class="d-flex justify-space-between">
-          <div><b>Total Anime</b></div>
-          <div class="ms-4">{{ anime.length }}</div>
-        </div>
-        <div class="d-flex justify-space-between">
-          <div><b>Favourites</b></div>
-          <div class="ms-4">{{ favourites }}</div>
-        </div>
-        <div class="d-flex justify-space-between">
-          <div><b>Total Episodes</b></div>
-          <div class="ms-4">{{ totalEpisodesSum }}</div>
-        </div>
-        <div class="d-flex justify-space-between">
-          <div><b>Watched Episodes</b></div>
-          <div class="ms-4">{{ watchedEpisodesSum }}</div>
-        </div>
-        <div>&#8203;</div>
-      </section>
-    </section>
-  </StatsComponent>
-  <!-- <MediaComponent title="All Anime" all-media /> -->
+  <StatsComponent
+    :mean-score="meanScore"
+    media="Anime"
+    :progress="progress"
+    :status="status"
+    :stats="stats"
+    :total-days="totalDays"
+  />
+  <!-- <MediaComponent media-type="anime" title="All Anime" all-media /> -->
   <MediaComponent
-    all-media
     :media="sortedAnime"
     media-type="anime"
     title="Recent Anime"
@@ -195,6 +88,51 @@ const favourites = ref(anime.value.filter((anime) => anime.favourites).length);
 const handleAnimeSearch = () => {
   console.log(animeSearch.value);
 };
+
+const progress = [
+  {
+    color: "green",
+    value: calculatePercentage(watching.value, anime.value.length),
+  },
+  {
+    color: "blue",
+    value: calculatePercentage(completed.value, anime.value.length),
+  },
+  {
+    color: "yellow",
+    value: calculatePercentage(onHold.value, anime.value.length),
+  },
+  {
+    color: "red",
+    value: calculatePercentage(dropped.value, anime.value.length),
+  },
+  {
+    color: "white",
+    value: calculatePercentage(planToWatch.value, anime.value.length),
+  },
+];
+
+const status = [
+  { color: "green", name: "Watching", value: watching },
+  { color: "blue", name: "Completed", value: completed },
+  { color: "yellow", name: "On-Hold", value: onHold },
+  { color: "red", name: "Dropped", value: dropped },
+  { color: "white", name: "Plan to Watch", value: planToWatch },
+];
+
+const stats = [
+  { name: "Total Anime", value: anime.value.length },
+  { name: "Favourites", value: favourites },
+  { name: "Total Episodes", value: totalEpisodesSum },
+  { name: "Watched Episodes", value: watchedEpisodesSum },
+  { name: "", value: null },
+];
+
+const totalDays = round(watchedEpisodesSum.value / 60, 1);
+const meanScore =
+  filterZeroRating.value === 0
+    ? 0
+    : round(totalRating.value / filterZeroRating.value, 2);
 
 onMounted(() => {
   // console.log("ANIME MOUNTED");
