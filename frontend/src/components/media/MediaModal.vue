@@ -2,8 +2,8 @@
   <v-dialog width="auto">
     <template v-slot:default>
       <v-card max-width="250">
-        <v-toolbar color="primary" :title="title" />
-        <v-card-text>
+        <div class="bg-primary px-5 py-3 text-h6">{{ title }}</div>
+        <v-card-text class="ms-n5 my-n3">
           <!--? ANIME -->
           <v-card-text v-if="mediaType === 'anime'">
             <div><b>Type:</b> {{ media.type }}</div>
@@ -47,7 +47,7 @@
             <div><b>Hair Color:</b> {{ media.hairColor }}</div>
           </v-card-text>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="d-flex justify-space-around">
           <ButtonText color="blue" text="View" @click="viewClick" />
           <ButtonText color="green" text="Edit" @click="editClick" />
           <ButtonText color="red" text="Delete" @click="deleteClick" />
