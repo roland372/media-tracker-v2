@@ -1,5 +1,7 @@
 <template>
-  <CardComponent :title="`${props.media} Stats`"> stats </CardComponent>
+  <CardComponent :title="`${props.media} Stats`">
+    <slot></slot>
+  </CardComponent>
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue";

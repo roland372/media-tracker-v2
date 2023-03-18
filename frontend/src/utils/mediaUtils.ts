@@ -8,3 +8,8 @@ export const sortMediaByDate = (media: Ref) =>
     (a: { lastModified: number }, b: { lastModified: number }) =>
       b.lastModified - a.lastModified
   );
+
+export const filterMediaStatus = (media: Ref, status: string) =>
+  [...media.value].filter(
+    (media) => media.status.toLowerCase() === status.toLowerCase()
+  );
