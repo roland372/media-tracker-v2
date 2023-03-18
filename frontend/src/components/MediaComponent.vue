@@ -3,7 +3,7 @@
     <DisplayFilterSearchPanel v-if="allMedia" />
     <section class="grid-container">
       <section
-        v-for="(image, index) in images"
+        v-for="(image, index) in media"
         :key="index"
         class="d-flex align-center justify-center"
       >
@@ -31,7 +31,7 @@ const props = defineProps({
   title: { type: String, required: true },
 });
 
-const images = props.media?.slice(20, 23);
+// const images = props.media?.slice(20, 23);
 </script>
 <style>
 .media-img-card {

@@ -25,13 +25,22 @@
     :stats="stats"
     :total-days="totalDays"
   />
-  <!-- <MediaComponent media-type="anime" title="All Anime" all-media /> -->
   <MediaComponent
-    :media="sortedAnime"
+    all-media
+    media-type="anime"
+    :media="sortedAnime.slice(0, 20)"
+    title="All Anime"
+  />
+  <MediaComponent
+    :media="sortedAnime.slice(0, 20)"
     media-type="anime"
     title="Recent Anime"
   />
-  <!-- <MediaComponent :media="favouriteAnime" title="Favourite Anime" /> -->
+  <MediaComponent
+    media-type="anime"
+    :media="favouriteAnime"
+    title="Favourite Anime"
+  />
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
