@@ -17,7 +17,7 @@
 </template>
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
-import MediaModal from "./MediaModal.vue";
+import MediaModal from "@/components/media/MediaModal.vue";
 
 defineProps({
   media: { type: Object, required: true },

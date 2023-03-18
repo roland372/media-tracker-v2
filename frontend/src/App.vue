@@ -4,9 +4,9 @@
 </template>
 <script setup lang="ts">
 import { onMounted } from "vue";
-import LoaderComponent from "./components/LoaderComponent.vue";
-import MainLayout from "./layouts/MainLayout.vue";
-import { useMediaStore } from "./stores/useMediaStore";
+import LoaderComponent from "@/components/ui/LoaderComponent.vue";
+import MainLayout from "@/layouts/MainLayout.vue";
+import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 
 const mediaStore = useMediaStore();

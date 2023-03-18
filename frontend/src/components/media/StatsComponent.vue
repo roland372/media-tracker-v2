@@ -51,7 +51,7 @@
 </template>
 <script setup lang="ts">
 import { defineProps, Ref } from "vue";
-import CardComponent from "./CardComponent.vue";
+import CardComponent from "@/components/media/CardComponent.vue";
 
 interface IStatsComponentProps {
   meanScore: number;

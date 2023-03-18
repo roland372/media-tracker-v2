@@ -58,7 +58,7 @@
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue";
-import ButtonText from "./ButtonText.vue";
+import ButtonText from "@/components/ui/ButtonText.vue";
 
 defineProps({
   editClick: { type: Function },

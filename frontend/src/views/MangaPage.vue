@@ -29,10 +29,10 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import HeaderComponent from "@/components/HeaderComponent.vue";
-import ButtonText from "@/components/ButtonText.vue";
-import StatsComponent from "@/components/StatsComponent.vue";
-import MediaComponent from "@/components/MediaComponent.vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import ButtonText from "@/components/ui/ButtonText.vue";
+import StatsComponent from "@/components/media/StatsComponent.vue";
+import MediaComponent from "@/components/media/MediaComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { sortMediaByDate, favouriteMedia } from "@/utils/mediaUtils";

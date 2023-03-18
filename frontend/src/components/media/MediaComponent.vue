@@ -19,12 +19,12 @@
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue";
-import CardComponent from "./CardComponent.vue";
-import DisplayFilterSearchPanel from "./DisplayFilterSearchPanel.vue";
-import MediaCard from "./MediaCard.vue";
-import ButtonText from "./ButtonText.vue";
+import CardComponent from "@/components/media/CardComponent.vue";
+import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
+import MediaCard from "@/components/media/MediaCard.vue";
+import ButtonText from "@/components/ui/ButtonText.vue";
 
-const props = defineProps({
+defineProps({
   allMedia: { type: Boolean, default: false },
   media: { type: Object },
   mediaType: { type: String, required: true },

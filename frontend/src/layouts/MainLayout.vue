@@ -14,8 +14,8 @@
   <!--* footer -->
 </template>
 <script setup lang="ts">
-import NavbarComponent from "@/components/NavbarComponent.vue";
-import FooterComponent from "@/components/FooterComponent.vue";
+import NavbarComponent from "@/components/ui/NavbarComponent.vue";
+import FooterComponent from "@/components/ui/FooterComponent.vue";
 </script>
 <style scoped>
 section {
