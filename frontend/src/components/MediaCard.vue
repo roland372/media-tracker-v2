@@ -5,10 +5,13 @@
     </div>
     <MediaModal
       v-if="dialog"
-      v-model="dialog"
+      :delete-click="handleDeleteClick"
+      :edit-click="handleEdicClick"
       :media="media"
       :media-type="mediaType"
-      :title="media.title"
+      :title="mediaType === 'character' ? media.name : media.title"
+      :view-click="handleViewClick"
+      v-model="dialog"
     />
   </v-img>
 </template>
@@ -21,6 +24,16 @@ defineProps({
   mediaType: { type: String, required: true },
 });
 const dialog = ref<boolean>(false);
+
+const handleViewClick = () => {
+  dialog.value = !dialog.value;
+};
+const handleEdicClick = () => {
+  dialog.value = !dialog.value;
+};
+const handleDeleteClick = () => {
+  dialog.value = !dialog.value;
+};
 </script>
 <style scoped>
 .image-overlay-icon {
