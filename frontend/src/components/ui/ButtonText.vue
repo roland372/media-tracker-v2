@@ -1,9 +1,10 @@
 <template>
   <v-btn
     @click="onClick"
+    :append-icon="appendIcon"
     :color="color"
     :disabled="disabled"
-    :prepend-icon="icon"
+    :prepend-icon="prependIcon"
     :size="size"
   >
     {{ text }}
@@ -14,10 +15,11 @@
 import { defineProps, withDefaults } from "vue";
 
 interface IButtonTextProps {
+  appendIcon?: string;
   color?: string;
   disabled?: boolean;
-  icon?: string;
   onClick?: () => void;
+  prependIcon?: string;
   size?: string;
   text: string;
 }

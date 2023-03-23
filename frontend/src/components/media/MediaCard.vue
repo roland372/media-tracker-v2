@@ -105,7 +105,7 @@ const statusColor = (media: TAnime | TManga | TGame | TCharacter) => {
     case EAnimeStatus.PLAN_TO_WATCH ||
       EMangaStatus.PLAN_TO_READ ||
       EGameStatus.PLAN_TO_PLAY:
-      color = "red";
+      color = "white";
       break;
   }
   return color;

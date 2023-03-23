@@ -27,11 +27,11 @@
   />
   <MediaComponent
     all-media
-    :media="allAnime.slice(0, 20)"
+    :media="allAnime"
     :media-type="EMediaType.ANIME"
     title="All Anime"
   />
-  <MediaComponent
+  <!-- <MediaComponent
     :media="recentAnime.slice(0, 20)"
     :media-type="EMediaType.ANIME"
     title="Recent Anime"
@@ -40,7 +40,7 @@
     :media-type="EMediaType.ANIME"
     :media="favouriteAnime"
     title="Favourite Anime"
-  />
+  /> -->
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";

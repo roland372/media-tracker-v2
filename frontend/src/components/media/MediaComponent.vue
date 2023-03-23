@@ -3,7 +3,7 @@
     <DisplayFilterSearchPanel v-if="allMedia" />
     <section class="grid-container">
       <section
-        v-for="(image, index) in media"
+        v-for="(image, index) in media.slice(0, displayMediaFlag)"
         :key="index"
         class="d-flex align-center justify-center"
       >
@@ -14,11 +14,19 @@
         />
       </section>
     </section>
-    <ButtonText v-if="allMedia" class="mt-3" text="Display All" />
+    <ButtonText
+      v-if="allMedia && media.length > 20"
+      @click="displayMedia"
+      class="mt-3"
+      :append-icon="
+        displayMediaFlag === 20 ? 'mdi-arrow-down-bold' : 'mdi-arrow-up-bold'
+      "
+      :text="displayMediaFlag === 20 ? 'Display All' : 'Display Less'"
+    />
   </CardComponent>
 </template>
 <script setup lang="ts">
-import { defineProps, withDefaults } from "vue";
+import { defineProps, withDefaults, ref } from "vue";
 import CardComponent from "@/components/media/CardComponent.vue";
 import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
 import MediaCard from "@/components/media/MediaCard.vue";
@@ -32,9 +40,17 @@ interface IMediaComponentProps {
   title: string;
 }
 
-withDefaults(defineProps<IMediaComponentProps>(), {
+const props = withDefaults(defineProps<IMediaComponentProps>(), {
   allMedia: false,
 });
+
+const displayMediaFlag = ref<number>(20);
+
+const displayMedia = () => {
+  displayMediaFlag.value === 20
+    ? (displayMediaFlag.value = props.media.length)
+    : (displayMediaFlag.value = 20);
+};
 
 // const images = props.media?.slice(20, 23);
 </script>
