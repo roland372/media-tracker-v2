@@ -1,6 +1,10 @@
 <template>
   <CardComponent :title="title">
-    <DisplayFilterSearchPanel v-if="allMedia" />
+    <DisplayFilterSearchPanel
+      v-if="allMedia"
+      :media="media"
+      :media-type="mediaType"
+    />
     <section class="grid-container">
       <section
         v-for="(image, index) in media.slice(0, displayMediaFlag)"
