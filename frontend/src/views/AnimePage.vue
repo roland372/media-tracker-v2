@@ -27,12 +27,12 @@
   />
   <MediaComponent
     all-media
-    :media="sortedAnime.slice(0, 20)"
+    :media="allAnime.slice(0, 20)"
     :media-type="EMediaType.ANIME"
     title="All Anime"
   />
   <MediaComponent
-    :media="sortedAnime.slice(0, 20)"
+    :media="recentAnime.slice(0, 20)"
     :media-type="EMediaType.ANIME"
     title="Recent Anime"
   />
@@ -50,7 +50,11 @@ import StatsComponent from "@/components/media/StatsComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { sortMediaByDate, favouriteMedia } from "@/utils/mediaUtils";
+import {
+  sortMediaByDate,
+  favouriteMedia,
+  sortArrayByPropertyASC,
+} from "@/utils/mediaUtils";
 import { filterMediaStatus } from "@/utils/mediaUtils";
 import { EMediaType, TAnime } from "@/types";
 
@@ -58,8 +62,9 @@ const mediaStore = useMediaStore();
 const { anime } = storeToRefs(mediaStore);
 
 const animeSearch = ref<string>("");
-const sortedAnime: TAnime[] = sortMediaByDate(anime);
-const favouriteAnime = favouriteMedia(anime);
+const allAnime: TAnime[] = sortArrayByPropertyASC(anime, "title");
+const recentAnime: TAnime[] = sortMediaByDate(anime);
+const favouriteAnime: TAnime[] = favouriteMedia(anime);
 
 const round = (value: number, precision: number) => {
   const multiplier = Math.pow(10, precision || 0);
@@ -148,21 +153,3 @@ onMounted(() => {
   // console.log("ANIME MOUNTED");
 });
 </script>
-
-<!-- <section class="progress-stacked" style="height: 30px">
-  <div class="progress" :style="`width: ${watching}%; height: 100%`">
-    <div class="progress-bar bg-green" />
-  </div>
-  <div class="progress" :style="`width: ${completed}%; height: 100%`">
-    <div class="progress-bar bg-blue" />
-  </div>
-  <div class="progress" :style="`width: ${onHold}%; height: 100%`">
-    <div class="progress-bar bg-yellow" />
-  </div>
-  <div class="progress" :style="`width: ${dropped}%; height: 100%`">
-    <div class="progress-bar bg-red" />
-  </div>
-  <div class="progress" :style="`width: ${planToWatch}%; height: 100%`">
-    <div class="progress-bar bg-white" />
-  </div>
-</section> -->
