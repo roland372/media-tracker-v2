@@ -1,5 +1,14 @@
 <template>
-  <v-img @click="dialog = !dialog" class="rounded" cover :src="media.imageURL">
+  <v-img
+    @click="dialog = !dialog"
+    class="rounded"
+    cover
+    :src="media.imageURL"
+    :style="{
+      borderRight: `5px ${statusColor(media)} solid`,
+      borderBottom: `5px ${statusColor(media)} solid`,
+    }"
+  >
     <div class="image-overlay-icon">
       <v-icon v-if="media.favourites" color="yellow-accent-4" icon="mdi-star" />
     </div>
@@ -33,7 +42,16 @@
 import { defineProps, ref } from "vue";
 import MediaModal from "@/components/media/MediaModal.vue";
 import ChipComponent from "../ui/ChipComponent.vue";
-import { TAnime, TCharacter, TGame, TManga, EMediaType } from "@/types";
+import {
+  TAnime,
+  TCharacter,
+  TGame,
+  TManga,
+  EMediaType,
+  EAnimeStatus,
+  EMangaStatus,
+  EGameStatus,
+} from "@/types";
 
 interface IMediaCardProps {
   media: TCharacter | TAnime | TGame | TManga;
@@ -45,18 +63,52 @@ const props = defineProps<IMediaCardProps>();
 const dialog = ref<boolean>(false);
 const displayImageText = (media: TAnime | TManga | TGame | TCharacter) => {
   let imageText = "";
-  if (props.mediaType === EMediaType.ANIME) {
-    imageText = `Ep ${(media as TAnime).episodesMin} / ${
-      (media as TAnime).episodesMax
-    }`;
-  } else if (props.mediaType === EMediaType.MANGA) {
-    imageText = `Ch ${(media as TManga).chaptersMin} / ${
-      (media as TManga).chaptersMax
-    } \n Vol ${(media as TManga).volumesMin} / ${(media as TManga).volumesMax}`;
-  } else if (props.mediaType === EMediaType.GAME) {
-    imageText = `Ep ${(media as TGame).playtime} hours`;
+  switch (props.mediaType) {
+    case EMediaType.ANIME:
+      imageText = `Ep ${(media as TAnime).episodesMin} / ${
+        (media as TAnime).episodesMax
+      }`;
+      break;
+    case EMediaType.MANGA:
+      imageText = `Ch ${(media as TManga).chaptersMin} / ${
+        (media as TManga).chaptersMax
+      } \n Vol ${(media as TManga).volumesMin} / ${
+        (media as TManga).volumesMax
+      }`;
+      break;
+    case EMediaType.GAME:
+      imageText = `Ep ${(media as TGame).playtime} hours`;
+      break;
+    default:
+      break;
   }
   return imageText;
+};
+
+const statusColor = (media: TAnime | TManga | TGame | TCharacter) => {
+  let color = "";
+  switch ((media as TAnime | TGame | TManga).status) {
+    case EAnimeStatus.WATCHING || EMangaStatus.READING || EGameStatus.PLAYING:
+      color = "green";
+      break;
+    case EAnimeStatus.COMPLETED ||
+      EMangaStatus.COMPLETED ||
+      EGameStatus.COMPLETED:
+      color = "blue";
+      break;
+    case EAnimeStatus.ON_HOLD || EMangaStatus.ON_HOLD || EGameStatus.ON_HOLD:
+      color = "yellow";
+      break;
+    case EAnimeStatus.DROPPED || EMangaStatus.DROPPED || EGameStatus.DROPPED:
+      color = "red";
+      break;
+    case EAnimeStatus.PLAN_TO_WATCH ||
+      EMangaStatus.PLAN_TO_READ ||
+      EGameStatus.PLAN_TO_PLAY:
+      color = "red";
+      break;
+  }
+  return color;
 };
 
 const handleViewClick = () => {
@@ -78,13 +130,13 @@ const handleDeleteClick = () => {
 
 .image-text-overlay {
   position: absolute;
-  left: 5px;
-  top: 5px;
+  left: 0;
+  top: 0;
 }
 
 .image-title-overlay {
   position: absolute;
-  left: 5px;
-  bottom: 5px;
+  left: 0;
+  bottom: 0;
 }
 </style>
