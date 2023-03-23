@@ -27,17 +27,17 @@
   />
   <MediaComponent
     all-media
-    media-type="anime"
     :media="sortedAnime.slice(0, 20)"
+    :media-type="EMediaType.ANIME"
     title="All Anime"
   />
   <MediaComponent
     :media="sortedAnime.slice(0, 20)"
-    media-type="anime"
+    :media-type="EMediaType.ANIME"
     title="Recent Anime"
   />
   <MediaComponent
-    media-type="anime"
+    :media-type="EMediaType.ANIME"
     :media="favouriteAnime"
     title="Favourite Anime"
   />
@@ -52,12 +52,13 @@ import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { sortMediaByDate, favouriteMedia } from "@/utils/mediaUtils";
 import { filterMediaStatus } from "@/utils/mediaUtils";
+import { EMediaType, TAnime } from "@/types";
 
 const mediaStore = useMediaStore();
 const { anime } = storeToRefs(mediaStore);
 
 const animeSearch = ref<string>("");
-const sortedAnime = sortMediaByDate(anime);
+const sortedAnime: TAnime[] = sortMediaByDate(anime);
 const favouriteAnime = favouriteMedia(anime);
 
 const round = (value: number, precision: number) => {

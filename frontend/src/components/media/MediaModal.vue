@@ -5,46 +5,46 @@
         <div class="bg-primary px-5 py-3 text-h6">{{ title }}</div>
         <v-card-text class="ms-n5 my-n3">
           <!--? ANIME -->
-          <v-card-text v-if="mediaType === 'anime'">
-            <div><b>Type:</b> {{ media.type }}</div>
-            <div><b>Link:</b> {{ media.link1Name }}</div>
+          <v-card-text v-if="mediaType === EMediaType.ANIME">
+            <div><b>Type:</b> {{ (media as TAnime).type }}</div>
+            <div><b>Link:</b> {{ (media as TAnime).link1Name }}</div>
             <div>
-              <b>Episodes:</b> {{ media.episodesMin }} /
-              {{ media.episodesMax }}
+              <b>Episodes:</b> {{ (media as TAnime).episodesMin }} /
+              {{ (media as TAnime).episodesMax }}
             </div>
-            <div><b>Rating:</b> {{ media.rating }}</div>
-            <div><b>Status:</b> {{ media.status }}</div>
+            <div><b>Rating:</b> {{ (media as TAnime).rating }}</div>
+            <div><b>Status:</b> {{ (media as TAnime).status }}</div>
           </v-card-text>
           <!--? MANGA -->
-          <v-card-text v-if="mediaType === 'manga'">
-            <div><b>Type:</b> {{ media.type }}</div>
-            <div><b>Link:</b> {{ media.link1Name }}</div>
+          <v-card-text v-if="mediaType === EMediaType.MANGA">
+            <div><b>Type:</b> {{ (media as TManga).type }}</div>
+            <div><b>Link:</b> {{ (media as TManga).link1Name }}</div>
             <div>
-              <b>Chapters:</b> {{ media.chaptersMin }} /
-              {{ media.chaptersMax }}
+              <b>Chapters:</b> {{ (media as TManga).chaptersMin }} /
+              {{ (media as TManga).chaptersMax }}
             </div>
             <div>
-              <b>Volumes:</b> {{ media.volumesMin }} /
-              {{ media.volumesMax }}
+              <b>Volumes:</b> {{ (media as TManga).volumesMin }} /
+              {{ (media as TManga).volumesMax }}
             </div>
-            <div><b>Rating:</b> {{ media.rating }}</div>
-            <div><b>Status:</b> {{ media.status }}</div>
+            <div><b>Rating:</b> {{ (media as TManga).rating }}</div>
+            <div><b>Status:</b> {{ (media as TManga).status }}</div>
           </v-card-text>
           <!--? GAMES -->
-          <v-card-text v-if="mediaType === 'game'">
-            <div><b>Type:</b> {{ media.type }}</div>
-            <div><b>Link:</b> {{ media.link1Name }}</div>
-            <div><b>Playtime:</b> {{ media.playtime }} hours</div>
-            <div><b>Rating:</b> {{ media.rating }}</div>
-            <div><b>Status:</b> {{ media.status }}</div>
+          <v-card-text v-if="mediaType === EMediaType.GAME">
+            <div><b>Type:</b> {{ (media as TGame).type }}</div>
+            <div><b>Link:</b> {{ (media as TGame).link1Name }}</div>
+            <div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
+            <div><b>Rating:</b> {{ (media as TGame).rating }}</div>
+            <div><b>Status:</b> {{ (media as TGame).status }}</div>
           </v-card-text>
           <!--? CHARACTERS -->
-          <v-card-text v-if="mediaType === 'character'">
-            <div><b>Link:</b> {{ media.link1Name }}</div>
-            <div><b>Source:</b> {{ media.source }}</div>
-            <div><b>Gender:</b> {{ media.gender }}</div>
-            <div><b>Series:</b> {{ media.series }}</div>
-            <div><b>Hair Color:</b> {{ media.hairColor }}</div>
+          <v-card-text v-if="mediaType === EMediaType.CHARACTER">
+            <div><b>Link:</b> {{ (media as TCharacter).link1Name }}</div>
+            <div><b>Source:</b> {{ (media as TCharacter).source }}</div>
+            <div><b>Gender:</b> {{ (media as TCharacter).gender }}</div>
+            <div><b>Series:</b> {{ (media as TCharacter).series }}</div>
+            <div><b>Hair Color:</b> {{ (media as TCharacter).hairColor }}</div>
           </v-card-text>
         </v-card-text>
         <v-card-actions class="d-flex justify-space-around">
@@ -59,13 +59,16 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
+import { EMediaType, TAnime, TCharacter, TGame, TManga } from "@/types";
 
-defineProps({
-  editClick: { type: Function },
-  deleteClick: { type: Function },
-  media: { type: Object, required: true },
-  mediaType: { type: String, required: true },
-  title: { type: String, required: true },
-  viewClick: { type: Function },
-});
+interface IMediaModalProps {
+  editClick?: () => void;
+  deleteClick?: () => void;
+  media: TAnime | TManga | TGame | TCharacter;
+  mediaType: EMediaType;
+  title: string;
+  viewClick?: () => void;
+}
+
+defineProps<IMediaModalProps>();
 </script>

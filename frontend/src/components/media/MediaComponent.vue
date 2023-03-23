@@ -18,17 +18,22 @@
   </CardComponent>
 </template>
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { defineProps, withDefaults } from "vue";
 import CardComponent from "@/components/media/CardComponent.vue";
 import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
 import MediaCard from "@/components/media/MediaCard.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
+import { EMediaType, TAnime, TCharacter, TGame, TManga } from "@/types";
 
-defineProps({
-  allMedia: { type: Boolean, default: false },
-  media: { type: Object },
-  mediaType: { type: String, required: true },
-  title: { type: String, required: true },
+interface IMediaComponentProps {
+  allMedia?: boolean;
+  media: TAnime[] | TManga[] | TGame[] | TCharacter[];
+  mediaType: EMediaType;
+  title: string;
+}
+
+withDefaults(defineProps<IMediaComponentProps>(), {
+  allMedia: false,
 });
 
 // const images = props.media?.slice(20, 23);

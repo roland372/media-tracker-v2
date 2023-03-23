@@ -1,3 +1,11 @@
+//? <----- Media ----->
+export enum EMediaType {
+  ANIME = "Anime",
+  MANGA = "Manga",
+  GAME = "Game",
+  CHARACTER = "Character",
+}
+
 //? <----- Anime ----->
 export enum EAnimeStatus {
   WATCHING = "Watching",

@@ -9,7 +9,7 @@
       :edit-click="handleEdicClick"
       :media="media"
       :media-type="mediaType"
-      :title="mediaType === 'character' ? media.name : media.title"
+      :title="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TGame | TManga).title"
       :view-click="handleViewClick"
       v-model="dialog"
     />
@@ -18,11 +18,15 @@
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
 import MediaModal from "@/components/media/MediaModal.vue";
+import { TAnime, TCharacter, TGame, TManga, EMediaType } from "@/types";
 
-defineProps({
-  media: { type: Object, required: true },
-  mediaType: { type: String, required: true },
-});
+interface IMediaCardProps {
+  media: TCharacter | TAnime | TGame | TManga;
+  mediaType: EMediaType;
+}
+
+defineProps<IMediaCardProps>();
+
 const dialog = ref<boolean>(false);
 
 const handleViewClick = () => {
@@ -42,30 +46,3 @@ const handleDeleteClick = () => {
   top: 0;
 }
 </style>
-
-<!-- <v-card-actions class="justify-end">
-  <v-btn variant="text" @click="dialog = false">Close</v-btn>
-</v-card-actions> -->
-
-<!-- <v-dialog v-model="dialog" width="auto">
-  <template v-slot:default>
-    <v-card>
-      <v-toolbar color="primary" :title="props.media.title" />
-      <v-card-text class="">
-        <div><b>Type:</b> {{ props.media.type }}</div>
-        <div><b>Link:</b> {{ props.media.link1Name }}</div>
-        <div>
-          <b>Episodes:</b> {{ props.media.episodesMin }} /
-          {{ props.media.episodesMax }}
-        </div>
-        <div><b>Rating:</b> {{ props.media.rating }}</div>
-        <div><b>Status:</b> {{ props.media.status }}</div>
-      </v-card-text>
-      <v-card-actions>
-        <ButtonText color="blue" text="View" />
-        <ButtonText color="green" text="Edit" />
-        <ButtonText color="red" text="Delete" />
-      </v-card-actions>
-    </v-card>
-  </template>
-</v-dialog> -->

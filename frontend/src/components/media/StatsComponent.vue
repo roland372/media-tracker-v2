@@ -17,8 +17,8 @@
       </div>
     </section>
     <br />
-    <section class="d-flex justify-space-between">
-      <section class="text-start">
+    <section class="d-sm-flex justify-space-between">
+      <section class="text-start mb-3 mb-xs-0">
         <div
           v-for="(item, index) in status"
           :key="index"

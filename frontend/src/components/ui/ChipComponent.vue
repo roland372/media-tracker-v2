@@ -1,28 +1,30 @@
 <template>
   <v-chip
-    :closable="props.closable"
-    :color="props.color"
-    :density="props.density"
-    :label="props.label"
-    :prepend-icon="props.prependIcon"
-    :size="props.size"
-    :variant="props.variant"
+    :closable="closable"
+    :color="color"
+    :label="label"
+    :prepend-icon="prependIcon"
+    :size="size"
   >
-    {{ props.text }}
+    {{ text }}
   </v-chip>
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
-const props = defineProps({
-  closable: { type: Boolean },
-  color: { type: String, default: "primary" },
-  density: { type: null, default: "default" },
-  icon: { type: Boolean },
-  label: { type: Boolean },
-  prependIcon: { type: String },
-  size: { type: String, default: "default" },
-  text: { type: String, required: true },
-  variant: { type: null },
+import { defineProps, withDefaults } from "vue";
+
+interface IChipComponentProps {
+  closable?: boolean;
+  color?: string;
+  icon?: boolean;
+  label?: boolean;
+  prependIcon?: string;
+  size?: string;
+  text: string;
+}
+
+withDefaults(defineProps<IChipComponentProps>(), {
+  color: "primary",
+  size: "default",
 });
 </script>

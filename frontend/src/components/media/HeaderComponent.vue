@@ -1,5 +1,5 @@
 <template>
-  <CardComponent :title="props.title">
+  <CardComponent :title="title">
     <slot></slot>
   </CardComponent>
 </template>
@@ -7,7 +7,9 @@
 import { defineProps } from "vue";
 import CardComponent from "@/components/media/CardComponent.vue";
 
-const props = defineProps({
-  title: { type: String, required: true },
-});
+interface IHeaderComponent {
+  title: string;
+}
+
+defineProps<IHeaderComponent>();
 </script>
