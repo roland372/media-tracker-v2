@@ -48,9 +48,24 @@
           </v-card-text>
         </v-card-text>
         <v-card-actions class="d-flex justify-space-around">
-          <ButtonText color="blue" text="View" @click="viewClick" />
-          <ButtonText color="green" text="Edit" @click="editClick" />
-          <ButtonText color="red" text="Delete" @click="deleteClick" />
+          <ButtonText
+            @click="viewClick"
+            color="blue"
+            text="View"
+            variant="flat"
+          />
+          <ButtonText
+            @click="editClick"
+            color="green"
+            text="Edit"
+            variant="flat"
+          />
+          <ButtonText
+            @click="deleteClick"
+            color="red"
+            text="Delete"
+            variant="flat"
+          />
         </v-card-actions>
       </v-card>
     </template>

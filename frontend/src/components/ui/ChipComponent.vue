@@ -6,7 +6,9 @@
     :prepend-icon="prependIcon"
     :size="size"
   >
-    {{ text }}
+    <div class="chip-text">
+      {{ text }}
+    </div>
   </v-chip>
 </template>
 
@@ -20,7 +22,7 @@ interface IChipComponentProps {
   label?: boolean;
   prependIcon?: string;
   size?: string;
-  text: string;
+  text: string | number;
 }
 
 withDefaults(defineProps<IChipComponentProps>(), {
@@ -28,3 +30,10 @@ withDefaults(defineProps<IChipComponentProps>(), {
   size: "default",
 });
 </script>
+<style scoped>
+.chip-text {
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

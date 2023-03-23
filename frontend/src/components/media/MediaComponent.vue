@@ -14,7 +14,7 @@
         />
       </section>
     </section>
-    <ButtonText v-if="allMedia" text="Display All" />
+    <ButtonText v-if="allMedia" class="mt-3" text="Display All" />
   </CardComponent>
 </template>
 <script setup lang="ts">
@@ -153,26 +153,26 @@ withDefaults(defineProps<IMediaComponentProps>(), {
 }
 @media (max-width: 500px) {
   .media-img-card {
-    height: 150px;
+    height: 175px;
   }
   .grid-container {
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(3, auto);
   }
 }
 @media (max-width: 425px) {
   .media-img-card {
-    height: 125px;
+    height: 145px;
   }
   .grid-container {
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(3, auto);
   }
 }
 @media (max-width: 375px) {
   .media-img-card {
-    height: 105px;
+    height: 140px;
   }
   .grid-container {
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(3, auto);
   }
 }
 @media (max-width: 320px) {
