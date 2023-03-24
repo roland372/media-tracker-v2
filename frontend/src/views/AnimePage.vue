@@ -1,7 +1,8 @@
 <template>
   <HeaderComponent title="Anime">
+    <FormComponent v-if="formDialog" title="Add Anime" v-model="formDialog" />
     <section class="d-sm-flex align-center justify-center">
-      <ButtonText text="Add Anime" />
+      <ButtonText @click="formDialog = !formDialog" text="Add Anime" />
       <div class="px-3">
         <p>or</p>
       </div>
@@ -48,6 +49,7 @@ import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
+import FormComponent from "@/components/media/FormComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import {
@@ -60,6 +62,7 @@ import {
 import { filterMediaStatus } from "@/utils/mediaUtils";
 import { EMediaType, TAnime } from "@/types";
 
+const formDialog = ref<boolean>(true);
 const mediaStore = useMediaStore();
 const { anime } = storeToRefs(mediaStore);
 

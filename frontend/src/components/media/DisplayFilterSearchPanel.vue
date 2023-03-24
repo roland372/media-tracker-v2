@@ -20,7 +20,7 @@
       clearable
       density="compact"
       hide-details="auto"
-      label="Search for Anime"
+      :label="`Search for ${mediaType}`"
       variant="outlined"
     />
   </section>
