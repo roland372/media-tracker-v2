@@ -10,11 +10,12 @@
             density="compact"
             hide-details="auto"
             label="Anime Title"
+            :rules="[(val) => !!val || 'Title is required.']"
             variant="outlined"
           />
           <v-select
             class="mb-n3"
-            :items="items"
+            :items="animeType"
             label="Select Type"
             density="compact"
             variant="outlined"
@@ -56,14 +57,14 @@
           />
           <v-select
             class="mb-n3"
-            :items="items"
+            :items="mediaRating"
             label="Rating"
             density="compact"
             variant="outlined"
           />
           <v-select
             class="mb-n3"
-            :items="items"
+            :items="animeStatus"
             label="Status"
             density="compact"
             variant="outlined"
@@ -71,24 +72,31 @@
           <section class="d-flex align-center">
             <div class="pe-2">Episodes</div>
             <v-text-field
+              v-model="minEpisodes"
+              class="no-spinners"
               density="compact"
               hide-details="auto"
               label="Min"
+              maxlength="4"
               style="max-width: 20%"
+              type="email"
               variant="outlined"
             />
             <v-text-field
-              class="ms-2"
+              v-model="maxEpisodes"
+              class="no-spinners ms-2"
               density="compact"
               hide-details="auto"
-              style="max-width: 20%"
               label="Max"
+              maxlength="4"
+              style="max-width: 20%"
+              type="email"
               variant="outlined"
             />
           </section>
           <section class="d-flex align-center mb-n15">
             <div>Add to Favourites?</div>
-            <v-checkbox v-model="ex4" value="red" hide-details />
+            <v-checkbox v-model="animeFavourites" value="red" hide-details />
           </section>
           <!--? MANGA -->
 
@@ -102,11 +110,29 @@
   </v-dialog>
 </template>
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { defineProps, ref } from "vue";
+import { mediaRating, animeType, animeStatus } from "@/utils/mediaUtils";
+
+const animeFavourites = ref<boolean>(false);
 
 interface IFormComponentProps {
   title: string;
 }
 
 defineProps<IFormComponentProps>();
+
+const minEpisodes = ref<string>("");
+const maxEpisodes = ref<string>("");
 </script>
+<style scoped>
+.no-spinners >>> input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.no-spinners >>> input::-webkit-outer-spin-button,
+.no-spinners >>> input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+</style>

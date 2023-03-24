@@ -1,4 +1,5 @@
 import { Ref } from "vue";
+import { EAnimeType, EAnimeStatus } from "@/types";
 
 export const favouriteMedia = (media: Ref) =>
   media.value.filter((el: { favourites: boolean }) => el.favourites);
@@ -38,3 +39,22 @@ export const round = (value: number, precision: number) => {
 
 export const calculatePercentage = (numerator: number, denominator: number) =>
   (numerator / denominator) * 100;
+
+export const mediaRating = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+
+export const animeType = [
+  EAnimeType.MOVIE,
+  EAnimeType.ONA,
+  EAnimeType.OVA,
+  EAnimeType.SPECIAL,
+  EAnimeType.TV_SHOW,
+];
+
+export const animeStatus = [
+  EAnimeStatus.WATCHING,
+  EAnimeStatus.COMPLETED,
+  EAnimeStatus.ON_HOLD,
+  EAnimeStatus.DROPPED,
+  EAnimeStatus.PLAN_TO_WATCH,
+];
+// ⭐
