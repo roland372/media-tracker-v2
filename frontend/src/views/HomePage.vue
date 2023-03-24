@@ -1,5 +1,12 @@
 <template>
-  <CardComponent title="Welcome to Media-Tracker">hello</CardComponent>
+  <HeaderComponent
+    title="Welcome to Media-Tracker
+"
+  >
+    <section class="d-sm-flex align-center justify-start">
+      <ButtonText text="Add Media" />
+    </section>
+  </HeaderComponent>
   <MediaComponent
     :media="recentAnime"
     :media-type="EMediaType.ANIME"
@@ -22,7 +29,8 @@
   />
 </template>
 <script setup lang="ts">
-import CardComponent from "@/components/media/CardComponent.vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import ButtonText from "@/components/ui/ButtonText.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
