@@ -1,5 +1,5 @@
 <template>
-  <CardComponent :title="`${media} Stats`">
+  <CardComponent :title="`${mediaType} Stats`">
     <section v-for="(item, index) in progress" :key="index">
       <v-progress-linear
         :color="item.color"
@@ -8,13 +8,15 @@
         ><strong>{{ Math.ceil(item.value) }}%</strong></v-progress-linear
       >
     </section>
-    <br />
-    <section class="d-flex justify-space-between">
-      <div><b>Days:</b> {{ totalDays }}</div>
-      <div>
-        <b>Mean Score:</b>
-        {{ meanScore }}
-      </div>
+    <section v-if="mediaType !== EMediaType.CHARACTER">
+      <br />
+      <section class="d-flex justify-space-between">
+        <div><b>Days:</b> {{ totalDays }}</div>
+        <div>
+          <b>Mean Score:</b>
+          {{ meanScore }}
+        </div>
+      </section>
     </section>
     <br />
     <section class="d-sm-flex justify-space-between">
@@ -52,14 +54,15 @@
 <script setup lang="ts">
 import { defineProps, Ref } from "vue";
 import CardComponent from "@/components/media/CardComponent.vue";
+import { EMediaType } from "@/types";
 
 interface IStatsComponentProps {
-  meanScore: number;
-  media: string;
+  meanScore?: number;
+  mediaType: EMediaType;
   progress: { color: string; value: number }[];
   status: { color: string; name: string; value: Ref<number> }[];
-  stats: { name: string; value: Ref<number> | number | null }[];
-  totalDays: number;
+  stats: { name: string; value: Ref<number> | number | string | null }[];
+  totalDays?: number;
 }
 
 defineProps<IStatsComponentProps>();

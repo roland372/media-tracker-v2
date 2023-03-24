@@ -22,7 +22,7 @@
       text-color="white"
       :text="displayImageText(media)"
     />
-    <ChipComponent
+    <!-- <ChipComponent
       v-if="mediaType === EMediaType.MANGA"
       class="bg-black image-manga-chapters"
       color="white"
@@ -38,7 +38,7 @@
       size="x-small"
       text-color="white"
       :text="`Vol ${(media as TManga).volumesMin} / ${(media as TManga).volumesMax}`"
-    />
+    /> -->
     <ChipComponent
       class="bg-black image-title-overlay"
       color="white"

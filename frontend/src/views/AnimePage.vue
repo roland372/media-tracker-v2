@@ -19,7 +19,7 @@
   </HeaderComponent>
   <StatsComponent
     :mean-score="meanScore"
-    media="Anime"
+    :media-type="EMediaType.ANIME"
     :progress="progress"
     :status="status"
     :stats="stats"
@@ -54,6 +54,8 @@ import {
   sortMediaByDate,
   favouriteMedia,
   sortArrayByPropertyASC,
+  round,
+  calculatePercentage,
 } from "@/utils/mediaUtils";
 import { filterMediaStatus } from "@/utils/mediaUtils";
 import { EMediaType, TAnime } from "@/types";
@@ -65,14 +67,6 @@ const animeSearch = ref<string>("");
 const allAnime: TAnime[] = sortArrayByPropertyASC(anime, "title");
 const recentAnime: TAnime[] = sortMediaByDate(anime);
 const favouriteAnime: TAnime[] = favouriteMedia(anime);
-
-const round = (value: number, precision: number) => {
-  const multiplier = Math.pow(10, precision || 0);
-  return Math.round(value * multiplier) / multiplier;
-};
-
-const calculatePercentage = (numerator: number, denominator: number) =>
-  (numerator / denominator) * 100;
 
 const filterZeroRating = ref(
   anime.value.filter((anime) => anime.rating !== 0).length
@@ -97,7 +91,6 @@ const completed = ref(filterMediaStatus(anime, "completed").length);
 const onHold = ref(filterMediaStatus(anime, "on-hold").length);
 const dropped = ref(filterMediaStatus(anime, "dropped").length);
 const planToWatch = ref(filterMediaStatus(anime, "Plan to Watch").length);
-
 const favourites = ref(anime.value.filter((anime) => anime.favourites).length);
 
 const handleAnimeSearch = () => {

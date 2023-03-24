@@ -25,3 +25,16 @@ export const filterMediaStatus = (media: Ref, status: string) =>
   [...media.value].filter(
     (media) => media.status.toLowerCase() === status.toLowerCase()
   );
+
+export const filterGameSource = (media: Ref, source: string) =>
+  [...media.value].filter(
+    (media) => media.source.toLowerCase() === source.toLowerCase()
+  );
+
+export const round = (value: number, precision: number) => {
+  const multiplier = Math.pow(10, precision || 0);
+  return Math.round(value * multiplier) / multiplier;
+};
+
+export const calculatePercentage = (numerator: number, denominator: number) =>
+  (numerator / denominator) * 100;
