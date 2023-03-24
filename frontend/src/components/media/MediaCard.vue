@@ -13,11 +13,31 @@
       <v-icon v-if="media.favourites" color="yellow-accent-4" icon="mdi-star" />
     </div>
     <ChipComponent
+      v-if="
+        mediaType !== EMediaType.CHARACTER && mediaType !== EMediaType.MANGA
+      "
       class="bg-black image-text-overlay"
       color="white"
       size="x-small"
       text-color="white"
       :text="displayImageText(media)"
+    />
+    <ChipComponent
+      v-if="mediaType === EMediaType.MANGA"
+      class="bg-black image-manga-chapters"
+      color="white"
+      size="x-small"
+      text-color="white"
+      :text="`Ch ${(media as TManga).chaptersMin} / ${(media as TManga).chaptersMax
+        }`"
+    />
+    <ChipComponent
+      v-if="mediaType === EMediaType.MANGA"
+      class="bg-black image-manga-volumes"
+      color="white"
+      size="x-small"
+      text-color="white"
+      :text="`Vol ${(media as TManga).volumesMin} / ${(media as TManga).volumesMax}`"
     />
     <ChipComponent
       class="bg-black image-title-overlay"
@@ -69,15 +89,8 @@ const displayImageText = (media: TAnime | TManga | TGame | TCharacter) => {
         (media as TAnime).episodesMax
       }`;
       break;
-    case EMediaType.MANGA:
-      imageText = `Ch ${(media as TManga).chaptersMin} / ${
-        (media as TManga).chaptersMax
-      } \n Vol ${(media as TManga).volumesMin} / ${
-        (media as TManga).volumesMax
-      }`;
-      break;
     case EMediaType.GAME:
-      imageText = `Ep ${(media as TGame).playtime} hours`;
+      imageText = `${(media as TGame).playtime} hours`;
       break;
     default:
       break;
@@ -138,5 +151,17 @@ const handleDeleteClick = () => {
   position: absolute;
   left: 0;
   bottom: 0;
+}
+
+.image-manga-chapters {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.image-manga-volumes {
+  position: absolute;
+  left: 0;
+  top: 20px;
 }
 </style>

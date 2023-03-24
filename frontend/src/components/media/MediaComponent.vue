@@ -55,8 +55,6 @@ const displayMedia = () => {
     ? (displayMediaFlag.value = props.media.length)
     : (displayMediaFlag.value = 20);
 };
-
-// const images = props.media?.slice(20, 23);
 </script>
 <style>
 .media-img-card {
