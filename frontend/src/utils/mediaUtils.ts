@@ -1,5 +1,14 @@
 import { Ref } from "vue";
-import { EAnimeType, EAnimeStatus } from "@/types";
+import {
+  EAnimeType,
+  EAnimeStatus,
+  EMangaType,
+  EMangaStatus,
+  EGameType,
+  EGameStatus,
+  ECharacterSource,
+  ECharacterGender,
+} from "@/types";
 
 export const favouriteMedia = (media: Ref) =>
   media.value.filter((el: { favourites: boolean }) => el.favourites);
@@ -57,4 +66,43 @@ export const animeStatus = [
   EAnimeStatus.DROPPED,
   EAnimeStatus.PLAN_TO_WATCH,
 ];
-// ⭐
+
+export const mangaType = [
+  EMangaType.DOUJINSHI,
+  EMangaType.LIGHT_NOVEL,
+  EMangaType.MANGA,
+  EMangaType.MANHUA,
+  EMangaType.NOVEL,
+  EMangaType.ONE_SHOT,
+  EMangaType.WEBTOON,
+];
+
+export const mangaStatus = [
+  EMangaStatus.READING,
+  EMangaStatus.COMPLETED,
+  EMangaStatus.ON_HOLD,
+  EMangaStatus.DROPPED,
+  EMangaStatus.PLAN_TO_READ,
+];
+
+export const gameType = [EGameType.GAME, EGameType.VISUAL_NOVEL];
+
+export const gameStatus = [
+  EGameStatus.PLAYING,
+  EGameStatus.COMPLETED,
+  EGameStatus.ON_HOLD,
+  EGameStatus.DROPPED,
+  EGameStatus.PLAN_TO_PLAY,
+];
+
+export const characterSource = [
+  ECharacterSource.ANIME,
+  ECharacterSource.GAME,
+  ECharacterSource.MANGA,
+];
+
+export const characterGender = [
+  ECharacterGender.FEMALE,
+  ECharacterGender.MALE,
+  ECharacterGender.OTHER,
+];

@@ -15,8 +15,6 @@ export const getAllCharacters = async () => {
           lastModified
           link1
           link1Name
-          link2
-          link2Name
           mal_id
           name
           owner
@@ -42,8 +40,6 @@ export const getSingleCharacter = async (variables: { id: string }) => {
           lastModified
           link1
           link1Name
-          link2
-          link2Name
           mal_id
           name
           owner

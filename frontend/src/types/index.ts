@@ -188,8 +188,6 @@ export type TCharacter = {
   lastModified: number;
   link1: string;
   link1Name: string;
-  link2: string;
-  link2Name: string;
   mal_id: string;
   name: string;
   owner: string;
@@ -205,8 +203,6 @@ export type TCharacterInput = {
   lastModified?: number;
   link1?: string;
   link1Name?: string;
-  link2?: string;
-  link2Name?: string;
   name: string;
   series?: string;
   source?: ECharacterSource;

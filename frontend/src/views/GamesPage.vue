@@ -1,7 +1,13 @@
 <template>
   <HeaderComponent title="Games">
+    <FormComponent
+      v-if="formDialog"
+      v-model="formDialog"
+      :media-type="EMediaType.GAME"
+      title="Add Game"
+    />
     <section class="d-sm-flex align-center justify-center">
-      <ButtonText text="Add Games" />
+      <ButtonText @click="formDialog = !formDialog" text="Add Game" />
       <div class="px-3">
         <p>or</p>
       </div>
@@ -48,6 +54,7 @@ import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
+import FormComponent from "@/components/media/FormComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import {
@@ -60,6 +67,7 @@ import {
 import { filterMediaStatus } from "@/utils/mediaUtils";
 import { EMediaType, TGame } from "@/types";
 
+const formDialog = ref<boolean>(false);
 const mediaStore = useMediaStore();
 const { games } = storeToRefs(mediaStore);
 

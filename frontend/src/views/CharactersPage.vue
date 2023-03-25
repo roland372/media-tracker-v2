@@ -1,7 +1,13 @@
 <template>
   <HeaderComponent title="Characters">
+    <FormComponent
+      v-if="formDialog"
+      v-model="formDialog"
+      :media-type="EMediaType.CHARACTER"
+      title="Add Character"
+    />
     <section class="d-sm-flex align-center justify-center">
-      <ButtonText text="Add Character" />
+      <ButtonText @click="formDialog = !formDialog" text="Add Character" />
       <div class="px-3">
         <p>or</p>
       </div>
@@ -47,6 +53,7 @@ import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
+import FormComponent from "@/components/media/FormComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import {
@@ -58,6 +65,7 @@ import {
 import { filterGameSource } from "@/utils/mediaUtils";
 import { EMediaType, TCharacter } from "@/types";
 
+const formDialog = ref<boolean>(false);
 const mediaStore = useMediaStore();
 const { characters } = storeToRefs(mediaStore);
 

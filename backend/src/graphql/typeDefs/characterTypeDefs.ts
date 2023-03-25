@@ -13,8 +13,6 @@ export const typeCharacter = gql`
 		lastModified: Date
 		link1: String
 		link1Name: String
-		link2: String
-		link2Name: String
 		mal_id: String
 		name: String
 		owner: String
@@ -30,8 +28,6 @@ export const typeCharacter = gql`
 		lastModified: Date
 		link1: String
 		link1Name: String
-		link2: String
-		link2Name: String
 		name: String!
 		series: String
 		source: String
