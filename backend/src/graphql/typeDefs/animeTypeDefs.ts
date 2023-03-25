@@ -28,6 +28,7 @@ export const typeAnime = gql`
 		episodesMin: Int
 		favourites: Boolean
 		imageURL: String
+		lastModified: Date
 		link1: String
 		link1Name: String
 		link2: String

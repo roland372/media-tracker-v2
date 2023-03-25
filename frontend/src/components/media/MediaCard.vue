@@ -49,12 +49,19 @@
     <MediaModal
       v-if="dialog"
       :delete-click="handleDeleteClick"
-      :edit-click="handleEdicClick"
+      :edit-click="handleEditClick"
       :media="media"
       :media-type="mediaType"
       :title="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TGame | TManga).title"
       :view-click="handleViewClick"
       v-model="dialog"
+    />
+    <EditFormComponent
+      v-if="formDialog"
+      v-model="formDialog"
+      :media="media"
+      :media-type="mediaType"
+      :title="`Edit ${mediaType}`"
     />
   </v-img>
 </template>
@@ -62,6 +69,8 @@
 import { defineProps, ref } from "vue";
 import MediaModal from "@/components/media/MediaModal.vue";
 import ChipComponent from "../ui/ChipComponent.vue";
+import EditFormComponent from "./EditFormComponent.vue";
+import { useMediaStore } from "@/stores/useMediaStore";
 import {
   TAnime,
   TCharacter,
@@ -73,6 +82,9 @@ import {
   EGameStatus,
 } from "@/types";
 
+const mediaStore = useMediaStore();
+const { submitDeleteAnime } = mediaStore;
+
 interface IMediaCardProps {
   media: TCharacter | TAnime | TGame | TManga;
   mediaType: EMediaType;
@@ -81,6 +93,8 @@ interface IMediaCardProps {
 const props = defineProps<IMediaCardProps>();
 
 const dialog = ref<boolean>(false);
+const formDialog = ref<boolean>(false);
+
 const displayImageText = (media: TAnime | TManga | TGame | TCharacter) => {
   let imageText = "";
   switch (props.mediaType) {
@@ -127,10 +141,19 @@ const statusColor = (media: TAnime | TManga | TGame | TCharacter) => {
 const handleViewClick = () => {
   dialog.value = !dialog.value;
 };
-const handleEdicClick = () => {
+const handleEditClick = () => {
   dialog.value = !dialog.value;
+  formDialog.value = !formDialog.value;
 };
-const handleDeleteClick = () => {
+const handleDeleteClick = async () => {
+  switch (props.mediaType) {
+    case EMediaType.ANIME:
+      await submitDeleteAnime(props.media._id);
+      break;
+    case EMediaType.MANGA:
+      console.log("manga");
+      break;
+  }
   dialog.value = !dialog.value;
 };
 </script>

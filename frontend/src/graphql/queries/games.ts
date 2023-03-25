@@ -30,7 +30,7 @@ export const getAllGames = async () => {
 export const getSingleGame = async (variables: { id: string }) => {
   return await apolloClient.query({
     query: gql`
-      query GetAllGames($id: ID!) {
+      query GetSingleGame($id: ID!) {
         getSingleGame(ID: $id) {
           favourites
           _id

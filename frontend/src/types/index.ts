@@ -28,7 +28,7 @@ export type TAnime = {
   episodesMin: number;
   favourites: boolean;
   id: string;
-  ID: string;
+  _id: string;
   imageURL: string;
   lastModified: number;
   link1: string;
@@ -48,6 +48,7 @@ export type TAnimeInput = {
   episodesMin?: number;
   favourites?: boolean;
   imageURL?: string;
+  lastModified?: number;
   link1?: string;
   link1Name?: string;
   link2?: string;
@@ -82,7 +83,7 @@ export type TManga = {
   chaptersMin: number;
   favourites: boolean;
   id: string;
-  ID: string;
+  _id: string;
   imageURL: string;
   lastModified: number;
   link1: string;
@@ -133,7 +134,7 @@ export enum EGameType {
 export type TGame = {
   favourites: boolean;
   id: string;
-  ID: string;
+  _id: string;
   imageURL: string;
   lastModified: number;
   link1: string;
@@ -180,7 +181,7 @@ export type TCharacter = {
   gender: ECharacterGender;
   hairColor: string;
   id: string;
-  ID: string;
+  _id: string;
   imageURL: string;
   lastModified: number;
   link1: string;
@@ -212,7 +213,7 @@ export type TCharacterInput = {
 export type TEmote = {
   favourites: boolean;
   id: string;
-  ID: string;
+  _id: string;
   lastModified: number;
   name: string;
   url: string;
@@ -241,7 +242,7 @@ export enum ENoteColor {
 export type TNote = {
   color: ENoteColor;
   id: string;
-  ID: string;
+  _id: string;
   lastModified: number;
   note: string;
   title: string;

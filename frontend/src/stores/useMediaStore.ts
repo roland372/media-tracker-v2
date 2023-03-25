@@ -94,7 +94,8 @@ export const useMediaStore = defineStore("media", () => {
   const submitAddAnime = async (animeInput: TAnimeInput) => {
     try {
       const { data } = await addAnime({ animeInput });
-      console.log(data);
+      console.log({ data });
+      anime.value = [...anime.value, data];
     } catch (err) {
       console.log(err);
     }
@@ -102,7 +103,7 @@ export const useMediaStore = defineStore("media", () => {
   const submitEditAnime = async (id: string, animeInput: TAnimeInput) => {
     try {
       const { data } = await editAnime({ id, animeInput });
-      console.log(data);
+      console.log({ data });
     } catch (err) {
       console.log(err);
     }

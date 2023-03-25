@@ -7,7 +7,7 @@
           <!--? ANIME -->
           <section v-if="props.mediaType === EMediaType.ANIME" class="mb-n12">
             <v-text-field
-              v-model="newAnime.title"
+              v-model="animeRef.title"
               class="mb-2"
               density="compact"
               hide-details="auto"
@@ -16,7 +16,7 @@
               variant="outlined"
             />
             <v-select
-              v-model="newAnime.type"
+              v-model="animeRef.type"
               class="mb-n3"
               :items="animeType"
               label="Select Type"
@@ -24,7 +24,7 @@
               variant="outlined"
             />
             <v-text-field
-              v-model="newAnime.link1Name"
+              v-model="animeRef.link1Name"
               class="mb-2"
               density="compact"
               hide-details="auto"
@@ -32,7 +32,7 @@
               variant="outlined"
             />
             <v-text-field
-              v-model="newAnime.link1"
+              v-model="animeRef.link1"
               class="mb-2"
               density="compact"
               hide-details="auto"
@@ -40,7 +40,7 @@
               variant="outlined"
             />
             <v-text-field
-              v-model="newAnime.link2Name"
+              v-model="animeRef.link2Name"
               class="mb-2"
               density="compact"
               hide-details="auto"
@@ -48,7 +48,7 @@
               variant="outlined"
             />
             <v-text-field
-              v-model="newAnime.link2"
+              v-model="animeRef.link2"
               class="mb-2"
               density="compact"
               hide-details="auto"
@@ -56,7 +56,7 @@
               variant="outlined"
             />
             <v-text-field
-              v-model="newAnime.imageURL"
+              v-model="animeRef.imageURL"
               class="mb-2"
               density="compact"
               hide-details="auto"
@@ -64,7 +64,7 @@
               variant="outlined"
             />
             <v-select
-              v-model="newAnime.rating"
+              v-model="animeRef.rating"
               class="mb-n3"
               :items="mediaRating"
               label="Rating"
@@ -72,7 +72,7 @@
               variant="outlined"
             />
             <v-select
-              v-model="newAnime.status"
+              v-model="animeRef.status"
               class="mb-n3"
               :items="animeStatus"
               label="Status"
@@ -82,7 +82,7 @@
             <section class="d-flex align-center">
               <div class="pe-2">Episodes</div>
               <v-text-field
-                v-model.number="newAnime.episodesMin"
+                v-model.number="animeRef.episodesMin"
                 density="compact"
                 hide-details="auto"
                 label="Min"
@@ -91,7 +91,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model.number="newAnime.episodesMax"
+                v-model.number="animeRef.episodesMax"
                 class="mx-2"
                 density="compact"
                 hide-details="auto"
@@ -103,9 +103,9 @@
             </section>
             <section class="d-flex align-center">
               <div>Add to Favourites?</div>
-              <v-checkbox v-model="newAnime.favourites" hide-details />
+              <v-checkbox v-model="animeRef.favourites" hide-details />
             </section>
-            <ButtonText @click="submitAddAnime(newAnime)" text="Add" />
+            <ButtonText @click="handleSubmit" text="Edit" />
           </section>
           <!--? MANGA -->
 
@@ -119,34 +119,54 @@
   </v-dialog>
 </template>
 <script setup lang="ts">
-import { defineProps, reactive } from "vue";
+import { defineProps, onMounted, ref, reactive } from "vue";
 import { mediaRating, animeType, animeStatus } from "@/utils/mediaUtils";
 import ButtonText from "../ui/ButtonText.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
-import { EAnimeStatus, EAnimeType, EMediaType, TAnimeInput } from "@/types";
+import {
+  TAnime,
+  TCharacter,
+  TGame,
+  TManga,
+  TAnimeInput,
+  EMediaType,
+} from "@/types";
 
 interface IFormComponentProps {
+  media: TAnime | TManga | TGame | TCharacter;
   mediaType: EMediaType;
   title: string;
 }
 
 const props = defineProps<IFormComponentProps>();
 
-const newAnime: TAnimeInput = reactive({
-  episodesMax: 0,
-  episodesMin: 0,
-  favourites: false,
-  imageURL: "",
-  link1: "",
-  link1Name: "MAL",
-  link2: "",
-  link2Name: "",
-  rating: 0,
-  status: EAnimeStatus.PLAN_TO_WATCH,
-  title: "",
-  type: EAnimeType.TV_SHOW,
-});
-
 const mediaStore = useMediaStore();
-const { submitAddAnime } = mediaStore;
+const { submitEditAnime } = mediaStore;
+
+const animeRef = ref<TAnime>(props.media as TAnime);
+
+const handleSubmit = async () => {
+  const updatedAnime: TAnimeInput = reactive({
+    episodesMax: animeRef.value.episodesMax,
+    episodesMin: animeRef.value.episodesMin,
+    favourites: animeRef.value.favourites,
+    imageURL: animeRef.value.imageURL,
+    lastModified: Date.now(),
+    link1: animeRef.value.link1,
+    link1Name: animeRef.value.link1Name,
+    link2: animeRef.value.link2,
+    link2Name: animeRef.value.link2Name,
+    rating: animeRef.value.rating,
+    status: animeRef.value.status,
+    title: animeRef.value.title,
+    type: animeRef.value.type,
+  });
+  await submitEditAnime(animeRef.value._id, updatedAnime);
+};
+
+onMounted(() => {
+  // console.log(props.media);
+  animeRef.value = { ...props.media } as TAnime;
+});
+// submitEditAnime(animeRef._id, animeRef)
 </script>

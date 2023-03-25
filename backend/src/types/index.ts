@@ -41,6 +41,7 @@ export type TAnimeInput = {
 		episodesMin: number;
 		favourites: boolean;
 		imageURL: string;
+		lastModified: number;
 		link1: string;
 		link1Name: string;
 		link2: string;

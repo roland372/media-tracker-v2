@@ -1,6 +1,11 @@
 <template>
   <HeaderComponent title="Anime">
-    <FormComponent v-if="formDialog" title="Add Anime" v-model="formDialog" />
+    <FormComponent
+      v-if="formDialog"
+      v-model="formDialog"
+      :media-type="EMediaType.ANIME"
+      title="Add Anime"
+    />
     <section class="d-sm-flex align-center justify-center">
       <ButtonText @click="formDialog = !formDialog" text="Add Anime" />
       <div class="px-3">
@@ -18,30 +23,30 @@
       />
     </section>
   </HeaderComponent>
-  <StatsComponent
+  <!-- <StatsComponent
     :mean-score="meanScore"
     :media-type="EMediaType.ANIME"
     :progress="progress"
     :status="status"
     :stats="stats"
     :total-days="totalDays"
-  />
-  <MediaComponent
+  /> -->
+  <!-- <MediaComponent
     all-media
     :media="allAnime"
     :media-type="EMediaType.ANIME"
     title="All Anime"
-  />
+  /> -->
   <MediaComponent
     :media="recentAnime.slice(0, 20)"
     :media-type="EMediaType.ANIME"
     title="Recent Anime"
   />
-  <MediaComponent
+  <!-- <MediaComponent
     :media-type="EMediaType.ANIME"
     :media="favouriteAnime"
     title="Favourite Anime"
-  />
+  /> -->
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
@@ -62,13 +67,13 @@ import {
 import { filterMediaStatus } from "@/utils/mediaUtils";
 import { EMediaType, TAnime } from "@/types";
 
-const formDialog = ref<boolean>(true);
+const formDialog = ref<boolean>(false);
 const mediaStore = useMediaStore();
 const { anime } = storeToRefs(mediaStore);
 
 const animeSearch = ref<string>("");
 const allAnime: TAnime[] = sortArrayByPropertyASC(anime, "title");
-const recentAnime: TAnime[] = sortMediaByDate(anime);
+const recentAnime = ref<TAnime[]>(sortMediaByDate(anime));
 const favouriteAnime: TAnime[] = favouriteMedia(anime);
 
 const filterZeroRating = ref(
@@ -146,6 +151,6 @@ const meanScore =
     : round(totalRating.value / filterZeroRating.value, 2);
 
 onMounted(() => {
-  // console.log("ANIME MOUNTED");
+  console.log("ANIME MOUNTED");
 });
 </script>
