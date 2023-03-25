@@ -14,6 +14,7 @@ export const typeNote = gql`
 
 	input NoteInput {
 		color: String
+		lastModified: Date
 		note: String
 		title: String
 	}

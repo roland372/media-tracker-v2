@@ -30,6 +30,7 @@ export const typeManga = gql`
 		chaptersMin: Int
 		favourites: Boolean
 		imageURL: String
+		lastModified: Date
 		link1: String
 		link1Name: String
 		link2: String

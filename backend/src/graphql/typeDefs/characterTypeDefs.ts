@@ -27,6 +27,7 @@ export const typeCharacter = gql`
 		gender: String
 		hairColor: String
 		imageURL: String
+		lastModified: Date
 		link1: String
 		link1Name: String
 		link2: String

@@ -23,30 +23,30 @@
       />
     </section>
   </HeaderComponent>
-  <!-- <StatsComponent
+  <StatsComponent
     :mean-score="meanScore"
     :media-type="EMediaType.ANIME"
     :progress="progress"
     :status="status"
     :stats="stats"
     :total-days="totalDays"
-  /> -->
-  <!-- <MediaComponent
+  />
+  <MediaComponent
     all-media
     :media="allAnime"
     :media-type="EMediaType.ANIME"
     title="All Anime"
-  /> -->
+  />
   <MediaComponent
     :media="recentAnime.slice(0, 20)"
     :media-type="EMediaType.ANIME"
     title="Recent Anime"
   />
-  <!-- <MediaComponent
+  <MediaComponent
     :media-type="EMediaType.ANIME"
     :media="favouriteAnime"
     title="Favourite Anime"
-  /> -->
+  />
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";

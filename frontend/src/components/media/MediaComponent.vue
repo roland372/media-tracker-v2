@@ -7,7 +7,10 @@
     />
     <section class="grid-container">
       <section
-        v-for="(image, index) in media.slice(0, displayMediaFlag)"
+        v-for="(image, index) in media.slice(
+          0,
+          allMedia ? displayMediaFlag : props.media.length
+        )"
         :key="index"
         class="d-flex align-center justify-center"
       >

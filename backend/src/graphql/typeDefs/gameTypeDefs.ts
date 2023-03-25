@@ -24,6 +24,7 @@ export const typeGame = gql`
 	input GameInput {
 		favourites: Boolean
 		imageURL: String
+		lastModified: Date
 		link1: String
 		link1Name: String
 		link2: String

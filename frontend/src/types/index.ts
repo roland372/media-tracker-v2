@@ -105,6 +105,7 @@ export type TMangaInput = {
   chaptersMin?: number;
   favourites?: boolean;
   imageURL?: string;
+  lastModified?: number;
   link1?: string;
   link1Name?: string;
   link2?: string;
@@ -152,6 +153,7 @@ export type TGame = {
 export type TGameInput = {
   favourites?: boolean;
   imageURL?: string;
+  lastModified?: number;
   link1?: string;
   link1Name?: string;
   link2?: string;
@@ -200,6 +202,7 @@ export type TCharacterInput = {
   gender?: ECharacterGender;
   hairColor?: string;
   imageURL?: string;
+  lastModified?: number;
   link1?: string;
   link1Name?: string;
   link2?: string;
@@ -221,6 +224,7 @@ export type TEmote = {
 
 export type TEmoteInput = {
   favourites?: boolean;
+  lastModified?: number;
   name: string;
   url: string;
 };
@@ -250,6 +254,7 @@ export type TNote = {
 
 export type TNoteInput = {
   color?: ENoteColor;
+  lastModified?: number;
   note?: string;
   title: string;
 };
