@@ -8,22 +8,22 @@
     </section>
   </HeaderComponent>
   <MediaComponent
-    :media="recentAnime"
+    :media="recentAnime.slice(0, 20)"
     :media-type="EMediaType.ANIME"
     title="Recent Anime"
   />
   <MediaComponent
-    :media="recentCharacters"
+    :media="recentCharacters.slice(0, 20)"
     :media-type="EMediaType.CHARACTER"
     title="Recent Characters"
   />
   <MediaComponent
-    :media="recentGames"
+    :media="recentGames.slice(0, 20)"
     :media-type="EMediaType.GAME"
     title="Recent Games"
   />
   <MediaComponent
-    :media="recentManga"
+    :media="recentManga.slice(0, 20)"
     :media-type="EMediaType.MANGA"
     title="Recent Manga"
   />

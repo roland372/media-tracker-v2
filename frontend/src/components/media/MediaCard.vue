@@ -80,6 +80,7 @@ import {
   EAnimeStatus,
   EMangaStatus,
   EGameStatus,
+  ECharacterSource,
 } from "@/types";
 
 const mediaStore = useMediaStore();
@@ -114,26 +115,46 @@ const displayImageText = (media: TAnime | TManga | TGame | TCharacter) => {
 
 const statusColor = (media: TAnime | TManga | TGame | TCharacter) => {
   let color = "";
-  switch ((media as TAnime | TGame | TManga).status) {
-    case EAnimeStatus.WATCHING || EMangaStatus.READING || EGameStatus.PLAYING:
-      color = "green";
-      break;
-    case EAnimeStatus.COMPLETED ||
-      EMangaStatus.COMPLETED ||
-      EGameStatus.COMPLETED:
-      color = "blue";
-      break;
-    case EAnimeStatus.ON_HOLD || EMangaStatus.ON_HOLD || EGameStatus.ON_HOLD:
-      color = "yellow";
-      break;
-    case EAnimeStatus.DROPPED || EMangaStatus.DROPPED || EGameStatus.DROPPED:
-      color = "red";
-      break;
-    case EAnimeStatus.PLAN_TO_WATCH ||
-      EMangaStatus.PLAN_TO_READ ||
-      EGameStatus.PLAN_TO_PLAY:
-      color = "white";
-      break;
+  if ((media as TCharacter).source) {
+    switch ((media as TCharacter).source) {
+      case ECharacterSource.ANIME:
+        color = "green";
+        break;
+      case ECharacterSource.MANGA:
+        color = "yellow";
+        break;
+      case ECharacterSource.GAME:
+        color = "blue";
+        break;
+    }
+  } else {
+    switch ((media as TAnime | TManga | TGame).status) {
+      case EAnimeStatus.WATCHING:
+      case EMangaStatus.READING:
+      case EGameStatus.PLAYING:
+        color = "green";
+        break;
+      case EAnimeStatus.COMPLETED:
+      case EMangaStatus.COMPLETED:
+      case EGameStatus.COMPLETED:
+        color = "blue";
+        break;
+      case EAnimeStatus.ON_HOLD:
+      case EMangaStatus.ON_HOLD:
+      case EGameStatus.ON_HOLD:
+        color = "yellow";
+        break;
+      case EAnimeStatus.DROPPED:
+      case EMangaStatus.DROPPED:
+      case EGameStatus.DROPPED:
+        color = "red";
+        break;
+      case EAnimeStatus.PLAN_TO_WATCH:
+      case EMangaStatus.PLAN_TO_READ:
+      case EGameStatus.PLAN_TO_PLAY:
+        color = "white";
+        break;
+    }
   }
   return color;
 };
