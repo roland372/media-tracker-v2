@@ -59,9 +59,15 @@
     <EditFormComponent
       v-if="formDialog"
       v-model="formDialog"
+      @edit="handleCloseModal"
       :media="media"
       :media-type="mediaType"
       :title="`Edit ${mediaType}`"
+    />
+    <SnackbarComponent
+      v-if="snackbar"
+      :snackbar="snackbar"
+      :text="snackbarText"
     />
   </v-img>
 </template>
@@ -70,6 +76,7 @@ import { defineProps, ref } from "vue";
 import MediaModal from "@/components/media/MediaModal.vue";
 import ChipComponent from "../ui/ChipComponent.vue";
 import EditFormComponent from "./EditFormComponent.vue";
+import SnackbarComponent from "../ui/SnackbarComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import {
   TAnime,
@@ -84,7 +91,12 @@ import {
 } from "@/types";
 
 const mediaStore = useMediaStore();
-const { submitDeleteAnime } = mediaStore;
+const {
+  submitDeleteAnime,
+  submitDeleteManga,
+  submitDeleteGame,
+  submitDeleteCharacter,
+} = mediaStore;
 
 interface IMediaCardProps {
   media: TCharacter | TAnime | TGame | TManga;
@@ -95,6 +107,8 @@ const props = defineProps<IMediaCardProps>();
 
 const dialog = ref<boolean>(false);
 const formDialog = ref<boolean>(false);
+const snackbar = ref<boolean>(false);
+const snackbarText = ref<string>("");
 
 const displayImageText = (media: TAnime | TManga | TGame | TCharacter) => {
   let imageText = "";
@@ -172,10 +186,24 @@ const handleDeleteClick = async () => {
       await submitDeleteAnime(props.media._id);
       break;
     case EMediaType.MANGA:
-      console.log("manga");
+      await submitDeleteManga(props.media._id);
+      break;
+    case EMediaType.GAME:
+      await submitDeleteGame(props.media._id);
+      break;
+    case EMediaType.CHARACTER:
+      await submitDeleteCharacter(props.media._id);
       break;
   }
   dialog.value = !dialog.value;
+  snackbarText.value = `${props.mediaType} Deleted`;
+  snackbar.value = !snackbar.value;
+};
+
+const handleCloseModal = () => {
+  formDialog.value = !formDialog.value;
+  snackbarText.value = `${props.mediaType} Edited`;
+  snackbar.value = !snackbar.value;
 };
 </script>
 <style scoped>

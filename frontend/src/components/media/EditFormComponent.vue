@@ -410,7 +410,7 @@
   </v-dialog>
 </template>
 <script setup lang="ts">
-import { defineProps, onMounted, ref, reactive } from "vue";
+import { defineEmits, defineProps, onMounted, ref, reactive } from "vue";
 import {
   mediaRating,
   animeType,
@@ -443,6 +443,9 @@ interface IFormComponentProps {
 }
 
 const props = defineProps<IFormComponentProps>();
+const emit = defineEmits(["edit"]);
+
+const snackbar = ref<boolean>(false);
 
 const mediaStore = useMediaStore();
 const {
@@ -474,6 +477,7 @@ const handleSubmitEditAnime = async () => {
     type: animeRef.value.type,
   });
   await submitEditAnime(animeRef.value._id, updatedAnime);
+  emit("edit");
 };
 
 const handleSubmitEditManga = async () => {
@@ -495,6 +499,7 @@ const handleSubmitEditManga = async () => {
     volumesMin: mangaRef.value.volumesMin,
   });
   await submitEditManga(mangaRef.value._id, updatedManga);
+  emit("edit");
 };
 
 const handleSubmitEditGame = async () => {
@@ -512,6 +517,7 @@ const handleSubmitEditGame = async () => {
     type: gameRef.value.type,
   });
   await submitEditGame(gameRef.value._id, updatedGame);
+  emit("edit");
 };
 
 const handleSubmitEditCharacter = async () => {
@@ -527,6 +533,7 @@ const handleSubmitEditCharacter = async () => {
     source: characterRef.value.source,
   });
   await submitEditCharacter(characterRef.value._id, updatedCharacter);
+  emit("edit");
 };
 
 onMounted(() => {
