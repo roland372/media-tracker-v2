@@ -4,9 +4,18 @@
       <ButtonIcon icon="mdi-list-box" icon-size="25" />
     </div>
     <div class="d-flex align-center flex-wrap">
-      <ButtonText class="ma-1" color="primary" :text="`All ${mediaType}`" />
+      <ButtonText
+        class="ma-1"
+        color="primary"
+        :text="
+          mediaType === EMediaType.CHARACTER || mediaType === EMediaType.GAME
+            ? `All ${mediaType}s`
+            : `All ${mediaType}`
+        "
+      />
       <ButtonText
         v-for="(status, index) in mediaStatus()"
+        @click="handleStatusClick(status.status)"
         class="ma-1"
         :color="status.color"
         :key="index"
@@ -16,7 +25,8 @@
   </section>
   <section class="mb-3">
     <v-text-field
-      append-inner-icon="mdi-magnify"
+      v-model="mediaSearch"
+      @update:model-value="handleMediaSearch"
       clearable
       density="compact"
       hide-details="auto"
@@ -26,7 +36,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { defineProps, ref } from "vue";
 import {
   TAnime,
   TCharacter,
@@ -37,6 +47,7 @@ import {
   EGameStatus,
   EMangaStatus,
   EMediaType,
+  EGameType,
 } from "@/types";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
@@ -47,6 +58,12 @@ interface IDisplayFilterSearchPanelProps {
 }
 
 const props = defineProps<IDisplayFilterSearchPanelProps>();
+
+const mediaSearch = ref<string>("");
+
+const handleMediaSearch = () => {
+  console.log(mediaSearch.value);
+};
 
 const mediaStatus = () => {
   let statusArr = [];
@@ -90,5 +107,11 @@ const mediaStatus = () => {
   }
 
   return statusArr;
+};
+
+const handleStatusClick = (
+  status: EAnimeStatus | EMangaStatus | EGameStatus | ECharacterSource
+) => {
+  console.log(status);
 };
 </script>

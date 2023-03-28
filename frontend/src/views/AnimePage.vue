@@ -18,8 +18,8 @@
         <p>or</p>
       </div>
       <v-text-field
-        v-model="animeSearch"
-        @click:append-inner="handleAnimeSearch"
+        v-model="animeFetchSearch"
+        @click:append-inner="handleFetchAnimeSearch"
         append-inner-icon="mdi-magnify"
         clearable
         density="compact"
@@ -80,7 +80,7 @@ const snackbarText = ref<string>(EMediaType.ANIME + " Added");
 const mediaStore = useMediaStore();
 const { anime } = storeToRefs(mediaStore);
 
-const animeSearch = ref<string>("");
+const animeFetchSearch = ref<string>("");
 const allAnime: TAnime[] = sortArrayByPropertyASC(anime, "title");
 const recentAnime = ref<TAnime[]>(sortMediaByDate(anime));
 const favouriteAnime: TAnime[] = favouriteMedia(anime);
@@ -110,8 +110,8 @@ const dropped = ref(filterMediaStatus(anime, "dropped").length);
 const planToWatch = ref(filterMediaStatus(anime, "Plan to Watch").length);
 const favourites = ref(anime.value.filter((anime) => anime.favourites).length);
 
-const handleAnimeSearch = () => {
-  console.log(animeSearch.value);
+const handleFetchAnimeSearch = () => {
+  console.log(animeFetchSearch.value);
 };
 
 const progress = [
