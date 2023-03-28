@@ -3,8 +3,14 @@
     <FormComponent
       v-if="formDialog"
       v-model="formDialog"
+      @submit="handleSubmit"
       :media-type="EMediaType.ANIME"
-      title="Add Anime"
+      :title="`Add ${EMediaType.ANIME}`"
+    />
+    <SnackbarComponent
+      v-if="snackbar"
+      :snackbar="snackbar"
+      :text="snackbarText"
     />
     <section class="d-sm-flex align-center justify-center">
       <ButtonText @click="formDialog = !formDialog" text="Add Anime" />
@@ -55,6 +61,7 @@ import ButtonText from "@/components/ui/ButtonText.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import FormComponent from "@/components/media/FormComponent.vue";
+import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import {
@@ -68,6 +75,8 @@ import { filterMediaStatus } from "@/utils/mediaUtils";
 import { EMediaType, TAnime } from "@/types";
 
 const formDialog = ref<boolean>(false);
+const snackbar = ref<boolean>(false);
+const snackbarText = ref<string>(EMediaType.ANIME + " Added");
 const mediaStore = useMediaStore();
 const { anime } = storeToRefs(mediaStore);
 
@@ -150,7 +159,12 @@ const meanScore =
     ? 0
     : round(totalRating.value / filterZeroRating.value, 2);
 
+const handleSubmit = () => {
+  formDialog.value = !formDialog.value;
+  snackbar.value = !snackbar.value;
+};
+
 onMounted(() => {
-  console.log("ANIME MOUNTED");
+  // console.log("ANIME MOUNTED");
 });
 </script>

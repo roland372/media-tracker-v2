@@ -445,8 +445,6 @@ interface IFormComponentProps {
 const props = defineProps<IFormComponentProps>();
 const emit = defineEmits(["edit"]);
 
-const snackbar = ref<boolean>(false);
-
 const mediaStore = useMediaStore();
 const {
   submitEditAnime,

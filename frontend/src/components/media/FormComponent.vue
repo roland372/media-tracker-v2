@@ -105,7 +105,7 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="newAnime.favourites" hide-details />
             </section>
-            <ButtonText @click="submitAddAnime(newAnime)" text="Add" />
+            <ButtonText @click="handleSubmitAddAnime" text="Add" />
           </section>
 
           <!--? MANGA -->
@@ -231,7 +231,7 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="newManga.favourites" hide-details />
             </section>
-            <ButtonText @click="submitAddManga(newManga)" text="Add" />
+            <ButtonText @click="handleSubmitAddManga" text="Add" />
           </section>
 
           <!--? GAMES -->
@@ -325,7 +325,7 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="newGame.favourites" hide-details />
             </section>
-            <ButtonText @click="submitAddGame(newGame)" text="Add" />
+            <ButtonText @click="handleSubmitAddGame" text="Add" />
           </section>
 
           <!--? CHARACTERS -->
@@ -401,7 +401,7 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="newCharacter.favourites" hide-details />
             </section>
-            <ButtonText @click="submitAddCharacter(newCharacter)" text="Add" />
+            <ButtonText @click="handleSubmitAddCharacter" text="Add" />
           </section>
         </v-card-text>
         <v-card-actions class="d-flex justify-space-around"> </v-card-actions>
@@ -410,7 +410,7 @@
   </v-dialog>
 </template>
 <script setup lang="ts">
-import { defineProps, reactive } from "vue";
+import { defineEmits, defineProps, reactive } from "vue";
 import {
   mediaRating,
   animeType,
@@ -446,6 +446,7 @@ interface IFormComponentProps {
 }
 
 const props = defineProps<IFormComponentProps>();
+const emit = defineEmits(["submit"]);
 
 const mediaStore = useMediaStore();
 const { submitAddAnime, submitAddManga, submitAddGame, submitAddCharacter } =
@@ -508,4 +509,21 @@ const newCharacter: TCharacterInput = reactive({
   series: "",
   source: ECharacterSource.ANIME,
 });
+
+const handleSubmitAddAnime = async () => {
+  await submitAddAnime(newAnime);
+  emit("submit");
+};
+const handleSubmitAddManga = async () => {
+  await submitAddManga(newManga);
+  emit("submit");
+};
+const handleSubmitAddGame = async () => {
+  await submitAddGame(newGame);
+  emit("submit");
+};
+const handleSubmitAddCharacter = async () => {
+  await submitAddCharacter(newCharacter);
+  emit("submit");
+};
 </script>

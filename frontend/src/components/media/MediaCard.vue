@@ -56,6 +56,36 @@
       :view-click="handleViewClick"
       v-model="dialog"
     />
+    <v-dialog v-if="deleteDialog" v-model="deleteDialog">
+      <v-card>
+        <div class="bg-primary px-5 py-3 text-h6">
+          Deleting
+          {{
+            props.mediaType === EMediaType.CHARACTER
+              ? (props.media as TCharacter).name
+              : (props.media as TAnime | TManga | TGame).title
+          }}
+        </div>
+        <v-card-text
+          >Are you sure you want to delete this
+          {{ props.mediaType }}?</v-card-text
+        >
+        <v-card-actions class="d-flex justify-space-around mb-2">
+          <ButtonText
+            @click="handleDeleteCancel"
+            color="yellow"
+            text="Cancel"
+            variant="flat"
+          />
+          <ButtonText
+            @click="handleDeleteConfirm"
+            color="red"
+            text="Delete"
+            variant="flat"
+          />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <EditFormComponent
       v-if="formDialog"
       v-model="formDialog"
@@ -77,6 +107,7 @@ import MediaModal from "@/components/media/MediaModal.vue";
 import ChipComponent from "../ui/ChipComponent.vue";
 import EditFormComponent from "./EditFormComponent.vue";
 import SnackbarComponent from "../ui/SnackbarComponent.vue";
+import ButtonText from "../ui/ButtonText.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import {
   TAnime,
@@ -109,6 +140,7 @@ const dialog = ref<boolean>(false);
 const formDialog = ref<boolean>(false);
 const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>("");
+const deleteDialog = ref<boolean>(false);
 
 const displayImageText = (media: TAnime | TManga | TGame | TCharacter) => {
   let imageText = "";
@@ -181,6 +213,11 @@ const handleEditClick = () => {
   formDialog.value = !formDialog.value;
 };
 const handleDeleteClick = async () => {
+  dialog.value = !dialog.value;
+  deleteDialog.value = !deleteDialog.value;
+};
+
+const handleDeleteConfirm = async () => {
   switch (props.mediaType) {
     case EMediaType.ANIME:
       await submitDeleteAnime(props.media._id);
@@ -195,9 +232,17 @@ const handleDeleteClick = async () => {
       await submitDeleteCharacter(props.media._id);
       break;
   }
-  dialog.value = !dialog.value;
-  snackbarText.value = `${props.mediaType} Deleted`;
+  deleteDialog.value = !deleteDialog.value;
+  snackbarText.value = `${props.mediaType} ${
+    props.mediaType === EMediaType.CHARACTER
+      ? (props.media as TCharacter).name
+      : (props.media as TAnime | TManga | TGame).title
+  } Deleted`;
   snackbar.value = !snackbar.value;
+};
+
+const handleDeleteCancel = () => {
+  deleteDialog.value = !deleteDialog.value;
 };
 
 const handleCloseModal = () => {
