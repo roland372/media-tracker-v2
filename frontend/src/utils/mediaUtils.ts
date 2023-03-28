@@ -8,6 +8,7 @@ import {
   EGameStatus,
   ECharacterSource,
   ECharacterGender,
+  EMediaType,
 } from "@/types";
 
 export const favouriteMedia = (media: Ref) =>
@@ -48,6 +49,13 @@ export const round = (value: number, precision: number) => {
 
 export const calculatePercentage = (numerator: number, denominator: number) =>
   (numerator / denominator) * 100;
+
+export const mediaList = [
+  EMediaType.ANIME,
+  EMediaType.MANGA,
+  EMediaType.GAME,
+  EMediaType.CHARACTER,
+];
 
 export const mediaRating = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
 

@@ -441,7 +441,7 @@ import {
 } from "@/types";
 
 interface IFormComponentProps {
-  mediaType: EMediaType;
+  mediaType: EMediaType | string;
   title: string;
 }
 
