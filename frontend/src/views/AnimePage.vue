@@ -46,6 +46,7 @@
   <MediaComponent
     :media="recentAnime.slice(0, 20)"
     :media-type="EMediaType.ANIME"
+    :search-term="searchTerm"
     title="Recent Anime"
   />
   <MediaComponent
@@ -84,6 +85,8 @@ const animeFetchSearch = ref<string>("");
 const allAnime: TAnime[] = sortArrayByPropertyASC(anime, "title");
 const recentAnime = ref<TAnime[]>(sortMediaByDate(anime));
 const favouriteAnime: TAnime[] = favouriteMedia(anime);
+
+const searchTerm = ref("");
 
 const filterZeroRating = ref(
   anime.value.filter((anime) => anime.rating !== 0).length

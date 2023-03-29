@@ -47,7 +47,6 @@ import {
   EGameStatus,
   EMangaStatus,
   EMediaType,
-  EGameType,
 } from "@/types";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
@@ -58,12 +57,7 @@ interface IDisplayFilterSearchPanelProps {
 }
 
 const props = defineProps<IDisplayFilterSearchPanelProps>();
-
 const mediaSearch = ref<string>("");
-
-const handleMediaSearch = () => {
-  console.log(mediaSearch.value);
-};
 
 const mediaStatus = () => {
   let statusArr = [];
@@ -107,6 +101,10 @@ const mediaStatus = () => {
   }
 
   return statusArr;
+};
+
+const handleMediaSearch = () => {
+  console.log(mediaSearch.value);
 };
 
 const handleStatusClick = (
