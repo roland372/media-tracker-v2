@@ -1,3 +1,21 @@
+//? <----- User ----->
+export enum EUserRole {
+	ADMIN = "ADMIN",
+	USER = "USER",
+}
+
+export type TUser = {
+	color?: string;
+	email: string;
+	googleId: string;
+	profileDesc?: string;
+	profileImg?: string;
+	password?: string;
+	role?: EUserRole;
+	username: string;
+	uid: string;
+}
+
 //? <----- Anime ----->
 export enum EAnimeStatus {
 	WATCHING = 'Watching',
