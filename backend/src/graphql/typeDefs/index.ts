@@ -4,6 +4,7 @@ import { typeGame } from './gameTypeDefs';
 import { typeCharacter } from './characterTypeDefs';
 import { typeEmote } from './emoteTypeDefs';
 import { typeNote } from './noteTypeDefs';
+import { typeUser } from './userTypeDefs';
 
 export const typeDefs = [
 	typeAnime,
@@ -12,4 +13,5 @@ export const typeDefs = [
 	typeCharacter,
 	typeEmote,
 	typeNote,
+	typeUser
 ];

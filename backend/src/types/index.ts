@@ -8,12 +8,22 @@ export type TUser = {
 	color: string;
 	email: string;
 	googleId: string;
+	ID: string;
 	profileDesc: string;
 	profileImg: string;
 	role: EUserRole;
 	username: string;
-	uid: string;
 }
+
+export type TUserInput = {
+	userInput: {
+		color: string;
+		profileDesc: string;
+		profileImg: string;
+		username: string;
+	};
+	ID: string;
+};
 
 //? <----- Anime ----->
 export enum EAnimeStatus {

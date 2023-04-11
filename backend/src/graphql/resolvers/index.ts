@@ -4,6 +4,7 @@ import { gameResolvers } from './gameResolvers';
 import { characterResolvers } from './characterResolvers';
 import { emoteResolvers } from './emoteResolvers';
 import { noteResolvers } from './noteResolvers';
+import { userResolvers } from './userResolvers';
 
 export const resolvers = [
 	animeResolvers,
@@ -12,4 +13,5 @@ export const resolvers = [
 	characterResolvers,
 	emoteResolvers,
 	noteResolvers,
+	userResolvers,
 ];

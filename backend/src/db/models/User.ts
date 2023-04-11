@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 import { EUserRole, TUser } from '../../types';
-import { v4 as uuidv4 } from 'uuid';
 
 const UserSchema: Schema = new Schema<TUser>(
 	{
@@ -8,17 +7,16 @@ const UserSchema: Schema = new Schema<TUser>(
 			type: String,
 			default: '#FFFFFF',
 		},
-    email: { 
-      type: String, required: true, unique: true
-    },
+		email: {
+			type: String, required: true, unique: true
+		},
 		googleId: { type: String },
-    profileDesc: { type: String, default: '' },
-    profileImg: { type: String, default: '' },
+		profileDesc: { type: String, default: '' },
+		profileImg: { type: String, default: '' },
 		role: { type: String, enum: EUserRole, default: EUserRole.USER },
 		username: { type: String, required: true },
-		uid: { type: String, required: true, default: uuidv4() }
 	},
-	{ versionKey: false, collection: 'users' }
+	{ versionKey: false, collection: 'users', timestamps: true },
 );
 
 export default mongoose.model('users', UserSchema);
