@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/login', controller.authUser);
 router.get('/google/callback', controller.googleCallback);
-router.get('/auth/failure', controller.authFailure);
+router.get('/login/failure', controller.authFailure);
 router.get('/protected', isAuthenticated, controller.protectedRoute);
 router.get('/logout', controller.logout);
 

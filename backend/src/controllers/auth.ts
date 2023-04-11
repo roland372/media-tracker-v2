@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import passport, { Profile } from "passport";
 
-const authUser = passport.authenticate('google', { scope: ['email', 'profile', 'openid'] });
+const authUser = passport.authenticate('google', { scope: ['email', 'profile'] });
 
 const googleCallback = passport.authenticate('google', {
 	successRedirect: '/protected',
-	failureRedirect: '/auth/failure',
+	failureRedirect: '/login/failure',
 });
 
 const authFailure = <T>(_: T, res: Response) => {

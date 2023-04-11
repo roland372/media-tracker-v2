@@ -14,12 +14,11 @@ const UserSchema: Schema = new Schema<TUser>(
 		googleId: { type: String },
     profileDesc: { type: String, default: '' },
     profileImg: { type: String, default: '' },
-		password: { type: String, min: 6, max: 30 },
-		role: { enum: EUserRole, default: EUserRole.USER },
-		username: { type: String, required: true, unique: true },
+		role: { type: String, enum: EUserRole, default: EUserRole.USER },
+		username: { type: String, required: true },
 		uid: { type: String, required: true, default: uuidv4() }
 	},
-	{ versionKey: false, collection: 'Users' }
+	{ versionKey: false, collection: 'users' }
 );
 
-export default mongoose.model('Users', UserSchema);
+export default mongoose.model('users', UserSchema);

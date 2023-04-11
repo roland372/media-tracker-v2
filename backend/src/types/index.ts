@@ -5,13 +5,12 @@ export enum EUserRole {
 }
 
 export type TUser = {
-	color?: string;
+	color: string;
 	email: string;
 	googleId: string;
-	profileDesc?: string;
-	profileImg?: string;
-	password?: string;
-	role?: EUserRole;
+	profileDesc: string;
+	profileImg: string;
+	role: EUserRole;
 	username: string;
 	uid: string;
 }
