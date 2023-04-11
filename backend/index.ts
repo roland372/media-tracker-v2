@@ -4,12 +4,12 @@ import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { typeDefs } from './src/graphql/typeDefs';
 import { resolvers } from './src/graphql/resolvers';
-import passport, { Profile } from "passport";
+import passport from "passport";
 
 import { databaseConnector } from './src/db/connector';
 import colors from 'colors';
 import dotenv from 'dotenv';
-import { isLoggedIn } from './src/middlewares/isLoggedIn';
+import authRoute from '../backend/src/routes/auth';
 require('../backend/src/config/passportStrategy');
 
 dotenv.config();
@@ -25,42 +25,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/", (_, res) => {
-	res.send('<a href="/auth/google">authenticate</a>')
-});
+app.use("/", authRoute);
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile', 'openid'] }));
-
-app.get('/google/callback', passport.authenticate('google', {
-	successRedirect: '/protected',
-	failureRedirect: '/auth/failure',
-}));
-
-app.get('/auth/failure', (_, res) => {
-	res.send('something went wrong');
-});
-
-app.get('/protected', isLoggedIn, (req: any, res) => {
-	const user = req.user as Profile;
-	console.log(req.user.picture);
-	res.send(`Hello ${user.displayName}`);
-});
-
-app.get('/logout', (req, res) => {
-	req.logout(function (err) {
-		if (err) {
-			return err;
-		}
-		req.session.destroy((err) => {
-			if (err) {
-				console.log("error", err);
-			} else {
-				console.log('Session destroyed successfully.');
-				res.redirect('http://localhost:5000');
-			}
-		});
-	});
-});
+// app.get("/", (_, res) => {
+// 	res.send('<a href="/auth/google">authenticate</a>')
+// });
 
 app.listen({ port: 5000 }, () => {
 	console.log(colors.green.bold(`🚀 Node.js Server ready at http://localhost:5000`));
