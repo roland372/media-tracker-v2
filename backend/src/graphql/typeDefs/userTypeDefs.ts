@@ -12,7 +12,7 @@ export const typeUser = gql`
 
 	input UserInput {
 		color: String!
-		profileDesc: String!
+		profileDesc: String
 		profileImg: String!
 		username: String!
 	}

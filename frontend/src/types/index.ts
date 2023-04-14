@@ -6,6 +6,29 @@ export enum EMediaType {
   CHARACTER = "Character",
 }
 
+//? <----- User ----->
+export enum EUserRole {
+  ADMIN = "ADMIN",
+  USER = "USER",
+}
+
+export type TUser = {
+  color: string;
+  email: string;
+  googleId: string;
+  profileDesc: string;
+  profileImg: string;
+  role: EUserRole;
+  username: string;
+};
+
+export type TUserInput = {
+  color: string;
+  profileDesc: string;
+  profileImg: string;
+  username: string;
+};
+
 //? <----- Anime ----->
 export enum EAnimeStatus {
   WATCHING = "Watching",

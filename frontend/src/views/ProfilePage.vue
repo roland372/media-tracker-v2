@@ -1,35 +1,34 @@
 <template>
   <HeaderComponent title="Profile">
     <section>
-      <h3 class="mb-4 pt-2">Welcome damfat94@gmail.com</h3>
-      <!-- <section class="d-flex justify-center align-center"> -->
-      <section class="">
-        <main class="bg-green py-5 px-7">
+      <h3 class="mb-4 pt-2">Welcome {{ userRef.email }}</h3>
+      <section class="d-sm-flex mx-md-16 px-md-16">
+        <main
+          :style="{ backgroundColor: userRef.color }"
+          class="py-5 px-7 v-col-sm-4 rounded-t"
+        >
           <img
             alt="Avatar"
             class="rounded-circle"
-            src="https://firebasestorage.googleapis.com/v0/b/media-tracker-f3101.appspot.com/o/A43pMBPrXiYLnMdsSu8GLclowvl2.png?alt=media&token=799f8a41-978e-4ef9-b8c9-b8c7480f8e8c"
+            :src="userRef.profileImg"
             style="width: 80px"
           />
-          <div>
-            <h3>Roland</h3>
-            <p class="text-start">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe
-              dolores praesentium minus et fugit harum adipisci non a culpa.
-              Repellat natus iste omnis eaque cumque? In nihil magni culpa odio
-              neque assumenda libero officiis, modi autem? Nisi eligendi dolores
-              aliquam reprehenderit, doloremque saepe, quo recusandae rem itaque
-              sunt inventore iusto.
+          <div style="overflow-wrap: break-word">
+            <h3>
+              {{ userRef.username }}
+            </h3>
+            <p>
+              {{ userRef.profileDesc }}
             </p>
           </div>
         </main>
-        <aside class="bg-grey px-5 pt-2 pb-5">
+        <aside class="bg-grey px-5 pt-2 pb-5 v-col-sm-8 rounded-b">
           <section>
             <h3>Information</h3>
             <hr />
             <div class="pa-3">
               <h4>Email</h4>
-              <p>damfat94@gmail.com</p>
+              <p>{{ userRef.email }}</p>
             </div>
           </section>
           <section>
@@ -39,31 +38,15 @@
               class="d-flex align-center justify-space-evenly pa-3 text-no-wrap"
             >
               <section>
-                <div class="pa-1">
-                  <b class="text-decoration-underline">Anime</b>
-                  <div>614 Anime</div>
-                </div>
-                <div class="pa-1">
-                  <b class="text-decoration-underline">Manga</b>
-                  <div>202 Manga</div>
-                </div>
-                <div class="pa-1">
-                  <b class="text-decoration-underline">Games</b>
-                  <div>398 Games</div>
+                <div v-for="media in mediaType.slice(0, 3)" :key="media.media">
+                  <b class="text-decoration-underline">{{ media.media }}</b>
+                  <div>{{ media.total }} {{ media.media }}</div>
                 </div>
               </section>
               <section>
-                <div class="pa-1">
-                  <b class="text-decoration-underline">Characters</b>
-                  <div>476 Characters</div>
-                </div>
-                <div class="pa-1">
-                  <b class="text-decoration-underline">Emotes</b>
-                  <div>383 Emotes</div>
-                </div>
-                <div class="pa-1">
-                  <b class="text-decoration-underline">Notes</b>
-                  <div>11 Notes</div>
+                <div v-for="media in mediaType.slice(3)" :key="media.media">
+                  <b class="text-decoration-underline">{{ media.media }}</b>
+                  <div>{{ media.total }} {{ media.media }}</div>
                 </div>
               </section>
             </section>
@@ -73,28 +56,12 @@
             <hr />
             <div class="d-flex align-center justify-start flex-wrap py-3">
               <ButtonText
-                class="me-2 mt-2"
-                color="blue"
-                size="small"
-                text="blue"
-              />
-              <ButtonText
-                class="me-2 mt-2"
-                color="grey"
-                size="small"
-                text="gray"
-              />
-              <ButtonText
-                class="me-2 mt-2"
-                color="yellow"
-                size="small"
-                text="beige"
-              />
-              <ButtonText
-                class="mt-2"
-                color="pink"
-                size="small"
-                text="random"
+                v-for="button in colorThemeButtons"
+                :key="button.text"
+                :class="button.class"
+                :color="button.color"
+                :size="button.size"
+                :text="button.text"
               />
             </div>
           </section>
@@ -103,40 +70,12 @@
             <hr />
             <div class="d-flex align-center justify-start flex-wrap py-3">
               <ButtonText
-                class="me-2 mt-2"
-                color="blue"
-                size="small"
-                text="anime"
-              />
-              <ButtonText
-                class="me-2 mt-2"
-                color="grey"
-                size="small"
-                text="manga"
-              />
-              <ButtonText
-                class="me-2 mt-2"
-                color="yellow"
-                size="small"
-                text="games"
-              />
-              <ButtonText
-                class="me-2 mt-2"
-                color="pink"
-                size="small"
-                text="characters"
-              />
-              <ButtonText
-                class="me-2 mt-2"
-                color="orange"
-                size="small"
-                text="emotes"
-              />
-              <ButtonText
-                class="mt-2"
-                color="green"
-                size="small"
-                text="notes"
+                v-for="button in backupButtons"
+                :key="button.text"
+                :class="button.class"
+                :color="button.color"
+                :size="button.size"
+                :text="button.text"
               />
             </div>
           </section>
@@ -147,6 +86,7 @@
               class="d-flex align-center justify-space-evenly flex-wrap py-3"
             >
               <ButtonText
+                :on-click="handleOpenSettings"
                 class="me-2 mt-2"
                 color="yellow"
                 size="small"
@@ -163,9 +103,130 @@
         </aside>
       </section>
     </section>
+    <v-dialog v-if="settingsModal" v-model="settingsModal" max-width="500">
+      <v-card>
+        <div class="bg-primary px-5 py-3 text-h6">Edit Profile</div>
+        <v-card-text>
+          <v-text-field
+            v-model="userRef.username"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="Name"
+            :rules="[(val) => !!val || 'Name is required.']"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="userRef.profileDesc"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="Description"
+            variant="outlined"
+          />
+          <div class="d-flex justify-space-around mb-n3">
+            <v-file-input
+              :v-model="avatarUpload"
+              density="compact"
+              label="Upload Avatar"
+              prepend-icon=""
+              show-size
+              variant="outlined"
+            />
+            <ButtonText
+              :on-click="handleSubmitUploadAvatar"
+              class="my-2 ms-2"
+              color="yellow"
+              size="small"
+              text="upload"
+              variant="flat"
+            />
+          </div>
+          <div class="mt-n5">
+            <small class="ms-3">Select Color</small>
+            <div class="d-flex flex-wrap">
+              <v-color-picker v-model="userRef.color" hide-inputs />
+              <div class="ms-2">
+                <b>New color:</b>
+                <div :style="{ backgroundColor: userRef.color }" class="pa-1">
+                  {{ userRef.color }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </v-card-text>
+        <v-card-actions class="d-flex justify-start ms-4 mb-2">
+          <ButtonText
+            :on-click="handleSubmitEditProfile"
+            color="yellow"
+            text="save changes"
+            variant="flat"
+          />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </HeaderComponent>
 </template>
 <script setup lang="ts">
+import { ref, reactive } from "vue";
+import { TUserInput, TUser, EUserRole } from "@/types/index";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
+
+const settingsModal = ref<boolean>(false);
+const userProfile: TUser = reactive({
+  color: "#8484ED",
+  email: "damfat94@gmail.com",
+  googleId: "123",
+  profileDesc: "description",
+  profileImg:
+    "https://firebasestorage.googleapis.com/v0/b/media-tracker-f3101.appspot.com/o/A43pMBPrXiYLnMdsSu8GLclowvl2.png?alt=media&token=799f8a41-978e-4ef9-b8c9-b8c7480f8e8c",
+  role: EUserRole.ADMIN,
+  username: "Roland",
+});
+const userRef = ref<TUser>(userProfile);
+const avatarUpload = ref();
+const mediaType = [
+  { media: "Anime", total: "614" },
+  { media: "Manga", total: "202" },
+  { media: "Games", total: "398" },
+  { media: "Characters", total: "476" },
+  { media: "Emotes", total: "383" },
+  { media: "Notes", total: "11" },
+];
+
+const backupButtons = [
+  { class: "me-2 mt-2", color: "blue", size: "small", text: "anime" },
+  { class: "me-2 mt-2", color: "grey", size: "small", text: "manga" },
+  { class: "me-2 mt-2", color: "yellow", size: "small", text: "games" },
+  { class: "me-2 mt-2", color: "pink", size: "small", text: "characters" },
+  { class: "me-2 mt-2", color: "orange", size: "small", text: "emotes" },
+  { class: "mt-2", color: "green", size: "small", text: "notes" },
+];
+
+const colorThemeButtons = [
+  { class: "me-2 mt-2", color: "blue", size: "small", text: "blue" },
+  { class: "me-2 mt-2", color: "grey", size: "small", text: "gray" },
+  { class: "me-2 mt-2", color: "yellow", size: "small", text: "beige" },
+  { class: "mt-2", color: "pink", size: "small", text: "random" },
+];
+
+const handleOpenSettings = () => {
+  settingsModal.value = !settingsModal.value;
+};
+
+const handleSubmitEditProfile = () => {
+  const updatedProfile: TUserInput = reactive({
+    color: userRef.value.color,
+    profileDesc: userRef.value.profileDesc,
+    profileImg: userRef.value.profileImg,
+    username: userRef.value.username,
+  });
+
+  console.log(updatedProfile);
+};
+
+const handleSubmitUploadAvatar = () => {
+  console.log(avatarUpload);
+};
 </script>
