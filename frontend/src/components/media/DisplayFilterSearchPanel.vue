@@ -25,8 +25,9 @@
   </section>
   <section class="mb-3">
     <v-text-field
-      v-model="mediaSearch"
+      v-model="mediaSearchRef"
       @update:model-value="handleMediaSearch"
+      @click:clear="() => (mediaSearchRef = '')"
       clearable
       density="compact"
       hide-details="auto"
@@ -53,11 +54,12 @@ import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 
 interface IDisplayFilterSearchPanelProps {
   media: TAnime[] | TManga[] | TGame[] | TCharacter[];
+  mediaSearch?: string;
   mediaType: EMediaType;
 }
 
 const props = defineProps<IDisplayFilterSearchPanelProps>();
-const mediaSearch = ref<string>("");
+const mediaSearchRef = ref<string | undefined>(props.mediaSearch);
 
 const mediaStatus = () => {
   let statusArr = [];
@@ -103,13 +105,13 @@ const mediaStatus = () => {
   return statusArr;
 };
 
-const handleMediaSearch = () => {
-  console.log(mediaSearch.value);
-};
-
 const handleStatusClick = (
   status: EAnimeStatus | EMangaStatus | EGameStatus | ECharacterSource
 ) => {
   console.log(status);
+};
+
+const handleMediaSearch = () => {
+  console.log(mediaSearchRef.value);
 };
 </script>

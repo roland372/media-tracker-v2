@@ -24,7 +24,7 @@
           emote.name
         }}</v-tooltip>
         <div
-          class="bg-white pa-1 d-flex align-center justify-center flex-grow-1 position-relative"
+          class="bg-white pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded"
         >
           <img :src="emote.url" :alt="emote.name" style="height: 64px" />
           <v-icon
@@ -40,8 +40,8 @@
   <HeaderComponent title="All Emotes">
     <v-text-field
       v-model="emoteSearch"
-      clearable
       @click:clear="() => (emoteSearch = '')"
+      clearable
       density="compact"
       hide-details="auto"
       label="Search for Emote"
@@ -61,11 +61,16 @@
           emote.name
         }}</v-tooltip>
         <div
-          class="bg-white pa-1 d-flex align-center justify-center flex-grow-1 position-relative"
+          class="bg-white pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded"
         >
           <div>
             <div>
-              <img :src="emote.url" :alt="emote.name" style="height: 64px" />
+              <img
+                :src="emote.url"
+                :alt="emote.name"
+                style="height: 64px"
+                class="mb-n1"
+              />
               <v-icon
                 v-if="emote.favourites"
                 class="image-overlay-icon"

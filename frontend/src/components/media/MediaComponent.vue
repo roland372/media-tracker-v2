@@ -3,6 +3,7 @@
     <DisplayFilterSearchPanel
       v-if="allMedia"
       :media="media"
+      :media-search="mediaSearch"
       :media-type="mediaType"
     />
     <section class="grid-container">
@@ -43,6 +44,7 @@ import { EMediaType, TAnime, TCharacter, TGame, TManga } from "@/types";
 interface IMediaComponentProps {
   allMedia?: boolean;
   media: TAnime[] | TManga[] | TGame[] | TCharacter[];
+  mediaSearch?: string | undefined;
   mediaType: EMediaType;
   title: string;
 }

@@ -39,14 +39,18 @@
   />
   <MediaComponent
     all-media
-    :media="allAnime"
+    :media="
+      allAnime.filter((anime) =>
+        anime.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    "
+    :media-search="searchTerm"
     :media-type="EMediaType.ANIME"
     title="All Anime"
   />
   <MediaComponent
     :media="recentAnime.slice(0, 20)"
     :media-type="EMediaType.ANIME"
-    :search-term="searchTerm"
     title="Recent Anime"
   />
   <MediaComponent
