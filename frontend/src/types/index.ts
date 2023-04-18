@@ -249,21 +249,8 @@ export type TEmoteInput = {
 };
 
 //? <----- Notes ----->
-export enum ENoteColor {
-  PRIMARY = "Primary",
-  SECONDARY = "Secondary",
-  SUCCESS = "Success",
-  DANGER = "Danger",
-  WARNING = "Warning",
-  INFO = "Info",
-  LIGHT = "Light",
-  DARK = "Dark",
-  MUTED = "Muted",
-  WHITE = "White",
-}
-
 export type TNote = {
-  color: ENoteColor;
+  color: string;
   id: string;
   _id: string;
   lastModified: number;
@@ -272,8 +259,8 @@ export type TNote = {
 };
 
 export type TNoteInput = {
-  color?: ENoteColor;
-  lastModified?: number;
+  color: string;
+  lastModified: number;
   note?: string;
   title: string;
 };
