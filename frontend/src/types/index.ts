@@ -271,6 +271,7 @@ export type TNavLinks = {
   route: string;
   url: string;
   text: string;
+  title: string;
 };
 
 export type TUsefulLinks = {

@@ -62,6 +62,7 @@ const routes: Array<RouteRecordRaw> = [
       component: () => import(`@/views/${link.name}.vue`),
       name: link.name,
       path: link.url,
+      meta: { title: link.title + " | Media-Tracker" },
     };
   }),
   {
@@ -77,6 +78,12 @@ const router = createRouter({
   scrollBehavior() {
     return { top: 0 };
   },
+});
+
+router.beforeEach((to, _, next) => {
+  const pageTitle = to.meta.title as string;
+  document.title = pageTitle;
+  next();
 });
 
 export default router;
