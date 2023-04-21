@@ -120,7 +120,7 @@
               <ButtonText
                 v-bind="props"
                 :color="newNote.color"
-                text="Select color"
+                text="Select Color"
               />
             </template>
             <v-color-picker
@@ -182,7 +182,7 @@
               <ButtonText
                 v-bind="props"
                 :color="noteRef.color"
-                text="Select color"
+                text="Select Color"
               />
             </template>
             <v-color-picker

@@ -90,13 +90,13 @@
                 class="me-2 mt-2"
                 color="yellow"
                 size="small"
-                text="edit profile"
+                text="Edit Profile"
               />
               <ButtonText
                 class="me-2 mt-2"
                 color="blue"
                 size="small"
-                text="log out"
+                text="Log Out"
               />
             </div>
           </section>
@@ -138,7 +138,7 @@
               class="my-2 ms-2"
               color="yellow"
               size="small"
-              text="upload"
+              text="Upload"
               variant="flat"
             />
           </div>
@@ -159,7 +159,7 @@
           <ButtonText
             :on-click="handleSubmitEditProfile"
             color="yellow"
-            text="save changes"
+            text="Save Changes"
             variant="flat"
           />
         </v-card-actions>
@@ -196,19 +196,19 @@ const mediaType = [
 ];
 
 const backupButtons = [
-  { class: "me-2 mt-2", color: "blue", size: "small", text: "anime" },
-  { class: "me-2 mt-2", color: "grey", size: "small", text: "manga" },
-  { class: "me-2 mt-2", color: "yellow", size: "small", text: "games" },
-  { class: "me-2 mt-2", color: "pink", size: "small", text: "characters" },
-  { class: "me-2 mt-2", color: "orange", size: "small", text: "emotes" },
-  { class: "mt-2", color: "green", size: "small", text: "notes" },
+  { class: "me-2 mt-2", color: "blue", size: "small", text: "Anime" },
+  { class: "me-2 mt-2", color: "grey", size: "small", text: "Manga" },
+  { class: "me-2 mt-2", color: "yellow", size: "small", text: "Games" },
+  { class: "me-2 mt-2", color: "pink", size: "small", text: "Characters" },
+  { class: "me-2 mt-2", color: "orange", size: "small", text: "Emotes" },
+  { class: "mt-2", color: "green", size: "small", text: "Notes" },
 ];
 
 const colorThemeButtons = [
-  { class: "me-2 mt-2", color: "blue", size: "small", text: "blue" },
-  { class: "me-2 mt-2", color: "grey", size: "small", text: "gray" },
-  { class: "me-2 mt-2", color: "yellow", size: "small", text: "beige" },
-  { class: "mt-2", color: "pink", size: "small", text: "random" },
+  { class: "me-2 mt-2", color: "blue", size: "small", text: "Blue" },
+  { class: "me-2 mt-2", color: "grey", size: "small", text: "Gray" },
+  { class: "me-2 mt-2", color: "yellow", size: "small", text: "Beige" },
+  { class: "mt-2", color: "pink", size: "small", text: "Random" },
 ];
 
 const handleOpenSettings = () => {

@@ -6,6 +6,7 @@
     :disabled="disabled"
     :prepend-icon="prependIcon"
     :size="size"
+    class="text-none"
   >
     {{ text }}
   </v-btn>
