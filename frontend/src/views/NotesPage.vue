@@ -59,21 +59,21 @@
             </div>
             <div>
               <ButtonIcon
-                @click="handleOpenViewNoteModal"
+                @click="handleOpenViewNoteModal(note._id, note)"
                 icon="mdi-open-in-new"
                 icon-color="blue-darken-4"
                 icon-size="small"
                 variant="text"
               />
               <ButtonIcon
-                @click="handleOpenEditNoteModal"
+                @click="handleOpenEditNoteModal(note._id, note)"
                 icon="mdi-pencil-outline"
                 icon-color="green-darken-1"
                 icon-size="small"
                 variant="text"
               />
               <ButtonIcon
-                @click="handleOpenDeleteNoteModal"
+                @click="handleOpenDeleteNoteModal(note._id, note)"
                 icon="mdi-trash-can-outline"
                 icon-color="red-darken-4"
                 icon-size="small"
@@ -147,6 +147,101 @@
         />
       </v-card-actions> </v-card
   ></v-dialog>
+  <v-dialog
+    v-if="editNoteModal"
+    v-model="editNoteModal"
+    max-width="1000"
+    persistent
+    ><v-card>
+      <div
+        class="bg-primary px-5 py-3 text-h6 d-flex justify-space-between align-center"
+      >
+        <div>Edit Note</div>
+        <ButtonIcon
+          @click="editNoteModal = false"
+          class="me-n3"
+          icon="mdi-close"
+          icon-color="white"
+          icon-size="large"
+          variant="text"
+        />
+      </div>
+      <v-card-text class="mx-n2">
+        <section class="d-flex align-center justify-space-between mb-2">
+          <v-text-field
+            v-model="noteRef.title"
+            class="me-2"
+            density="compact"
+            hide-details="auto"
+            label="Title"
+            :rules="[(val) => !!val || 'Title is required.']"
+            variant="outlined"
+          />
+          <v-menu open-on-hover :close-on-content-click="false">
+            <template v-slot:activator="{ props }">
+              <ButtonText
+                v-bind="props"
+                :color="noteRef.color"
+                text="Select color"
+              />
+            </template>
+            <v-color-picker
+              v-model="noteRef.color"
+              :modes="['hexa']"
+              class="overflow-x-hidden"
+            />
+          </v-menu>
+        </section>
+        <v-text-field
+          v-model="noteRef.note"
+          density="compact"
+          hide-details="auto"
+          label="Note"
+          variant="outlined"
+        />
+      </v-card-text>
+      <v-card-actions class="d-flex justify-start ms-2 mt-n2 mb-2">
+        <ButtonText
+          @click="handleSubmitEditNote"
+          color="green"
+          text="Edit Note"
+          variant="flat"
+        />
+      </v-card-actions> </v-card
+  ></v-dialog>
+  <v-dialog v-if="deleteNoteModal" v-model="deleteNoteModal" max-width="300"
+    ><v-card>
+      <div class="bg-primary px-5 py-3 text-h6">Deleting Note</div>
+      <v-card-text>
+        <p>Are you sure you want to delete this note?</p>
+        <b>{{ noteRef.title }}</b>
+      </v-card-text>
+      <v-card-actions class="d-flex justify-start mb-2 ms-2">
+        <ButtonText
+          @click="handleDeleteCancel"
+          color="yellow"
+          text="Cancel"
+          variant="flat"
+        />
+        <ButtonText
+          @click="handleDeleteConfirm"
+          color="red"
+          text="Delete"
+          variant="flat"
+        />
+      </v-card-actions> </v-card
+  ></v-dialog>
+  <v-dialog v-if="viewNoteModal" v-model="viewNoteModal" max-width="1000"
+    ><v-card>
+      <div class="bg-primary px-5 py-3 text-h6">
+        <div>{{ noteRef.title }}</div>
+      </div>
+      <v-card-text class="mx-n2 mb-2">
+        <section>
+          <section v-html="noteRef?.note?.replace(/<ul>/g, viewNoteText)" />
+        </section>
+      </v-card-text> </v-card
+  ></v-dialog>
   <SnackbarComponent
     v-if="snackbar.value"
     :snackbar="snackbar.value"
@@ -187,9 +282,14 @@ const newNote: TNoteInput = reactive({
   title: "New Note",
 });
 
+const noteID = ref<string>("");
+const noteRef = ref<TNoteInput>(newNote);
+
 const handleOpenAddNoteModal = () => {
   addNoteModal.value = !addNoteModal.value;
 };
+
+const viewNoteText = '<ul style="margin-left: 1rem;">';
 
 const handleSubmitAddNote = async () => {
   await submitAddNote(newNote);
@@ -202,22 +302,59 @@ const handleSubmitAddNote = async () => {
   newNote.title = "New Note";
 };
 
-const handleOpenEditNoteModal = () => {
-  editNoteModal.value = !editNoteModal.value;
-};
-
-const handleOpenDeleteNoteModal = () => {
+const handleOpenDeleteNoteModal = (id: string, note: TNote) => {
   deleteNoteModal.value = !deleteNoteModal.value;
+
+  noteID.value = id;
+  noteRef.value = note;
+};
+const handleDeleteCancel = () => {
+  deleteNoteModal.value = false;
+};
+const handleDeleteConfirm = async () => {
+  await submitDeleteNote(noteID.value);
+  console.log(noteID.value);
+  snackbar.value.text = "Note Deleted";
+  snackbar.value.value = !snackbar.value.value;
+  noteID.value = "";
+  deleteNoteModal.value = false;
 };
 
-const handleOpenViewNoteModal = () => {
+const handleOpenEditNoteModal = (id: string, note: TNote) => {
+  editNoteModal.value = !editNoteModal.value;
+
+  const updatedNote: TNoteInput = reactive({
+    color: note.color,
+    lastModified: Date.now(),
+    note: note.note,
+    title: note.title,
+  });
+
+  noteRef.value = updatedNote;
+  noteID.value = id;
+};
+
+const handleSubmitEditNote = async () => {
+  await submitEditNote(noteID.value, noteRef.value);
+  snackbar.value.text = "Note Edited";
+  snackbar.value.value = !snackbar.value.value;
+  editNoteModal.value = false;
+};
+
+const handleOpenViewNoteModal = (id: string, note: TNote) => {
   viewNoteModal.value = !viewNoteModal.value;
+  noteRef.value = note;
+  noteID.value = id;
 };
 
-onMounted(() => {
+const setStyle = () => {
   document
     .querySelectorAll("ul")
     .forEach((el) => (el.style.marginLeft = "1rem"));
+};
+
+onMounted(() => {
+  setStyle();
 });
 </script>
 <style scoped></style>

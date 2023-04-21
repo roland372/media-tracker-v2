@@ -77,12 +77,12 @@ import ButtonText from "@/components/ui/ButtonText.vue";
 import { EMediaType, TAnime, TCharacter, TGame, TManga } from "@/types";
 
 interface IMediaModalProps {
-  editClick?: () => void;
-  deleteClick?: () => void;
+  editClick: () => void;
+  deleteClick: () => void;
   media: TAnime | TManga | TGame | TCharacter;
   mediaType: EMediaType;
   title: string;
-  viewClick?: () => void;
+  viewClick: () => void;
 }
 
 defineProps<IMediaModalProps>();
