@@ -7,15 +7,13 @@
       </v-container>
     </v-layout>
     <FooterComponent />
+    <ScrollToTopButton />
   </section>
-  <!--* navbar -->
-  <!--* sidebar -->
-  <!--* main content (router-view) -->
-  <!--* footer -->
 </template>
 <script setup lang="ts">
 import NavbarComponent from "@/components/ui/NavbarComponent.vue";
 import FooterComponent from "@/components/ui/FooterComponent.vue";
+import ScrollToTopButton from "@/components/ui/ScrollToTopButton.vue";
 </script>
 <style scoped>
 section {
