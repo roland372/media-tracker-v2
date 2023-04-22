@@ -1,7 +1,11 @@
 <template>
   <section class="d-md-flex align-center justify-space-between mb-2">
     <div>
-      <ButtonIcon icon="mdi-list-box" icon-size="25" />
+      <ButtonIcon
+        @click="handleDisplayClick"
+        :icon="displayFlag === 'table' ? 'mdi-view-grid' : 'mdi-table'"
+        icon-size="25"
+      />
     </div>
     <div class="d-flex align-center flex-wrap">
       <ButtonText
@@ -37,12 +41,8 @@
   </section>
 </template>
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
+import { defineEmits, defineProps, ref } from "vue";
 import {
-  TAnime,
-  TCharacter,
-  TGame,
-  TManga,
   EAnimeStatus,
   ECharacterSource,
   EGameStatus,
@@ -53,12 +53,13 @@ import ButtonText from "@/components/ui/ButtonText.vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 
 interface IDisplayFilterSearchPanelProps {
-  media: TAnime[] | TManga[] | TGame[] | TCharacter[];
+  displayFlag: string;
   mediaSearch?: string;
   mediaType: EMediaType;
 }
 
 const props = defineProps<IDisplayFilterSearchPanelProps>();
+const emit = defineEmits(["display"]);
 const mediaSearchRef = ref<string | undefined>(props.mediaSearch);
 
 const mediaStatus = () => {
@@ -109,6 +110,10 @@ const handleStatusClick = (
   status: EAnimeStatus | EMangaStatus | EGameStatus | ECharacterSource
 ) => {
   console.log(status);
+};
+
+const handleDisplayClick = () => {
+  emit("display");
 };
 
 const handleMediaSearch = () => {

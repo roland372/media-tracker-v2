@@ -434,6 +434,8 @@ import {
   TMangaInput,
   TGameInput,
   TCharacterInput,
+  EAnimeStatus,
+  EMangaStatus,
 } from "@/types";
 
 interface IFormComponentProps {
@@ -461,7 +463,10 @@ const characterRef = ref<TCharacter>(props.media as TCharacter);
 const handleSubmitEditAnime = async () => {
   const updatedAnime: TAnimeInput = reactive({
     episodesMax: animeRef.value.episodesMax,
-    episodesMin: animeRef.value.episodesMin,
+    episodesMin:
+      animeRef.value.status === EAnimeStatus.COMPLETED
+        ? animeRef.value.episodesMax
+        : animeRef.value.episodesMin,
     favourites: animeRef.value.favourites,
     imageURL: animeRef.value.imageURL,
     lastModified: Date.now(),
@@ -481,7 +486,10 @@ const handleSubmitEditAnime = async () => {
 const handleSubmitEditManga = async () => {
   const updatedManga: TMangaInput = reactive({
     chaptersMax: mangaRef.value.chaptersMax,
-    chaptersMin: mangaRef.value.chaptersMin,
+    chaptersMin:
+      mangaRef.value.status === EMangaStatus.COMPLETED
+        ? mangaRef.value.chaptersMax
+        : mangaRef.value.chaptersMin,
     favourites: mangaRef.value.favourites,
     imageURL: mangaRef.value.imageURL,
     lastModified: Date.now(),
@@ -494,7 +502,10 @@ const handleSubmitEditManga = async () => {
     title: mangaRef.value.title,
     type: mangaRef.value.type,
     volumesMax: mangaRef.value.volumesMax,
-    volumesMin: mangaRef.value.volumesMin,
+    volumesMin:
+      mangaRef.value.status === EMangaStatus.COMPLETED
+        ? mangaRef.value.volumesMax
+        : mangaRef.value.volumesMin,
   });
   await submitEditManga(mangaRef.value._id, updatedManga);
   emit("edit");

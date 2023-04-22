@@ -37,7 +37,20 @@
     :stats="stats"
     :total-days="totalDays"
   />
+  <MediaTable
+    v-if="displayFlag === 'table'"
+    :media="allAnime"
+    :media-type="EMediaType.ANIME"
+    title="All Anime"
+  >
+    <DisplayFilterSearchPanel
+      @display="handleChangeDisplayFlag"
+      :display-flag="displayFlag"
+      :media-type="EMediaType.ANIME"
+    />
+  </MediaTable>
   <MediaComponent
+    v-if="displayFlag === 'grid'"
     all-media
     :media="
       allAnime.filter((anime) =>
@@ -47,7 +60,13 @@
     :media-search="searchTerm"
     :media-type="EMediaType.ANIME"
     title="All Anime"
-  />
+  >
+    <DisplayFilterSearchPanel
+      @display="handleChangeDisplayFlag"
+      :display-flag="displayFlag"
+      :media-type="EMediaType.ANIME"
+    />
+  </MediaComponent>
   <MediaComponent
     :media="recentAnime.slice(0, 20)"
     :media-type="EMediaType.ANIME"
@@ -67,6 +86,9 @@ import StatsComponent from "@/components/media/StatsComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import FormComponent from "@/components/media/FormComponent.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
+import MediaTable from "@/components/media/MediaTable.vue";
+
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import {
@@ -77,8 +99,9 @@ import {
   calculatePercentage,
 } from "@/utils/mediaUtils";
 import { filterMediaStatus } from "@/utils/mediaUtils";
-import { EMediaType, TAnime } from "@/types";
+import { EMediaType, TAnime, EAnimeStatus } from "@/types";
 
+const displayFlag = ref<string>("grid");
 const formDialog = ref<boolean>(false);
 const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.ANIME + " Added");
@@ -145,11 +168,11 @@ const progress = [
 ];
 
 const status = [
-  { color: "green", name: "Watching", value: watching },
-  { color: "blue", name: "Completed", value: completed },
-  { color: "yellow", name: "On-Hold", value: onHold },
-  { color: "red", name: "Dropped", value: dropped },
-  { color: "white", name: "Plan to Watch", value: planToWatch },
+  { color: "green", name: EAnimeStatus.WATCHING, value: watching },
+  { color: "blue", name: EAnimeStatus.COMPLETED, value: completed },
+  { color: "yellow", name: EAnimeStatus.ON_HOLD, value: onHold },
+  { color: "red", name: EAnimeStatus.DROPPED, value: dropped },
+  { color: "white", name: EAnimeStatus.PLAN_TO_WATCH, value: planToWatch },
 ];
 
 const stats = [
@@ -169,6 +192,14 @@ const meanScore =
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
   snackbar.value = !snackbar.value;
+};
+
+const handleChangeDisplayFlag = () => {
+  if (displayFlag.value === "table") {
+    displayFlag.value = "grid";
+  } else if (displayFlag.value === "grid") {
+    displayFlag.value = "table";
+  }
 };
 
 onMounted(() => {

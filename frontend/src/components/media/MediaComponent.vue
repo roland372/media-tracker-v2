@@ -1,11 +1,6 @@
 <template>
   <CardComponent :title="title">
-    <DisplayFilterSearchPanel
-      v-if="allMedia"
-      :media="media"
-      :media-search="mediaSearch"
-      :media-type="mediaType"
-    />
+    <slot></slot>
     <section class="grid-container">
       <section
         v-for="(image, index) in media.slice(
@@ -36,7 +31,6 @@
 <script setup lang="ts">
 import { defineProps, withDefaults, ref } from "vue";
 import CardComponent from "@/components/media/CardComponent.vue";
-import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
 import MediaCard from "@/components/media/MediaCard.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import { EMediaType, TAnime, TCharacter, TGame, TManga } from "@/types";
