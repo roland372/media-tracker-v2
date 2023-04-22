@@ -39,7 +39,7 @@
   />
   <MediaTable
     v-if="displayFlag === 'table'"
-    :media="allAnime"
+    :media="anime"
     :media-type="EMediaType.ANIME"
     title="All Anime"
   >
@@ -53,7 +53,7 @@
     v-if="displayFlag === 'grid'"
     all-media
     :media="
-      allAnime.filter((anime) =>
+      anime.filter((anime) =>
         anime.title.toLowerCase().includes(searchTerm.toLowerCase())
       )
     "
@@ -94,7 +94,6 @@ import { storeToRefs } from "pinia";
 import {
   sortMediaByDate,
   favouriteMedia,
-  sortArrayByPropertyASC,
   round,
   calculatePercentage,
 } from "@/utils/mediaUtils";
@@ -109,7 +108,7 @@ const mediaStore = useMediaStore();
 const { anime } = storeToRefs(mediaStore);
 
 const animeFetchSearch = ref<string>("");
-const allAnime: TAnime[] = sortArrayByPropertyASC(anime, "title");
+// const allAnime: TAnime[] = sortArrayByPropertyASC(anime, "title");
 const recentAnime = ref<TAnime[]>(sortMediaByDate(anime));
 const favouriteAnime: TAnime[] = favouriteMedia(anime);
 

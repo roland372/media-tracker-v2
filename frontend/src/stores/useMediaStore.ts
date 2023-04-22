@@ -55,6 +55,8 @@ import {
   TNoteInput,
 } from "@/types";
 
+import { sortedIndexBy } from "lodash";
+
 export const useMediaStore = defineStore("media", () => {
   //* <----- UTILS ----->
   const isLoading = ref<boolean>(true);
@@ -94,7 +96,6 @@ export const useMediaStore = defineStore("media", () => {
   const submitAddAnime = async (animeInput: TAnimeInput) => {
     try {
       const { data } = await addAnime({ animeInput });
-      console.log({ data });
       anime.value = [...anime.value, data];
     } catch (err) {
       console.log(err);
@@ -288,6 +289,7 @@ export const useMediaStore = defineStore("media", () => {
   const fetchEmotes = async () => {
     try {
       const { data, loading } = await getAllEmotes();
+
       isLoading.value = loading;
       setEmotes(data.getAllEmotes);
     } catch (err) {
@@ -306,7 +308,12 @@ export const useMediaStore = defineStore("media", () => {
   const submitAddEmote = async (emoteInput: TEmoteInput) => {
     try {
       const { data } = await addEmote({ emoteInput });
-      console.log(data);
+
+      const arrCopy = [...emotes.value];
+      const index = sortedIndexBy(arrCopy, data.addEmote, (obj) => obj["name"]);
+      arrCopy.splice(index, 0, data.addEmote);
+
+      setEmotes(arrCopy);
     } catch (err) {
       console.log(err);
     }
@@ -314,14 +321,23 @@ export const useMediaStore = defineStore("media", () => {
   const submitEditEmote = async (id: string, emoteInput: TEmoteInput) => {
     try {
       const { data } = await editEmote({ id, emoteInput });
+      setEmotes(
+        emotes.value.map((emote) =>
+          emote._id === id ? { ...emote, ...emoteInput } : emote
+        )
+      );
+
       console.log(data);
     } catch (err) {
       console.log(err);
     }
   };
+
   const submitDeleteEmote = async (id: string) => {
     try {
       const { data } = await deleteEmote({ id });
+      setEmotes(emotes.value.filter((emote) => emote._id !== id));
+
       console.log(data);
     } catch (err) {
       console.log(err);

@@ -39,7 +39,7 @@
   />
   <MediaComponent
     all-media
-    :media="allGames"
+    :media="games"
     :media-type="EMediaType.GAME"
     title="All Games"
   />
@@ -67,7 +67,7 @@ import { storeToRefs } from "pinia";
 import {
   sortMediaByDate,
   favouriteMedia,
-  sortArrayByPropertyASC,
+  // sortArrayByPropertyASC,
   round,
   calculatePercentage,
 } from "@/utils/mediaUtils";
@@ -81,7 +81,7 @@ const mediaStore = useMediaStore();
 const { games } = storeToRefs(mediaStore);
 
 const gameSearch = ref<string>("");
-const allGames: TGame[] = sortArrayByPropertyASC(games, "title");
+// const allGames: TGame[] = sortArrayByPropertyASC(games, "title");
 const recentGames: TGame[] = sortMediaByDate(games);
 const favouriteGames: TGame[] = favouriteMedia(games);
 

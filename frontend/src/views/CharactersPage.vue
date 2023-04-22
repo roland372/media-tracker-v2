@@ -38,7 +38,7 @@
   />
   <MediaComponent
     all-media
-    :media="allCharacters"
+    :media="characters"
     :media-type="EMediaType.CHARACTER"
     title="All Characters"
   />
@@ -66,7 +66,7 @@ import { storeToRefs } from "pinia";
 import {
   sortMediaByDate,
   favouriteMedia,
-  sortArrayByPropertyASC,
+  // sortArrayByPropertyASC,
   calculatePercentage,
 } from "@/utils/mediaUtils";
 import { filterGameSource } from "@/utils/mediaUtils";
@@ -79,7 +79,7 @@ const mediaStore = useMediaStore();
 const { characters } = storeToRefs(mediaStore);
 
 const characterSearch = ref<string>("");
-const allCharacters: TCharacter[] = sortArrayByPropertyASC(characters, "name");
+// const allCharacters: TCharacter[] = sortArrayByPropertyASC(characters, "name");
 const recentCharacters: TCharacter[] = sortMediaByDate(characters);
 const favouriteCharacters: TCharacter[] = favouriteMedia(characters);
 

@@ -39,7 +39,7 @@
   />
   <MediaComponent
     all-media
-    :media="allManga"
+    :media="manga"
     :media-type="EMediaType.MANGA"
     title="All Manga"
   />
@@ -67,7 +67,7 @@ import { storeToRefs } from "pinia";
 import {
   sortMediaByDate,
   favouriteMedia,
-  sortArrayByPropertyASC,
+  // sortArrayByPropertyASC,
   round,
   calculatePercentage,
 } from "@/utils/mediaUtils";
@@ -81,7 +81,7 @@ const mediaStore = useMediaStore();
 const { manga } = storeToRefs(mediaStore);
 
 const mangaSearch = ref<string>("");
-const allManga: TManga[] = sortArrayByPropertyASC(manga, "title");
+// const allManga: TManga[] = sortArrayByPropertyASC(manga, "title");
 const recentManga: TManga[] = sortMediaByDate(manga);
 const favouriteManga: TManga[] = favouriteMedia(manga);
 

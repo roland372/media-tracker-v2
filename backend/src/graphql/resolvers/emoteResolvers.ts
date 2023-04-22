@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const emoteResolvers = {
 	Query: {
 		async getAllEmotes() {
-			return await Emote.find();
+			return await Emote.find().sort({ name: "asc" });
 		},
 		async getSingleEmote<T>(_: T, { ID }: TEmote) {
 			return await Emote.findById(ID);

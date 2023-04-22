@@ -12,6 +12,7 @@
     "@vue/apollo-composable": "^4.0.0-beta.4",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
+    "lodash": "^4.17.21",
     "pinia": "^2.0.33",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.1.96",
+    "@types/lodash": "^4.14.194",
     "@types/webfontloader": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
