@@ -289,7 +289,6 @@ export const useMediaStore = defineStore("media", () => {
   const fetchEmotes = async () => {
     try {
       const { data, loading } = await getAllEmotes();
-
       isLoading.value = loading;
       setEmotes(data.getAllEmotes);
     } catch (err) {
@@ -314,6 +313,7 @@ export const useMediaStore = defineStore("media", () => {
       arrCopy.splice(index, 0, data.addEmote);
 
       setEmotes(arrCopy);
+      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -374,6 +374,11 @@ export const useMediaStore = defineStore("media", () => {
   const submitAddNote = async (noteInput: TNoteInput) => {
     try {
       const { data } = await addNote({ noteInput });
+
+      const arrCopy = [...notes.value];
+      arrCopy.splice(0, 0, data.addNote);
+
+      setNotes(arrCopy);
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -382,6 +387,12 @@ export const useMediaStore = defineStore("media", () => {
   const submitEditNote = async (id: string, noteInput: TNoteInput) => {
     try {
       const { data } = await editNote({ id, noteInput });
+      setNotes(
+        notes.value.map((note) =>
+          note._id === id ? { ...note, ...noteInput } : note
+        )
+      );
+
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -390,6 +401,8 @@ export const useMediaStore = defineStore("media", () => {
   const submitDeleteNote = async (id: string) => {
     try {
       const { data } = await deleteNote({ id });
+      setNotes(notes.value.filter((note) => note._id !== id));
+
       console.log(data);
     } catch (err) {
       console.log(err);

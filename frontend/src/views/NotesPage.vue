@@ -11,7 +11,7 @@
     <hr class="my-3 border-b" />
     <section class="v-row">
       <div
-        v-for="note in sortedNotes"
+        v-for="note in notes"
         :key="note.color"
         class="v-col-lg-4 v-col-sm-6 v-col-12 text-wrap"
         style="word-wrap: break-word"
@@ -256,13 +256,11 @@ import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { sortMediaByDate } from "@/utils/mediaUtils";
 import { TNoteInput } from "@/types";
 import { TNote } from "@/types";
 
 const mediaStore = useMediaStore();
 const { notes } = storeToRefs(mediaStore);
-const sortedNotes: TNote[] = sortMediaByDate(notes);
 const { submitAddNote, submitEditNote, submitDeleteNote } = mediaStore;
 
 const addNoteModal = ref<boolean>(false);
@@ -313,7 +311,6 @@ const handleDeleteCancel = () => {
 };
 const handleDeleteConfirm = async () => {
   await submitDeleteNote(noteID.value);
-  console.log(noteID.value);
   snackbar.value.text = "Note Deleted";
   snackbar.value.value = !snackbar.value.value;
   noteID.value = "";

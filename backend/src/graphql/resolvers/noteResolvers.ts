@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const noteResolvers = {
 	Query: {
 		async getAllNotes() {
-			return await Note.find();
+			return await Note.find().sort({ lastModified: "desc" });
 		},
 		async getSingleNote<T>(_: T, { ID }: TNote) {
 			return await Note.findById(ID);
