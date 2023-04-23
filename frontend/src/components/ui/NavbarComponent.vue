@@ -2,12 +2,12 @@
   <v-layout class="mb-10 pb-10">
     <v-app-bar app color="white">
       <template v-slot:append>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="mdAndDown" />
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="!mdAndUp" />
       </template>
       <v-btn to="/" :active="false" :ripple="false" size="x-large">
         <v-app-bar-title class="mx-n3"> Media-Tracker </v-app-bar-title>
       </v-btn>
-      <v-list class="d-flex justify-start align-center" v-if="lgAndUp">
+      <v-list class="d-flex justify-start align-center" v-if="mdAndUp">
         <v-list-item
           :to="link.url"
           v-for="(link, index) in filteredLinks"
@@ -50,7 +50,10 @@ import { useDisplay } from "vuetify";
 import { navLinks } from "@/utils/links";
 
 const filteredLinks = computed(() => navLinks.slice(1));
-const { mdAndDown, lgAndUp } = useDisplay();
+const {
+  mdAndUp,
+  // lgAndUp
+} = useDisplay();
 const drawer = ref<boolean>(false);
 // const items = [
 //   { title: "Dashboard", icon: "mdi-view-dashboard" },
