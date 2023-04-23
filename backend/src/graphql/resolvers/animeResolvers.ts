@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const animeResolvers = {
 	Query: {
 		async getAllAnime() {
-			return await Anime.find();
+			return await Anime.find().sort({ title: "asc" });
 		},
 		async getSingleAnime<T>(_: T, { ID }: TAnime) {
 			return await Anime.findById(ID);

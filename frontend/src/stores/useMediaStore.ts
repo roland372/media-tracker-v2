@@ -96,7 +96,16 @@ export const useMediaStore = defineStore("media", () => {
   const submitAddAnime = async (animeInput: TAnimeInput) => {
     try {
       const { data } = await addAnime({ animeInput });
-      anime.value = [...anime.value, data];
+      const arrCopy = [...anime.value];
+      const index = sortedIndexBy(
+        arrCopy,
+        data.addAnime,
+        (obj) => obj["title"]
+      );
+      arrCopy.splice(index, 0, data.addAnime);
+
+      setAnime(arrCopy);
+      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -104,6 +113,10 @@ export const useMediaStore = defineStore("media", () => {
   const submitEditAnime = async (id: string, animeInput: TAnimeInput) => {
     try {
       const { data } = await editAnime({ id, animeInput });
+      setAnime(
+        anime.value.map((el) => (el._id === id ? { ...el, ...animeInput } : el))
+      );
+
       console.log({ data });
     } catch (err) {
       console.log(err);
@@ -112,6 +125,8 @@ export const useMediaStore = defineStore("media", () => {
   const submitDeleteAnime = async (id: string) => {
     try {
       const { data } = await deleteAnime({ id });
+      setAnime(anime.value.filter((el) => el._id !== id));
+
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -148,6 +163,15 @@ export const useMediaStore = defineStore("media", () => {
   const submitAddManga = async (mangaInput: TMangaInput) => {
     try {
       const { data } = await addManga({ mangaInput });
+      const arrCopy = [...manga.value];
+      const index = sortedIndexBy(
+        arrCopy,
+        data.addManga,
+        (obj) => obj["title"]
+      );
+      arrCopy.splice(index, 0, data.addManga);
+
+      setManga(arrCopy);
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -156,6 +180,10 @@ export const useMediaStore = defineStore("media", () => {
   const submitEditManga = async (id: string, mangaInput: TMangaInput) => {
     try {
       const { data } = await editManga({ id, mangaInput });
+      setManga(
+        manga.value.map((el) => (el._id === id ? { ...el, ...mangaInput } : el))
+      );
+
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -164,6 +192,8 @@ export const useMediaStore = defineStore("media", () => {
   const submitDeleteManga = async (id: string) => {
     try {
       const { data } = await deleteManga({ id });
+      setManga(manga.value.filter((el) => el._id !== id));
+
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -200,6 +230,11 @@ export const useMediaStore = defineStore("media", () => {
   const submitAddGame = async (gameInput: TGameInput) => {
     try {
       const { data } = await addGame({ gameInput });
+      const arrCopy = [...games.value];
+      const index = sortedIndexBy(arrCopy, data.addGame, (obj) => obj["title"]);
+      arrCopy.splice(index, 0, data.addGame);
+
+      setGames(arrCopy);
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -208,6 +243,12 @@ export const useMediaStore = defineStore("media", () => {
   const submitEditGame = async (id: string, gameInput: TGameInput) => {
     try {
       const { data } = await editGame({ id, gameInput });
+      setGames(
+        games.value.map((game) =>
+          game._id === id ? { ...game, ...gameInput } : game
+        )
+      );
+
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -216,6 +257,8 @@ export const useMediaStore = defineStore("media", () => {
   const submitDeleteGame = async (id: string) => {
     try {
       const { data } = await deleteGame({ id });
+      setGames(games.value.filter((game) => game._id !== id));
+
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -252,6 +295,15 @@ export const useMediaStore = defineStore("media", () => {
   const submitAddCharacter = async (characterInput: TCharacterInput) => {
     try {
       const { data } = await addCharacter({ characterInput });
+      const arrCopy = [...characters.value];
+      const index = sortedIndexBy(
+        arrCopy,
+        data.addCharacter,
+        (obj) => obj["name"]
+      );
+      arrCopy.splice(index, 0, data.addCharacter);
+
+      setCharacters(arrCopy);
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -263,6 +315,12 @@ export const useMediaStore = defineStore("media", () => {
   ) => {
     try {
       const { data } = await editCharacter({ id, characterInput });
+      setCharacters(
+        characters.value.map((character) =>
+          character._id === id ? { ...character, ...characterInput } : character
+        )
+      );
+
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -271,6 +329,10 @@ export const useMediaStore = defineStore("media", () => {
   const submitDeleteCharacter = async (id: string) => {
     try {
       const { data } = await deleteCharacter({ id });
+      setCharacters(
+        characters.value.filter((character) => character._id !== id)
+      );
+
       console.log(data);
     } catch (err) {
       console.log(err);
@@ -307,7 +369,6 @@ export const useMediaStore = defineStore("media", () => {
   const submitAddEmote = async (emoteInput: TEmoteInput) => {
     try {
       const { data } = await addEmote({ emoteInput });
-
       const arrCopy = [...emotes.value];
       const index = sortedIndexBy(arrCopy, data.addEmote, (obj) => obj["name"]);
       arrCopy.splice(index, 0, data.addEmote);
@@ -374,7 +435,6 @@ export const useMediaStore = defineStore("media", () => {
   const submitAddNote = async (noteInput: TNoteInput) => {
     try {
       const { data } = await addNote({ noteInput });
-
       const arrCopy = [...notes.value];
       arrCopy.splice(0, 0, data.addNote);
 

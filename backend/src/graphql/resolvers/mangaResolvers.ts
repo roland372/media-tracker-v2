@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const mangaResolvers = {
 	Query: {
 		async getAllManga() {
-			return await Manga.find();
+			return await Manga.find().sort({ title: "asc" });
 		},
 		async getSingleManga<T>(_: T, { ID }: TManga) {
 			return await Manga.findById(ID);

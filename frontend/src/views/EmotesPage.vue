@@ -216,6 +216,7 @@ import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { TEmote, TEmoteInput } from "@/types";

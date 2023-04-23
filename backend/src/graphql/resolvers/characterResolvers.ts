@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const characterResolvers = {
 	Query: {
 		async getAllCharacters() {
-			return await Character.find();
+			return await Character.find().sort({ name: "asc" });
 		},
 		async getSingleCharacter<T>(_: T, { ID }: TCharacter) {
 			return await Character.findById(ID);

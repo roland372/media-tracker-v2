@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const gameResolvers = {
 	Query: {
 		async getAllGames() {
-			return await Game.find();
+			return await Game.find().sort({ title: "asc" });
 		},
 		async getSingleGame<T>(_: T, { ID }: TGame) {
 			return await Game.findById(ID);

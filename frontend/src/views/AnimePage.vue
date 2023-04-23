@@ -68,18 +68,18 @@
     />
   </MediaComponent>
   <MediaComponent
-    :media="recentAnime.slice(0, 20)"
+    :media="orderBy(anime, ['lastModified'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.ANIME"
     title="Recent Anime"
   />
   <MediaComponent
     :media-type="EMediaType.ANIME"
-    :media="favouriteAnime"
+    :media="filter(anime, { favourites: true })"
     title="Favourite Anime"
   />
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
@@ -91,14 +91,10 @@ import MediaTable from "@/components/media/MediaTable.vue";
 
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import {
-  sortMediaByDate,
-  favouriteMedia,
-  round,
-  calculatePercentage,
-} from "@/utils/mediaUtils";
+import { round, calculatePercentage } from "@/utils/mediaUtils";
 import { filterMediaStatus } from "@/utils/mediaUtils";
-import { EMediaType, TAnime, EAnimeStatus } from "@/types";
+import { EMediaType, EAnimeStatus } from "@/types";
+import { filter, orderBy } from "lodash";
 
 const displayFlag = ref<string>("grid");
 const formDialog = ref<boolean>(false);
@@ -108,85 +104,87 @@ const mediaStore = useMediaStore();
 const { anime } = storeToRefs(mediaStore);
 
 const animeFetchSearch = ref<string>("");
-// const allAnime: TAnime[] = sortArrayByPropertyASC(anime, "title");
-const recentAnime = ref<TAnime[]>(sortMediaByDate(anime));
-const favouriteAnime: TAnime[] = favouriteMedia(anime);
-
 const searchTerm = ref("");
 
-const filterZeroRating = ref(
-  anime.value.filter((anime) => anime.rating !== 0).length
+const totalAnime = computed(() => anime.value.length);
+const filterZeroRating = computed(
+  () => anime.value.filter((anime) => anime.rating !== 0).length
 );
-const totalRating = ref(
+const totalRating = computed(() =>
   anime.value.reduce((accumulator, object) => accumulator + object.rating, 0)
 );
-const totalEpisodesSum = ref(
+const totalEpisodesSum = computed(() =>
   anime.value.reduce(
     (accumulator, object) => accumulator + object.episodesMax,
     0
   )
 );
-const watchedEpisodesSum = ref(
+const watchedEpisodesSum = computed(() =>
   anime.value.reduce(
     (accumulator, object) => accumulator + object.episodesMin,
     0
   )
 );
-const watching = ref(filterMediaStatus(anime, "watching").length);
-const completed = ref(filterMediaStatus(anime, "completed").length);
-const onHold = ref(filterMediaStatus(anime, "on-hold").length);
-const dropped = ref(filterMediaStatus(anime, "dropped").length);
-const planToWatch = ref(filterMediaStatus(anime, "Plan to Watch").length);
-const favourites = ref(anime.value.filter((anime) => anime.favourites).length);
+const watching = computed(() => filterMediaStatus(anime, "watching").length);
+const completed = computed(() => filterMediaStatus(anime, "completed").length);
+const onHold = computed(() => filterMediaStatus(anime, "on-hold").length);
+const dropped = computed(() => filterMediaStatus(anime, "dropped").length);
+const planToWatch = computed(
+  () => filterMediaStatus(anime, "Plan to Watch").length
+);
+const favourites = computed(
+  () => anime.value.filter((anime) => anime.favourites).length
+);
 
 const handleFetchAnimeSearch = () => {
   console.log(animeFetchSearch.value);
 };
 
-const progress = [
+const progress = computed(() => [
   {
     color: "green",
-    value: calculatePercentage(watching.value, anime.value.length),
+    value: calculatePercentage(watching.value, totalAnime.value),
   },
   {
     color: "blue",
-    value: calculatePercentage(completed.value, anime.value.length),
+    value: calculatePercentage(completed.value, totalAnime.value),
   },
   {
     color: "yellow",
-    value: calculatePercentage(onHold.value, anime.value.length),
+    value: calculatePercentage(onHold.value, totalAnime.value),
   },
   {
     color: "red",
-    value: calculatePercentage(dropped.value, anime.value.length),
+    value: calculatePercentage(dropped.value, totalAnime.value),
   },
   {
     color: "white",
-    value: calculatePercentage(planToWatch.value, anime.value.length),
+    value: calculatePercentage(planToWatch.value, totalAnime.value),
   },
-];
+]);
 
-const status = [
+const status = computed(() => [
   { color: "green", name: EAnimeStatus.WATCHING, value: watching },
   { color: "blue", name: EAnimeStatus.COMPLETED, value: completed },
   { color: "yellow", name: EAnimeStatus.ON_HOLD, value: onHold },
   { color: "red", name: EAnimeStatus.DROPPED, value: dropped },
   { color: "white", name: EAnimeStatus.PLAN_TO_WATCH, value: planToWatch },
-];
+]);
 
-const stats = [
-  { name: "Total Anime", value: anime.value.length },
+const stats = computed(() => [
+  { name: "Total Anime", value: totalAnime },
   { name: "Favourites", value: favourites },
   { name: "Total Episodes", value: totalEpisodesSum },
   { name: "Watched Episodes", value: watchedEpisodesSum },
   { name: "", value: null },
-];
+]);
 
-const totalDays = round(watchedEpisodesSum.value / 60, 1);
-const meanScore =
+const totalDays = computed(() => round(watchedEpisodesSum.value / 60, 1));
+const meanScore = computed(() =>
   filterZeroRating.value === 0
     ? 0
-    : round(totalRating.value / filterZeroRating.value, 2);
+    : round(totalRating.value / filterZeroRating.value, 2)
+);
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
