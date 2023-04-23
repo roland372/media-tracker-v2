@@ -16,7 +16,11 @@
   <HeaderComponent v-if="!isEditing" title="Favourite Emotes">
     <section class="d-flex flex-wrap justify-space-between">
       <div
-        v-for="emote in filter(emotes, { favourites: true }).slice(0, 20)"
+        v-for="emote in orderBy(
+          filter(emotes, { favourites: true }),
+          ['name'],
+          ['asc']
+        ).slice(0, 20)"
         :key="emote.id"
         class="d-flex flex-fill align-stretch pa-1"
       >
@@ -49,7 +53,7 @@
     />
     <section class="d-flex flex-wrap justify-space-between">
       <div
-        v-for="emote in emotes
+        v-for="emote in orderBy(emotes, ['name'], ['asc'])
           .slice(0, 20)
           .filter((e) =>
             e.name.toLocaleLowerCase().includes(emoteSearch.toLocaleLowerCase())
@@ -220,7 +224,7 @@ import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { TEmote, TEmoteInput } from "@/types";
-import { filter } from "lodash";
+import { filter, orderBy } from "lodash";
 
 const mediaStore = useMediaStore();
 const { emotes } = storeToRefs(mediaStore);

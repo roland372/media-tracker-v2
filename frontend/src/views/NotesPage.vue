@@ -11,7 +11,7 @@
     <hr class="my-3 border-b" />
     <section class="v-row">
       <div
-        v-for="note in notes"
+        v-for="note in orderBy(notes, ['lastModified'], ['desc'])"
         :key="note.color"
         class="v-col-lg-4 v-col-sm-6 v-col-12 text-wrap"
         style="word-wrap: break-word"
@@ -254,10 +254,12 @@ import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { TNoteInput } from "@/types";
 import { TNote } from "@/types";
+import { orderBy } from "lodash";
 
 const mediaStore = useMediaStore();
 const { notes } = storeToRefs(mediaStore);

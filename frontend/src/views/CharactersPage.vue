@@ -71,7 +71,7 @@
   />
   <MediaTable
     v-if="displayFlag === 'table'"
-    :media="filteredCharacters"
+    :media="orderBy(filteredCharacters, ['name'], ['asc'])"
     :media-type="EMediaType.CHARACTER"
     title="All Characters"
   >
@@ -86,7 +86,7 @@
   <MediaComponent
     v-if="displayFlag === 'grid'"
     all-media
-    :media="filteredCharacters"
+    :media="orderBy(filteredCharacters, ['name'], ['asc'])"
     :media-type="EMediaType.CHARACTER"
     title="All Characters"
   >
@@ -105,7 +105,9 @@
   />
   <MediaComponent
     :media-type="EMediaType.CHARACTER"
-    :media="filter(characters, { favourites: true })"
+    :media="
+      orderBy(filter(characters, { favourites: true }), ['name'], ['asc'])
+    "
     title="Favourite Characters"
   />
 </template>

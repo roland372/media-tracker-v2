@@ -39,7 +39,7 @@
   />
   <MediaTable
     v-if="displayFlag === 'table'"
-    :media="filteredGames"
+    :media="orderBy(filteredGames, ['title'], ['asc'])"
     :media-type="EMediaType.GAME"
     title="All Games"
   >
@@ -54,7 +54,7 @@
   <MediaComponent
     v-if="displayFlag === 'grid'"
     all-media
-    :media="filteredGames"
+    :media="orderBy(filteredGames, ['title'], ['asc'])"
     :media-type="EMediaType.GAME"
     title="All Games"
   >
@@ -73,7 +73,7 @@
   />
   <MediaComponent
     :media-type="EMediaType.GAME"
-    :media="filter(games, { favourites: true })"
+    :media="orderBy(filter(games, { favourites: true }), ['title'], ['asc'])"
     title="Favourite Games"
   />
 </template>

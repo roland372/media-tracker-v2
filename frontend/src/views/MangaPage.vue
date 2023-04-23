@@ -73,7 +73,7 @@
   />
   <MediaTable
     v-if="displayFlag === 'table'"
-    :media="filteredManga"
+    :media="orderBy(filteredManga, ['title'], ['asc'])"
     :media-type="EMediaType.MANGA"
     title="All Manga"
   >
@@ -88,7 +88,7 @@
   <MediaComponent
     v-if="displayFlag === 'grid'"
     all-media
-    :media="filteredManga"
+    :media="orderBy(filteredManga, ['title'], ['asc'])"
     :media-type="EMediaType.MANGA"
     title="All Manga"
   >
@@ -107,7 +107,7 @@
   />
   <MediaComponent
     :media-type="EMediaType.MANGA"
-    :media="filter(manga, { favourites: true })"
+    :media="orderBy(filter(manga, { favourites: true }), ['title'], ['asc'])"
     title="Favourite Manga"
   />
 </template>
