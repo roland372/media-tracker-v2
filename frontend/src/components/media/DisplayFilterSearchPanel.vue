@@ -36,7 +36,11 @@
       clearable
       density="compact"
       hide-details="auto"
-      :label="`Search for ${mediaType}`"
+      :label="`${
+        mediaType === EMediaType.ANIME
+          ? `Search for an ${mediaType}`
+          : `Search for a ${mediaType}`
+      }`"
       variant="outlined"
     />
   </section>

@@ -38,6 +38,14 @@ export const round = (value: number, precision: number) => {
 export const calculatePercentage = (numerator: number, denominator: number) =>
   (numerator / denominator) * 100;
 
+export const fetchMediaURL = (
+  mediaType: string,
+  query: string,
+  orderBy: string,
+  sort: string
+) =>
+  `https://api.jikan.moe/v4/${mediaType}?q=${query}&order_by=${orderBy}&sort=${sort}`;
+
 export const mediaList = [
   EMediaType.ANIME,
   EMediaType.MANGA,

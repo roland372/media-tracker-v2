@@ -44,7 +44,7 @@
       clearable
       density="compact"
       hide-details="auto"
-      label="Search for Emote"
+      label="Search for an Emote"
       variant="outlined"
     />
     <section class="d-flex flex-wrap justify-space-between">

@@ -7,7 +7,12 @@
           <!--? ANIME -->
           <v-card-text v-if="mediaType === EMediaType.ANIME">
             <div><b>Type:</b> {{ (media as TAnime).type }}</div>
-            <div><b>Link:</b> {{ (media as TAnime).link1Name }}</div>
+            <div>
+              <b>Link: </b>
+              <a :href="(media as TAnime).link1" target="_blank">{{
+                (media as TAnime).link1Name
+              }}</a>
+            </div>
             <div>
               <b>Episodes:</b> {{ (media as TAnime).episodesMin }} /
               {{ (media as TAnime).episodesMax }}
@@ -18,7 +23,12 @@
           <!--? MANGA -->
           <v-card-text v-if="mediaType === EMediaType.MANGA">
             <div><b>Type:</b> {{ (media as TManga).type }}</div>
-            <div><b>Link:</b> {{ (media as TManga).link1Name }}</div>
+            <div>
+              <b>Link: </b>
+              <a :href="(media as TManga).link1" target="_blank">{{
+                (media as TManga).link1Name
+              }}</a>
+            </div>
             <div>
               <b>Chapters:</b> {{ (media as TManga).chaptersMin }} /
               {{ (media as TManga).chaptersMax }}
@@ -33,14 +43,24 @@
           <!--? GAMES -->
           <v-card-text v-if="mediaType === EMediaType.GAME">
             <div><b>Type:</b> {{ (media as TGame).type }}</div>
-            <div><b>Link:</b> {{ (media as TGame).link1Name }}</div>
+            <div>
+              <b>Link: </b>
+              <a :href="(media as TGame).link1" target="_blank">{{
+                (media as TGame).link1Name
+              }}</a>
+            </div>
             <div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
             <div><b>Rating:</b> {{ (media as TGame).rating }}</div>
             <div><b>Status:</b> {{ (media as TGame).status }}</div>
           </v-card-text>
           <!--? CHARACTERS -->
           <v-card-text v-if="mediaType === EMediaType.CHARACTER">
-            <div><b>Link:</b> {{ (media as TCharacter).link1Name }}</div>
+            <div>
+              <b>Link: </b>
+              <a :href="(media as TCharacter).link1" target="_blank">{{
+                (media as TCharacter).link1Name
+              }}</a>
+            </div>
             <div><b>Source:</b> {{ (media as TCharacter).source }}</div>
             <div><b>Gender:</b> {{ (media as TCharacter).gender }}</div>
             <div><b>Series:</b> {{ (media as TCharacter).series }}</div>

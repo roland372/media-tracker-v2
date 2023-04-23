@@ -58,7 +58,7 @@ export type TAnime = {
   link1Name: string;
   link2: string;
   link2Name: string;
-  mal_id: string;
+  mal_id: number;
   owner: string;
   rating: number;
   status: EAnimeStatus;
@@ -76,6 +76,7 @@ export type TAnimeInput = {
   link1Name?: string;
   link2?: string;
   link2Name?: string;
+  mal_id?: number;
   rating?: number;
   status?: EAnimeStatus;
   title: string;
@@ -113,7 +114,7 @@ export type TManga = {
   link1Name: string;
   link2: string;
   link2Name: string;
-  mal_id: string;
+  mal_id: number;
   owner: string;
   rating: number;
   status: EMangaStatus;
@@ -133,6 +134,7 @@ export type TMangaInput = {
   link1Name?: string;
   link2?: string;
   link2Name?: string;
+  mal_id?: number;
   rating?: number;
   status?: EMangaStatus;
   title: string;
@@ -211,7 +213,7 @@ export type TCharacter = {
   lastModified: number;
   link1: string;
   link1Name: string;
-  mal_id: string;
+  mal_id: number;
   name: string;
   owner: string;
   series: string;
@@ -226,6 +228,7 @@ export type TCharacterInput = {
   lastModified?: number;
   link1?: string;
   link1Name?: string;
+  mal_id?: number;
   name: string;
   series?: string;
   source?: ECharacterSource;

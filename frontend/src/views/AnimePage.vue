@@ -20,15 +20,48 @@
       <v-text-field
         v-model="animeFetchSearch"
         @click:append-inner="handleFetchAnimeSearch"
+        @click:clear="handleClearAnimeSearch"
+        @keydown.enter="handleFetchAnimeSearch"
         append-inner-icon="mdi-magnify"
         clearable
         density="compact"
         hide-details="auto"
-        label="Search for Anime"
+        label="Search for an Anime"
         variant="outlined"
       />
     </section>
+    <section v-if="fetchedAnime?.length" class="grid-container pt-3">
+      <section v-for="(item, index) in fetchedAnime" :key="index">
+        <v-img
+          @click="handleOpenFetchAnimeModal(item)"
+          :src="item.images.jpg.image_url"
+          class="rounded media-img-card"
+          cover
+        />
+      </section>
+    </section>
   </HeaderComponent>
+  <FetchedMediaModal
+    v-if="fetchedAnimeModal"
+    @close-modal="handleCloseFetchAnimeModal"
+    :show-modal="fetchedAnimeModal"
+    :title="fetchedSingleAnime?.title as string"
+    :submit-click="handleFetchedAnimeSubmit"
+    :view-more-click="handleFetchedAnimeViewMore"
+  >
+    <section>
+      <div><b>Episodes: </b> {{ fetchedSingleAnime?.episodes }}</div>
+      <div><b>Type: </b> {{ fetchedSingleAnime?.type }}</div>
+      <div>
+        <b>Synopsis:</b>
+        {{
+          fetchedSingleAnime && fetchedSingleAnime?.synopsis?.length > 200
+            ? `${fetchedSingleAnime?.synopsis?.slice(0, 200)}...`
+            : fetchedSingleAnime?.synopsis
+        }}
+      </div>
+    </section>
+  </FetchedMediaModal>
   <StatsComponent
     :mean-score="meanScore"
     :media-type="EMediaType.ANIME"
@@ -78,7 +111,7 @@
   />
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
@@ -87,20 +120,30 @@ import FormComponent from "@/components/media/FormComponent.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
+import FetchedMediaModal from "@/components/media/FetchedMediaModal.vue";
 
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { round, calculatePercentage } from "@/utils/mediaUtils";
-import { filterMediaStatus } from "@/utils/mediaUtils";
-import { EMediaType, EAnimeStatus } from "@/types";
+import {
+  round,
+  calculatePercentage,
+  filterMediaStatus,
+  fetchMediaURL,
+} from "@/utils/mediaUtils";
+import { EMediaType, EAnimeStatus, TAnimeInput, EAnimeType } from "@/types";
 import { filter, orderBy } from "lodash";
+import { Anime } from "@tutkli/jikan-ts";
 
 const displayFlag = ref<string>("grid");
 const formDialog = ref<boolean>(false);
+const fetchedAnimeModal = ref<boolean>(false);
 const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.ANIME + " Added");
 const mediaStore = useMediaStore();
+const { submitAddAnime } = mediaStore;
 const { anime } = storeToRefs(mediaStore);
+const fetchedAnime = ref<Anime[]>();
+const fetchedSingleAnime = ref<Anime>();
 
 const animeFetchSearch = ref<string>("");
 const searchTerm = ref<string>("");
@@ -146,10 +189,6 @@ const planToWatch = computed(
 const favourites = computed(
   () => anime.value.filter((anime) => anime.favourites).length
 );
-
-const handleFetchAnimeSearch = () => {
-  console.log(animeFetchSearch.value);
-};
 
 const progress = computed(() => [
   {
@@ -214,6 +253,58 @@ const handleAnimeSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);
 const handleAnimeFilter = (emittedValue: string) =>
   (animeFilter.value = emittedValue);
+
+const handleFetchAnimeSearch = async () => {
+  if (animeFetchSearch.value.length) {
+    const fetchAnime = await fetch(
+      fetchMediaURL("anime", animeFetchSearch.value, "members", "desc")
+    ).then((res) => res.json());
+
+    fetchedAnime.value = fetchAnime.data;
+  } else {
+    console.log("empty search");
+  }
+};
+
+const handleClearAnimeSearch = () => {
+  animeFetchSearch.value = "";
+  fetchedAnime.value = [];
+};
+
+const handleOpenFetchAnimeModal = (item: Anime) => {
+  fetchedSingleAnime.value = item;
+  fetchedAnimeModal.value = !fetchedAnimeModal.value;
+};
+const handleCloseFetchAnimeModal = () => {
+  fetchedAnimeModal.value = !fetchedAnimeModal.value;
+};
+const handleFetchedAnimeViewMore = () => {
+  window.open(fetchedSingleAnime.value?.url, "_blank");
+};
+
+const handleFetchedAnimeSubmit = async () => {
+  const fetchedAnime: TAnimeInput = reactive({
+    episodesMax: fetchedSingleAnime.value?.episodes
+      ? fetchedSingleAnime.value?.episodes
+      : 0,
+    episodesMin: 0,
+    favourites: false,
+    imageURL: fetchedSingleAnime.value?.images.jpg.image_url,
+    link1: fetchedSingleAnime.value?.url,
+    link1Name: "MAL",
+    link2: "",
+    link2Name: "",
+    mal_id: fetchedSingleAnime.value?.mal_id as number,
+    rating: 0,
+    status: EAnimeStatus.PLAN_TO_WATCH,
+    title: fetchedSingleAnime.value?.title as string,
+    type: EAnimeType.TV_SHOW,
+  });
+
+  await submitAddAnime(fetchedAnime);
+  fetchedAnimeModal.value = false;
+  snackbar.value = !snackbar.value;
+};
 
 onMounted(() => {
   // console.log("ANIME MOUNTED");

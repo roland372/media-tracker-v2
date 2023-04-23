@@ -515,6 +515,7 @@ const handleSubmitEditGame = async () => {
   const updatedGame: TGameInput = reactive({
     favourites: gameRef.value.favourites,
     imageURL: gameRef.value.imageURL,
+    lastModified: Date.now(),
     link1: gameRef.value.link1,
     link1Name: gameRef.value.link1Name,
     link2: gameRef.value.link2,
@@ -535,6 +536,7 @@ const handleSubmitEditCharacter = async () => {
     gender: characterRef.value.gender,
     hairColor: characterRef.value.hairColor,
     imageURL: characterRef.value.imageURL,
+    lastModified: Date.now(),
     link1: characterRef.value.link1,
     link1Name: characterRef.value.link1Name,
     name: characterRef.value.name,

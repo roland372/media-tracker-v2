@@ -251,7 +251,7 @@ const handleCloseModal = () => {
   snackbar.value = !snackbar.value;
 };
 </script>
-<style scoped>
+<style>
 .image-overlay-icon {
   position: absolute;
   right: 5px;
