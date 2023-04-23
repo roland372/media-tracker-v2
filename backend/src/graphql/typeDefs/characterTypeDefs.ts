@@ -13,7 +13,7 @@ export const typeCharacter = gql`
 		lastModified: Date
 		link1: String
 		link1Name: String
-		mal_id: String
+		mal_id: Int
 		name: String
 		owner: String
 		series: String
@@ -28,6 +28,7 @@ export const typeCharacter = gql`
 		lastModified: Date
 		link1: String
 		link1Name: String
+		mal_id: Int
 		name: String!
 		series: String
 		source: String
