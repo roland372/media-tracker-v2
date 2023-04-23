@@ -39,31 +39,34 @@
   />
   <MediaTable
     v-if="displayFlag === 'table'"
-    :media="anime"
+    :media="filteredAnime"
     :media-type="EMediaType.ANIME"
     title="All Anime"
   >
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
+      @filter="handleAnimeFilter"
+      @search="handleAnimeSearch"
       :display-flag="displayFlag"
+      :media="anime"
+      :media-search="searchTerm"
       :media-type="EMediaType.ANIME"
     />
   </MediaTable>
   <MediaComponent
     v-if="displayFlag === 'grid'"
     all-media
-    :media="
-      anime.filter((anime) =>
-        anime.title.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    "
-    :media-search="searchTerm"
+    :media="filteredAnime"
     :media-type="EMediaType.ANIME"
     title="All Anime"
   >
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
+      @filter="handleAnimeFilter"
+      @search="handleAnimeSearch"
       :display-flag="displayFlag"
+      :media="anime"
+      :media-search="searchTerm"
       :media-type="EMediaType.ANIME"
     />
   </MediaComponent>
@@ -104,7 +107,19 @@ const mediaStore = useMediaStore();
 const { anime } = storeToRefs(mediaStore);
 
 const animeFetchSearch = ref<string>("");
-const searchTerm = ref("");
+const searchTerm = ref<string>("");
+const animeFilter = ref<string>("");
+
+const filteredAnime = computed(() =>
+  anime.value.filter((el) => {
+    const searchTermMatch = el.title
+      .toLowerCase()
+      .includes(searchTerm.value.toLowerCase());
+    const statusMatch =
+      animeFilter.value === "" || el.status === animeFilter.value;
+    return searchTermMatch && statusMatch;
+  })
+);
 
 const totalAnime = computed(() => anime.value.length);
 const filterZeroRating = computed(
@@ -198,6 +213,11 @@ const handleChangeDisplayFlag = () => {
     displayFlag.value = "table";
   }
 };
+
+const handleAnimeSearch = (emittedValue: string) =>
+  (searchTerm.value = emittedValue);
+const handleAnimeFilter = (emittedValue: string) =>
+  (animeFilter.value = emittedValue);
 
 onMounted(() => {
   // console.log("ANIME MOUNTED");

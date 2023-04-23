@@ -38,7 +38,6 @@ import { EMediaType, TAnime, TCharacter, TGame, TManga } from "@/types";
 interface IMediaComponentProps {
   allMedia?: boolean;
   media: TAnime[] | TManga[] | TGame[] | TCharacter[];
-  mediaSearch?: string | undefined;
   mediaType: EMediaType;
   title: string;
 }

@@ -9,6 +9,7 @@
     </div>
     <div class="d-flex align-center flex-wrap">
       <ButtonText
+        @click="handleFilterClear"
         class="ma-1"
         color="primary"
         :text="
@@ -29,9 +30,9 @@
   </section>
   <section class="mb-3">
     <v-text-field
-      v-model="mediaSearchRef"
-      @update:model-value="handleMediaSearch"
-      @click:clear="() => (mediaSearchRef = '')"
+      v-model="mediaSearch"
+      @click:clear="handleSearchClear"
+      @input="handleMediaSearch"
       clearable
       density="compact"
       hide-details="auto"
@@ -48,19 +49,24 @@ import {
   EGameStatus,
   EMangaStatus,
   EMediaType,
+  TAnime,
+  TCharacter,
+  TGame,
+  TManga,
 } from "@/types";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 
 interface IDisplayFilterSearchPanelProps {
   displayFlag: string;
+  media: TCharacter[] | TAnime[] | TGame[] | TManga[];
   mediaSearch?: string;
   mediaType: EMediaType;
 }
 
 const props = defineProps<IDisplayFilterSearchPanelProps>();
-const emit = defineEmits(["display"]);
-const mediaSearchRef = ref<string | undefined>(props.mediaSearch);
+const emit = defineEmits(["display", "search", "filter"]);
+const mediaSearch = ref<string | undefined>("");
 
 const mediaStatus = () => {
   let statusArr = [];
@@ -108,15 +114,10 @@ const mediaStatus = () => {
 
 const handleStatusClick = (
   status: EAnimeStatus | EMangaStatus | EGameStatus | ECharacterSource
-) => {
-  console.log(status);
-};
+) => emit("filter", status);
 
-const handleDisplayClick = () => {
-  emit("display");
-};
-
-const handleMediaSearch = () => {
-  console.log(mediaSearchRef.value);
-};
+const handleDisplayClick = () => emit("display");
+const handleMediaSearch = () => emit("search", mediaSearch.value);
+const handleSearchClear = () => emit("search", "");
+const handleFilterClear = () => emit("filter", "");
 </script>
