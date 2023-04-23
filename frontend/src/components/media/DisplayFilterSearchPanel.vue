@@ -49,18 +49,12 @@ import {
   EGameStatus,
   EMangaStatus,
   EMediaType,
-  TAnime,
-  TCharacter,
-  TGame,
-  TManga,
 } from "@/types";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 
 interface IDisplayFilterSearchPanelProps {
   displayFlag: string;
-  media: TCharacter[] | TAnime[] | TGame[] | TManga[];
-  mediaSearch?: string;
   mediaType: EMediaType;
 }
 
@@ -116,7 +110,11 @@ const handleStatusClick = (
   status: EAnimeStatus | EMangaStatus | EGameStatus | ECharacterSource
 ) => emit("filter", status);
 
-const handleDisplayClick = () => emit("display");
+const handleDisplayClick = () => {
+  emit("display");
+  emit("search", "");
+  emit("filter", "");
+};
 const handleMediaSearch = () => emit("search", mediaSearch.value);
 const handleSearchClear = () => emit("search", "");
 const handleFilterClear = () => emit("filter", "");

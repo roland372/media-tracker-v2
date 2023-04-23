@@ -48,8 +48,6 @@
       @filter="handleAnimeFilter"
       @search="handleAnimeSearch"
       :display-flag="displayFlag"
-      :media="anime"
-      :media-search="searchTerm"
       :media-type="EMediaType.ANIME"
     />
   </MediaTable>
@@ -65,8 +63,6 @@
       @filter="handleAnimeFilter"
       @search="handleAnimeSearch"
       :display-flag="displayFlag"
-      :media="anime"
-      :media-search="searchTerm"
       :media-type="EMediaType.ANIME"
     />
   </MediaComponent>

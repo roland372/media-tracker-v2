@@ -18,8 +18,8 @@
         <p>or</p>
       </div>
       <v-text-field
-        v-model="gameSearch"
-        @click:append-inner="handleGameSearch"
+        v-model="gameFetchSearch"
+        @click:append-inner="handleFetchGameSearch"
         append-inner-icon="mdi-magnify"
         clearable
         density="compact"
@@ -37,122 +37,175 @@
     :stats="stats"
     :total-days="totalDays"
   />
-  <MediaComponent
-    all-media
-    :media="games"
+  <MediaTable
+    v-if="displayFlag === 'table'"
+    :media="filteredGames"
     :media-type="EMediaType.GAME"
     title="All Games"
-  />
+  >
+    <DisplayFilterSearchPanel
+      @display="handleChangeDisplayFlag"
+      @filter="handleGameFilter"
+      @search="handleGameSearch"
+      :display-flag="displayFlag"
+      :media-type="EMediaType.GAME"
+    />
+  </MediaTable>
   <MediaComponent
-    :media="recentGames.slice(0, 20)"
+    v-if="displayFlag === 'grid'"
+    all-media
+    :media="filteredGames"
+    :media-type="EMediaType.GAME"
+    title="All Games"
+  >
+    <DisplayFilterSearchPanel
+      @display="handleChangeDisplayFlag"
+      @filter="handleGameFilter"
+      @search="handleGameSearch"
+      :display-flag="displayFlag"
+      :media-type="EMediaType.GAME"
+    />
+  </MediaComponent>
+  <MediaComponent
+    :media="orderBy(games, ['lastModified'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.GAME"
     title="Recent Games"
   />
   <MediaComponent
     :media-type="EMediaType.GAME"
-    :media="favouriteGames"
+    :media="filter(games, { favourites: true })"
     title="Favourite Games"
   />
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import FormComponent from "@/components/media/FormComponent.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
+import MediaTable from "@/components/media/MediaTable.vue";
+
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import {
-  sortMediaByDate,
-  favouriteMedia,
-  // sortArrayByPropertyASC,
-  round,
-  calculatePercentage,
-} from "@/utils/mediaUtils";
+import { round, calculatePercentage } from "@/utils/mediaUtils";
 import { filterMediaStatus } from "@/utils/mediaUtils";
-import { EMediaType, TGame } from "@/types";
+import { EMediaType, EGameStatus } from "@/types";
+import { filter, orderBy } from "lodash";
 
+const displayFlag = ref<string>("grid");
 const formDialog = ref<boolean>(false);
 const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.GAME + " Added");
 const mediaStore = useMediaStore();
 const { games } = storeToRefs(mediaStore);
 
-const gameSearch = ref<string>("");
-// const allGames: TGame[] = sortArrayByPropertyASC(games, "title");
-const recentGames: TGame[] = sortMediaByDate(games);
-const favouriteGames: TGame[] = favouriteMedia(games);
+const gameFetchSearch = ref<string>("");
+const searchTerm = ref<string>("");
+const gameFilter = ref<string>("");
 
-const filterZeroRating = ref(
-  games.value.filter((games) => games.rating !== 0).length
+const filteredGames = computed(() =>
+  games.value.filter((el) => {
+    const searchTermMatch = el.title
+      .toLowerCase()
+      .includes(searchTerm.value.toLowerCase());
+    const statusMatch =
+      gameFilter.value === "" || el.status === gameFilter.value;
+    return searchTermMatch && statusMatch;
+  })
 );
-const totalRating = ref(
+
+const totalGames = computed(() => games.value.length);
+const filterZeroRating = computed(
+  () => games.value.filter((games) => games.rating !== 0).length
+);
+const totalRating = computed(() =>
   games.value.reduce((accumulator, object) => accumulator + object.rating, 0)
 );
-const totalPlaytime = games.value.reduce((accumulator, object) => {
-  return accumulator + object.playtime;
-}, 0);
+const totalPlaytime = computed(() =>
+  games.value.reduce((accumulator, object) => {
+    return accumulator + object.playtime;
+  }, 0)
+);
 
-const playing = ref(filterMediaStatus(games, "playing").length);
-const completed = ref(filterMediaStatus(games, "completed").length);
-const onHold = ref(filterMediaStatus(games, "on-hold").length);
-const dropped = ref(filterMediaStatus(games, "dropped").length);
-const planToPlay = ref(filterMediaStatus(games, "Plan to Play").length);
-const favourites = ref(games.value.filter((games) => games.favourites).length);
+const playing = computed(() => filterMediaStatus(games, "playing").length);
+const completed = computed(() => filterMediaStatus(games, "completed").length);
+const onHold = computed(() => filterMediaStatus(games, "on-hold").length);
+const dropped = computed(() => filterMediaStatus(games, "dropped").length);
+const planToPlay = computed(
+  () => filterMediaStatus(games, "Plan to Play").length
+);
+const favourites = computed(
+  () => games.value.filter((games) => games.favourites).length
+);
 
-const handleGameSearch = () => {
-  console.log(gameSearch.value);
+const handleFetchGameSearch = () => {
+  console.log(gameFetchSearch.value);
 };
 
-const progress = [
+const progress = computed(() => [
   {
     color: "green",
-    value: calculatePercentage(playing.value, games.value.length),
+    value: calculatePercentage(playing.value, totalGames.value),
   },
   {
     color: "blue",
-    value: calculatePercentage(completed.value, games.value.length),
+    value: calculatePercentage(completed.value, totalGames.value),
   },
   {
     color: "yellow",
-    value: calculatePercentage(onHold.value, games.value.length),
+    value: calculatePercentage(onHold.value, totalGames.value),
   },
   {
     color: "red",
-    value: calculatePercentage(dropped.value, games.value.length),
+    value: calculatePercentage(dropped.value, totalGames.value),
   },
   {
     color: "white",
-    value: calculatePercentage(planToPlay.value, games.value.length),
+    value: calculatePercentage(planToPlay.value, totalGames.value),
   },
-];
+]);
 
-const status = [
-  { color: "green", name: "Playing", value: playing },
-  { color: "blue", name: "Completed", value: completed },
-  { color: "yellow", name: "On-Hold", value: onHold },
-  { color: "red", name: "Dropped", value: dropped },
-  { color: "white", name: "Plan to Play", value: planToPlay },
-];
+const status = computed(() => [
+  { color: "green", name: EGameStatus.PLAYING, value: playing },
+  { color: "blue", name: EGameStatus.COMPLETED, value: completed },
+  { color: "yellow", name: EGameStatus.ON_HOLD, value: onHold },
+  { color: "red", name: EGameStatus.DROPPED, value: dropped },
+  { color: "white", name: EGameStatus.PLAN_TO_PLAY, value: planToPlay },
+]);
 
-const stats = [
-  { name: "Total Games", value: games.value.length },
+const stats = computed(() => [
+  { name: "Total Games", value: totalGames.value },
   { name: "Favourites", value: favourites },
-  { name: "Playtime", value: totalPlaytime + " hours" },
-];
+  { name: "Playtime", value: totalPlaytime.value + " hours" },
+]);
 
-const totalDays = round(totalPlaytime / 24, 1);
-const meanScore =
+const totalDays = computed(() => round(totalPlaytime.value / 24, 1));
+const meanScore = computed(() =>
   filterZeroRating.value === 0
     ? 0
-    : round(totalRating.value / filterZeroRating.value, 2);
+    : round(totalRating.value / filterZeroRating.value, 2)
+);
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
   snackbar.value = !snackbar.value;
 };
+
+const handleChangeDisplayFlag = () => {
+  if (displayFlag.value === "table") {
+    displayFlag.value = "grid";
+  } else if (displayFlag.value === "grid") {
+    displayFlag.value = "table";
+  }
+};
+
+const handleGameSearch = (emittedValue: string) =>
+  (searchTerm.value = emittedValue);
+const handleGameFilter = (emittedValue: string) =>
+  (gameFilter.value = emittedValue);
 
 onMounted(() => {
   // console.log("GAMES MOUNTED");
