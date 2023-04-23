@@ -36,22 +36,22 @@
     </section>
   </HeaderComponent>
   <MediaComponent
-    :media="recentAnime.slice(0, 20)"
+    :media="orderBy(anime, ['lastModified'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.ANIME"
     title="Recent Anime"
   />
   <MediaComponent
-    :media="recentCharacters.slice(0, 20)"
+    :media="orderBy(characters, ['lastModified'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.CHARACTER"
     title="Recent Characters"
   />
   <MediaComponent
-    :media="recentGames.slice(0, 20)"
+    :media="orderBy(games, ['lastModified'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.GAME"
     title="Recent Games"
   />
   <MediaComponent
-    :media="recentManga.slice(0, 20)"
+    :media="orderBy(manga, ['lastModified'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.MANGA"
     title="Recent Manga"
   />
@@ -65,8 +65,9 @@ import FormComponent from "@/components/media/FormComponent.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { TAnime, TCharacter, TGame, TManga, EMediaType } from "@/types";
-import { sortMediaByDate, mediaList } from "@/utils/mediaUtils";
+import { EMediaType } from "@/types";
+import { mediaList } from "@/utils/mediaUtils";
+import { orderBy } from "lodash";
 
 const selectDialog = ref<boolean>(false);
 const formDialog = ref<boolean>(false);
@@ -75,11 +76,6 @@ const mediaType = ref<string>("");
 
 const mediaStore = useMediaStore();
 const { anime, characters, games, manga } = storeToRefs(mediaStore);
-
-const recentAnime: TAnime[] = sortMediaByDate(anime);
-const recentCharacters: TCharacter[] = sortMediaByDate(characters);
-const recentGames: TGame[] = sortMediaByDate(games);
-const recentManga: TManga[] = sortMediaByDate(manga);
 
 const handleShowSelectDialog = () => {
   selectDialog.value = !selectDialog.value;
