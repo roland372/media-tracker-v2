@@ -73,7 +73,7 @@
                 variant="text"
               />
               <ButtonIcon
-                @click="handleOpenDeleteNoteModal(note._id, note)"
+                @click="handleOpenDeleteNoteModal(note._id)"
                 icon="mdi-trash-can-outline"
                 icon-color="red-darken-4"
                 icon-size="small"
@@ -90,6 +90,8 @@
     v-model="addNoteModal"
     max-width="1000"
     persistent
+    :eager="true"
+    :retain-focus="false"
     ><v-card>
       <div
         class="bg-primary px-5 py-3 text-h6 d-flex justify-space-between align-center"
@@ -130,12 +132,9 @@
             />
           </v-menu>
         </section>
-        <v-text-field
-          v-model="newNote.note"
-          density="compact"
-          hide-details="auto"
-          label="Note"
-          variant="outlined"
+        <TinyMCEEditor
+          @editor-change="handleGetEditorContent"
+          :editor-content="newNote.note"
         />
       </v-card-text>
       <v-card-actions class="d-flex justify-start ms-2 mt-n2 mb-2">
@@ -152,6 +151,8 @@
     v-model="editNoteModal"
     max-width="1000"
     persistent
+    :eager="true"
+    :retain-focus="false"
     ><v-card>
       <div
         class="bg-primary px-5 py-3 text-h6 d-flex justify-space-between align-center"
@@ -192,12 +193,9 @@
             />
           </v-menu>
         </section>
-        <v-text-field
-          v-model="noteRef.note"
-          density="compact"
-          hide-details="auto"
-          label="Note"
-          variant="outlined"
+        <TinyMCEEditor
+          @editor-change="handleGetEditorContent"
+          :editor-content="noteRef.note"
         />
       </v-card-text>
       <v-card-actions class="d-flex justify-start ms-2 mt-n2 mb-2">
@@ -254,6 +252,7 @@ import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import TinyMCEEditor from "@/components/media/TinyMCEEditor.vue";
 
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
@@ -278,35 +277,37 @@ const snackbar = ref({
 const newNote: TNoteInput = reactive({
   color: "#FFFFFF",
   lastModified: Date.now(),
-  note: "Note",
+  note: "",
   title: "New Note",
 });
 
 const noteID = ref<string>("");
 const noteRef = ref<TNoteInput>(newNote);
+const viewNoteText = '<ul style="margin-left: 1rem;">';
+
+const handleGetEditorContent = (emittedValue: string) => {
+  noteRef.value.note = emittedValue;
+};
 
 const handleOpenAddNoteModal = () => {
   addNoteModal.value = !addNoteModal.value;
 };
 
-const viewNoteText = '<ul style="margin-left: 1rem;">';
-
 const handleSubmitAddNote = async () => {
+  newNote.note = noteRef.value.note;
   await submitAddNote(newNote);
   snackbar.value.text = "Note Added";
   snackbar.value.value = !snackbar.value.value;
   addNoteModal.value = false;
 
   newNote.color = "#FFFFFF";
-  newNote.note = "Note";
+  newNote.note = "";
   newNote.title = "New Note";
 };
 
-const handleOpenDeleteNoteModal = (id: string, note: TNote) => {
+const handleOpenDeleteNoteModal = (id: string) => {
   deleteNoteModal.value = !deleteNoteModal.value;
-
   noteID.value = id;
-  noteRef.value = note;
 };
 const handleDeleteCancel = () => {
   deleteNoteModal.value = false;
@@ -335,9 +336,11 @@ const handleOpenEditNoteModal = (id: string, note: TNote) => {
 
 const handleSubmitEditNote = async () => {
   await submitEditNote(noteID.value, noteRef.value);
+
   snackbar.value.text = "Note Edited";
   snackbar.value.value = !snackbar.value.value;
   editNoteModal.value = false;
+  noteRef.value.note = "";
 };
 
 const handleOpenViewNoteModal = (id: string, note: TNote) => {
