@@ -40,21 +40,25 @@
     :media-type="EMediaType.ANIME"
     title="Recent Anime"
   />
+  <ButtonText class="mt-n1 mb-3" text="All Anime" to="/anime" />
   <MediaComponent
     :media="orderBy(characters, ['lastModified'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.CHARACTER"
     title="Recent Characters"
   />
+  <ButtonText class="mt-n1 mb-3" text="All Characters" to="/characters" />
   <MediaComponent
     :media="orderBy(games, ['lastModified'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.GAME"
     title="Recent Games"
   />
+  <ButtonText class="mt-n1 mb-3" text="All Games" to="/games" />
   <MediaComponent
     :media="orderBy(manga, ['lastModified'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.MANGA"
     title="Recent Manga"
   />
+  <ButtonText class="mt-n1 mb-3" text="All Manga" to="/manga" />
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
