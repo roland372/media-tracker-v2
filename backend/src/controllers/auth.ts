@@ -4,17 +4,18 @@ import passport, { Profile } from "passport";
 const authUser = passport.authenticate('google', { scope: ['email', 'profile'] });
 
 const googleCallback = passport.authenticate('google', {
-	successRedirect: '/protected',
+	successRedirect: '/',
 	failureRedirect: '/login/failure',
+	scope: ['email', 'profile'],
 });
 
 const authFailure = <T>(_: T, res: Response) => {
-	res.send('something went wrong');
+	res.send('failed to authenticate');
 };
 
-const protectedRoute = (req: any, res: Response) => {
+const protectedRoute = (req: Request, res: Response) => {
 	const user = req.user as Profile;
-	res.send(`Hello ${user.displayName}`);
+	res.send(`Hello ${user.username}`);
 };
 
 const logout = (req: Request, res: Response) => {

@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/cors": "^2.8.13",
     "@types/express-session": "^1.17.7",
     "@types/node": "^18.14.0",
     "@types/passport": "^1.0.12",
