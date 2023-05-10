@@ -13,6 +13,22 @@ const authFailure = <T>(_: T, res: Response) => {
 	res.send('failed to authenticate');
 };
 
+const authSuccess = (req: Request, res: Response) => {
+	if (req.user) {
+		res.status(200).json({
+			success: true,
+			message: 'SUCCESS',
+			user: req.user,
+			cookies: req.cookies,
+		});
+	} else {
+		res.status(401).json({
+			success: false,
+			message: 'FAILURE',
+		});
+	}
+}
+
 const protectedRoute = (req: Request, res: Response) => {
 	const user = req.user as Profile;
 	res.send(`Hello ${user.username}`);
@@ -34,4 +50,4 @@ const logout = (req: Request, res: Response) => {
 	});
 };
 
-export default { authUser, googleCallback, authFailure, protectedRoute, logout };
+export default { authUser, googleCallback, authFailure, authSuccess, protectedRoute, logout };

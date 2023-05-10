@@ -4,6 +4,7 @@ const GoogleStrategy = require('passport-google-oauth2').Strategy;
 import { Profile, DoneCallback } from 'passport';
 import User from '../db/models/User';
 import { CallbackError, Document } from 'mongoose';
+import { Request } from 'express';
 
 dotenv.config();
 
@@ -13,7 +14,7 @@ passport.use(new GoogleStrategy({
   callbackURL: process.env.NODE_CALLBACK_URL,
   passReqToCallback: true
 },
-  function <T>(_: T, __: T, ___: T, profile: Profile, done: DoneCallback) {
+  function <T>(req: Request, __: T, ___: T, profile: Profile, done: DoneCallback) {
     User.findOne({ googleId: profile.id }, function (err: CallbackError, user: Document) {
       if (err) {
         console.log("User.findOne() ERROR", err);
@@ -32,9 +33,13 @@ passport.use(new GoogleStrategy({
           if (err) {
             console.log("user.save() ERROR", err);
           }
+          console.log("if passportStrategy");
+          req.user = profile;
           return done(err, user);
         });
       } else {
+        req.user = profile;
+        console.log("else passportStrategy");
         return done(err, user);
       }
     });

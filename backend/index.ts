@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 import colors from 'colors';
 import { json } from 'body-parser';
 import { expressMiddleware } from '@apollo/server/express4';
+import { applyMiddleware } from 'graphql-middleware';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import { ApolloServer } from '@apollo/server';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { databaseConnector } from './src/db/connector';
@@ -13,7 +15,8 @@ import { typeDefs } from './src/graphql/typeDefs';
 import { resolvers } from './src/graphql/resolvers';
 import passport from "passport";
 import authRoute from '../backend/src/routes/auth';
-import { isAuthenticated } from './src/middlewares/isAuthenticated';
+import User from '../backend/src/db/models/User';
+import shield from '../backend/src/utils/permissions';
 require('../backend/src/config/passportStrategy');
 
 dotenv.config();
@@ -21,9 +24,13 @@ const PORT = 5000;
 
 const app = express();
 const httpServer = http.createServer(app);
-const server = new ApolloServer({
+const schema = applyMiddleware(makeExecutableSchema({
 	typeDefs,
 	resolvers,
+}),
+	shield)
+const server = new ApolloServer({
+	schema,
 	plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 
@@ -39,14 +46,18 @@ const startServer = async (): Promise<void> => {
 	}));
 	app.use(passport.initialize());
 	app.use(passport.session());
+	app.use(cors());
 	app.use("/", authRoute);
 	app.use(
 		'/',
-		isAuthenticated,
 		cors<cors.CorsRequest>(),
 		json(),
 		expressMiddleware(server, {
-			context: async ({ req }) => ({ token: req.headers.token }),
+			context: async ({ req }) => {
+				// console.log("user", req.user);
+				const user = await User.findById(req.user);
+				return { user };
+			}
 		}),
 	);
 
