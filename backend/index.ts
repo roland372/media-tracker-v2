@@ -17,6 +17,8 @@ import passport from "passport";
 import authRoute from '../backend/src/routes/auth';
 import User from '../backend/src/db/models/User';
 import shield from '../backend/src/utils/permissions';
+import MongoStore from 'connect-mongo';
+
 require('../backend/src/config/passportStrategy');
 
 dotenv.config();
@@ -42,7 +44,8 @@ const startServer = async (): Promise<void> => {
 	app.use(session({
 		secret: "mySession",
 		resave: false,
-		saveUninitialized: true,
+		saveUninitialized: false,
+		store: MongoStore.create({ mongoUrl: process.env.NODE_MONGODB_URI }),
 	}));
 	app.use(passport.initialize());
 	app.use(passport.session());
