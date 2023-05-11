@@ -3,8 +3,11 @@ import passport, { Profile } from "passport";
 
 const authUser = passport.authenticate('google', { scope: ['email', 'profile'] });
 
+const CLIENT_URL = "http://localhost:8080/login";
+
 const googleCallback = passport.authenticate('google', {
-	successRedirect: '/',
+	// successRedirect: '/',
+	successRedirect: CLIENT_URL,
 	failureRedirect: '/login/failure',
 	scope: ['email', 'profile'],
 });

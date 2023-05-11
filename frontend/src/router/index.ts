@@ -57,6 +57,12 @@ const routes: Array<RouteRecordRaw> = [
   //   name: "ProfilePage",
   //   path: "/profile",
   // },
+  {
+    component: () => import("@/views/LoginPage.vue"),
+    name: "LoginPage",
+    path: "/login",
+    meta: { title: "Login" + " | Media-Tracker" },
+  },
   ...navLinks.map((link) => {
     return {
       component: () => import(`@/views/${link.name}.vue`),
@@ -69,6 +75,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/views/ErrorPage.vue"),
     name: "ErrorPage",
     path: "/:catchAll(.*)*",
+    meta: { title: "Not Found" + " | Media-Tracker" },
   },
 ];
 

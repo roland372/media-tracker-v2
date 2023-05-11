@@ -10,11 +10,13 @@ import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 
 const mediaStore = useMediaStore();
-const { fetchAllMedia } = mediaStore;
+const { fetchAllMedia, fetchAnime } = mediaStore;
 const { isLoading } = storeToRefs(mediaStore);
 
 onMounted(async () => {
+  isLoading.value = false;
   console.log("APP MOUNTED");
-  await fetchAllMedia();
+  // await fetchAllMedia();
+  // await fetchAnime();
 });
 </script>

@@ -4,10 +4,29 @@ import { GraphQLError } from 'graphql/index';
 const authErrorMessage = 'You are not authorized to do this';
 const authErrorCode = 403;
 
-const isAuthenticated = rule({ cache: 'contextual' })(async (_, __, ctx) => {
-  if (ctx.user) {
-    console.log("permissions: authenticated");
-    return ctx.user !== null;
+// const isAuthenticated = rule({ cache: 'contextual' })(async (_, __, ctx) => {
+// const isAuthenticated = rule()(async (_, __, ctx) => {
+//   if (ctx.user) {
+//     console.log("permissions: authenticated", ctx.user);
+//     return ctx.user !== null;
+//   } else {
+//     console.log("permissions: not authenticated");
+//     return new GraphQLError(authErrorMessage, {
+//       extensions: { code: authErrorCode },
+//     });
+//   }
+// });
+
+// const isAuthenticated = rule()(async (_, __, ctx) => {
+//   console.log(ctx);
+//   return ctx.session.passport.user !== null;
+// });
+
+const isAuthenticated = rule()(async (_, __, ctx) => {
+  console.log("CTX", ctx);
+  if (ctx.userFromContext.length) {
+    console.log("permissions: authenticated", ctx.userFromContext.length);
+    return ctx.userFromContext.email !== null;
   } else {
     console.log("permissions: not authenticated");
     return new GraphQLError(authErrorMessage, {

@@ -211,9 +211,9 @@ export const useMediaStore = defineStore("media", () => {
   };
   const fetchGames = async () => {
     try {
-      const { data, loading } = await getAllGames();
-      isLoading.value = loading;
-      setGames(data.getAllGames);
+      // const { data, loading } = await getAllGames();
+      // isLoading.value = loading;
+      // setGames(data.getAllGames);
     } catch (err) {
       console.log(err);
     }

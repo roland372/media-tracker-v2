@@ -42,6 +42,7 @@ const startServer = async (): Promise<void> => {
 	await server.start();
 
 	app.use(session({
+		name: "qid",
 		secret: "mySession",
 		resave: false,
 		saveUninitialized: false,
@@ -49,7 +50,11 @@ const startServer = async (): Promise<void> => {
 	}));
 	app.use(passport.initialize());
 	app.use(passport.session());
-	app.use(cors());
+	app.use(cors({
+		origin: "http://localhost:8080",
+		methods: "GET,POST,PUT,DELETE",
+		credentials: true,
+	}));
 	app.use("/", authRoute);
 	app.use(
 		'/',
@@ -57,10 +62,21 @@ const startServer = async (): Promise<void> => {
 		json(),
 		expressMiddleware(server, {
 			context: async ({ req }) => {
-				// console.log("user", req.user);
-				const user = await User.findById(req.user);
-				return { user };
+				// console.log(req.headers.userid);
+				// console.log("req", req.session);
+				// console.log("context req.user", req.user);
+				// console.log("req.headers.userid", req.headers.userid);
+				const userFromContext = await User.find({ email: req.headers.userid });
+				// const user = await User.findById(req.user);
+				// console.log("USER", user);
+				return { userFromContext };
 			}
+			// context: async ({ req }) => ({
+			// 	session: req.session
+			// })
+			// context: async ({ req }) => ({
+			// 	req
+			// })
 		}),
 	);
 
