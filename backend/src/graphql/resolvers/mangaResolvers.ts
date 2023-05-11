@@ -23,7 +23,7 @@ export const mangaResolvers = {
 			return newManga;
 		},
 
-		async deleteManga<T>(_: T, { ID }: any) {
+		async deleteManga<T>(_: T, { ID }: TMangaInput) {
 			const wasDeleted = (await Manga.deleteOne({ _id: ID })).deletedCount;
 			return wasDeleted;
 		},

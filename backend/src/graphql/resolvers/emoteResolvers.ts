@@ -23,7 +23,7 @@ export const emoteResolvers = {
 			return newEmote;
 		},
 
-		async deleteEmote<T>(_: T, { ID }: any) {
+		async deleteEmote<T>(_: T, { ID }: TEmoteInput) {
 			const wasDeleted = (await Emote.deleteOne({ _id: ID })).deletedCount;
 			return wasDeleted;
 		},

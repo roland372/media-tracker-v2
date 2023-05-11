@@ -23,7 +23,7 @@ export const animeResolvers = {
 			return newAnime;
 		},
 
-		async deleteAnime<T>(_: T, { ID }: any) {
+		async deleteAnime<T>(_: T, { ID }: TAnimeInput) {
 			const wasDeleted = (await Anime.deleteOne({ _id: ID })).deletedCount;
 			return wasDeleted;
 		},

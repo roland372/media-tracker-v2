@@ -23,7 +23,7 @@ export const noteResolvers = {
 			return newNote;
 		},
 
-		async deleteNote<T>(_: T, { ID }: any) {
+		async deleteNote<T>(_: T, { ID }: TNoteInput) {
 			const wasDeleted = (await Note.deleteOne({ _id: ID })).deletedCount;
 			return wasDeleted;
 		},

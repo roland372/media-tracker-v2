@@ -49,7 +49,7 @@ const getData = async () => {
       },
     })
     .then(async (res) => {
-      console.log("response", res.data.user.email);
+      console.log("response", res.data.user);
       await getAllGames(res.data.user.email).then((res) =>
         console.log(res.data)
       );

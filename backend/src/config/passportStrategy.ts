@@ -34,11 +34,11 @@ passport.use(new GoogleStrategy({
             console.log("user.save() ERROR", err);
           }
           console.log("if passportStrategy");
-          req.user = user;
+          req.user = "hello";
           return done(err, user);
         });
       } else {
-        req.user = user;
+        req.user = "hello";
         console.log("else passportStrategy");
         return done(err, user);
       }

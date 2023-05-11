@@ -1,10 +1,11 @@
 import Game from '../../db/models/Game';
-import { TGameInput, TGame } from '../../types';
+import { TGameInput, TGame, TContext } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const gameResolvers = {
 	Query: {
-		async getAllGames() {
+		async getAllGames<T>(_: T, __: T, context: TContext) {
+			console.log("hello", context.userFromContext[0].email);
 			return await Game.find().sort({ title: "asc" });
 		},
 		async getSingleGame<T>(_: T, { ID }: TGame) {
@@ -23,7 +24,7 @@ export const gameResolvers = {
 			return newGame;
 		},
 
-		async deleteGame<T>(_: T, { ID }: any) {
+		async deleteGame<T>(_: T, { ID }: TGameInput) {
 			const wasDeleted = (await Game.deleteOne({ _id: ID })).deletedCount;
 			return wasDeleted;
 		},

@@ -23,7 +23,7 @@ export const characterResolvers = {
 			return newCharacter;
 		},
 
-		async deleteCharacter<T>(_: T, { ID }: any) {
+		async deleteCharacter<T>(_: T, { ID }: TCharacterInput) {
 			const wasDeleted = (await Character.deleteOne({ _id: ID })).deletedCount;
 			return wasDeleted;
 		},

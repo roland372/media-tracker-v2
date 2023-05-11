@@ -23,9 +23,9 @@ const authErrorCode = 403;
 // });
 
 const isAuthenticated = rule()(async (_, __, ctx) => {
-  console.log("CTX", ctx);
+  // console.log("CTX", ctx);
   if (ctx.userFromContext.length) {
-    console.log("permissions: authenticated", ctx.userFromContext.length);
+    console.log("permissions: authenticated");
     return ctx.userFromContext.email !== null;
   } else {
     console.log("permissions: not authenticated");

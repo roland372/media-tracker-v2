@@ -1,3 +1,7 @@
+export type TContext = {
+	userFromContext: TUser[];
+}
+
 //? <----- User ----->
 export enum EUserRole {
 	ADMIN = "ADMIN",
