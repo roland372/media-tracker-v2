@@ -93,6 +93,7 @@
                 text="Edit Profile"
               />
               <ButtonText
+                :on-click="handleLogout"
                 class="me-2 mt-2"
                 color="blue"
                 size="small"
@@ -124,7 +125,23 @@
             label="Description"
             variant="outlined"
           />
-          <div class="d-flex justify-space-around mb-n3">
+          <div class="d-flex justify-space-around align-center">
+            <v-text-field
+              v-model="userRef.profileImg"
+              class="me-2"
+              density="compact"
+              hide-details="auto"
+              label="Avatar"
+              variant="outlined"
+            />
+            <img
+              alt="Avatar"
+              class="rounded-circle"
+              :src="userRef.profileImg"
+              style="width: 48px"
+            />
+          </div>
+          <!-- <div class="d-flex justify-space-around mb-n3">
             <v-file-input
               :v-model="avatarUpload"
               density="compact"
@@ -141,8 +158,8 @@
               text="Upload"
               variant="flat"
             />
-          </div>
-          <div class="mt-n5">
+          </div> -->
+          <div class="mt-n1">
             <small class="ms-3">Select Color</small>
             <div class="d-flex flex-wrap">
               <v-color-picker v-model="userRef.color" hide-inputs />
@@ -169,30 +186,38 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { TUserInput, TUser, EUserRole } from "@/types/index";
+import { TUserInput, TUser } from "@/types/index";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
+import { useMediaStore } from "@/stores/useMediaStore";
+import { storeToRefs } from "pinia";
+import { logout } from "@/utils/auth";
+
+const mediaStore = useMediaStore();
+const { userFromDB, anime, manga, games, characters, emotes, notes } =
+  storeToRefs(mediaStore);
+const { submitEditUser, setUserFromDB } = mediaStore;
 
 const settingsModal = ref<boolean>(false);
-const userProfile: TUser = reactive({
-  color: "#8484ED",
-  email: "damfat94@gmail.com",
-  googleId: "123",
-  profileDesc: "description",
-  profileImg:
-    "https://firebasestorage.googleapis.com/v0/b/media-tracker-f3101.appspot.com/o/A43pMBPrXiYLnMdsSu8GLclowvl2.png?alt=media&token=799f8a41-978e-4ef9-b8c9-b8c7480f8e8c",
-  role: EUserRole.ADMIN,
-  username: "Roland",
+const userProfile = reactive({
+  _id: userFromDB.value?._id,
+  color: userFromDB.value?.color,
+  email: userFromDB.value?.email,
+  googleId: userFromDB.value?.googleId,
+  profileDesc: userFromDB.value?.profileDesc,
+  profileImg: userFromDB.value?.profileImg,
+  role: userFromDB.value?.role,
+  username: userFromDB.value?.username,
 });
-const userRef = ref<TUser>(userProfile);
-const avatarUpload = ref();
+const userRef = ref(userProfile);
+// const avatarUpload = ref();
 const mediaType = [
-  { media: "Anime", total: "614" },
-  { media: "Manga", total: "202" },
-  { media: "Games", total: "398" },
-  { media: "Characters", total: "476" },
-  { media: "Emotes", total: "383" },
-  { media: "Notes", total: "11" },
+  { media: "Anime", total: anime.value.length },
+  { media: "Manga", total: manga.value.length },
+  { media: "Games", total: games.value.length },
+  { media: "Characters", total: characters.value.length },
+  { media: "Emotes", total: emotes.value.length },
+  { media: "Notes", total: notes.value.length },
 ];
 
 const backupButtons = [
@@ -223,10 +248,19 @@ const handleSubmitEditProfile = () => {
     username: userRef.value.username,
   });
 
-  console.log(updatedProfile);
+  submitEditUser(userRef.value?._id, updatedProfile);
+  console.log("userRef", userRef);
+  setUserFromDB(userRef.value as TUser);
+
+  settingsModal.value = false;
 };
 
-const handleSubmitUploadAvatar = () => {
-  console.log(avatarUpload);
+const handleLogout = async () => {
+  await logout();
+  window.open("http://localhost:8080/login", "_self");
 };
+
+// const handleSubmitUploadAvatar = () => {
+//   console.log(avatarUpload);
+// };
 </script>

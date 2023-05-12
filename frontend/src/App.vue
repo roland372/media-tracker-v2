@@ -12,19 +12,20 @@ import { getUserData } from "@/utils/auth";
 import router from "@/router";
 
 const mediaStore = useMediaStore();
-const { setUserEmail, fetchAllMedia, setLoading } = mediaStore;
-const { isLoading, userEmail } = storeToRefs(mediaStore);
+const { fetchAllMedia, fetchUser, setLoading, setGoogleUser } = mediaStore;
+const { isLoading, googleUser } = storeToRefs(mediaStore);
 
 onMounted(async () => {
   console.log("APP MOUNTED");
   try {
-    setUserEmail(await getUserData());
+    setGoogleUser(await getUserData());
   } catch (error) {
     setLoading(false);
     router.push("/login");
   }
-  if (userEmail) {
-    await fetchAllMedia(userEmail.value);
+  if (googleUser.value) {
+    await fetchUser(googleUser.value.email, googleUser.value._id);
+    await fetchAllMedia(googleUser.value.email);
   }
 });
 </script>

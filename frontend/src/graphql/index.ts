@@ -40,4 +40,6 @@ export * from "./queries/emotes";
 export * from "./mutations/emotes";
 export * from "./queries/notes";
 export * from "./mutations/notes";
+export * from "./queries/user";
+export * from "./mutations/user";
 export * from "./queries/allMedia";

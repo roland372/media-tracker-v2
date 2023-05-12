@@ -13,6 +13,7 @@ export enum EUserRole {
 }
 
 export type TUser = {
+  _id: string;
   color: string;
   email: string;
   googleId: string;
@@ -23,10 +24,10 @@ export type TUser = {
 };
 
 export type TUserInput = {
-  color: string;
-  profileDesc: string;
-  profileImg: string;
-  username: string;
+  color: string | undefined;
+  profileDesc: string | undefined;
+  profileImg: string | undefined;
+  username: string | undefined;
 };
 
 //? <----- Anime ----->

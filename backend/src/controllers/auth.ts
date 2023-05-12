@@ -46,7 +46,8 @@ const logout = (req: Request, res: Response) => {
 				console.log("error", err);
 			} else {
 				console.log('Session destroyed successfully.');
-				res.redirect('http://localhost:5000');
+				// res.redirect(CLIENT_URL_LOGIN);
+				res.send("logged out");
 			}
 		});
 	});

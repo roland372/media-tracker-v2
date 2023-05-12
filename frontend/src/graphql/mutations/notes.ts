@@ -2,7 +2,10 @@ import { apolloClient } from "@/graphql";
 import { TNoteInput } from "@/types";
 import gql from "graphql-tag";
 
-export const addNote = async (variables: { noteInput: TNoteInput }) => {
+export const addNote = async (
+  userId: string | undefined,
+  variables: { noteInput: TNoteInput }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation AddNote($noteInput: NoteInput) {
@@ -16,31 +19,52 @@ export const addNote = async (variables: { noteInput: TNoteInput }) => {
         }
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };
 
-export const editNote = async (variables: {
-  id: string;
-  noteInput: TNoteInput;
-}) => {
+export const editNote = async (
+  userId: string | undefined,
+  variables: {
+    id: string;
+    noteInput: TNoteInput;
+  }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation EditNote($id: ID!, $noteInput: NoteInput) {
         editNote(ID: $id, noteInput: $noteInput)
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };
 
-export const deleteNote = async (variables: { id: string }) => {
+export const deleteNote = async (
+  userId: string | undefined,
+  variables: { id: string }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation DeleteNote($id: ID!) {
         deleteNote(ID: $id)
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };

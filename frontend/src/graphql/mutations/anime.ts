@@ -2,7 +2,10 @@ import { apolloClient } from "@/graphql";
 import { TAnimeInput } from "@/types";
 import gql from "graphql-tag";
 
-export const addAnime = async (variables: { animeInput: TAnimeInput }) => {
+export const addAnime = async (
+  userId: string | undefined,
+  variables: { animeInput: TAnimeInput }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation AddAnime($animeInput: AnimeInput) {
@@ -27,31 +30,52 @@ export const addAnime = async (variables: { animeInput: TAnimeInput }) => {
         }
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };
 
-export const editAnime = async (variables: {
-  id: string;
-  animeInput: TAnimeInput;
-}) => {
+export const editAnime = async (
+  userId: string | undefined,
+  variables: {
+    id: string;
+    animeInput: TAnimeInput;
+  }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation EditAnime($id: ID!, $animeInput: AnimeInput) {
         editAnime(ID: $id, animeInput: $animeInput)
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };
 
-export const deleteAnime = async (variables: { id: string }) => {
+export const deleteAnime = async (
+  userId: string | undefined,
+  variables: { id: string }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation DeleteAnime($id: ID!) {
         deleteAnime(ID: $id)
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };

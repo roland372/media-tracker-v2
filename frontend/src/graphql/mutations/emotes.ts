@@ -2,7 +2,10 @@ import { apolloClient } from "@/graphql";
 import { TEmoteInput } from "@/types";
 import gql from "graphql-tag";
 
-export const addEmote = async (variables: { emoteInput: TEmoteInput }) => {
+export const addEmote = async (
+  userId: string | undefined,
+  variables: { emoteInput: TEmoteInput }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation AddEmote($emoteInput: EmoteInput) {
@@ -16,31 +19,52 @@ export const addEmote = async (variables: { emoteInput: TEmoteInput }) => {
         }
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };
 
-export const editEmote = async (variables: {
-  id: string;
-  emoteInput: TEmoteInput;
-}) => {
+export const editEmote = async (
+  userId: string | undefined,
+  variables: {
+    id: string;
+    emoteInput: TEmoteInput;
+  }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation EditEmote($id: ID!, $emoteInput: EmoteInput) {
         editEmote(ID: $id, emoteInput: $emoteInput)
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };
 
-export const deleteEmote = async (variables: { id: string }) => {
+export const deleteEmote = async (
+  userId: string | undefined,
+  variables: { id: string }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation DeleteEmote($id: ID!) {
         deleteEmote(ID: $id)
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };

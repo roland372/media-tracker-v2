@@ -2,9 +2,12 @@ import { apolloClient } from "@/graphql";
 import { TCharacterInput } from "@/types";
 import gql from "graphql-tag";
 
-export const addCharacter = async (variables: {
-  characterInput: TCharacterInput;
-}) => {
+export const addCharacter = async (
+  userId: string | undefined,
+  variables: {
+    characterInput: TCharacterInput;
+  }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation AddCharacter($characterInput: CharacterInput) {
@@ -26,31 +29,52 @@ export const addCharacter = async (variables: {
         }
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };
 
-export const editCharacter = async (variables: {
-  id: string;
-  characterInput: TCharacterInput;
-}) => {
+export const editCharacter = async (
+  userId: string | undefined,
+  variables: {
+    id: string;
+    characterInput: TCharacterInput;
+  }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation EditCharacter($id: ID!, $characterInput: CharacterInput) {
         editCharacter(ID: $id, characterInput: $characterInput)
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };
 
-export const deleteCharacter = async (variables: { id: string }) => {
+export const deleteCharacter = async (
+  userId: string | undefined,
+  variables: { id: string }
+) => {
   return apolloClient.mutate({
     mutation: gql`
       mutation EditCharacter($id: ID!) {
         deleteCharacter(ID: $id)
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
     variables,
   });
 };

@@ -1,6 +1,6 @@
 <template>
   <section class="bg-orange">
-    <NavbarComponent v-if="userEmail" />
+    <NavbarComponent v-if="googleUser" />
     <v-layout>
       <v-container class="text-center rounded">
         <router-view />
@@ -18,7 +18,7 @@ import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 
 const mediaStore = useMediaStore();
-const { userEmail } = storeToRefs(mediaStore);
+const { googleUser } = storeToRefs(mediaStore);
 </script>
 <style scoped>
 section {
