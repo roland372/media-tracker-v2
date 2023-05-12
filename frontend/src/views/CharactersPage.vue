@@ -112,7 +112,7 @@
   />
 </template>
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
@@ -272,8 +272,4 @@ const handleFetchedCharacterSubmit = async () => {
   fetchedCharacterModal.value = false;
   snackbar.value = !snackbar.value;
 };
-
-onMounted(() => {
-  // console.log("CHARACTERS MOUNTED");
-});
 </script>

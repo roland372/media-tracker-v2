@@ -62,21 +62,9 @@ const startServer = async (): Promise<void> => {
 		json(),
 		expressMiddleware(server, {
 			context: async ({ req }) => {
-				// console.log(req.headers.userid);
-				// console.log("req", req.session);
-				// console.log("context req.user", req.user);
-				// console.log("req.headers.userid", req.headers.userid);
 				const userFromContext = await User.find({ email: req.headers.userid });
-				// const user = await User.findById(req.user);
-				// console.log("USER", user);
 				return { userFromContext };
 			}
-			// context: async ({ req }) => ({
-			// 	session: req.session
-			// })
-			// context: async ({ req }) => ({
-			// 	req
-			// })
 		}),
 	);
 

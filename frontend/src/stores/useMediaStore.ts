@@ -59,6 +59,9 @@ import { sortedIndexBy } from "lodash";
 
 export const useMediaStore = defineStore("media", () => {
   //* <----- UTILS ----->
+  const userEmail = ref<string>("");
+  const setUserEmail = (payload: string): string => (userEmail.value = payload);
+
   const isLoading = ref<boolean>(true);
   const setLoading = (payload: boolean): boolean => (isLoading.value = payload);
 
@@ -209,11 +212,11 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleGame = (payload: TGame) => {
     singleGame.value = payload;
   };
-  const fetchGames = async () => {
+  const fetchGames = async (email: string) => {
     try {
-      // const { data, loading } = await getAllGames();
-      // isLoading.value = loading;
-      // setGames(data.getAllGames);
+      const { data, loading } = await getAllGames(email);
+      isLoading.value = loading;
+      setGames(data.getAllGames);
     } catch (err) {
       console.log(err);
     }
@@ -470,9 +473,9 @@ export const useMediaStore = defineStore("media", () => {
   };
 
   //* <----- ALL MEDIA ----->
-  const fetchAllMedia = async () => {
+  const fetchAllMedia = async (email: string) => {
     try {
-      const { data, loading } = await getAllMedia();
+      const { data, loading } = await getAllMedia(email);
       isLoading.value = loading;
       setAnime(data.getAllAnime);
       setManga(data.getAllManga);
@@ -487,6 +490,8 @@ export const useMediaStore = defineStore("media", () => {
 
   return {
     //* <----- UTILS ----->
+    userEmail,
+    setUserEmail,
     isLoading,
     setLoading,
     //* <----- ANIME ----->

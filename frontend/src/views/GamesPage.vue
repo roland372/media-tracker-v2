@@ -78,7 +78,7 @@
   />
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
@@ -206,8 +206,4 @@ const handleGameSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);
 const handleGameFilter = (emittedValue: string) =>
   (gameFilter.value = emittedValue);
-
-onMounted(() => {
-  // console.log("GAMES MOUNTED");
-});
 </script>

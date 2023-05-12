@@ -1,6 +1,6 @@
 <template>
   <section class="bg-orange">
-    <NavbarComponent />
+    <NavbarComponent v-if="userEmail" />
     <v-layout>
       <v-container class="text-center rounded">
         <router-view />
@@ -14,6 +14,11 @@
 import NavbarComponent from "@/components/ui/NavbarComponent.vue";
 import FooterComponent from "@/components/ui/FooterComponent.vue";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton.vue";
+import { useMediaStore } from "@/stores/useMediaStore";
+import { storeToRefs } from "pinia";
+
+const mediaStore = useMediaStore();
+const { userEmail } = storeToRefs(mediaStore);
 </script>
 <style scoped>
 section {
