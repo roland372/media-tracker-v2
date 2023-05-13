@@ -97,6 +97,15 @@
         </div>
       </div>
     </section>
+    <ButtonText
+      v-if="emotes.length > 20"
+      @click="displayEmotes"
+      class="mt-3"
+      :append-icon="
+        displayEmotesFlag === 20 ? 'mdi-arrow-down-bold' : 'mdi-arrow-up-bold'
+      "
+      :text="displayEmotesFlag === 20 ? 'Display All' : 'Display Less'"
+    />
   </HeaderComponent>
   <v-dialog v-if="addEmoteModal" v-model="addEmoteModal" max-width="500"
     ><v-card>
@@ -229,20 +238,24 @@ const isEditing = ref<boolean>(false);
 const addEmoteModal = ref<boolean>(false);
 const editEmoteModal = ref<boolean>(false);
 const deleteEmoteModal = ref<boolean>(false);
+const displayEmotesFlag = ref<number>(20);
+
+const displayEmotes = () => {
+  displayEmotesFlag.value === 20
+    ? (displayEmotesFlag.value = emotes.value.length)
+    : (displayEmotesFlag.value = 20);
+};
 
 const favouriteEmotes = computed(() =>
-  orderBy(filter(emotes.value, { favourites: true }), ["name"], ["asc"]).slice(
-    0,
-    20
-  )
+  orderBy(filter(emotes.value, { favourites: true }), ["name"], ["asc"])
 );
 
 const allEmotes = computed(() =>
   orderBy(emotes.value, ["name"], ["asc"])
-    .slice(0, 20)
     .filter((e) =>
       e.name.toLocaleLowerCase().includes(emoteSearch.value.toLocaleLowerCase())
     )
+    .slice(0, displayEmotesFlag.value)
 );
 
 const snackbar = ref({
