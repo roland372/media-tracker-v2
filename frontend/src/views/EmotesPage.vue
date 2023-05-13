@@ -25,7 +25,8 @@
           emote.name
         }}</v-tooltip>
         <div
-          class="bg-white pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded"
+          @click="handleEmoteClick(emote.url)"
+          class="bg-white pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded image-hover"
         >
           <img :src="emote.url" :alt="emote.name" style="height: 64px" />
           <v-icon
@@ -63,7 +64,7 @@
           class="bg-white pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded"
         >
           <div>
-            <div>
+            <div @click="handleEmoteClick(emote.url)" class="image-hover">
               <img
                 :src="emote.url"
                 :alt="emote.name"
@@ -229,6 +230,7 @@ import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { TEmote, TEmoteInput } from "@/types";
 import { filter, orderBy } from "lodash";
+import { copyImageToClipboard } from "copy-image-clipboard";
 
 const mediaStore = useMediaStore();
 const { emotes } = storeToRefs(mediaStore);
@@ -328,11 +330,25 @@ const handleSubmitEditEmote = async () => {
   snackbar.value.value = !snackbar.value.value;
   editEmoteModal.value = false;
 };
+
+const handleEmoteClick = (url: string): void => {
+  copyImageToClipboard(url)
+    .then(() => {
+      console.log("image copied");
+    })
+    .catch(() => {
+      navigator.clipboard.writeText(url);
+    });
+};
 </script>
 <style scoped>
 .image-overlay-icon {
   position: absolute;
   right: 5px;
   top: 5px;
+}
+
+.image-hover {
+  cursor: pointer;
 }
 </style>
