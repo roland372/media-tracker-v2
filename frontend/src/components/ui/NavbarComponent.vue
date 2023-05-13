@@ -63,6 +63,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import { EUserRole } from "@/types";
 import { useDisplay } from "vuetify";
 import { navLinks } from "@/utils/links";
 import { useMediaStore } from "@/stores/useMediaStore";
@@ -71,7 +72,18 @@ import { storeToRefs } from "pinia";
 const mediaStore = useMediaStore();
 const { userFromDB } = storeToRefs(mediaStore);
 
-const filteredLinks = computed(() => navLinks.slice(1));
+const filteredLinks = computed(() =>
+  navLinks
+    .filter((link) => {
+      if (userFromDB.value?.role === EUserRole.ADMIN) {
+        return link.route;
+      } else {
+        return link.route !== EUserRole.ADMIN;
+      }
+    })
+    .slice(1)
+);
+
 const {
   mdAndUp,
   // lgAndUp

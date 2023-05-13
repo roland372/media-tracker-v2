@@ -1,5 +1,8 @@
+import { watch } from "vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { navLinks } from "@/utils/links";
+import { useMediaStore } from "@/stores/useMediaStore";
+import { storeToRefs } from "pinia";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -17,8 +20,8 @@ const routes: Array<RouteRecordRaw> = [
     };
   }),
   {
-    component: () => import("@/views/ErrorPage.vue"),
-    name: "ErrorPage",
+    component: () => import("@/views/NotFound.vue"),
+    name: "NotFound",
     path: "/:catchAll(.*)*",
     meta: { title: "Not Found" + " | Media-Tracker" },
   },
@@ -33,6 +36,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _, next) => {
+  const mediaStore = useMediaStore();
+  const { googleUser } = storeToRefs(mediaStore);
+
+  watch(
+    () => googleUser.value,
+    () => {
+      if (to.name === "EmotesPage" && googleUser.value?.role !== "ADMIN") {
+        router.push({ name: "NotFound" });
+      }
+    }
+  );
+
   const pageTitle = to.meta.title as string;
   document.title = pageTitle;
   next();

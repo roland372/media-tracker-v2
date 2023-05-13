@@ -9,6 +9,7 @@ export enum EMediaType {
 //? <----- User ----->
 export enum EUserRole {
   ADMIN = "ADMIN",
+  PROTECTED = "PROTECTED",
   USER = "USER",
 }
 
@@ -278,7 +279,7 @@ export type TNoteInput = {
 //? <----- UTILS ----->
 export type TNavLinks = {
   name: string;
-  route: string;
+  route: EUserRole;
   url: string;
   text: string;
   title: string;
