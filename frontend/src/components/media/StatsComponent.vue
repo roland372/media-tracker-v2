@@ -5,7 +5,9 @@
         :color="item.color"
         height="20"
         :model-value="item.value"
-        ><strong>{{ Math.ceil(item.value) }}%</strong></v-progress-linear
+        ><strong
+          >{{ Number.isNaN(item.value) ? 0 : Math.ceil(item.value) }}%</strong
+        ></v-progress-linear
       >
     </section>
     <section v-if="mediaType !== EMediaType.CHARACTER">

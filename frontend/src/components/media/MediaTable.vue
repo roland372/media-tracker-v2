@@ -1,8 +1,11 @@
 <template>
   <CardComponent :title="title">
     <slot></slot>
+    <h3 v-if="!media.length && mediaType === EMediaType.ANIME">
+      Not found any items.
+    </h3>
     <v-table
-      v-if="mediaType === EMediaType.ANIME"
+      v-else-if="media.length && mediaType === EMediaType.ANIME"
       density="compact"
       fixed-header
       height="500px"
@@ -36,8 +39,11 @@
         </tr>
       </tbody>
     </v-table>
+    <h3 v-if="!media.length && mediaType === EMediaType.GAME">
+      Not found any items.
+    </h3>
     <v-table
-      v-if="mediaType === EMediaType.GAME"
+      v-else-if="media.length && mediaType === EMediaType.GAME"
       density="compact"
       fixed-header
       height="500px"
@@ -69,8 +75,11 @@
         </tr>
       </tbody>
     </v-table>
+    <h3 v-if="!media.length && mediaType === EMediaType.MANGA">
+      Not found any items.
+    </h3>
     <v-table
-      v-if="mediaType === EMediaType.MANGA"
+      v-else-if="media.length && mediaType === EMediaType.MANGA"
       density="compact"
       fixed-header
       height="500px"
@@ -106,8 +115,11 @@
         </tr>
       </tbody>
     </v-table>
+    <h3 v-if="!media.length && mediaType === EMediaType.CHARACTER">
+      Not found any items.
+    </h3>
     <v-table
-      v-if="mediaType === EMediaType.CHARACTER"
+      v-else-if="media.length && mediaType === EMediaType.CHARACTER"
       density="compact"
       fixed-header
       height="500px"

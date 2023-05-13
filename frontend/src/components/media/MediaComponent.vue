@@ -1,7 +1,8 @@
 <template>
   <CardComponent :title="title">
     <slot></slot>
-    <section class="grid-container">
+    <h3 v-if="!media.length">Not found any items.</h3>
+    <section v-else class="grid-container">
       <section
         v-for="(image, index) in media.slice(
           0,

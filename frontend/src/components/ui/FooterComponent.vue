@@ -1,13 +1,15 @@
 <template>
   <v-layout>
     <!-- <v-footer border class="mt-3 pa-3 position-fixed w-100" -->
-    <v-footer border class="pa-3 bg-yellow"
+    <v-footer class="pa-3 bg-yellow"
       ><p>© {{ new Date().getFullYear() }} Media-Tracker</p></v-footer
     >
   </v-layout>
 </template>
 <style scoped>
-/* .v-footer {
+.v-footer {
   bottom: 0;
-} */
+  position: absolute;
+  width: 100%;
+}
 </style>

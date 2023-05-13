@@ -1,12 +1,12 @@
 <template>
-  <section class="bg-orange">
+  <section class="bg-orange page-container">
     <NavbarComponent v-if="googleUser" />
     <v-layout>
       <v-container class="text-center rounded">
         <router-view />
       </v-container>
     </v-layout>
-    <FooterComponent />
+    <FooterComponent class="mt-10" />
     <ScrollToTopButton />
   </section>
 </template>
@@ -21,7 +21,8 @@ const mediaStore = useMediaStore();
 const { googleUser } = storeToRefs(mediaStore);
 </script>
 <style scoped>
-section {
+.page-container {
   min-height: 100vh;
+  position: relative;
 }
 </style>

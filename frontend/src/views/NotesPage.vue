@@ -8,8 +8,8 @@
       />
       <ButtonText color="yellow" text="Settings" />
     </section>
-    <hr class="my-3 border-b" />
-    <section class="v-row">
+    <h3 v-if="!notes.length">Not found any items.</h3>
+    <section v-else class="v-row my-1">
       <div
         v-for="note in orderBy(notes, ['lastModified'], ['desc'])"
         :key="note.color"

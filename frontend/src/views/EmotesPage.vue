@@ -14,13 +14,10 @@
     </section>
   </HeaderComponent>
   <HeaderComponent v-if="!isEditing" title="Favourite Emotes">
-    <section class="d-flex flex-wrap justify-space-between">
+    <h3 v-if="!favouriteEmotes.length">Not found any items.</h3>
+    <section v-else class="d-flex flex-wrap justify-space-between">
       <div
-        v-for="emote in orderBy(
-          filter(emotes, { favourites: true }),
-          ['name'],
-          ['asc']
-        ).slice(0, 20)"
+        v-for="emote in favouriteEmotes"
         :key="emote.id"
         class="d-flex flex-fill align-stretch pa-1"
       >
@@ -46,18 +43,16 @@
       v-model="emoteSearch"
       @click:clear="() => (emoteSearch = '')"
       clearable
+      class="mb-2"
       density="compact"
       hide-details="auto"
       label="Search for an Emote"
       variant="outlined"
     />
-    <section class="d-flex flex-wrap justify-space-between">
+    <h3 v-if="!allEmotes.length" class="">Not found any items.</h3>
+    <section v-else class="d-flex flex-wrap justify-space-between">
       <div
-        v-for="emote in orderBy(emotes, ['name'], ['asc'])
-          .slice(0, 20)
-          .filter((e) =>
-            e.name.toLocaleLowerCase().includes(emoteSearch.toLocaleLowerCase())
-          )"
+        v-for="emote in allEmotes"
         :key="emote.id"
         class="d-flex flex-fill align-stretch pa-1"
       >
@@ -215,7 +210,7 @@
   />
 </template>
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { computed, ref, reactive } from "vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
@@ -234,6 +229,21 @@ const isEditing = ref<boolean>(false);
 const addEmoteModal = ref<boolean>(false);
 const editEmoteModal = ref<boolean>(false);
 const deleteEmoteModal = ref<boolean>(false);
+
+const favouriteEmotes = computed(() =>
+  orderBy(filter(emotes.value, { favourites: true }), ["name"], ["asc"]).slice(
+    0,
+    20
+  )
+);
+
+const allEmotes = computed(() =>
+  orderBy(emotes.value, ["name"], ["asc"])
+    .slice(0, 20)
+    .filter((e) =>
+      e.name.toLocaleLowerCase().includes(emoteSearch.value.toLocaleLowerCase())
+    )
+);
 
 const snackbar = ref({
   text: "",
