@@ -29,6 +29,7 @@ export const typeGame = gql`
 		link1Name: String
 		link2: String
 		link2Name: String
+		owner: String
     playtime: Int
 		rating: Int
 		status: String

@@ -15,7 +15,7 @@ const MangaSchema: Schema = new Schema<TManga>(
 		link2: { type: String, default: '' },
 		link2Name: { type: String, default: '' },
 		mal_id: { type: Number, default: null },
-		owner: { type: String, default: process.env.NODE_ADMIN_ID },
+		owner: { type: String, required: true },
 		rating: { type: Number, default: 0, min: 0, max: 10 },
 		status: {
 			type: String,

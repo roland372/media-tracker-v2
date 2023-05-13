@@ -449,8 +449,13 @@ const props = defineProps<IFormComponentProps>();
 const emit = defineEmits(["submit"]);
 
 const mediaStore = useMediaStore();
-const { submitAddAnime, submitAddManga, submitAddGame, submitAddCharacter } =
-  mediaStore;
+const {
+  submitAddAnime,
+  submitAddManga,
+  submitAddGame,
+  submitAddCharacter,
+  userFromDB,
+} = mediaStore;
 
 const newAnime: TAnimeInput = reactive({
   episodesMax: 0,
@@ -461,6 +466,7 @@ const newAnime: TAnimeInput = reactive({
   link1Name: "MAL",
   link2: "",
   link2Name: "",
+  owner: userFromDB?.email as string,
   rating: 0,
   status: EAnimeStatus.PLAN_TO_WATCH,
   title: "",
@@ -476,6 +482,7 @@ const newManga: TMangaInput = reactive({
   link1Name: "MAL",
   link2: "",
   link2Name: "",
+  owner: userFromDB?.email as string,
   rating: 0,
   status: EMangaStatus.PLAN_TO_READ,
   title: "",
@@ -491,6 +498,7 @@ const newGame: TGameInput = reactive({
   link1Name: "Link",
   link2: "",
   link2Name: "",
+  owner: userFromDB?.email as string,
   playtime: 0,
   rating: 0,
   status: EGameStatus.PLAN_TO_PLAY,
@@ -506,6 +514,7 @@ const newCharacter: TCharacterInput = reactive({
   link1: "",
   link1Name: "Link",
   name: "",
+  owner: userFromDB?.email as string,
   series: "",
   source: ECharacterSource.ANIME,
 });

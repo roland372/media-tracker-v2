@@ -1,11 +1,11 @@
 import Anime from '../../db/models/Anime';
-import { TAnimeInput, TAnime } from '../../types';
+import { TAnimeInput, TAnime, TContext } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const animeResolvers = {
 	Query: {
-		async getAllAnime() {
-			return await Anime.find().sort({ title: "asc" });
+		async getAllAnime<T>(_: T, __: T, context: TContext) {
+			return await Anime.find({ owner: context.userFromContext[0].email }).sort({ title: "asc" });
 		},
 		async getSingleAnime<T>(_: T, { ID }: TAnime) {
 			return await Anime.findById(ID);

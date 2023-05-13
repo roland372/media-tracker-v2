@@ -12,7 +12,7 @@ const GameSchema: Schema = new Schema<TGame>(
 		link1Name: { type: String, default: '' },
 		link2: { type: String, default: '' },
 		link2Name: { type: String, default: '' },
-		owner: { type: String, default: process.env.NODE_ADMIN_ID },
+		owner: { type: String, required: true },
 		playtime: { type: Number, default: 0 },
 		rating: { type: Number, default: 0, min: 0, max: 10 },
 		status: {

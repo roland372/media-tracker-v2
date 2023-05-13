@@ -273,6 +273,7 @@ export type TNote = {
 	ID: string;
 	lastModified: number;
 	note: string;
+	owner: string;
 	title: string;
 };
 

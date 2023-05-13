@@ -149,7 +149,7 @@ const fetchedCharacterModal = ref<boolean>(false);
 const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.CHARACTER + " Added");
 const mediaStore = useMediaStore();
-const { submitAddCharacter } = mediaStore;
+const { submitAddCharacter, userFromDB } = mediaStore;
 const { characters } = storeToRefs(mediaStore);
 const fetchedCharacters = ref<CommonCharacterDataWithAbout[]>();
 const fetchedSingleCharacter = ref<CommonCharacterDataWithAbout>();
@@ -264,6 +264,7 @@ const handleFetchedCharacterSubmit = async () => {
     link1Name: "MAL",
     mal_id: fetchedSingleCharacter.value?.mal_id as number,
     name: fetchedSingleCharacter.value?.name as string,
+    owner: userFromDB?.email as string,
     series: "",
     source: ECharacterSource.ANIME,
   });

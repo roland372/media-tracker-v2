@@ -18,7 +18,7 @@ const CharacterSchema: Schema = new Schema<TCharacter>(
 		link1Name: { type: String, default: '' },
 		mal_id: { type: Number, default: null },
 		name: { type: String, required: true },
-		owner: { type: String, default: process.env.NODE_ADMIN_ID },
+		owner: { type: String, required: true },
 		series: { type: String, default: '' },
 		source: {
 			type: String,

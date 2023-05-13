@@ -140,7 +140,7 @@ const fetchedAnimeModal = ref<boolean>(false);
 const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.ANIME + " Added");
 const mediaStore = useMediaStore();
-const { submitAddAnime } = mediaStore;
+const { submitAddAnime, userFromDB } = mediaStore;
 const { anime } = storeToRefs(mediaStore);
 const fetchedAnime = ref<Anime[]>();
 const fetchedSingleAnime = ref<Anime>();
@@ -295,6 +295,7 @@ const handleFetchedAnimeSubmit = async () => {
     link2: "",
     link2Name: "",
     mal_id: fetchedSingleAnime.value?.mal_id as number,
+    owner: userFromDB?.email as string,
     rating: 0,
     status: EAnimeStatus.PLAN_TO_WATCH,
     title: fetchedSingleAnime.value?.title as string,

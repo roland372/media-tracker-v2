@@ -1,11 +1,11 @@
 import Character from '../../db/models/Character';
-import { TCharacterInput, TCharacter } from '../../types';
+import { TCharacterInput, TCharacter, TContext } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const characterResolvers = {
 	Query: {
-		async getAllCharacters() {
-			return await Character.find().sort({ name: "asc" });
+		async getAllCharacters<T>(_: T, __: T, context: TContext) {
+			return await Character.find({ owner: context.userFromContext[0].email }).sort({ name: "asc" });
 		},
 		async getSingleCharacter<T>(_: T, { ID }: TCharacter) {
 			return await Character.findById(ID);

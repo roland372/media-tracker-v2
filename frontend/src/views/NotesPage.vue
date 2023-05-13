@@ -262,7 +262,8 @@ import { orderBy } from "lodash";
 
 const mediaStore = useMediaStore();
 const { notes } = storeToRefs(mediaStore);
-const { submitAddNote, submitEditNote, submitDeleteNote } = mediaStore;
+const { submitAddNote, submitEditNote, submitDeleteNote, userFromDB } =
+  mediaStore;
 
 const addNoteModal = ref<boolean>(false);
 const editNoteModal = ref<boolean>(false);
@@ -278,6 +279,7 @@ const newNote: TNoteInput = reactive({
   color: "#FFFFFF",
   lastModified: Date.now(),
   note: "",
+  owner: userFromDB?.email as string,
   title: "New Note",
 });
 
@@ -327,6 +329,7 @@ const handleOpenEditNoteModal = (id: string, note: TNote) => {
     color: note.color,
     lastModified: Date.now(),
     note: note.note,
+    owner: userFromDB?.email as string,
     title: note.title,
   });
 

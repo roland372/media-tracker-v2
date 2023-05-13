@@ -141,7 +141,7 @@ const fetchedMangaModal = ref<boolean>(false);
 const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.MANGA + " Added");
 const mediaStore = useMediaStore();
-const { submitAddManga } = mediaStore;
+const { submitAddManga, userFromDB } = mediaStore;
 const { manga } = storeToRefs(mediaStore);
 const fetchedManga = ref<Manga[]>();
 const fetchedSingleManga = ref<Manga>();
@@ -340,6 +340,7 @@ const handleFetchedMangaSubmit = async () => {
     link2: "",
     link2Name: "",
     mal_id: fetchedSingleManga.value?.mal_id,
+    owner: userFromDB?.email as string,
     rating: 0,
     status: EMangaStatus.PLAN_TO_READ,
     title: fetchedSingleManga.value?.title as string,

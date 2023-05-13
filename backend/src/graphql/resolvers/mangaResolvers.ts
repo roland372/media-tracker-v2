@@ -1,11 +1,11 @@
 import Manga from '../../db/models/Manga';
-import { TMangaInput, TManga } from '../../types';
+import { TMangaInput, TManga, TContext } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const mangaResolvers = {
 	Query: {
-		async getAllManga() {
-			return await Manga.find().sort({ title: "asc" });
+		async getAllManga<T>(_: T, __: T, context: TContext) {
+			return await Manga.find({ owner: context.userFromContext[0].email }).sort({ title: "asc" });
 		},
 		async getSingleManga<T>(_: T, { ID }: TManga) {
 			return await Manga.findById(ID);

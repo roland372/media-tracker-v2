@@ -30,6 +30,7 @@ export const typeCharacter = gql`
 		link1Name: String
 		mal_id: Int
 		name: String!
+		owner: String
 		series: String
 		source: String
 	}

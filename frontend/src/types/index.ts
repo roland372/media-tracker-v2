@@ -78,6 +78,7 @@ export type TAnimeInput = {
   link2?: string;
   link2Name?: string;
   mal_id?: number;
+  owner: string;
   rating?: number;
   status?: EAnimeStatus;
   title: string;
@@ -136,6 +137,7 @@ export type TMangaInput = {
   link2?: string;
   link2Name?: string;
   mal_id?: number;
+  owner: string;
   rating?: number;
   status?: EMangaStatus;
   title: string;
@@ -184,6 +186,7 @@ export type TGameInput = {
   link1Name?: string;
   link2?: string;
   link2Name?: string;
+  owner: string;
   playtime?: number;
   rating?: number;
   status?: EGameStatus;
@@ -231,6 +234,7 @@ export type TCharacterInput = {
   link1Name?: string;
   mal_id?: number;
   name: string;
+  owner: string;
   series?: string;
   source?: ECharacterSource;
 };
@@ -259,6 +263,7 @@ export type TNote = {
   _id: string;
   lastModified: number;
   note: string;
+  owner: string;
   title: string;
 };
 
@@ -266,6 +271,7 @@ export type TNoteInput = {
   color: string;
   lastModified: number;
   note?: string;
+  owner: string;
   title: string;
 };
 

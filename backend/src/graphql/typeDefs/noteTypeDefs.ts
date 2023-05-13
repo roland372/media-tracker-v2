@@ -9,6 +9,7 @@ export const typeNote = gql`
 		id: String
 		lastModified: Date
 		note: String
+		owner: String
 		title: String
 	}
 
@@ -16,6 +17,7 @@ export const typeNote = gql`
 		color: String
 		lastModified: Date
 		note: String
+		owner: String
 		title: String
 	}
 

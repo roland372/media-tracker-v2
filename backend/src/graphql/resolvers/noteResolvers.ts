@@ -1,11 +1,11 @@
 import Note from '../../db/models/Note';
-import { TNote, TNoteInput } from '../../types';
+import { TNote, TNoteInput, TContext } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const noteResolvers = {
 	Query: {
-		async getAllNotes() {
-			return await Note.find().sort({ lastModified: "desc" });
+		async getAllNotes<T>(_: T, __: T, context: TContext) {
+			return await Note.find({ owner: context.userFromContext[0].email }).sort({ lastModified: "desc" });
 		},
 		async getSingleNote<T>(_: T, { ID }: TNote) {
 			return await Note.findById(ID);

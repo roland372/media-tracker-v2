@@ -453,6 +453,7 @@ const {
   submitEditManga,
   submitEditGame,
   submitEditCharacter,
+  userFromDB,
 } = mediaStore;
 
 const animeRef = ref<TAnime>(props.media as TAnime);
@@ -474,6 +475,7 @@ const handleSubmitEditAnime = async () => {
     link1Name: animeRef.value.link1Name,
     link2: animeRef.value.link2,
     link2Name: animeRef.value.link2Name,
+    owner: userFromDB?.email as string,
     rating: animeRef.value.rating,
     status: animeRef.value.status,
     title: animeRef.value.title,
@@ -497,6 +499,7 @@ const handleSubmitEditManga = async () => {
     link1Name: mangaRef.value.link1Name,
     link2: mangaRef.value.link2,
     link2Name: mangaRef.value.link2Name,
+    owner: userFromDB?.email as string,
     rating: mangaRef.value.rating,
     status: mangaRef.value.status,
     title: mangaRef.value.title,
@@ -520,6 +523,7 @@ const handleSubmitEditGame = async () => {
     link1Name: gameRef.value.link1Name,
     link2: gameRef.value.link2,
     link2Name: gameRef.value.link2Name,
+    owner: userFromDB?.email as string,
     playtime: gameRef.value.playtime,
     rating: gameRef.value.rating,
     status: gameRef.value.status,
@@ -540,6 +544,7 @@ const handleSubmitEditCharacter = async () => {
     link1: characterRef.value.link1,
     link1Name: characterRef.value.link1Name,
     name: characterRef.value.name,
+    owner: userFromDB?.email as string,
     series: characterRef.value.series,
     source: characterRef.value.source,
   });

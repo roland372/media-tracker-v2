@@ -34,6 +34,7 @@ export const typeAnime = gql`
 		link2: String
 		link2Name: String
 		mal_id: Int
+		owner: String
 		rating: Int
 		status: String
 		title: String!
