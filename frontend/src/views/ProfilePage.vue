@@ -71,6 +71,7 @@
             <div class="d-flex align-center justify-start flex-wrap py-3">
               <ButtonText
                 v-for="button in backupButtons"
+                @click="handleDownloadMedia(button.data, button.text)"
                 :key="button.text"
                 :class="button.class"
                 :color="button.color"
@@ -186,7 +187,16 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { TUserInput, TUser } from "@/types/index";
+import {
+  TUserInput,
+  TUser,
+  TAnime,
+  TManga,
+  TGame,
+  TCharacter,
+  TNote,
+  TEmote,
+} from "@/types/index";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
@@ -221,12 +231,48 @@ const mediaType = [
 ];
 
 const backupButtons = [
-  { class: "me-2 mt-2", color: "blue", size: "small", text: "Anime" },
-  { class: "me-2 mt-2", color: "grey", size: "small", text: "Manga" },
-  { class: "me-2 mt-2", color: "yellow", size: "small", text: "Games" },
-  { class: "me-2 mt-2", color: "pink", size: "small", text: "Characters" },
-  { class: "me-2 mt-2", color: "orange", size: "small", text: "Emotes" },
-  { class: "mt-2", color: "green", size: "small", text: "Notes" },
+  {
+    class: "me-2 mt-2",
+    color: "blue",
+    data: anime.value,
+    size: "small",
+    text: "Anime",
+  },
+  {
+    class: "me-2 mt-2",
+    color: "grey",
+    data: manga.value,
+    size: "small",
+    text: "Manga",
+  },
+  {
+    class: "me-2 mt-2",
+    color: "yellow",
+    data: games.value,
+    size: "small",
+    text: "Games",
+  },
+  {
+    class: "me-2 mt-2",
+    color: "pink",
+    data: characters.value,
+    size: "small",
+    text: "Characters",
+  },
+  {
+    class: "me-2 mt-2",
+    color: "orange",
+    data: emotes.value,
+    size: "small",
+    text: "Emotes",
+  },
+  {
+    class: "mt-2",
+    color: "green",
+    data: notes.value,
+    size: "small",
+    text: "Notes",
+  },
 ];
 
 const colorThemeButtons = [
@@ -249,7 +295,6 @@ const handleSubmitEditProfile = () => {
   });
 
   submitEditUser(userRef.value?._id, updatedProfile);
-  console.log("userRef", userRef);
   setUserFromDB(userRef.value as TUser);
 
   settingsModal.value = false;
@@ -258,6 +303,19 @@ const handleSubmitEditProfile = () => {
 const handleLogout = async () => {
   await logout();
   window.open("http://localhost:8080/login", "_self");
+};
+
+const handleDownloadMedia = (
+  jsonData: TAnime[] | TManga[] | TGame[] | TCharacter[] | TNote[] | TEmote[],
+  fileName: string
+) => {
+  const fileData = JSON.stringify(jsonData);
+  const blob = new Blob([fileData], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.download = `${fileName}.json`;
+  link.href = url;
+  link.click();
 };
 
 // const handleSubmitUploadAvatar = () => {
