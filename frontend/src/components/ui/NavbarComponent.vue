@@ -2,6 +2,15 @@
   <v-layout class="mb-10 pb-10">
     <v-app-bar app color="white">
       <template v-slot:append>
+        <router-link to="/profile">
+          <img
+            v-if="!mdAndUp"
+            alt="Avatar"
+            class="rounded-circle ms-2 mt-2"
+            :src="userFromDB?.profileImg"
+            style="width: 40px"
+          />
+        </router-link>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="!mdAndUp" />
       </template>
       <v-btn to="/" :active="false" :ripple="false" size="x-large">
@@ -15,6 +24,14 @@
         >
           {{ link.text }}
         </v-list-item>
+        <router-link to="/profile">
+          <img
+            alt="Avatar"
+            class="rounded-circle ms-2 mt-2"
+            :src="userFromDB?.profileImg"
+            style="width: 48px"
+          />
+        </router-link>
       </v-list>
     </v-app-bar>
     <v-navigation-drawer app v-model="drawer" location="end" temporary>
@@ -48,6 +65,11 @@
 import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
 import { navLinks } from "@/utils/links";
+import { useMediaStore } from "@/stores/useMediaStore";
+import { storeToRefs } from "pinia";
+
+const mediaStore = useMediaStore();
+const { userFromDB } = storeToRefs(mediaStore);
 
 const filteredLinks = computed(() => navLinks.slice(1));
 const {
