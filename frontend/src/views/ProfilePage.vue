@@ -59,11 +59,19 @@
             <div class="d-flex align-center justify-start flex-wrap py-3">
               <ButtonText
                 v-for="button in colorThemeButtons"
+                @click="setAppTheme(button.theme)"
                 :key="button.text"
                 :class="button.class"
                 :color="button.color"
                 :size="button.size"
                 :text="button.text"
+              />
+              <ButtonText
+                @click="generateAndSetRandomTheme"
+                class="mt-2 bg-rainbow"
+                color="pink"
+                size="small"
+                text="Random"
               />
             </div>
           </section>
@@ -200,12 +208,20 @@ import {
   TCharacter,
   TNote,
   TEmote,
+  TTheme,
 } from "@/types/index";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { logout } from "@/utils/auth";
+import {
+  blueTheme,
+  grayTheme,
+  beigeTheme,
+  // randomTheme,
+  setAppTheme,
+} from "@/utils/themes";
 
 const mediaStore = useMediaStore();
 const { userFromDB, anime, manga, games, characters, emotes, notes } =
@@ -280,19 +296,26 @@ const backupButtons = [
 ];
 
 const colorThemeButtons = [
-  { class: "me-2 mt-2", color: "indigo", size: "small", text: "Blue" },
-  { class: "me-2 mt-2", color: "grey-darken-3", size: "small", text: "Gray" },
+  {
+    class: "me-2 mt-2",
+    color: "indigo",
+    size: "small",
+    text: "Blue",
+    theme: blueTheme,
+  },
+  {
+    class: "me-2 mt-2",
+    color: "grey-darken-3",
+    size: "small",
+    text: "Gray",
+    theme: grayTheme,
+  },
   {
     class: "me-2 mt-2",
     color: "amber-darken-1",
     size: "small",
     text: "Beige",
-  },
-  {
-    class: "mt-2 bg-rainbow",
-    color: "pink",
-    size: "small",
-    text: "Random",
+    theme: beigeTheme,
   },
 ];
 
@@ -330,6 +353,26 @@ const handleDownloadMedia = (
   link.download = `${fileName}.json`;
   link.href = url;
   link.click();
+};
+
+const generateAndSetRandomTheme = () => {
+  const randomColor1 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  const randomColor2 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  const randomColor3 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  const randomColor4 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  const randomColor5 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  const randomColor6 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+  const randomTheme: TTheme = {
+    primaryDark: randomColor1,
+    primaryMedium: randomColor2,
+    primaryLight: randomColor3,
+    secondaryMedium: randomColor4,
+    secondaryLight: randomColor5,
+    textColor: randomColor6,
+  };
+
+  setAppTheme(randomTheme);
 };
 
 // const handleSubmitUploadAvatar = () => {

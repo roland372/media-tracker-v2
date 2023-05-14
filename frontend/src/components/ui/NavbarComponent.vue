@@ -131,7 +131,7 @@ const drawer = ref<boolean>(false);
 
 .active-nav-link-color {
   background-color: var(--bg-primary-light);
-  border-radius: 10%;
+  border-radius: 5%;
 }
 .active-sidebar-link-color {
   background-color: var(--bg-primary-light);

@@ -289,3 +289,12 @@ export type TUsefulLinks = {
   url: string;
   text: string;
 };
+
+export type TTheme = {
+  primaryDark: string;
+  primaryLight: string;
+  primaryMedium: string;
+  secondaryLight: string;
+  secondaryMedium: string;
+  textColor: string;
+};

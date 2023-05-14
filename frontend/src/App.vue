@@ -10,6 +10,7 @@ import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { getUserData } from "@/utils/auth";
 import router from "@/router";
+import { setDefaultTheme } from "@/utils/themes";
 
 const mediaStore = useMediaStore();
 const { fetchAllMedia, fetchUser, setLoading, setGoogleUser } = mediaStore;
@@ -17,6 +18,7 @@ const { isLoading, googleUser } = storeToRefs(mediaStore);
 
 onMounted(async () => {
   console.log("APP MOUNTED");
+  setDefaultTheme();
   try {
     setGoogleUser(await getUserData());
   } catch (error) {
