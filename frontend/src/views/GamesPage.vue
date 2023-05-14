@@ -13,14 +13,19 @@
       :text="snackbarText"
     />
     <section class="d-sm-flex align-center justify-center">
-      <ButtonText @click="formDialog = !formDialog" text="Add Game" />
-      <div class="px-3">
+      <ButtonText
+        @click="formDialog = !formDialog"
+        color="indigo"
+        text="Add Game"
+      />
+      <div class="px-3 text-color">
         <p>or</p>
       </div>
       <v-text-field
         v-model="gameFetchSearch"
         @click:append-inner="handleFetchGameSearch"
         append-inner-icon="mdi-magnify"
+        class="text-color"
         clearable
         density="compact"
         hide-details="auto"

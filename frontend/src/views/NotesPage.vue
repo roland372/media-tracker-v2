@@ -4,6 +4,7 @@
       <ButtonText
         @click="handleOpenAddNoteModal"
         class="me-2"
+        color="indigo"
         text="Add Note"
       />
       <ButtonText color="yellow" text="Settings" />
@@ -17,7 +18,7 @@
         style="word-wrap: break-word"
       >
         <section
-          class="text-start bg-blue-lighten-5 pa-3 fill-height d-flex flex-column justify-space-between rounded"
+          class="text-start bg-primary-dark text-color pa-3 fill-height d-flex flex-column justify-space-between rounded"
           :style="{ borderTop: '5px solid' + note.color }"
         >
           <section>
@@ -94,7 +95,7 @@
     :retain-focus="false"
     ><v-card>
       <div
-        class="bg-primary px-5 py-3 text-h6 d-flex justify-space-between align-center"
+        class="bg-primary-light text-color px-5 py-3 text-h6 d-flex justify-space-between align-center"
       >
         <div>Add Note</div>
         <ButtonIcon
@@ -155,7 +156,7 @@
     :retain-focus="false"
     ><v-card>
       <div
-        class="bg-primary px-5 py-3 text-h6 d-flex justify-space-between align-center"
+        class="bg-primary-light text-color px-5 py-3 text-h6 d-flex justify-space-between align-center"
       >
         <div>Edit Note</div>
         <ButtonIcon
@@ -201,15 +202,17 @@
       <v-card-actions class="d-flex justify-start ms-2 mt-n2 mb-2">
         <ButtonText
           @click="handleSubmitEditNote"
-          color="green"
-          text="Edit Note"
+          color="yellow"
+          text="Update Note"
           variant="flat"
         />
       </v-card-actions> </v-card
   ></v-dialog>
   <v-dialog v-if="deleteNoteModal" v-model="deleteNoteModal" max-width="300"
     ><v-card>
-      <div class="bg-primary px-5 py-3 text-h6">Deleting Note</div>
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">
+        Deleting Note
+      </div>
       <v-card-text>
         <p>Are you sure you want to delete this note?</p>
         <b>{{ noteRef.title }}</b>
@@ -231,7 +234,7 @@
   ></v-dialog>
   <v-dialog v-if="viewNoteModal" v-model="viewNoteModal" max-width="1000"
     ><v-card>
-      <div class="bg-primary px-5 py-3 text-h6">
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">
         <div>{{ noteRef.title }}</div>
       </div>
       <v-card-text class="mx-n2 mb-2">

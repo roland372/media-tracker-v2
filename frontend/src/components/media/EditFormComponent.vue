@@ -2,8 +2,10 @@
   <v-dialog max-width="500">
     <template v-slot:default>
       <v-card max-width="500">
-        <div class="bg-primary px-5 py-3 text-h6">{{ title }}</div>
-        <v-card-text class="">
+        <div class="bg-primary-light text-color px-5 py-3 text-h6">
+          {{ title }}
+        </div>
+        <v-card-text>
           <!--? ANIME -->
           <section v-if="props.mediaType === EMediaType.ANIME" class="mb-n12">
             <v-text-field
@@ -105,7 +107,11 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="animeRef.favourites" hide-details />
             </section>
-            <ButtonText @click="handleSubmitEditAnime" text="Edit" />
+            <ButtonText
+              @click="handleSubmitEditAnime"
+              color="yellow"
+              text="Update"
+            />
           </section>
 
           <!--? MANGA -->
@@ -231,7 +237,11 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="mangaRef.favourites" hide-details />
             </section>
-            <ButtonText @click="handleSubmitEditManga" text="Edit" />
+            <ButtonText
+              @click="handleSubmitEditManga"
+              color="yellow"
+              text="Update"
+            />
           </section>
 
           <!--? GAMES -->
@@ -325,7 +335,11 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="gameRef.favourites" hide-details />
             </section>
-            <ButtonText @click="handleSubmitEditGame" text="Edit" />
+            <ButtonText
+              @click="handleSubmitEditGame"
+              color="yellow"
+              text="Update"
+            />
           </section>
 
           <!--? CHARACTERS -->
@@ -401,7 +415,11 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="characterRef.favourites" hide-details />
             </section>
-            <ButtonText @click="handleSubmitEditCharacter" text="Edit" />
+            <ButtonText
+              @click="handleSubmitEditCharacter"
+              color="yellow"
+              text="Update"
+            />
           </section>
         </v-card-text>
         <v-card-actions class="d-flex justify-space-around"> </v-card-actions>

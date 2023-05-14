@@ -13,8 +13,12 @@
       :text="snackbarText"
     />
     <section class="d-sm-flex align-center justify-center">
-      <ButtonText @click="formDialog = !formDialog" text="Add Anime" />
-      <div class="px-3">
+      <ButtonText
+        @click="formDialog = !formDialog"
+        color="indigo"
+        text="Add Anime"
+      />
+      <div class="px-3 text-color">
         <p>or</p>
       </div>
       <v-text-field
@@ -23,6 +27,7 @@
         @click:clear="handleClearAnimeSearch"
         @keydown.enter="handleFetchAnimeSearch"
         append-inner-icon="mdi-magnify"
+        class="text-color"
         clearable
         density="compact"
         hide-details="auto"

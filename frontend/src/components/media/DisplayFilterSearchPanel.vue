@@ -3,6 +3,7 @@
     <div>
       <ButtonIcon
         @click="handleDisplayClick"
+        color="indigo"
         :icon="displayFlag === 'table' ? 'mdi-view-grid' : 'mdi-table'"
         icon-size="25"
       />
@@ -34,6 +35,7 @@
       @click:clear="handleSearchClear"
       @input="handleMediaSearch"
       clearable
+      class="text-color"
       density="compact"
       hide-details="auto"
       :label="`${

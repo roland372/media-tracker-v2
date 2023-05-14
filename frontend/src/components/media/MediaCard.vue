@@ -58,7 +58,7 @@
     />
     <v-dialog v-if="deleteDialog" v-model="deleteDialog" width="auto">
       <v-card max-width="250">
-        <div class="bg-primary px-5 py-3 text-h6">
+        <div class="bg-primary-light text-color px-5 py-3 text-h6">
           Deleting
           {{
             props.mediaType === EMediaType.CHARACTER

@@ -22,6 +22,7 @@
       v-if="allMedia && media.length > 20"
       @click="displayMedia"
       class="mt-3"
+      color="indigo"
       :append-icon="
         displayMediaFlag === 20 ? 'mdi-arrow-down-bold' : 'mdi-arrow-up-bold'
       "

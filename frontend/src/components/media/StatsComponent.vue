@@ -1,6 +1,6 @@
 <template>
   <CardComponent :title="`${mediaType} Stats`">
-    <section v-for="(item, index) in progress" :key="index">
+    <section v-for="(item, index) in progress" :key="index" class="text-color">
       <v-progress-linear
         :color="item.color"
         height="20"
@@ -10,7 +10,7 @@
         ></v-progress-linear
       >
     </section>
-    <section v-if="mediaType !== EMediaType.CHARACTER">
+    <section v-if="mediaType !== EMediaType.CHARACTER" class="text-color">
       <br />
       <section class="d-flex justify-space-between">
         <div><b>Days:</b> {{ totalDays }}</div>
@@ -21,7 +21,7 @@
       </section>
     </section>
     <br />
-    <section class="d-sm-flex justify-space-between">
+    <section class="d-sm-flex justify-space-between text-color">
       <section class="text-start mb-3 mb-xs-0">
         <div
           v-for="(item, index) in status"

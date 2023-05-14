@@ -2,7 +2,9 @@
   <v-dialog width="auto">
     <template v-slot:default>
       <v-card max-width="250">
-        <div class="bg-primary px-5 py-3 text-h6">{{ title }}</div>
+        <div class="bg-primary-light text-color px-5 py-3 text-h6">
+          {{ title }}
+        </div>
         <v-card-text class="ms-n5 my-n3">
           <!--? ANIME -->
           <v-card-text v-if="mediaType === EMediaType.ANIME">
@@ -70,7 +72,7 @@
         <v-card-actions class="d-flex justify-space-around">
           <ButtonText
             @click="viewClick"
-            color="blue"
+            color="indigo"
             text="View"
             variant="flat"
           />

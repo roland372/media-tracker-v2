@@ -1,6 +1,6 @@
 <template>
   <v-layout class="mb-10 pb-10">
-    <v-app-bar app color="white">
+    <v-app-bar app class="nav-bg-color">
       <template v-slot:append>
         <router-link to="/profile">
           <img
@@ -11,13 +11,27 @@
             style="width: 40px"
           />
         </router-link>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer" v-if="!mdAndUp" />
+        <v-app-bar-nav-icon
+          @click.stop="drawer = !drawer"
+          v-if="!mdAndUp"
+          color="white"
+          size="x-large"
+          :ripple="false"
+          variant="plain"
+        />
       </template>
       <v-btn to="/" :active="false" :ripple="false" size="x-large">
-        <v-app-bar-title class="mx-n3"> Media-Tracker </v-app-bar-title>
+        <v-app-bar-title class="mx-n3 text-color">
+          Media-Tracker
+        </v-app-bar-title>
       </v-btn>
-      <v-list class="d-flex justify-start align-center" v-if="mdAndUp">
+      <v-list
+        class="d-flex justify-start align-center bg-secondary-medium"
+        v-if="mdAndUp"
+      >
         <v-list-item
+          active-class="active-nav-link-color"
+          class="text-color"
           :to="link.url"
           v-for="(link, index) in filteredLinks"
           :key="index"
@@ -34,29 +48,31 @@
         </router-link>
       </v-list>
     </v-app-bar>
-    <v-navigation-drawer app v-model="drawer" location="end" temporary>
-      <v-list-item>
-        <v-list-item-title class="text-h6"> Learning Vuetify</v-list-item-title>
-        <v-list-item-subtitle> Using Navigation drawers</v-list-item-subtitle>
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+      class="bg-primary-medium text-color"
+      location="end"
+      temporary
+    >
+      <v-list-item to="/" class="sidebar-header-bg-color">
+        <v-list-item-title class="text-h6 py-3">Home</v-list-item-title>
       </v-list-item>
-      <v-divider></v-divider>
-      <!-- <v-list dense nav>
-        <v-list-item v-for="item in items" :key="item.title" link>
-          <v-icon>{{ item.icon }}</v-icon>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list> -->
-      <v-list dense nav>
-        <v-list-item
-          v-for="(link, index) in filteredLinks"
-          :key="index"
-          :to="link.url"
-        >
-          <v-list-item-title>
-            {{ link.text }}
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
+      <div class="sidebar-item-bg-color">
+        <v-list dense nav color="blue">
+          <v-list-item
+            active-class="active-sidebar-link-color"
+            class="sidebar-bg-color"
+            v-for="(link, index) in filteredLinks"
+            :key="index"
+            :to="link.url"
+          >
+            <v-list-item-title>
+              {{ link.text }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </div>
     </v-navigation-drawer>
   </v-layout>
 </template>
@@ -95,3 +111,29 @@ const drawer = ref<boolean>(false);
 //   { title: "Settings", icon: "mdi-cog" },
 // ];
 </script>
+<style scoped>
+.nav-bg-color {
+  background-color: var(--bg-secondary-medium);
+  border-bottom: 3px solid var(--bg-secondary-light);
+}
+
+.sidebar-bg-color {
+  background-color: var(--bg-secondary-medium);
+}
+
+.sidebar-header-bg-color {
+  background-color: var(--bg-primary-dark);
+}
+
+.sidebar-item-bg-color {
+  background-color: var(--bg-primary-medium);
+}
+
+.active-nav-link-color {
+  background-color: var(--bg-primary-light);
+  border-radius: 10%;
+}
+.active-sidebar-link-color {
+  background-color: var(--bg-primary-light);
+}
+</style>

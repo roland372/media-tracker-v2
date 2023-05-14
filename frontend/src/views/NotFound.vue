@@ -1,12 +1,12 @@
 <template>
   <CardComponent title="Not Found"
     ><div class="d-flex align-center justify-center page-container">
-      <div>
+      <div class="text-color">
         <div class="text-h3">Oops!</div>
         <br />
         <h3>The page you are looking for was not found.</h3>
         <router-link to="/">
-          <ButtonText class="mt-3" text="Return Home" />
+          <ButtonText class="mt-3" color="indigo" text="Return Home" />
         </router-link>
       </div></div
   ></CardComponent>

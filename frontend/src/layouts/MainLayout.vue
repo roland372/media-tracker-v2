@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-orange page-container">
+  <section class="bg-primary-dark page-container">
     <NavbarComponent v-if="googleUser" />
     <v-layout>
       <v-container class="text-center rounded">

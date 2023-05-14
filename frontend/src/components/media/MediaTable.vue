@@ -170,3 +170,14 @@ interface IMediaTableProps {
 
 defineProps<IMediaTableProps>();
 </script>
+<style>
+th {
+  background-color: var(--bg-primary-dark) !important;
+  color: var(--text-color) !important;
+}
+
+table {
+  background-color: var(--bg-secondary-medium);
+  color: var(--text-color);
+}
+</style>

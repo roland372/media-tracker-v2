@@ -2,8 +2,10 @@
   <v-dialog max-width="500">
     <template v-slot:default>
       <v-card max-width="500">
-        <div class="bg-primary px-5 py-3 text-h6">{{ title }}</div>
-        <v-card-text class="">
+        <div class="bg-primary-light text-color px-5 py-3 text-h6">
+          {{ title }}
+        </div>
+        <v-card-text>
           <!--? ANIME -->
           <section v-if="props.mediaType === EMediaType.ANIME" class="mb-n12">
             <v-text-field
@@ -105,7 +107,11 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="newAnime.favourites" hide-details />
             </section>
-            <ButtonText @click="handleSubmitAddAnime" text="Add" />
+            <ButtonText
+              @click="handleSubmitAddAnime"
+              color="green"
+              text="Add"
+            />
           </section>
 
           <!--? MANGA -->
@@ -231,7 +237,11 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="newManga.favourites" hide-details />
             </section>
-            <ButtonText @click="handleSubmitAddManga" text="Add" />
+            <ButtonText
+              @click="handleSubmitAddManga"
+              color="green"
+              text="Add"
+            />
           </section>
 
           <!--? GAMES -->
@@ -325,7 +335,7 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="newGame.favourites" hide-details />
             </section>
-            <ButtonText @click="handleSubmitAddGame" text="Add" />
+            <ButtonText @click="handleSubmitAddGame" color="green" text="Add" />
           </section>
 
           <!--? CHARACTERS -->
@@ -401,7 +411,11 @@
               <div>Add to Favourites?</div>
               <v-checkbox v-model="newCharacter.favourites" hide-details />
             </section>
-            <ButtonText @click="handleSubmitAddCharacter" text="Add" />
+            <ButtonText
+              @click="handleSubmitAddCharacter"
+              color="green"
+              text="Add"
+            />
           </section>
         </v-card-text>
         <v-card-actions class="d-flex justify-space-around"> </v-card-actions>

@@ -4,6 +4,7 @@
       <ButtonText
         @click="handleOpenAddEmoteModal"
         class="me-2"
+        color="indigo"
         text="Add Emote"
       />
       <ButtonText
@@ -26,7 +27,7 @@
         }}</v-tooltip>
         <div
           @click="handleEmoteClick(emote.url)"
-          class="bg-white pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded image-hover"
+          class="bg-primary-dark pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded image-hover"
         >
           <img :src="emote.url" :alt="emote.name" style="height: 64px" />
           <v-icon
@@ -44,7 +45,7 @@
       v-model="emoteSearch"
       @click:clear="() => (emoteSearch = '')"
       clearable
-      class="mb-2"
+      class="mb-2 text-color"
       density="compact"
       hide-details="auto"
       label="Search for an Emote"
@@ -61,7 +62,7 @@
           emote.name
         }}</v-tooltip>
         <div
-          class="bg-white pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded"
+          class="bg-primary-dark pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded"
         >
           <div>
             <div @click="handleEmoteClick(emote.url)" class="image-hover">
@@ -102,6 +103,7 @@
       v-if="emotes.length > 20"
       @click="displayEmotes"
       class="mt-3"
+      color="indigo"
       :append-icon="
         displayEmotesFlag === 20 ? 'mdi-arrow-down-bold' : 'mdi-arrow-up-bold'
       "
@@ -110,7 +112,7 @@
   </HeaderComponent>
   <v-dialog v-if="addEmoteModal" v-model="addEmoteModal" max-width="500"
     ><v-card>
-      <div class="bg-primary px-5 py-3 text-h6">Add Emote</div>
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Emote</div>
       <v-card-text>
         <v-text-field
           v-model="newEmote.name"
@@ -138,7 +140,7 @@
       <v-card-actions class="d-flex justify-start ms-4 mb-2">
         <ButtonText
           @click="handleSubmitAddEmote"
-          color="yellow"
+          color="green"
           text="Add Emote"
           variant="flat"
         />
@@ -146,7 +148,9 @@
   ></v-dialog>
   <v-dialog v-if="editEmoteModal" v-model="editEmoteModal" max-width="500"
     ><v-card>
-      <div class="bg-primary px-5 py-3 text-h6">Edit Emote</div>
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">
+        Edit Emote
+      </div>
       <v-card-text>
         <img
           :src="emoteRef.url"
@@ -181,14 +185,16 @@
         <ButtonText
           @click="handleSubmitEditEmote"
           color="yellow"
-          text="Edit Emote"
+          text="Update Emote"
           variant="flat"
         />
       </v-card-actions> </v-card
   ></v-dialog>
   <v-dialog v-if="deleteEmoteModal" v-model="deleteEmoteModal" max-width="300"
     ><v-card>
-      <div class="bg-primary px-5 py-3 text-h6">Deleting Emote</div>
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">
+        Deleting Emote
+      </div>
       <v-card-text>
         <p>Are you sure you want to delete this emote?</p>
         <img

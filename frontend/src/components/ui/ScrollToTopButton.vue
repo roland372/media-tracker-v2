@@ -2,10 +2,11 @@
   <ButtonIcon
     v-if="isVisible"
     @click="scrollToTop"
-    icon="mdi-arrow-up"
     button-size="small"
-    icon-size="x-large"
     class="fixed-button"
+    color="indigo"
+    icon="mdi-arrow-up"
+    icon-size="x-large"
   />
 </template>
 <script setup lang="ts">

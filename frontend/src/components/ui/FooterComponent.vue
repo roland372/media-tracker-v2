@@ -1,7 +1,6 @@
 <template>
   <v-layout>
-    <!-- <v-footer border class="mt-3 pa-3 position-fixed w-100" -->
-    <v-footer class="pa-3 bg-yellow"
+    <v-footer class="pa-3 bg-secondary-medium text-color footer-border"
       ><p>© {{ new Date().getFullYear() }} Media-Tracker</p></v-footer
     >
   </v-layout>
@@ -11,5 +10,6 @@
   bottom: 0;
   position: absolute;
   width: 100%;
+  border-top: 3px solid var(--bg-secondary-light);
 }
 </style>

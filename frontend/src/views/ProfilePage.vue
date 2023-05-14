@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Profile">
     <section>
-      <h3 class="mb-4 pt-2">Welcome {{ userRef.email }}</h3>
+      <h3 class="mb-4 pt-2 text-color">Welcome {{ userRef.email }}</h3>
       <section class="d-sm-flex mx-md-16 px-md-16">
         <main
           :style="{ backgroundColor: userRef.color }"
@@ -22,7 +22,9 @@
             </p>
           </div>
         </main>
-        <aside class="bg-grey px-5 pt-2 pb-5 v-col-sm-8 rounded-b">
+        <aside
+          class="bg-primary-dark text-color px-5 pt-2 pb-5 v-col-sm-8 rounded-b"
+        >
           <section>
             <h3>Information</h3>
             <hr />
@@ -66,7 +68,7 @@
             </div>
           </section>
           <section>
-            <h3>Backup</h3>
+            <h3>Export Data</h3>
             <hr />
             <div class="d-flex align-center justify-start flex-wrap py-3">
               <ButtonText
@@ -96,7 +98,7 @@
               <ButtonText
                 :on-click="handleLogout"
                 class="me-2 mt-2"
-                color="blue"
+                color="indigo"
                 size="small"
                 text="Log Out"
               />
@@ -107,7 +109,9 @@
     </section>
     <v-dialog v-if="settingsModal" v-model="settingsModal" max-width="500">
       <v-card>
-        <div class="bg-primary px-5 py-3 text-h6">Edit Profile</div>
+        <div class="bg-primary-light text-color px-5 py-3 text-h6">
+          Edit Profile
+        </div>
         <v-card-text>
           <v-text-field
             v-model="userRef.username"
@@ -233,42 +237,42 @@ const mediaType = [
 const backupButtons = [
   {
     class: "me-2 mt-2",
-    color: "blue",
+    color: "indigo",
     data: anime.value,
     size: "small",
     text: "Anime",
   },
   {
     class: "me-2 mt-2",
-    color: "grey",
+    color: "green",
     data: manga.value,
     size: "small",
     text: "Manga",
   },
   {
     class: "me-2 mt-2",
-    color: "yellow",
+    color: "amber",
     data: games.value,
     size: "small",
     text: "Games",
   },
   {
     class: "me-2 mt-2",
-    color: "pink",
+    color: "red",
     data: characters.value,
     size: "small",
     text: "Characters",
   },
   {
     class: "me-2 mt-2",
-    color: "orange",
+    color: "white",
     data: emotes.value,
     size: "small",
     text: "Emotes",
   },
   {
     class: "mt-2",
-    color: "green",
+    color: "cyan",
     data: notes.value,
     size: "small",
     text: "Notes",
@@ -276,10 +280,20 @@ const backupButtons = [
 ];
 
 const colorThemeButtons = [
-  { class: "me-2 mt-2", color: "blue", size: "small", text: "Blue" },
-  { class: "me-2 mt-2", color: "grey", size: "small", text: "Gray" },
-  { class: "me-2 mt-2", color: "yellow", size: "small", text: "Beige" },
-  { class: "mt-2", color: "pink", size: "small", text: "Random" },
+  { class: "me-2 mt-2", color: "indigo", size: "small", text: "Blue" },
+  { class: "me-2 mt-2", color: "grey-darken-3", size: "small", text: "Gray" },
+  {
+    class: "me-2 mt-2",
+    color: "amber-darken-1",
+    size: "small",
+    text: "Beige",
+  },
+  {
+    class: "mt-2 bg-rainbow",
+    color: "pink",
+    size: "small",
+    text: "Random",
+  },
 ];
 
 const handleOpenSettings = () => {
