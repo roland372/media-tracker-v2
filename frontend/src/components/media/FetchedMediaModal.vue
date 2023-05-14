@@ -4,7 +4,7 @@
     @click:outside="handleCloseModal"
     max-width="500"
     ><v-card>
-      <div class="bg-primary px-5 py-3 text-h6">
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">
         {{ title }}
       </div>
       <v-card-text>
@@ -13,13 +13,13 @@
       <v-card-actions class="d-flex justify-start ms-2 mb-2">
         <ButtonText
           @click="submitClick"
-          color="yellow"
+          color="green"
           text="Add"
           variant="flat"
         />
         <ButtonText
           @click="viewMoreClick"
-          color="green"
+          color="indigo"
           text="View More"
           variant="flat"
         />
