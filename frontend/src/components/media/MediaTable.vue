@@ -1,7 +1,10 @@
 <template>
   <CardComponent :title="title">
     <slot></slot>
-    <h3 v-if="!media.length && mediaType === EMediaType.ANIME">
+    <h3
+      v-if="!media.length && mediaType === EMediaType.ANIME"
+      class="text-color"
+    >
       Not found any items.
     </h3>
     <v-table
@@ -39,7 +42,10 @@
         </tr>
       </tbody>
     </v-table>
-    <h3 v-if="!media.length && mediaType === EMediaType.GAME">
+    <h3
+      v-if="!media.length && mediaType === EMediaType.GAME"
+      class="text-color"
+    >
       Not found any items.
     </h3>
     <v-table
@@ -75,7 +81,10 @@
         </tr>
       </tbody>
     </v-table>
-    <h3 v-if="!media.length && mediaType === EMediaType.MANGA">
+    <h3
+      v-if="!media.length && mediaType === EMediaType.MANGA"
+      class="text-color"
+    >
       Not found any items.
     </h3>
     <v-table
@@ -115,7 +124,10 @@
         </tr>
       </tbody>
     </v-table>
-    <h3 v-if="!media.length && mediaType === EMediaType.CHARACTER">
+    <h3
+      v-if="!media.length && mediaType === EMediaType.CHARACTER"
+      class="text-color"
+    >
       Not found any items.
     </h3>
     <v-table

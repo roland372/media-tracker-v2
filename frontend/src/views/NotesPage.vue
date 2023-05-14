@@ -9,7 +9,7 @@
       />
       <ButtonText color="yellow" text="Settings" />
     </section>
-    <h3 v-if="!notes.length">Not found any items.</h3>
+    <h3 v-if="!notes.length" class="text-color">Not found any items.</h3>
     <section v-else class="v-row my-1">
       <div
         v-for="note in orderBy(notes, ['lastModified'], ['desc'])"

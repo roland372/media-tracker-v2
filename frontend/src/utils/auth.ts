@@ -18,17 +18,42 @@ export const logout = async () => {
 //? only if logged in
 export const getUserData = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/login/success", {
-      withCredentials: true,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
-      },
-    });
+    const sessionID = localStorage.getItem("sessionID");
+    const googleId = localStorage.getItem("googleId");
 
-    return response.data.user;
-    // return response.data.user.email;
+    //? no session in localStorage
+    if (!sessionID && !googleId) {
+      const response = await axios.get("http://localhost:5000/login/success", {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      });
+
+      localStorage.setItem("sessionID", response.data.sessionID);
+      localStorage.setItem("googleId", response.data.user.googleId);
+
+      return response.data.user;
+    } else {
+      //? session in LocalStorage - send back session and user and validate them
+      const response = await axios.get("http://localhost:5000/login/success", {
+        withCredentials: true,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+          sessionID,
+          googleId,
+        },
+      });
+
+      localStorage.setItem("sessionID", response.data.sessionID);
+      localStorage.setItem("googleId", response.data.user.googleId);
+
+      return response.data.user;
+    }
   } catch (error) {
     console.error(error);
     throw error;

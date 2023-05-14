@@ -15,7 +15,9 @@
     </section>
   </HeaderComponent>
   <HeaderComponent v-if="!isEditing" title="Favourite Emotes">
-    <h3 v-if="!favouriteEmotes.length">Not found any items.</h3>
+    <h3 v-if="!favouriteEmotes.length" class="text-color">
+      Not found any items.
+    </h3>
     <section v-else class="d-flex flex-wrap justify-space-between">
       <div
         v-for="emote in favouriteEmotes"
@@ -51,7 +53,7 @@
       label="Search for an Emote"
       variant="outlined"
     />
-    <h3 v-if="!allEmotes.length" class="">Not found any items.</h3>
+    <h3 v-if="!allEmotes.length" class="text-color">Not found any items.</h3>
     <section v-else class="d-flex flex-wrap justify-space-between">
       <div
         v-for="emote in allEmotes"
