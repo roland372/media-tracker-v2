@@ -1,7 +1,7 @@
 <template>
   <v-img
     @click="dialog = !dialog"
-    class="rounded"
+    class="rounded image-hover"
     cover
     :src="media.imageURL"
     :style="{

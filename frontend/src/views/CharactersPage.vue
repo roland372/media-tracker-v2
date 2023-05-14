@@ -40,7 +40,7 @@
         <v-img
           @click="handleOpenFetchCharacterModal(item)"
           :src="item.images.jpg.image_url"
-          class="rounded media-img-card"
+          class="rounded media-img-card image-hover"
           cover
         />
       </section>

@@ -355,8 +355,4 @@ const handleEmoteClick = (url: string): void => {
   right: 5px;
   top: 5px;
 }
-
-.image-hover {
-  cursor: pointer;
-}
 </style>

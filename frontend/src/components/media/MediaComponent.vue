@@ -65,6 +65,9 @@ const displayMedia = () => {
   grid-template-columns: repeat(12, auto);
   grid-gap: 10px;
 }
+.image-hover {
+  cursor: pointer;
+}
 @media (max-width: 3250px) {
   .media-img-card {
     height: 275px;
