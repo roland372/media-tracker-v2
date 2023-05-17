@@ -17,7 +17,7 @@ const { fetchAllMedia, fetchUser, setLoading, setGoogleUser } = mediaStore;
 const { isLoading, googleUser } = storeToRefs(mediaStore);
 
 onMounted(async () => {
-  console.log("APP MOUNTED");
+  // console.log("APP MOUNTED");
   setDefaultTheme();
   try {
     setGoogleUser(await getUserData());
