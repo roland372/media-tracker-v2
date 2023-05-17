@@ -1,14 +1,17 @@
 import { Request, Response } from "express";
 import passport, { Profile } from "passport";
+import dotenv from 'dotenv';
 import Session from "../db/models/Session";
 import User from "../db/models/User";
 
+dotenv.config();
+
 const authUser = passport.authenticate('google', { scope: ['email', 'profile'] });
 
-const CLIENT_URL = "http://localhost:8080";
+const CLIENT_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_CLIENT_URL_DEVELOPMENT : process.env.NODE_CLIENT_URL
 
 const googleCallback = passport.authenticate('google', {
-	successRedirect: CLIENT_URL,
+	successRedirect: CLIENT_URL!,
 	failureRedirect: '/login/failure',
 	scope: ['email', 'profile'],
 });

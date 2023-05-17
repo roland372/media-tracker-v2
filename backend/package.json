@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec ts-node index.ts"
+    "start": "set NODE_ENV=production && nodemon --exec ts-node index.ts",
+    "test": "set NODE_ENV=production && nodemon --exec ts-node index.ts",
+    "dev": "set NODE_ENV=development && nodemon --exec ts-node index.ts"
   },
   "keywords": [],
   "author": "",

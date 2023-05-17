@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 export const gameResolvers = {
 	Query: {
 		async getAllGames<T>(_: T, __: T, context: TContext) {
-			// console.log("hello", context.userFromContext[0].email);
 			return await Game.find({ owner: context.userFromContext[0].email }).sort({ title: "asc" });
 		},
 		async getSingleGame<T>(_: T, { ID }: TGame) {

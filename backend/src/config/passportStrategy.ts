@@ -8,10 +8,12 @@ import { Request } from 'express';
 
 dotenv.config();
 
+const CALLBACK_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_CALLBACK_URL_DEVELOPMENT : process.env.NODE_CALLBACK_URL
+
 passport.use(new GoogleStrategy({
   clientID: process.env.NODE_GOOGLE_CLIENT_ID,
   clientSecret: process.env.NODE_GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.NODE_CALLBACK_URL,
+  callbackURL: CALLBACK_URL,
   passReqToCallback: true
 },
   function <T>(_: Request, __: T, ___: T, profile: Profile, done: DoneCallback) {

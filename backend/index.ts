@@ -22,7 +22,16 @@ import MongoStore from 'connect-mongo';
 require('../backend/src/config/passportStrategy');
 
 dotenv.config();
-const PORT = 5000;
+
+console.log(colors.blue.bold(process.env.NODE_ENV!.trim()));
+
+const PORT = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GRAPHQL_PORT_DEVELOPMENT : process.env.NODE_GRAPHQL_PORT;
+
+const CLIENT_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_CLIENT_URL_DEVELOPMENT : process.env.NODE_CLIENT_URL;
+
+const SERVER_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_SERVER_URL_DEVELOPMENT : process.env.NODE_SERVER_URL;
+
+const MONGODB_URI = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_MONGODB_URI_DEVELOPMENT : process.env.NODE_MONGODB_URI;
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -46,12 +55,12 @@ const startServer = async (): Promise<void> => {
 		secret: "mySession",
 		resave: false,
 		saveUninitialized: false,
-		store: MongoStore.create({ mongoUrl: process.env.NODE_MONGODB_URI }),
+		store: MongoStore.create({ mongoUrl: MONGODB_URI! }),
 	}));
 	app.use(passport.initialize());
 	app.use(passport.session());
 	app.use(cors({
-		origin: ["http://localhost:8080", "http://localhost:5000"],
+		origin: [CLIENT_URL!, SERVER_URL!],
 		methods: "GET,POST,PUT,DELETE",
 		credentials: true,
 	}));
