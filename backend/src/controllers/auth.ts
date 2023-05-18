@@ -27,7 +27,12 @@ const authSuccess = async (req: Request, res: Response) => {
 	const sessionFromDB = await Session.findById(sessionID);
 	const userFromDB = await User.findOne({ googleId });
 
+	console.log("req", req.user);
+	console.log("sessionID", sessionID);
+	console.log("googleId", googleId);
+
 	if (req.user) {
+		console.log("IF");
 		res.status(200).json({
 			success: true,
 			message: 'SUCCESS',
@@ -37,6 +42,7 @@ const authSuccess = async (req: Request, res: Response) => {
 		});
 	}
 	else if (sessionFromDB && userFromDB) {
+		console.log("ELSE IF");
 		res.status(200).json({
 			success: true,
 			message: 'SUCCESS',
@@ -46,6 +52,7 @@ const authSuccess = async (req: Request, res: Response) => {
 		});
 	}
 	else {
+		console.log("ELSE");
 		res.status(401).json({
 			success: false,
 			message: 'FAILURE',
