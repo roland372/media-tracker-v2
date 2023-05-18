@@ -52,7 +52,7 @@ const server = new ApolloServer({
 });
 
 const startServer = async (): Promise<void> => {
-	await databaseConnector();
+	// await databaseConnector();
 
 	await server.start();
 
