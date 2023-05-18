@@ -17,8 +17,15 @@ const errorLink = onError((err) => {
   }
 });
 
+const SERVER_URL =
+  process.env.NODE_ENV?.trim() === "development"
+    ? process.env.VUE_APP_SERVER_URL_DEVELOPMENT
+    : process.env.VUE_APP_SERVER_URL;
+
+console.log("SERVER_URL", SERVER_URL);
+
 const httpLink = createHttpLink({
-  uri: "http://localhost:5000",
+  uri: SERVER_URL,
 });
 
 const cache = new InMemoryCache();

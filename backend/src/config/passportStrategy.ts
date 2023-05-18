@@ -8,9 +8,9 @@ import { Request } from 'express';
 
 dotenv.config();
 
-// const GOOGLE_CALLBACK_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GOOGLE_CALLBACK_URL_DEVELOPMENT : process.env.NODE_GOOGLE_CALLBACK_URL;
+const GOOGLE_CALLBACK_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GOOGLE_CALLBACK_URL_DEVELOPMENT : process.env.NODE_GOOGLE_CALLBACK_URL;
 
-const GOOGLE_CALLBACK_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GOOGLE_CALLBACK_URL_DEVELOPMENT : process.env.NODE_GOOGLE_CALLBACK_URL_DEVELOPMENT;
+// const GOOGLE_CALLBACK_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GOOGLE_CALLBACK_URL_DEVELOPMENT : process.env.NODE_GOOGLE_CALLBACK_URL_DEVELOPMENT;
 
 passport.use(new GoogleStrategy({
   clientID: process.env.NODE_GOOGLE_CLIENT_ID,

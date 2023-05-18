@@ -32,12 +32,14 @@ export const logout = async () => {
 
 //? only if logged in
 export const getUserData = async () => {
+  console.log("hello");
   try {
     const sessionID = localStorage.getItem("sessionID");
     const googleId = localStorage.getItem("googleId");
 
     //? no session in localStorage
     if (!sessionID && !googleId) {
+      console.log("if (!sessionID && !googleId)");
       const response = await axios.get(LOGIN_SUCCESS_URL as string, {
         withCredentials: true,
         headers: {
@@ -47,12 +49,15 @@ export const getUserData = async () => {
         },
       });
 
+      console.log("RESPONSE", response);
+
       localStorage.setItem("sessionID", response.data.sessionID);
       localStorage.setItem("googleId", response.data.user.googleId);
 
       return response.data.user;
     } else {
       //? session in LocalStorage - send back session and user and validate them
+      console.log("else");
       const response = await axios.get(LOGIN_SUCCESS_URL as string, {
         withCredentials: true,
         headers: {
@@ -63,6 +68,8 @@ export const getUserData = async () => {
           googleId,
         },
       });
+
+      console.log("RESPONSE", response);
 
       localStorage.setItem("sessionID", response.data.sessionID);
       localStorage.setItem("googleId", response.data.user.googleId);
