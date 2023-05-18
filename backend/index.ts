@@ -25,7 +25,8 @@ dotenv.config();
 
 console.log(colors.blue.bold(process.env.NODE_ENV!.trim()));
 
-const PORT = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GRAPHQL_PORT_DEVELOPMENT : process.env.NODE_GRAPHQL_PORT;
+// const PORT = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GRAPHQL_PORT_DEVELOPMENT : process.env.NODE_GRAPHQL_PORT;
+const PORT = process.env.PORT || 5000;
 
 const CLIENT_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_CLIENT_URL_DEVELOPMENT : process.env.NODE_CLIENT_URL;
 
