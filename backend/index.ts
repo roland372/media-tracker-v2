@@ -18,7 +18,7 @@ import MongoStore from 'connect-mongo';
 import authRoute from "./src/routes/auth";
 import User from "./src/db/models/User";
 import shield from "./src/utils/permissions";
-require("./src/config/passportStrategy");
+// require("./src/config/passportStrategy");
 
 // import authRoute from '../backend/src/routes/auth';
 // import User from '../backend/src/db/models/User';
@@ -63,14 +63,14 @@ const startServer = async (): Promise<void> => {
 	// 	saveUninitialized: false,
 	// 	store: MongoStore.create({ mongoUrl: MONGODB_URI! }),
 	// }));
-	app.use(passport.initialize());
-	app.use(passport.session());
+	// app.use(passport.initialize());
+	// app.use(passport.session());
 	// app.use(cors({
 	// 	origin: [CLIENT_URL!, SERVER_URL!],
 	// 	methods: "GET,POST,PUT,DELETE",
 	// 	credentials: true,
 	// }));
-	app.use("/", authRoute);
+	// app.use("/", authRoute);
 	app.use(
 		'/',
 		cors<cors.CorsRequest>(),
