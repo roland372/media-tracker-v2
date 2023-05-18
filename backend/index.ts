@@ -70,7 +70,7 @@ const startServer = async (): Promise<void> => {
 	// 	methods: "GET,POST,PUT,DELETE",
 	// 	credentials: true,
 	// }));
-	// app.use("/", authRoute);
+	app.use("/", authRoute);
 	app.use(
 		'/',
 		cors<cors.CorsRequest>(),
