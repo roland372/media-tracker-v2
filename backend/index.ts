@@ -14,12 +14,17 @@ import { databaseConnector } from './src/db/connector';
 import { typeDefs } from './src/graphql/typeDefs';
 import { resolvers } from './src/graphql/resolvers';
 import passport from "passport";
-import authRoute from '../backend/src/routes/auth';
-import User from '../backend/src/db/models/User';
-import shield from '../backend/src/utils/permissions';
 import MongoStore from 'connect-mongo';
+import authRoute from "./src/routes/auth";
+import User from "./src/db/models/User";
+import shield from "./src/utils/permissions";
+require("./src/config/passportStrategy");
 
-require('../backend/src/config/passportStrategy');
+// import authRoute from '../backend/src/routes/auth';
+// import User from '../backend/src/db/models/User';
+// import shield from '../backend/src/utils/permissions';
+// require('../backend/src/config/passportStrategy');
+
 
 dotenv.config();
 
