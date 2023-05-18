@@ -30,7 +30,7 @@ dotenv.config();
 
 console.log(colors.blue.bold(process.env.NODE_ENV!.trim()));
 
-const PORT = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GRAPHQL_PORT_DEVELOPMENT : process.env.NODE_GRAPHQL_PORT;
+// const PORT = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GRAPHQL_PORT_DEVELOPMENT : process.env.NODE_GRAPHQL_PORT;
 // const PORT = process.env.PORT || 5000;
 
 const CLIENT_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_CLIENT_URL_DEVELOPMENT : process.env.NODE_CLIENT_URL;
@@ -83,9 +83,9 @@ const startServer = async (): Promise<void> => {
 		}),
 	);
 
-	await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
+	await new Promise<void>((resolve) => httpServer.listen({ port: "0.0.0.0" }, resolve));
 
-	console.log(colors.magenta.bold(`index.ts 🚀 GraphQL Server ready at port : ${PORT}`));
+	// console.log(colors.magenta.bold(`index.ts 🚀 GraphQL Server ready at port : ${PORT}`));
 
 };
 startServer();
