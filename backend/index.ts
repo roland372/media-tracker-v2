@@ -28,16 +28,16 @@ require("./src/config/passportStrategy");
 
 dotenv.config();
 
-console.log(colors.blue.bold(process.env.NODE_ENV!.trim()));
+// console.log(colors.blue.bold(process.env.NODE_ENV!.trim()));
 
 // const PORT = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GRAPHQL_PORT_DEVELOPMENT : process.env.NODE_GRAPHQL_PORT;
 // const PORT = process.env.PORT || 5000;
 
-const CLIENT_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_CLIENT_URL_DEVELOPMENT : process.env.NODE_CLIENT_URL;
+// const CLIENT_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_CLIENT_URL_DEVELOPMENT : process.env.NODE_CLIENT_URL;
 
-const SERVER_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_SERVER_URL_DEVELOPMENT : process.env.NODE_SERVER_URL;
+// const SERVER_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_SERVER_URL_DEVELOPMENT : process.env.NODE_SERVER_URL;
 
-const MONGODB_URI = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_MONGODB_URI_DEVELOPMENT : process.env.NODE_MONGODB_URI;
+// const MONGODB_URI = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_MONGODB_URI_DEVELOPMENT : process.env.NODE_MONGODB_URI;
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -56,20 +56,20 @@ const startServer = async (): Promise<void> => {
 
 	await server.start();
 
-	app.use(session({
-		name: "qid",
-		secret: "mySession",
-		resave: false,
-		saveUninitialized: false,
-		store: MongoStore.create({ mongoUrl: MONGODB_URI! }),
-	}));
+	// app.use(session({
+	// 	name: "qid",
+	// 	secret: "mySession",
+	// 	resave: false,
+	// 	saveUninitialized: false,
+	// 	store: MongoStore.create({ mongoUrl: MONGODB_URI! }),
+	// }));
 	app.use(passport.initialize());
 	app.use(passport.session());
-	app.use(cors({
-		origin: [CLIENT_URL!, SERVER_URL!],
-		methods: "GET,POST,PUT,DELETE",
-		credentials: true,
-	}));
+	// app.use(cors({
+	// 	origin: [CLIENT_URL!, SERVER_URL!],
+	// 	methods: "GET,POST,PUT,DELETE",
+	// 	credentials: true,
+	// }));
 	app.use("/", authRoute);
 	app.use(
 		'/',
