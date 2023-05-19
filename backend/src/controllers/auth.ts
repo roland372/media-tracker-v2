@@ -30,7 +30,7 @@ const authSuccess = async (req: Request, res: Response) => {
 	// console.log("req", req);
 	console.log("sessionID", sessionID);
 	console.log("googleId", googleId);
-	// console.log("req.headers.user", req.headers);
+	console.log("req.user", req.user);
 
 	if (req.user) {
 		console.log("IF");
