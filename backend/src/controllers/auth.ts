@@ -72,7 +72,7 @@ const authSuccess = async (req: Request, res: Response) => {
 	console.log("sessionID", sessionID);
 	console.log("googleId", googleId);
 	console.log("req.user", req.user);
-	console.log("req.cookies", req.cookies);
+	console.log("req.cookies", req);
 
 	if (req.cookies) {
 		console.log("IF");
