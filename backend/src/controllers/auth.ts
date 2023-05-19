@@ -74,7 +74,7 @@ const authSuccess = async (req: Request, res: Response) => {
 	console.log("req.user", req.user);
 
 	if (req.user) {
-		console.log("IF");
+		console.log("authSuccess IF req.user");
 		res.status(200).json({
 			success: true,
 			message: 'SUCCESS',
@@ -84,7 +84,7 @@ const authSuccess = async (req: Request, res: Response) => {
 		});
 	}
 	else if (sessionFromDB && userFromDB) {
-		console.log("ELSE IF");
+		console.log("authSuccess ELSE IF sessionFromDB && userFromDB");
 		res.status(200).json({
 			success: true,
 			message: 'SUCCESS',
@@ -94,7 +94,7 @@ const authSuccess = async (req: Request, res: Response) => {
 		});
 	}
 	else {
-		console.log("ELSE");
+		console.log("authSuccess ELSE");
 		res.status(401).json({
 			success: false,
 			message: 'FAILURE',
