@@ -80,7 +80,7 @@ const authSuccess = async (req: Request, res: Response) => {
 			message: 'SUCCESS',
 			user: req.user,
 			sessionID: req.sessionID,
-			cookies: req.cookies,
+			// cookies: req.cookies,
 		});
 	}
 	else if (sessionFromDB && userFromDB) {
