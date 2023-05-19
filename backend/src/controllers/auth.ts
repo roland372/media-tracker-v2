@@ -73,6 +73,7 @@ const authSuccess = async (req: Request, res: Response) => {
 	console.log("sessionID", sessionID);
 	console.log("googleId", googleId);
 	console.log("req.user", req.user);
+	console.log("req.sessionID", req.sessionID);
 
 	if (req.headers.user) {
 		console.log("authSuccess IF req.user");
