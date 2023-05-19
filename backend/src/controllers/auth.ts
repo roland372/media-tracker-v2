@@ -20,6 +20,47 @@ const authFailure = <T>(_: T, res: Response) => {
 	res.send('failed to authenticate');
 };
 
+// const authSuccess = async (req: Request, res: Response) => {
+// 	const sessionID = req.headers.sessionid;
+// 	const googleId = req.headers.googleid;
+
+// 	const sessionFromDB = await Session.findById(sessionID);
+// 	const userFromDB = await User.findOne({ googleId });
+
+// 	// console.log("req", req);
+// 	console.log("sessionID", sessionID);
+// 	console.log("googleId", googleId);
+// 	console.log("req.user", req.user);
+
+// 	if (req.user) {
+// 		console.log("IF");
+// 		res.status(200).json({
+// 			success: true,
+// 			message: 'SUCCESS',
+// 			user: req.user,
+// 			sessionID: req.sessionID,
+// 			cookies: req.cookies,
+// 		});
+// 	}
+// 	else if (sessionFromDB && userFromDB) {
+// 		console.log("ELSE IF");
+// 		res.status(200).json({
+// 			success: true,
+// 			message: 'SUCCESS',
+// 			user: userFromDB,
+// 			sessionID: sessionFromDB._id,
+// 			cookies: req.cookies,
+// 		});
+// 	}
+// 	else {
+// 		console.log("ELSE");
+// 		res.status(401).json({
+// 			success: false,
+// 			message: 'FAILURE',
+// 		});
+// 	}
+// }
+
 const authSuccess = async (req: Request, res: Response) => {
 	const sessionID = req.headers.sessionid;
 	const googleId = req.headers.googleid;
@@ -31,8 +72,9 @@ const authSuccess = async (req: Request, res: Response) => {
 	console.log("sessionID", sessionID);
 	console.log("googleId", googleId);
 	console.log("req.user", req.user);
+	console.log("req.cookies", req.cookies);
 
-	if (req.user) {
+	if (req.cookies) {
 		console.log("IF");
 		res.status(200).json({
 			success: true,
