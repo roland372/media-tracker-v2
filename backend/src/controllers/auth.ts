@@ -74,7 +74,7 @@ const authSuccess = async (req: Request, res: Response) => {
 	console.log("googleId", googleId);
 	console.log("req.user", req.user);
 
-	if (req.user) {
+	if (req.headers.user) {
 		console.log("authSuccess IF req.user");
 		res.status(200).json({
 			success: true,
