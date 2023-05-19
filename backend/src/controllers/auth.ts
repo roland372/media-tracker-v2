@@ -69,6 +69,7 @@ const authSuccess = async (req: Request, res: Response) => {
 	const userFromDB = await User.findOne({ googleId });
 
 	// console.log("req", req);
+	console.log("req.headers", req.headers);
 	console.log("sessionID", sessionID);
 	console.log("googleId", googleId);
 	console.log("req.user", req.user);
