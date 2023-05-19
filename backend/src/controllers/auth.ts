@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import passport, { Profile } from "passport";
 import dotenv from 'dotenv';
-import Session from "../db/models/Session";
 import User from "../db/models/User";
+import { CallbackError } from "mongoose";
 
 dotenv.config();
 
@@ -20,69 +20,47 @@ const authFailure = <T>(_: T, res: Response) => {
 	res.send('failed to authenticate');
 };
 
-// const authSuccess = async (req: Request, res: Response) => {
-// 	const sessionID = req.headers.sessionid;
-// 	const googleId = req.headers.googleid;
-
-// 	const sessionFromDB = await Session.findById(sessionID);
-// 	const userFromDB = await User.findOne({ googleId });
-
-// 	// console.log("req", req);
-// 	console.log("sessionID", sessionID);
-// 	console.log("googleId", googleId);
-// 	console.log("req.user", req.user);
-
-// 	if (req.user) {
-// 		console.log("IF");
-// 		res.status(200).json({
-// 			success: true,
-// 			message: 'SUCCESS',
-// 			user: req.user,
-// 			sessionID: req.sessionID,
-// 			cookies: req.cookies,
-// 		});
-// 	}
-// 	else if (sessionFromDB && userFromDB) {
-// 		console.log("ELSE IF");
-// 		res.status(200).json({
-// 			success: true,
-// 			message: 'SUCCESS',
-// 			user: userFromDB,
-// 			sessionID: sessionFromDB._id,
-// 			cookies: req.cookies,
-// 		});
-// 	}
-// 	else {
-// 		console.log("ELSE");
-// 		res.status(401).json({
-// 			success: false,
-// 			message: 'FAILURE',
-// 		});
-// 	}
-// }
-
 const authSuccess = async (req: Request, res: Response) => {
-	const googleId = req.headers.googleid;
-	const userFromDB = await User.findOne({ googleId });
+	//? check if user exists in db
+	if (req.headers.user) {
+		const userFromClient = JSON.parse(req.headers.user as string);
+		let user = await User.findOne({ googleId: userFromClient.googleId });
 
-	console.log("req.headers", req.headers);
-	console.log("googleId", googleId);
-	console.log("req.user", req.user);
-	console.log("req.sessionID", req.sessionID);
-	console.log("req.cookies", req.cookies);
+		if (!user) {
+			user = new User({
+				email: userFromClient.email,
+				googleId: userFromClient.googleId,
+				profileImg: userFromClient.profileImg,
+				username: userFromClient.username,
+			})
 
-	// if (req.headers.user) {
-	// 	console.log("authSuccess IF req.user");
-	// 	res.status(200).json({
-	// 		success: true,
-	// 		message: 'SUCCESS',
-	// 		user: req.headers.user,
-	// 		sessionID: req.sessionID,
-	// 		cookies: req.cookies,
-	// 	});
-	// }
-	if (userFromDB) {
-		console.log("authSuccess ELSE IF sessionFromDB && userFromDB");
+			user.save((err: CallbackError) => {
+				if (err) {
+					console.error("user.save() ERROR", err);
+					throw err;
+				}
+			});
+		};
+
+		res.status(200).json({
+			success: true,
+			message: 'SUCCESS',
+			user: user,
+			sessionID: req.sessionID,
+			cookies: req.cookies,
+		});
+	}
+	//? user already exists in db
+	else if (req.headers.googleid) {
+		const googleId = req.headers.googleid;
+		const userFromDB = await User.findOne({ googleId });
+
+		if (!userFromDB) {
+			return res.status(401).json({
+				success: false,
+				message: 'FAILURE',
+			});
+		}
 		res.status(200).json({
 			success: true,
 			message: 'SUCCESS',
@@ -92,7 +70,6 @@ const authSuccess = async (req: Request, res: Response) => {
 		});
 	}
 	else {
-		console.log("authSuccess ELSE");
 		res.status(401).json({
 			success: false,
 			message: 'FAILURE',

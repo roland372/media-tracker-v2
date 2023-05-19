@@ -22,8 +22,6 @@ const SERVER_URL =
     ? process.env.VUE_APP_SERVER_URL_DEVELOPMENT
     : process.env.VUE_APP_SERVER_URL;
 
-console.log("SERVER_URL", SERVER_URL);
-
 const httpLink = createHttpLink({
   uri: SERVER_URL,
 });

@@ -9,7 +9,6 @@ import MainLayout from "@/layouts/MainLayout.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { getUserData } from "@/utils/auth";
-// import router from "@/router";
 import { setDefaultTheme } from "@/utils/themes";
 
 const mediaStore = useMediaStore();
@@ -20,10 +19,12 @@ onMounted(async () => {
   // console.log("APP MOUNTED");
   setDefaultTheme();
   try {
+    const googleId = localStorage.getItem("googleId");
+
+    if (!googleId) setLoading(false);
     setGoogleUser(await getUserData());
   } catch (error) {
     setLoading(false);
-    // router.push("/login");
   }
   if (googleUser.value) {
     await fetchUser(googleUser.value.email, googleUser.value._id);

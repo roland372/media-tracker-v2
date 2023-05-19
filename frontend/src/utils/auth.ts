@@ -2,11 +2,6 @@ import axios from "axios";
 import { decodeCredential, CallbackTypes } from "vue3-google-login";
 import router from "@/router";
 
-const GOOGLE_CALLBACK_URL =
-  process.env.NODE_ENV?.trim() === "development"
-    ? process.env.VUE_APP_GOOGLE_CALLBACK_DEVELOPMENT
-    : process.env.VUE_APP_GOOGLE_CALLBACK;
-
 const LOGOUT_URL =
   process.env.NODE_ENV?.trim() === "development"
     ? process.env.VUE_APP_LOGOUT_URL_DEVELOPMENT
@@ -17,14 +12,15 @@ const LOGIN_SUCCESS_URL =
     ? process.env.VUE_APP_LOGIN_SUCCESS_URL_DEVELOPMENT
     : process.env.VUE_APP_LOGIN_SUCCESS_URL;
 
-// export const login = async () => {
-//   window.open(GOOGLE_CALLBACK_URL, "_self");
-// };
-
 export const login: CallbackTypes.CredentialCallback = async (cbRes) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const userData: any = decodeCredential(cbRes.credential);
-  console.log("response", cbRes);
-  console.log("userData", userData);
+  const user = {
+    email: userData.email,
+    googleId: userData.sub,
+    profileImg: userData.picture,
+    username: userData.name,
+  };
 
   const response = await axios.get(LOGIN_SUCCESS_URL as string, {
     withCredentials: true,
@@ -32,14 +28,12 @@ export const login: CallbackTypes.CredentialCallback = async (cbRes) => {
       Accept: "application/json",
       "Content-Type": "application/json",
       "Access-Control-Allow-Credentials": true,
-      googleId: userData.sub,
+      user: JSON.stringify(user),
     },
   });
 
   localStorage.setItem("googleId", response.data.user.googleId);
-
-  router.push("/");
-  // return response.data.user;
+  return window.open("/", "_self");
 };
 
 export const logout = async () => {
@@ -77,26 +71,7 @@ export const getUserData = async () => {
     router.push("/login");
   } catch (error) {
     console.error(error);
+    router.push("/login");
     throw error;
   }
 };
-
-// export const getUserData = async () => {
-//   try {
-//     const response = await axios.get(
-//       "https://media-tracker-v2-production.up.railway.app/login/success",
-//       {
-//         withCredentials: true,
-//         headers: {
-//           Accept: "application/json",
-//           "Content-Type": "application/json",
-//           "Access-Control-Allow-Credentials": true,
-//         },
-//       }
-//     );
-//     console.log("response", response);
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// };
