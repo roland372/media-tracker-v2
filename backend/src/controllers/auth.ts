@@ -74,7 +74,7 @@ const authSuccess = async (req: Request, res: Response) => {
 	console.log("req.user", req.user);
 	console.log("req.cookies", req);
 
-	if (req.cookies) {
+	if (req.user) {
 		console.log("IF");
 		res.status(200).json({
 			success: true,
