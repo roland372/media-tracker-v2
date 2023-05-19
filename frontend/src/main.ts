@@ -6,6 +6,7 @@ import { loadFonts } from "./plugins/webfontloader";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import { apolloClient } from "@/graphql";
 import router from "./router";
+import vue3GoogleLogin from "vue3-google-login";
 
 const pinia = createPinia();
 
@@ -19,4 +20,11 @@ const app = createApp({
   render: () => h(App),
 });
 
-app.use(pinia).use(vuetify).use(router).mount("#app");
+app
+  .use(pinia)
+  .use(vue3GoogleLogin, {
+    clientId: process.env.VUE_APP_GOOGLE_CLIENT_ID,
+  })
+  .use(vuetify)
+  .use(router)
+  .mount("#app");

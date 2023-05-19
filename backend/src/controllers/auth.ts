@@ -62,37 +62,32 @@ const authFailure = <T>(_: T, res: Response) => {
 // }
 
 const authSuccess = async (req: Request, res: Response) => {
-	const sessionID = req.headers.sessionid;
 	const googleId = req.headers.googleid;
-
-	const sessionFromDB = await Session.findById(sessionID);
 	const userFromDB = await User.findOne({ googleId });
 
-	// console.log("req", req);
 	console.log("req.headers", req.headers);
-	console.log("sessionID", sessionID);
 	console.log("googleId", googleId);
 	console.log("req.user", req.user);
 	console.log("req.sessionID", req.sessionID);
 	console.log("req.cookies", req.cookies);
 
-	if (req.headers.user) {
-		console.log("authSuccess IF req.user");
-		res.status(200).json({
-			success: true,
-			message: 'SUCCESS',
-			user: req.user,
-			sessionID: req.sessionID,
-			cookies: req.cookies,
-		});
-	}
-	else if (sessionFromDB && userFromDB) {
+	// if (req.headers.user) {
+	// 	console.log("authSuccess IF req.user");
+	// 	res.status(200).json({
+	// 		success: true,
+	// 		message: 'SUCCESS',
+	// 		user: req.headers.user,
+	// 		sessionID: req.sessionID,
+	// 		cookies: req.cookies,
+	// 	});
+	// }
+	if (userFromDB) {
 		console.log("authSuccess ELSE IF sessionFromDB && userFromDB");
 		res.status(200).json({
 			success: true,
 			message: 'SUCCESS',
 			user: userFromDB,
-			sessionID: sessionFromDB._id,
+			sessionID: req.sessionID,
 			cookies: req.cookies,
 		});
 	}

@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Login">
     <div class="page-container d-flex align-center justify-center">
-      <button @click="login" class="google-button">
+      <!-- <button @click="login" class="google-button">
         <span class="google-icon">
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
@@ -9,12 +9,14 @@
           />
         </span>
         Sign in with Google
-      </button>
+      </button> -->
+      <GoogleLogin :callback="login" />
     </div>
   </HeaderComponent>
 </template>
 <script setup lang="ts">
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import { GoogleLogin } from "vue3-google-login";
 import { login } from "@/utils/auth";
 </script>
 <style scoped>
