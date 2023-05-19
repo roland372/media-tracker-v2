@@ -18,7 +18,7 @@ passport.use(new GoogleStrategy({
   callbackURL: GOOGLE_CALLBACK_URL,
   passReqToCallback: true
 },
-  function <T>(req: Request, __: T, ___: T, profile: Profile, done: DoneCallback) {
+  function <T>(req: any, __: T, ___: T, profile: Profile, done: DoneCallback) {
     User.findOne({ googleId: profile.id }, function (err: CallbackError, user: Document) {
       if (err) {
         console.log("User.findOne() ERROR", err);
@@ -43,7 +43,9 @@ passport.use(new GoogleStrategy({
         });
       } else {
         req.user = user;
-        console.log("USER", user);
+        req.headers.user = user;
+        console.log("req.user", req.user);
+        console.log("req.headers.user", req.headers.user);
         console.log("else passportStrategy");
         return done(err, user);
       }
