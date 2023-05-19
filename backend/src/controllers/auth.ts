@@ -27,9 +27,10 @@ const authSuccess = async (req: Request, res: Response) => {
 	const sessionFromDB = await Session.findById(sessionID);
 	const userFromDB = await User.findOne({ googleId });
 
-	console.log("req", req.user);
+	// console.log("req", req);
 	console.log("sessionID", sessionID);
 	console.log("googleId", googleId);
+	// console.log("req.headers.user", req.headers);
 
 	if (req.user) {
 		console.log("IF");

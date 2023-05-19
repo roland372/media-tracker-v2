@@ -43,6 +43,7 @@ passport.use(new GoogleStrategy({
         });
       } else {
         req.user = user;
+        console.log("USER", user);
         console.log("else passportStrategy");
         return done(err, user);
       }
