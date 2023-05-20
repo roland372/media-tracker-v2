@@ -41,7 +41,8 @@ export const logout = async () => {
   //   },
   // });
   localStorage.removeItem("googleId");
-  router.push("/login");
+  window.open("/login", "_self");
+  // router.push("/login");
 };
 
 //? only if logged in
