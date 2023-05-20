@@ -339,7 +339,6 @@ const handleSubmitEditProfile = () => {
 
 const handleLogout = async () => {
   await logout();
-  window.open("http://localhost:8080/login", "_self");
 };
 
 const handleDownloadMedia = (
