@@ -2,11 +2,6 @@ import axios from "axios";
 import { decodeCredential, CallbackTypes } from "vue3-google-login";
 import router from "@/router";
 
-const LOGOUT_URL =
-  process.env.NODE_ENV?.trim() === "development"
-    ? process.env.VUE_APP_LOGOUT_URL_DEVELOPMENT
-    : process.env.VUE_APP_LOGOUT_URL;
-
 const LOGIN_SUCCESS_URL =
   process.env.NODE_ENV?.trim() === "development"
     ? process.env.VUE_APP_LOGIN_SUCCESS_URL_DEVELOPMENT
@@ -37,15 +32,16 @@ export const login: CallbackTypes.CredentialCallback = async (cbRes) => {
 };
 
 export const logout = async () => {
-  await axios.get(LOGOUT_URL as string, {
-    withCredentials: true,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Credentials": true,
-    },
-  });
+  // await axios.get(LOGOUT_URL as string, {
+  //   withCredentials: true,
+  //   headers: {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json",
+  //     "Access-Control-Allow-Credentials": true,
+  //   },
+  // });
   localStorage.removeItem("googleId");
+  router.push("/login");
 };
 
 //? only if logged in
