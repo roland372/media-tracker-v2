@@ -192,7 +192,11 @@
         />
       </v-card-actions> </v-card
   ></v-dialog>
-  <v-dialog v-if="deleteEmoteModal" v-model="deleteEmoteModal" max-width="300"
+  <v-dialog
+    v-if="deleteEmoteModal"
+    v-model="deleteEmoteModal"
+    max-width="300"
+    class="delete-dialog-position"
     ><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         Deleting Emote
@@ -354,5 +358,8 @@ const handleEmoteClick = (url: string): void => {
   position: absolute;
   right: 5px;
   top: 5px;
+}
+.delete-dialog-position {
+  margin-top: -50vh;
 }
 </style>

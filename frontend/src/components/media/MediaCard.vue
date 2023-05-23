@@ -56,7 +56,12 @@
       :view-click="handleViewClick"
       v-model="dialog"
     />
-    <v-dialog v-if="deleteDialog" v-model="deleteDialog" width="auto">
+    <v-dialog
+      v-if="deleteDialog"
+      v-model="deleteDialog"
+      width="auto"
+      class="delete-dialog-position"
+    >
       <v-card max-width="250">
         <div class="bg-primary-light text-color px-5 py-3 text-h6">
           Deleting
@@ -281,5 +286,9 @@ const handleCloseModal = () => {
   position: absolute;
   left: 0;
   top: 20px;
+}
+
+.delete-dialog-position {
+  margin-top: -50vh;
 }
 </style>

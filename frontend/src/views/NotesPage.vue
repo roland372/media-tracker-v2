@@ -208,7 +208,11 @@
         />
       </v-card-actions> </v-card
   ></v-dialog>
-  <v-dialog v-if="deleteNoteModal" v-model="deleteNoteModal" max-width="300"
+  <v-dialog
+    v-if="deleteNoteModal"
+    v-model="deleteNoteModal"
+    max-width="300"
+    class="delete-dialog-position"
     ><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         Deleting Note
@@ -365,4 +369,8 @@ onMounted(() => {
   setStyle();
 });
 </script>
-<style scoped></style>
+<style scoped>
+.delete-dialog-position {
+  margin-top: -50vh;
+}
+</style>
