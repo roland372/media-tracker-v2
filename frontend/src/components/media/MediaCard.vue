@@ -90,6 +90,7 @@
       v-if="formDialog"
       v-model="formDialog"
       @edit="handleCloseModal"
+      @close="formDialog = !formDialog"
       :media="media"
       :media-type="mediaType"
       :title="`Edit ${mediaType}`"

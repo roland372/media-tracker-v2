@@ -4,6 +4,7 @@
       v-if="formDialog"
       v-model="formDialog"
       @submit="handleSubmit"
+      @close="formDialog = !formDialog"
       :media-type="EMediaType.GAME"
       :title="`Add ${EMediaType.GAME}`"
     />

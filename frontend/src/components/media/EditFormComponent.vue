@@ -2,8 +2,18 @@
   <v-dialog max-width="500">
     <template v-slot:default>
       <v-card max-width="500">
-        <div class="bg-primary-light text-color px-5 py-3 text-h6">
+        <div
+          class="d-flex justify-space-between align-center bg-primary-light text-color px-5 py-3 text-h6"
+        >
           {{ title }}
+          <ButtonIcon
+            @click="handleCloseModal"
+            class="me-n3"
+            icon="mdi-close"
+            icon-color="white"
+            icon-size="large"
+            variant="text"
+          />
         </div>
         <v-card-text>
           <!--? ANIME -->
@@ -441,6 +451,7 @@ import {
   characterGender,
 } from "@/utils/mediaUtils";
 import ButtonText from "../ui/ButtonText.vue";
+import ButtonIcon from "../ui/ButtonIcon.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import {
   TAnime,
@@ -463,7 +474,7 @@ interface IFormComponentProps {
 }
 
 const props = defineProps<IFormComponentProps>();
-const emit = defineEmits(["edit"]);
+const emit = defineEmits(["edit", "close"]);
 
 const mediaStore = useMediaStore();
 const {
@@ -568,6 +579,10 @@ const handleSubmitEditCharacter = async () => {
   });
   await submitEditCharacter(characterRef.value._id, updatedCharacter);
   emit("edit");
+};
+
+const handleCloseModal = () => {
+  emit("close");
 };
 
 onMounted(() => {
