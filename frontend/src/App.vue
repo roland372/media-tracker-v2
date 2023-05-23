@@ -100,4 +100,34 @@ onMounted(async () => {
 .link-color {
   color: var(--text-color);
 }
+
+@media (max-width: 480px) {
+  html {
+    font-size: 0.75rem !important;
+  }
+}
+
+@media (min-width: 480px) {
+  html {
+    font-size: 0.8rem !important;
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 0.85rem !important;
+  }
+}
+
+@media (min-width: 992px) {
+  html {
+    font-size: 0.9rem !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  html {
+    font-size: 1rem !important;
+  }
+}
 </style>
