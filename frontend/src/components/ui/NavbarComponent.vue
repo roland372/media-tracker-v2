@@ -1,30 +1,32 @@
 <template>
   <v-layout class="mb-10 pb-10">
+    <!--? NAVBAR -->
     <v-app-bar app class="nav-bg-color">
-      <template v-slot:append>
-        <router-link to="/profile">
-          <img
-            v-if="!mdAndUp"
-            alt="Avatar"
-            class="rounded-circle ms-2 mt-2"
-            :src="userFromDB?.profileImg"
-            style="width: 40px"
-          />
-        </router-link>
-        <v-app-bar-nav-icon
-          @click.stop="drawer = !drawer"
-          v-if="!mdAndUp"
-          color="white"
-          size="x-large"
-          :ripple="false"
-          variant="plain"
-        />
-      </template>
       <v-btn to="/" :active="false" :ripple="false" size="x-large">
         <v-app-bar-title class="mx-n3 text-color">
           Media-Tracker
         </v-app-bar-title>
       </v-btn>
+
+      <template v-slot:append>
+        <section v-if="!mdAndUp" class="d-flex align-center justify-center">
+          <router-link to="/profile">
+            <img
+              alt="Avatar"
+              class="rounded-circle ms-2 mt-2"
+              :src="userFromDB?.profileImg"
+              style="width: 40px"
+            />
+          </router-link>
+          <v-app-bar-nav-icon
+            @click.stop="drawer = !drawer"
+            color="white"
+            size="x-large"
+            :ripple="false"
+            variant="plain"
+          />
+        </section>
+      </template>
       <v-list
         class="d-flex justify-start align-center bg-secondary-medium"
         v-if="mdAndUp"
@@ -38,16 +40,19 @@
         >
           {{ link.text }}
         </v-list-item>
-        <router-link to="/profile">
-          <img
-            alt="Avatar"
-            class="rounded-circle ms-2 mt-2"
-            :src="userFromDB?.profileImg"
-            style="width: 48px"
-          />
-        </router-link>
       </v-list>
+      <v-spacer></v-spacer>
+      <router-link v-if="mdAndUp" to="/profile">
+        <img
+          alt="Avatar"
+          class="rounded-circle ms-2 mt-2"
+          :src="userFromDB?.profileImg"
+          style="width: 48px"
+        />
+      </router-link>
     </v-app-bar>
+
+    <!--? SIDEBAR -->
     <v-navigation-drawer
       v-model="drawer"
       app
@@ -55,7 +60,7 @@
       location="end"
       temporary
     >
-      <v-list-item to="/" class="sidebar-header-bg-color">
+      <v-list-item :active="false" to="/" class="sidebar-header-bg-color">
         <v-list-item-title class="text-h6 py-3">Home</v-list-item-title>
       </v-list-item>
       <div class="sidebar-item-bg-color">
@@ -105,11 +110,6 @@ const {
   // lgAndUp
 } = useDisplay();
 const drawer = ref<boolean>(false);
-// const items = [
-//   { title: "Dashboard", icon: "mdi-view-dashboard" },
-//   { title: "Account", icon: "mdi-account-box" },
-//   { title: "Settings", icon: "mdi-cog" },
-// ];
 </script>
 <style scoped>
 .nav-bg-color {
