@@ -12,6 +12,7 @@
       density="compact"
       fixed-header
       height="500px"
+      class="bg-blue"
       ><thead class="text-left">
         <tr>
           <th>#</th>
@@ -188,7 +189,9 @@ th {
   color: var(--text-color) !important;
 }
 
-table {
+table,
+v-table,
+.v-table__wrapper {
   background-color: var(--bg-secondary-medium);
   color: var(--text-color);
 }
