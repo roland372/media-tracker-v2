@@ -74,7 +74,7 @@
                 variant="text"
               />
               <ButtonIcon
-                @click="handleOpenDeleteNoteModal(note._id)"
+                @click="handleOpenDeleteNoteModal(note._id, note)"
                 icon="mdi-trash-can-outline"
                 icon-color="red-darken-4"
                 icon-size="small"
@@ -238,8 +238,18 @@
   ></v-dialog>
   <v-dialog v-if="viewNoteModal" v-model="viewNoteModal" max-width="1000"
     ><v-card>
-      <div class="bg-primary-light text-color px-5 py-3 text-h6">
+      <div
+        class="bg-primary-light text-color px-5 py-3 text-h6 d-flex justify-space-between align-center"
+      >
         <div>{{ noteRef.title }}</div>
+        <ButtonIcon
+          @click="viewNoteModal = false"
+          class="me-n3"
+          icon="mdi-close"
+          icon-color="white"
+          icon-size="large"
+          variant="text"
+        />
       </div>
       <v-card-text class="mx-n2 mb-2">
         <section>
@@ -314,8 +324,9 @@ const handleSubmitAddNote = async () => {
   newNote.title = "New Note";
 };
 
-const handleOpenDeleteNoteModal = (id: string) => {
+const handleOpenDeleteNoteModal = (id: string, note: TNote) => {
   deleteNoteModal.value = !deleteNoteModal.value;
+  noteRef.value = note;
   noteID.value = id;
 };
 const handleDeleteCancel = () => {

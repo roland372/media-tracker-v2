@@ -5,7 +5,7 @@
       <section class="d-sm-flex mx-md-16 px-md-16">
         <main
           :style="{ backgroundColor: userRef.color }"
-          class="py-5 px-7 v-col-sm-4 rounded-t"
+          class="py-5 px-7 v-col-sm-4 rounded"
         >
           <img
             alt="Avatar"
@@ -23,7 +23,7 @@
           </div>
         </main>
         <aside
-          class="bg-primary-dark text-color px-5 pt-2 pb-5 v-col-sm-8 rounded-b"
+          class="bg-primary-dark text-color px-5 pt-2 pb-5 v-col-sm-8 rounded"
         >
           <section>
             <h3>Information</h3>
@@ -117,8 +117,18 @@
     </section>
     <v-dialog v-if="settingsModal" v-model="settingsModal" max-width="500">
       <v-card>
-        <div class="bg-primary-light text-color px-5 py-3 text-h6">
+        <div
+          class="d-flex justify-space-between align-center bg-primary-light text-color px-5 py-3 text-h6"
+        >
           Edit Profile
+          <ButtonIcon
+            @click="handleOpenSettings"
+            class="me-n3"
+            icon="mdi-close"
+            icon-color="white"
+            icon-size="large"
+            variant="text"
+          />
         </div>
         <v-card-text>
           <v-text-field
@@ -175,7 +185,7 @@
           <div class="mt-n1">
             <small class="ms-3">Select Color</small>
             <div class="d-flex flex-wrap">
-              <v-color-picker v-model="userRef.color" hide-inputs />
+              <v-color-picker v-model="userRef.color" hide-inputs width="200" />
               <div class="ms-2">
                 <b>New color:</b>
                 <div :style="{ backgroundColor: userRef.color }" class="pa-1">
@@ -212,6 +222,7 @@ import {
 } from "@/types/index";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
+import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { logout } from "@/utils/auth";
