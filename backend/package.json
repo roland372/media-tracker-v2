@@ -4,10 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.ts",
-    "build": "npm install",
-    "test": "set NODE_ENV=production && nodemon --exec ts-node index.ts",
-    "dev": "set NODE_ENV=development && nodemon --exec ts-node index.ts"
+    "start": "node index.ts"
   },
   "keywords": [],
   "author": "",
