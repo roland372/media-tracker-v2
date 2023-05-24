@@ -6,8 +6,8 @@ const EmoteSchema: Schema = new Schema<TEmote>(
 	{
 		favourites: { type: Boolean, default: false },
 		id: { type: String, default: uuidv4() },
-		lastModified: { type: Number },
-		name: { type: String, required: true },
+		lastModified: { type: Number, index: true },
+		name: { type: String, required: true, index: true },
 		url: { type: String, required: true },
 	},
 	{ versionKey: false, collection: 'emotes' }
