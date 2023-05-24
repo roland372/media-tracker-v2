@@ -1,12 +1,12 @@
 export type TContext = {
 	userFromContext: TUser[];
-}
+};
 
 //? <----- User ----->
 export enum EUserRole {
 	ADMIN = "ADMIN",
 	USER = "USER",
-}
+};
 
 export type TUser = {
 	color: string;
@@ -17,7 +17,7 @@ export type TUser = {
 	profileImg: string;
 	role: EUserRole;
 	username: string;
-}
+};
 
 export type TUserInput = {
 	userInput: {
@@ -36,7 +36,7 @@ export enum EAnimeStatus {
 	ON_HOLD = 'On-Hold',
 	DROPPED = 'Dropped',
 	PLAN_TO_WATCH = 'Plan to Watch',
-}
+};
 
 export enum EAnimeType {
 	MOVIE = 'Movie',
@@ -44,7 +44,7 @@ export enum EAnimeType {
 	OVA = 'OVA',
 	SPECIAL = 'Special',
 	TV_SHOW = 'TV-Show',
-}
+};
 
 export type TAnime = {
 	episodesMax: number;
@@ -93,7 +93,7 @@ export enum EMangaStatus {
 	ON_HOLD = 'On-Hold',
 	DROPPED = 'Dropped',
 	PLAN_TO_READ = 'Plan to Read',
-}
+};
 
 export enum EMangaType {
 	DOUJINSHI = 'Doujinshi',
@@ -103,7 +103,7 @@ export enum EMangaType {
 	NOVEL = 'Novel',
 	ONE_SHOT = 'One-shot',
 	WEBTOON = 'Webtoon',
-}
+};
 
 export type TManga = {
 	chaptersMax: number;
@@ -156,12 +156,12 @@ export enum EGameStatus {
 	ON_HOLD = 'On-Hold',
 	DROPPED = 'Dropped',
 	PLAN_TO_PLAY = 'Plan to Play',
-}
+};
 
 export enum EGameType {
 	GAME = 'Game',
 	VISUAL_NOVEL = 'Visual Novel',
-}
+};
 
 export type TGame = {
 	favourites: boolean;
@@ -204,13 +204,13 @@ export enum ECharacterSource {
 	ANIME = 'Anime',
 	GAME = 'Game',
 	MANGA = 'Manga',
-}
+};
 
 export enum ECharacterGender {
 	FEMALE = 'Female',
 	MALE = 'Male',
 	OTHER = 'Other',
-}
+};
 
 export type TCharacter = {
 	favourites: boolean;
@@ -283,6 +283,62 @@ export type TNoteInput = {
 		lastModified: number;
 		note: string;
 		title: string;
+	};
+	ID: string;
+};
+
+//? <----- Movies ----->
+export enum EMovieStatus {
+	WATCHING = 'Watching',
+	COMPLETED = 'Completed',
+	ON_HOLD = 'On-Hold',
+	DROPPED = 'Dropped',
+	PLAN_TO_WATCH = 'Plan to Watch',
+};
+
+export enum EMovieType {
+	MOVIE = 'Movie',
+	TV_SHOW = 'TV-Show',
+};
+
+export type TMovie = {
+	episodesMax: number;
+	episodesMin: number;
+	favourites: boolean;
+	id: string;
+	ID: string;
+	imageURL: string;
+	lastModified: number;
+	link1: string;
+	link1Name: string;
+	link2: string;
+	link2Name: string;
+	owner: string;
+	rating: number;
+	seasonsMax: number;
+	seasonsMin: number;
+	status: EMovieStatus;
+	title: string;
+	type: EMovieType
+};
+
+export type TMovieInput = {
+	movieInput: {
+		episodesMax: number;
+		episodesMin: number;
+		favourites: boolean;
+		imageURL: string;
+		lastModified: number;
+		link1: string;
+		link1Name: string;
+		link2: string;
+		link2Name: string;
+		rating: number;
+		seasonsMax: number;
+		seasonsMin: number;
+		status: EMovieStatus;
+		title: string;
+		type: EMovieType
 	};
 	ID: string;
 };

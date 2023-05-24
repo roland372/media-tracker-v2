@@ -5,6 +5,7 @@ import { characterResolvers } from './characterResolvers';
 import { emoteResolvers } from './emoteResolvers';
 import { noteResolvers } from './noteResolvers';
 import { userResolvers } from './userResolvers';
+import { movieResolvers } from './movieResolvers';
 
 export const resolvers = [
 	animeResolvers,
@@ -14,4 +15,5 @@ export const resolvers = [
 	emoteResolvers,
 	noteResolvers,
 	userResolvers,
+	movieResolvers,
 ];

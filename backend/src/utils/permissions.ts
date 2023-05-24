@@ -31,6 +31,8 @@ export default shield({
     getAllNotes: isAuthenticated,
     getSingleNote: isAuthenticated,
     getSingleUser: isAuthenticated,
+    getAllMovies: isAuthenticated,
+    getSingleMovie: isAuthenticated,
   },
 
   Mutation: {
@@ -53,5 +55,8 @@ export default shield({
     deleteNote: isAuthenticated,
     editNote: isAuthenticated,
     editUser: isAuthenticated,
+    addMovie: isAuthenticated,
+    deleteMovie: isAuthenticated,
+    editMovie: isAuthenticated,
   },
 });
