@@ -18,334 +18,340 @@
         <v-card-text>
           <!--? ANIME -->
           <section v-if="props.mediaType === EMediaType.ANIME" class="mb-n12">
-            <v-text-field
-              v-model="newAnime.title"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Anime Title"
-              :rules="[(val) => !!val || 'Title is required.']"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newAnime.type"
-              class="mb-n3"
-              :items="animeType"
-              label="Select Type"
-              density="compact"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newAnime.link1Name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 1 Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newAnime.link1"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 1 URL"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newAnime.link2Name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 2 Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newAnime.link2"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 2 URL"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newAnime.imageURL"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Image URL"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newAnime.rating"
-              class="mb-n3"
-              :items="mediaRating"
-              label="Rating"
-              density="compact"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newAnime.status"
-              class="mb-n3"
-              :items="animeStatus"
-              label="Status"
-              density="compact"
-              variant="outlined"
-            />
-            <section class="d-flex align-center">
-              <div class="pe-2">Episodes</div>
+            <v-form validate-on="input" @submit.prevent="handleSubmitAddAnime">
               <v-text-field
-                v-model.number="newAnime.episodesMin"
+                v-model="newAnime.title"
+                class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Min"
-                maxlength="4"
-                style="max-width: 20%"
+                label="Anime Title"
+                :rules="stringRules"
+                variant="outlined"
+                required
+              />
+              <v-select
+                v-model="newAnime.type"
+                class="mb-n3"
+                :items="animeType"
+                label="Select Type"
+                density="compact"
                 variant="outlined"
               />
               <v-text-field
-                v-model.number="newAnime.episodesMax"
-                class="mx-2"
+                v-model="newAnime.link1Name"
+                class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Max"
-                maxlength="4"
-                style="max-width: 20%"
+                label="Link 1 Name"
                 variant="outlined"
               />
-            </section>
-            <section class="d-flex align-center">
-              <div>Add to Favourites?</div>
-              <v-checkbox v-model="newAnime.favourites" hide-details />
-            </section>
-            <ButtonText
-              @click="handleSubmitAddAnime"
-              color="green"
-              text="Add"
-            />
+              <v-text-field
+                v-model="newAnime.link1"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 1 URL"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newAnime.link2Name"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 2 Name"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newAnime.link2"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 2 URL"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newAnime.imageURL"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Image URL"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newAnime.rating"
+                class="mb-n3"
+                :items="mediaRating"
+                label="Rating"
+                density="compact"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newAnime.status"
+                class="mb-n3"
+                :items="animeStatus"
+                label="Status"
+                density="compact"
+                variant="outlined"
+              />
+              <section class="d-flex align-center me-n2">
+                <div class="pe-2">Episodes</div>
+                <v-text-field
+                  v-model.number="newAnime.episodesMin"
+                  density="compact"
+                  hide-details="auto"
+                  label="Min"
+                  maxlength="4"
+                  :rules="numberRules"
+                  style="max-width: 50%"
+                  variant="outlined"
+                />
+                <v-text-field
+                  v-model.number="newAnime.episodesMax"
+                  class="mx-2"
+                  density="compact"
+                  hide-details="auto"
+                  label="Max"
+                  maxlength="4"
+                  :rules="numberRules"
+                  style="max-width: 50%"
+                  variant="outlined"
+                />
+              </section>
+              <section class="d-flex align-center">
+                <div>Add to Favourites?</div>
+                <v-checkbox v-model="newAnime.favourites" hide-details />
+              </section>
+              <ButtonText type="submit" color="green" text="Add" />
+            </v-form>
           </section>
 
           <!--? MANGA -->
           <section v-if="props.mediaType === EMediaType.MANGA" class="mb-n12">
-            <v-text-field
-              v-model="newManga.title"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Manga Title"
-              :rules="[(val) => !!val || 'Title is required.']"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newManga.type"
-              class="mb-n3"
-              :items="mangaType"
-              label="Select Type"
-              density="compact"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newManga.link1Name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 1 Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newManga.link1"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 1 URL"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newManga.link2Name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 2 Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newManga.link2"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 2 URL"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newManga.imageURL"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Image URL"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newManga.rating"
-              class="mb-n3"
-              :items="mediaRating"
-              label="Rating"
-              density="compact"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newManga.status"
-              class="mb-n3"
-              :items="mangaStatus"
-              label="Status"
-              density="compact"
-              variant="outlined"
-            />
-            <section class="d-flex align-center">
-              <div class="pe-2">Chapters</div>
+            <v-form validate-on="input" @submit.prevent="handleSubmitAddManga">
               <v-text-field
-                v-model.number="newManga.chaptersMin"
+                v-model="newManga.title"
+                class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Min"
-                maxlength="4"
-                style="max-width: 20%"
+                label="Manga Title"
+                :rules="stringRules"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newManga.type"
+                class="mb-n3"
+                :items="mangaType"
+                label="Select Type"
+                density="compact"
                 variant="outlined"
               />
               <v-text-field
-                v-model.number="newManga.chaptersMax"
-                class="mx-2"
+                v-model="newManga.link1Name"
+                class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Max"
-                maxlength="4"
-                style="max-width: 20%"
-                variant="outlined"
-              />
-            </section>
-            <section class="d-flex align-center mt-3">
-              <div class="pe-2">Volumes</div>
-              <v-text-field
-                v-model.number="newManga.volumesMin"
-                density="compact"
-                hide-details="auto"
-                label="Min"
-                maxlength="4"
-                style="max-width: 20%"
+                label="Link 1 Name"
                 variant="outlined"
               />
               <v-text-field
-                v-model.number="newManga.volumesMax"
-                class="mx-2"
+                v-model="newManga.link1"
+                class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Max"
-                maxlength="4"
-                style="max-width: 20%"
+                label="Link 1 URL"
                 variant="outlined"
               />
-            </section>
-            <section class="d-flex align-center">
-              <div>Add to Favourites?</div>
-              <v-checkbox v-model="newManga.favourites" hide-details />
-            </section>
-            <ButtonText
-              @click="handleSubmitAddManga"
-              color="green"
-              text="Add"
-            />
+              <v-text-field
+                v-model="newManga.link2Name"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 2 Name"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newManga.link2"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 2 URL"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newManga.imageURL"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Image URL"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newManga.rating"
+                class="mb-n3"
+                :items="mediaRating"
+                label="Rating"
+                density="compact"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newManga.status"
+                class="mb-n3"
+                :items="mangaStatus"
+                label="Status"
+                density="compact"
+                variant="outlined"
+              />
+              <section class="d-flex align-center me-n2">
+                <div class="pe-2">Chapters</div>
+                <v-text-field
+                  v-model.number="newManga.chaptersMin"
+                  density="compact"
+                  hide-details="auto"
+                  label="Min"
+                  maxlength="4"
+                  :rules="numberRules"
+                  style="max-width: 50%"
+                  variant="outlined"
+                />
+                <v-text-field
+                  v-model.number="newManga.chaptersMax"
+                  class="mx-2"
+                  density="compact"
+                  hide-details="auto"
+                  label="Max"
+                  maxlength="4"
+                  :rules="numberRules"
+                  style="max-width: 50%"
+                  variant="outlined"
+                />
+              </section>
+              <section class="d-flex align-center mt-3 me-n2">
+                <div class="pe-2">Volumes</div>
+                <v-text-field
+                  v-model.number="newManga.volumesMin"
+                  density="compact"
+                  hide-details="auto"
+                  label="Min"
+                  maxlength="4"
+                  :rules="numberRules"
+                  style="max-width: 50%"
+                  variant="outlined"
+                />
+                <v-text-field
+                  v-model.number="newManga.volumesMax"
+                  class="mx-2"
+                  density="compact"
+                  hide-details="auto"
+                  label="Max"
+                  maxlength="4"
+                  :rules="numberRules"
+                  style="max-width: 50%"
+                  variant="outlined"
+                />
+              </section>
+              <section class="d-flex align-center">
+                <div>Add to Favourites?</div>
+                <v-checkbox v-model="newManga.favourites" hide-details />
+              </section>
+              <ButtonText color="green" type="submit" text="Add" />
+            </v-form>
           </section>
 
           <!--? GAMES -->
           <section v-if="props.mediaType === EMediaType.GAME" class="mb-n12">
-            <v-text-field
-              v-model="newGame.title"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Game Title"
-              :rules="[(val) => !!val || 'Title is required.']"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newGame.type"
-              class="mb-n3"
-              :items="gameType"
-              label="Select Type"
-              density="compact"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newGame.link1Name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 1 Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newGame.link1"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 1 URL"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newGame.link2Name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 2 Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newGame.link2"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 2 URL"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newGame.imageURL"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Image URL"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newGame.rating"
-              class="mb-n3"
-              :items="mediaRating"
-              label="Rating"
-              density="compact"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newGame.status"
-              class="mb-n3"
-              :items="gameStatus"
-              label="Status"
-              density="compact"
-              variant="outlined"
-            />
-            <section class="d-flex align-center">
-              <div class="pe-2">Playtime (Hours)</div>
+            <v-form validate-on="input" @submit.prevent="handleSubmitAddGame">
               <v-text-field
-                v-model.number="newGame.playtime"
+                v-model="newGame.title"
+                class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Playtime"
-                maxlength="4"
-                style="max-width: 20%"
+                label="Game Title"
+                :rules="stringRules"
                 variant="outlined"
               />
-            </section>
-            <section class="d-flex align-center">
-              <div>Add to Favourites?</div>
-              <v-checkbox v-model="newGame.favourites" hide-details />
-            </section>
-            <ButtonText @click="handleSubmitAddGame" color="green" text="Add" />
+              <v-select
+                v-model="newGame.type"
+                class="mb-n3"
+                :items="gameType"
+                label="Select Type"
+                density="compact"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newGame.link1Name"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 1 Name"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newGame.link1"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 1 URL"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newGame.link2Name"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 2 Name"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newGame.link2"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 2 URL"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newGame.imageURL"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Image URL"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newGame.rating"
+                class="mb-n3"
+                :items="mediaRating"
+                label="Rating"
+                density="compact"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newGame.status"
+                class="mb-n3"
+                :items="gameStatus"
+                label="Status"
+                density="compact"
+                variant="outlined"
+              />
+              <section class="d-flex align-center">
+                <div class="pe-2">Playtime (Hours)</div>
+                <v-text-field
+                  v-model.number="newGame.playtime"
+                  density="compact"
+                  hide-details="auto"
+                  label="Playtime"
+                  maxlength="4"
+                  :rules="numberRules"
+                  style="max-width: 50%"
+                  variant="outlined"
+                />
+              </section>
+              <section class="d-flex align-center">
+                <div>Add to Favourites?</div>
+                <v-checkbox v-model="newGame.favourites" hide-details />
+              </section>
+              <ButtonText color="green" type="submit" text="Add" />
+            </v-form>
           </section>
 
           <!--? CHARACTERS -->
@@ -353,309 +359,315 @@
             v-if="props.mediaType === EMediaType.CHARACTER"
             class="mb-n12"
           >
-            <v-text-field
-              v-model="newCharacter.name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Character Name"
-              :rules="[(val) => !!val || 'Name is required.']"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newCharacter.source"
-              class="mb-n3"
-              :items="characterSource"
-              label="Select Source"
-              density="compact"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newCharacter.gender"
-              class="mb-n3"
-              :items="characterGender"
-              label="Select Gender"
-              density="compact"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newCharacter.series"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Series Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newCharacter.hairColor"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Hair Color"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newCharacter.link1Name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newCharacter.link1"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link URL"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newCharacter.imageURL"
-              density="compact"
-              hide-details="auto"
-              label="Image URL"
-              variant="outlined"
-            />
-            <section class="d-flex align-center">
-              <div>Add to Favourites?</div>
-              <v-checkbox v-model="newCharacter.favourites" hide-details />
-            </section>
-            <ButtonText
-              @click="handleSubmitAddCharacter"
-              color="green"
-              text="Add"
-            />
+            <v-form
+              validate-on="input"
+              @submit.prevent="handleSubmitAddCharacter"
+            >
+              <v-text-field
+                v-model="newCharacter.name"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Character Name"
+                :rules="stringRules"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newCharacter.source"
+                class="mb-n3"
+                :items="characterSource"
+                label="Select Source"
+                density="compact"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newCharacter.gender"
+                class="mb-n3"
+                :items="characterGender"
+                label="Select Gender"
+                density="compact"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newCharacter.series"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Series Name"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newCharacter.hairColor"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Hair Color"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newCharacter.link1Name"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link Name"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newCharacter.link1"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link URL"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newCharacter.imageURL"
+                density="compact"
+                hide-details="auto"
+                label="Image URL"
+                variant="outlined"
+              />
+              <section class="d-flex align-center">
+                <div>Add to Favourites?</div>
+                <v-checkbox v-model="newCharacter.favourites" hide-details />
+              </section>
+              <ButtonText color="green" type="submit" text="Add" />
+            </v-form>
           </section>
 
           <!--? BOOKS -->
           <section v-if="props.mediaType === EMediaType.BOOK" class="mb-n12">
-            <v-text-field
-              v-model="newBook.title"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Title"
-              :rules="[(val) => !!val || 'Title is required.']"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newBook.author"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Author"
-              :rules="[(val) => !!val || 'Author is required.']"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newBook.genre"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Genre"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newBook.link1Name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 1 Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newBook.link1"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 1 URL"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newBook.link2Name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 2 Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newBook.link2"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 2 URL"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newBook.imageURL"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Image URL"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newBook.rating"
-              class="mb-n3"
-              :items="mediaRating"
-              label="Rating"
-              density="compact"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newBook.status"
-              class="mb-n3"
-              :items="bookStatus"
-              label="Status"
-              density="compact"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model.number="newBook.pages"
-              density="compact"
-              hide-details="auto"
-              label="Pages"
-              maxlength="4"
-              style="max-width: 20%"
-              variant="outlined"
-            />
-            <section class="d-flex align-center">
-              <div>Add to Favourites?</div>
-              <v-checkbox v-model="newBook.favourites" hide-details />
-            </section>
-            <ButtonText @click="handleSubmitAddBook" color="green" text="Add" />
+            <v-form validate-on="input" @submit.prevent="handleSubmitAddBook">
+              <v-text-field
+                v-model="newBook.title"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Title"
+                :rules="stringRules"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newBook.author"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Author"
+                :rules="stringRules"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newBook.genre"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Genre"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newBook.link1Name"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 1 Name"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newBook.link1"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 1 URL"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newBook.link2Name"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 2 Name"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newBook.link2"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 2 URL"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newBook.imageURL"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Image URL"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newBook.rating"
+                class="mb-n3"
+                :items="mediaRating"
+                label="Rating"
+                density="compact"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newBook.status"
+                class="mb-n3"
+                :items="bookStatus"
+                label="Status"
+                density="compact"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model.number="newBook.pages"
+                density="compact"
+                hide-details="auto"
+                label="Pages"
+                maxlength="4"
+                :rules="numberRules"
+                style="max-width: 50%"
+                variant="outlined"
+              />
+              <section class="d-flex align-center">
+                <div>Add to Favourites?</div>
+                <v-checkbox v-model="newBook.favourites" hide-details />
+              </section>
+              <ButtonText color="green" type="submit" text="Add" />
+            </v-form>
           </section>
 
           <!--? MOVIES -->
           <section v-if="props.mediaType === EMediaType.MOVIE" class="mb-n12">
-            <v-text-field
-              v-model="newMovie.title"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Title"
-              :rules="[(val) => !!val || 'Title is required.']"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newMovie.type"
-              class="mb-n3"
-              :items="movieType"
-              label="Select Type"
-              density="compact"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newMovie.link1Name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 1 Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newMovie.link1"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 1 URL"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newMovie.link2Name"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 2 Name"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newMovie.link2"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Link 2 URL"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="newMovie.imageURL"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Image URL"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newMovie.rating"
-              class="mb-n3"
-              :items="mediaRating"
-              label="Rating"
-              density="compact"
-              variant="outlined"
-            />
-            <v-select
-              v-model="newMovie.status"
-              class="mb-n3"
-              :items="movieStatus"
-              label="Status"
-              density="compact"
-              variant="outlined"
-            />
-            <section class="d-flex align-center">
-              <div class="pe-2">Episodes</div>
+            <v-form validate-on="input" @submit.prevent="handleSubmitAddMovie">
               <v-text-field
-                v-model.number="newMovie.episodesMin"
+                v-model="newMovie.title"
+                class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Min"
-                maxlength="4"
-                style="max-width: 20%"
+                label="Title"
+                :rules="stringRules"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newMovie.type"
+                class="mb-n3"
+                :items="movieType"
+                label="Select Type"
+                density="compact"
                 variant="outlined"
               />
               <v-text-field
-                v-model.number="newMovie.episodesMax"
-                class="mx-2"
+                v-model="newMovie.link1Name"
+                class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Max"
-                maxlength="4"
-                style="max-width: 20%"
-                variant="outlined"
-              />
-            </section>
-            <section class="d-flex align-center mt-3">
-              <div class="pe-2">Seasons</div>
-              <v-text-field
-                v-model.number="newMovie.seasonsMin"
-                density="compact"
-                hide-details="auto"
-                label="Min"
-                maxlength="4"
-                style="max-width: 20%"
+                label="Link 1 Name"
                 variant="outlined"
               />
               <v-text-field
-                v-model.number="newMovie.seasonsMax"
-                class="mx-2"
+                v-model="newMovie.link1"
+                class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Max"
-                maxlength="4"
-                style="max-width: 20%"
+                label="Link 1 URL"
                 variant="outlined"
               />
-            </section>
-            <section class="d-flex align-center">
-              <div>Add to Favourites?</div>
-              <v-checkbox v-model="newMovie.favourites" hide-details />
-            </section>
-            <ButtonText
-              @click="handleSubmitAddMovie"
-              color="green"
-              text="Add"
-            />
+              <v-text-field
+                v-model="newMovie.link2Name"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 2 Name"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newMovie.link2"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Link 2 URL"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model="newMovie.imageURL"
+                class="mb-2"
+                density="compact"
+                hide-details="auto"
+                label="Image URL"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newMovie.rating"
+                class="mb-n3"
+                :items="mediaRating"
+                label="Rating"
+                density="compact"
+                variant="outlined"
+              />
+              <v-select
+                v-model="newMovie.status"
+                class="mb-n3"
+                :items="movieStatus"
+                label="Status"
+                density="compact"
+                variant="outlined"
+              />
+              <section class="d-flex align-center me-n2">
+                <div class="pe-2">Episodes</div>
+                <v-text-field
+                  v-model.number="newMovie.episodesMin"
+                  density="compact"
+                  hide-details="auto"
+                  label="Min"
+                  maxlength="4"
+                  :rules="numberRules"
+                  style="max-width: 50%"
+                  variant="outlined"
+                />
+                <v-text-field
+                  v-model.number="newMovie.episodesMax"
+                  class="mx-2"
+                  density="compact"
+                  hide-details="auto"
+                  label="Max"
+                  maxlength="4"
+                  :rules="numberRules"
+                  style="max-width: 50%"
+                  variant="outlined"
+                />
+              </section>
+              <section class="d-flex align-center mt-3 me-n2">
+                <div class="pe-2">Seasons</div>
+                <v-text-field
+                  v-model.number="newMovie.seasonsMin"
+                  density="compact"
+                  hide-details="auto"
+                  label="Min"
+                  maxlength="4"
+                  :rules="numberRules"
+                  style="max-width: 50%"
+                  variant="outlined"
+                />
+                <v-text-field
+                  v-model.number="newMovie.seasonsMax"
+                  class="mx-2"
+                  density="compact"
+                  hide-details="auto"
+                  label="Max"
+                  maxlength="4"
+                  :rules="numberRules"
+                  style="max-width: 50%"
+                  variant="outlined"
+                />
+              </section>
+              <section class="d-flex align-center">
+                <div>Add to Favourites?</div>
+                <v-checkbox v-model="newMovie.favourites" hide-details />
+              </section>
+              <ButtonText color="green" type="submit" text="Add" />
+            </v-form>
           </section>
         </v-card-text>
         <v-card-actions class="d-flex justify-space-around"> </v-card-actions>
@@ -818,29 +830,75 @@ const newMovie: TMovieInput = reactive({
   type: EMovieType.MOVIE,
 });
 
+const digitRegex = /^(?=.*[0-9])\d*$/;
+
+const stringRules = [
+  (value: string) => {
+    if (value) return true;
+    return "Value is requred";
+  },
+];
+
+const numberRules = [
+  (v: string) =>
+    (v !== "" && /^\d+$/.test(v)) || "Value must be a non-empty number",
+];
+
 const handleSubmitAddAnime = async () => {
-  await submitAddAnime(newAnime);
-  emit("submit");
+  if (
+    newAnime.title &&
+    digitRegex.test(String(newAnime.episodesMax)) &&
+    digitRegex.test(String(newAnime.episodesMin))
+  ) {
+    await submitAddAnime(newAnime);
+    emit("submit");
+  }
 };
 const handleSubmitAddManga = async () => {
-  await submitAddManga(newManga);
-  emit("submit");
+  if (
+    newManga.title &&
+    digitRegex.test(String(newManga.chaptersMax)) &&
+    digitRegex.test(String(newManga.chaptersMin)) &&
+    digitRegex.test(String(newManga.volumesMax)) &&
+    digitRegex.test(String(newManga.volumesMin))
+  ) {
+    await submitAddManga(newManga);
+    emit("submit");
+  }
 };
 const handleSubmitAddGame = async () => {
-  await submitAddGame(newGame);
-  emit("submit");
+  if (newGame.title && digitRegex.test(String(newGame.playtime))) {
+    await submitAddGame(newGame);
+    emit("submit");
+  }
 };
 const handleSubmitAddCharacter = async () => {
-  await submitAddCharacter(newCharacter);
-  emit("submit");
+  if (newCharacter.name) {
+    await submitAddCharacter(newCharacter);
+    emit("submit");
+  }
 };
 const handleSubmitAddBook = async () => {
-  await submitAddBook(newBook);
-  emit("submit");
+  if (
+    newBook.title &&
+    newBook.author &&
+    digitRegex.test(String(newBook.pages))
+  ) {
+    await submitAddBook(newBook);
+    emit("submit");
+  }
 };
 const handleSubmitAddMovie = async () => {
-  await submitAddMovie(newMovie);
-  emit("submit");
+  if (
+    newMovie.title &&
+    digitRegex.test(String(newMovie.episodesMax)) &&
+    digitRegex.test(String(newMovie.episodesMin)) &&
+    digitRegex.test(String(newMovie.seasonsMax)) &&
+    digitRegex.test(String(newMovie.seasonsMin))
+  ) {
+    await submitAddMovie(newMovie);
+    emit("submit");
+  }
 };
 
 const handleCloseModal = () => {

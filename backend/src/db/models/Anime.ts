@@ -15,14 +15,14 @@ const AnimeSchema: Schema = new Schema<TAnime>(
 		link2: { type: String, default: '' },
 		link2Name: { type: String, default: '' },
 		mal_id: { type: Number, default: null },
-		owner: { type: String, index: true },
+		owner: { type: String, required: true, index: true },
 		rating: { type: Number, default: 0, min: 0, max: 10 },
 		status: {
 			type: String,
 			enum: EAnimeStatus,
 			default: EAnimeStatus.PLAN_TO_WATCH,
 		},
-		title: { type: String, index: true },
+		title: { type: String, required: true, index: true },
 		type: {
 			type: String,
 			enum: EAnimeType,
