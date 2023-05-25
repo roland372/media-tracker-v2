@@ -6,6 +6,7 @@ import { typeEmote } from './emoteTypeDefs';
 import { typeNote } from './noteTypeDefs';
 import { typeUser } from './userTypeDefs';
 import { typeMovie } from './movieTypeDefs';
+import { typeBook } from './bookTypeDefs';
 
 export const typeDefs = [
 	typeAnime,
@@ -16,4 +17,5 @@ export const typeDefs = [
 	typeNote,
 	typeUser,
 	typeMovie,
+	typeBook,
 ];

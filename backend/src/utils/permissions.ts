@@ -33,6 +33,8 @@ export default shield({
     getSingleUser: isAuthenticated,
     getAllMovies: isAuthenticated,
     getSingleMovie: isAuthenticated,
+    getAllBooks: isAuthenticated,
+    getSingleBook: isAuthenticated,
   },
 
   Mutation: {
@@ -58,5 +60,8 @@ export default shield({
     addMovie: isAuthenticated,
     deleteMovie: isAuthenticated,
     editMovie: isAuthenticated,
+    addBook: isAuthenticated,
+    deleteBook: isAuthenticated,
+    editBook: isAuthenticated,
   },
 });

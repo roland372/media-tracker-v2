@@ -342,3 +342,50 @@ export type TMovieInput = {
 	};
 	ID: string;
 };
+
+//? <----- Books ----->
+export enum EBookStatus {
+	READING = 'Reading',
+	COMPLETED = 'Completed',
+	ON_HOLD = 'On-Hold',
+	DROPPED = 'Dropped',
+	PLAN_TO_READ = 'Plan to Read',
+};
+
+export type TBook = {
+	author: string;
+	favourites: boolean;
+	genre: string;
+	id: string;
+	ID: string;
+	imageURL: string;
+	lastModified: number;
+	link1: string;
+	link1Name: string;
+	link2: string;
+	link2Name: string;
+	owner: string;
+	pages: number;
+	rating: number;
+	status: EBookStatus;
+	title: string;
+};
+
+export type TBookInput = {
+	bookInput: {
+		author: string;
+		favourites: boolean;
+		genre: string;
+		imageURL: string;
+		lastModified: number;
+		link1: string;
+		link1Name: string;
+		link2: string;
+		link2Name: string;
+		pages: number;
+		rating: number;
+		status: EBookStatus;
+		title: string;
+	};
+	ID: string;
+};
