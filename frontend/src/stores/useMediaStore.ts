@@ -40,6 +40,18 @@ import {
   addNote,
   editNote,
   deleteNote,
+  //* <----- MOVIES ----->
+  getAllMovies,
+  getSingleMovie,
+  addMovie,
+  editMovie,
+  deleteMovie,
+  //* <----- BOOKS ----->
+  getAllBooks,
+  getSingleBook,
+  addBook,
+  editBook,
+  deleteBook,
   //* <----- ALL MEDIA ----->
   getAllMedia,
 } from "@/graphql";
@@ -58,6 +70,10 @@ import {
   TEmoteInput,
   TNote,
   TNoteInput,
+  TMovie,
+  TMovieInput,
+  TBook,
+  TBookInput,
 } from "@/types";
 
 import { sortedIndexBy } from "lodash";
@@ -527,6 +543,146 @@ export const useMediaStore = defineStore("media", () => {
     }
   };
 
+  //* <----- MOVIES ----->
+  const movies = ref<TMovie[]>([]);
+  const setMovies = (payload: TMovie[]) => {
+    movies.value = payload;
+  };
+  const singleMovie = ref<TMovie>();
+  const setSingleMovie = (payload: TMovie) => {
+    singleMovie.value = payload;
+  };
+  const fetchMovies = async (email: string) => {
+    try {
+      const { data, loading } = await getAllMovies(email);
+      isLoading.value = loading;
+      setMovies(data.getAllMovies);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchSingleMovie = async (id: string) => {
+    try {
+      const { data, loading } = await getSingleMovie({ id });
+      isLoading.value = loading;
+      setSingleMovie(data.getSingleMovie);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitAddMovie = async (movieInput: TMovieInput) => {
+    try {
+      const { data } = await addMovie(googleUser.value?.email, { movieInput });
+      const arrCopy = [...movies.value];
+      const index = sortedIndexBy(
+        arrCopy,
+        data.addMovie,
+        (obj) => obj["title"]
+      );
+      arrCopy.splice(index, 0, data.addMovie);
+
+      setMovies(arrCopy);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitEditMovie = async (id: string, movieInput: TMovieInput) => {
+    try {
+      const { data } = await editMovie(googleUser.value?.email, {
+        id,
+        movieInput,
+      });
+      setMovies(
+        movies.value.map((movie) =>
+          movie._id === id ? { ...movie, ...movieInput } : movie
+        )
+      );
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitDeleteMovie = async (id: string) => {
+    try {
+      const { data } = await deleteMovie(googleUser.value?.email, { id });
+      setMovies(movies.value.filter((movie) => movie._id !== id));
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //* <----- BOOKS ----->
+  const books = ref<TBook[]>([]);
+  const setBooks = (payload: TBook[]) => {
+    books.value = payload;
+  };
+  const singleBook = ref<TBook>();
+  const setSingleBook = (payload: TBook) => {
+    singleBook.value = payload;
+  };
+  const fetchBooks = async (email: string) => {
+    try {
+      const { data, loading } = await getAllBooks(email);
+      isLoading.value = loading;
+      setBooks(data.getAllBooks);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchSingleBook = async (id: string) => {
+    try {
+      const { data, loading } = await getSingleBook({ id });
+      isLoading.value = loading;
+      setSingleBook(data.getSingleBook);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitAddBook = async (bookInput: TBookInput) => {
+    try {
+      const { data } = await addBook(googleUser.value?.email, { bookInput });
+      const arrCopy = [...books.value];
+      const index = sortedIndexBy(arrCopy, data.addBook, (obj) => obj["title"]);
+      arrCopy.splice(index, 0, data.addBook);
+
+      setBooks(arrCopy);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitEditBook = async (id: string, bookInput: TBookInput) => {
+    try {
+      const { data } = await editBook(googleUser.value?.email, {
+        id,
+        bookInput,
+      });
+      setBooks(
+        books.value.map((book) =>
+          book._id === id ? { ...book, ...bookInput } : book
+        )
+      );
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitDeleteBook = async (id: string) => {
+    try {
+      const { data } = await deleteBook(googleUser.value?.email, { id });
+      setBooks(books.value.filter((book) => book._id !== id));
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   //* <----- ALL MEDIA ----->
   const fetchAllMedia = async (email: string) => {
     try {
@@ -538,6 +694,8 @@ export const useMediaStore = defineStore("media", () => {
       setCharacters(data.getAllCharacters);
       setEmotes(data.getAllEmotes);
       setNotes(data.getAllNotes);
+      setMovies(data.getAllMovies);
+      setBooks(data.getAllBooks);
     } catch (err) {
       console.log(err);
     }
@@ -614,6 +772,26 @@ export const useMediaStore = defineStore("media", () => {
     submitAddNote,
     submitEditNote,
     submitDeleteNote,
+    //* <----- MOVIES ----->
+    movies,
+    setMovies,
+    singleMovie,
+    setSingleMovie,
+    fetchMovies,
+    fetchSingleMovie,
+    submitAddMovie,
+    submitEditMovie,
+    submitDeleteMovie,
+    //* <----- BOOKS ----->
+    books,
+    setBooks,
+    singleBook,
+    setSingleBook,
+    fetchBooks,
+    fetchSingleBook,
+    submitAddBook,
+    submitEditBook,
+    submitDeleteBook,
     //* <----- ALL MEDIA ----->
     fetchAllMedia,
   };

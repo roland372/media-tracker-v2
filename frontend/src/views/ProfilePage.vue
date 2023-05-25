@@ -40,13 +40,13 @@
               class="d-flex align-center justify-space-evenly pa-3 text-no-wrap"
             >
               <section>
-                <div v-for="media in mediaType.slice(0, 3)" :key="media.media">
+                <div v-for="media in mediaType.slice(0, 4)" :key="media.media">
                   <b class="text-decoration-underline">{{ media.media }}</b>
                   <div>{{ media.total }} {{ media.media }}</div>
                 </div>
               </section>
               <section>
-                <div v-for="media in mediaType.slice(3)" :key="media.media">
+                <div v-for="media in mediaType.slice(4)" :key="media.media">
                   <b class="text-decoration-underline">{{ media.media }}</b>
                   <div>{{ media.total }} {{ media.media }}</div>
                 </div>
@@ -219,6 +219,8 @@ import {
   TNote,
   TEmote,
   TTheme,
+  TBook,
+  TMovie,
 } from "@/types/index";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
@@ -235,8 +237,17 @@ import {
 } from "@/utils/themes";
 
 const mediaStore = useMediaStore();
-const { userFromDB, anime, manga, games, characters, emotes, notes } =
-  storeToRefs(mediaStore);
+const {
+  userFromDB,
+  anime,
+  manga,
+  games,
+  characters,
+  books,
+  movies,
+  emotes,
+  notes,
+} = storeToRefs(mediaStore);
 const { submitEditUser, setUserFromDB } = mediaStore;
 
 const settingsModal = ref<boolean>(false);
@@ -257,6 +268,8 @@ const mediaType = [
   { media: "Manga", total: manga.value.length },
   { media: "Games", total: games.value.length },
   { media: "Characters", total: characters.value.length },
+  { media: "Books", total: books.value.length },
+  { media: "Movies", total: movies.value.length },
   { media: "Emotes", total: emotes.value.length },
   { media: "Notes", total: notes.value.length },
 ];
@@ -289,6 +302,20 @@ const backupButtons = [
     data: characters.value,
     size: "small",
     text: "Characters",
+  },
+  {
+    class: "me-2 mt-2",
+    color: "purple",
+    data: books.value,
+    size: "small",
+    text: "Books",
+  },
+  {
+    class: "me-2 mt-2",
+    color: "yellow",
+    data: movies.value,
+    size: "small",
+    text: "Movies",
   },
   {
     class: "me-2 mt-2",
@@ -353,7 +380,15 @@ const handleLogout = async () => {
 };
 
 const handleDownloadMedia = (
-  jsonData: TAnime[] | TManga[] | TGame[] | TCharacter[] | TNote[] | TEmote[],
+  jsonData:
+    | TAnime[]
+    | TManga[]
+    | TGame[]
+    | TCharacter[]
+    | TNote[]
+    | TEmote[]
+    | TBook[]
+    | TMovie[],
   fileName: string
 ) => {
   const fileData = JSON.stringify(jsonData);

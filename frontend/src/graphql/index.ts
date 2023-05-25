@@ -47,4 +47,8 @@ export * from "./queries/notes";
 export * from "./mutations/notes";
 export * from "./queries/user";
 export * from "./mutations/user";
+export * from "./queries/movies";
+export * from "./mutations/movies";
+export * from "./queries/books";
+export * from "./mutations/books";
 export * from "./queries/allMedia";

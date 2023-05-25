@@ -14,7 +14,10 @@
         class="ma-1"
         color="primary"
         :text="
-          mediaType === EMediaType.CHARACTER || mediaType === EMediaType.GAME
+          mediaType === EMediaType.CHARACTER ||
+          mediaType === EMediaType.GAME ||
+          mediaType === EMediaType.BOOK ||
+          mediaType === EMediaType.MOVIE
             ? `All ${mediaType}s`
             : `All ${mediaType}`
         "
@@ -51,10 +54,12 @@
 import { defineEmits, defineProps, ref } from "vue";
 import {
   EAnimeStatus,
+  EBookStatus,
   ECharacterSource,
   EGameStatus,
   EMangaStatus,
   EMediaType,
+  EMovieStatus,
 } from "@/types";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
@@ -107,13 +112,37 @@ const mediaStatus = () => {
         { status: ECharacterSource.MANGA, color: "yellow" },
       ];
       break;
+    case EMediaType.BOOK:
+      statusArr = [
+        { status: EBookStatus.READING, color: "green" },
+        { status: EBookStatus.COMPLETED, color: "blue" },
+        { status: EBookStatus.ON_HOLD, color: "yellow" },
+        { status: EBookStatus.DROPPED, color: "red" },
+        { status: EBookStatus.PLAN_TO_READ, color: "white" },
+      ];
+      break;
+    case EMediaType.MOVIE:
+      statusArr = [
+        { status: EMovieStatus.WATCHING, color: "green" },
+        { status: EMovieStatus.COMPLETED, color: "blue" },
+        { status: EMovieStatus.ON_HOLD, color: "yellow" },
+        { status: EMovieStatus.DROPPED, color: "red" },
+        { status: EMovieStatus.PLAN_TO_WATCH, color: "white" },
+      ];
+      break;
   }
 
   return statusArr;
 };
 
 const handleStatusClick = (
-  status: EAnimeStatus | EMangaStatus | EGameStatus | ECharacterSource
+  status:
+    | EAnimeStatus
+    | EMangaStatus
+    | EGameStatus
+    | ECharacterSource
+    | EBookStatus
+    | EMovieStatus
 ) => emit("filter", status);
 
 const handleDisplayClick = () => {

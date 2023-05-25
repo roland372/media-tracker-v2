@@ -431,6 +431,240 @@
               text="Update"
             />
           </section>
+
+          <!--? BOOKS -->
+          <section v-if="props.mediaType === EMediaType.BOOK" class="mb-n12">
+            <v-text-field
+              v-model="bookRef.title"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Book Title"
+              :rules="[(val) => !!val || 'Title is required.']"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="bookRef.author"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Author"
+              :rules="[(val) => !!val || 'Author is required.']"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="bookRef.genre"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Genre"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="bookRef.link1Name"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Link 1 Name"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="bookRef.link1"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Link 1 URL"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="bookRef.link2Name"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Link 2 Name"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="bookRef.link2"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Link 2 URL"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="bookRef.imageURL"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Image URL"
+              variant="outlined"
+            />
+            <v-select
+              v-model="bookRef.rating"
+              class="mb-n3"
+              :items="mediaRating"
+              label="Rating"
+              density="compact"
+              variant="outlined"
+            />
+            <v-select
+              v-model="bookRef.status"
+              class="mb-n3"
+              :items="bookStatus"
+              label="Status"
+              density="compact"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model.number="bookRef.pages"
+              density="compact"
+              hide-details="auto"
+              label="Pages"
+              maxlength="4"
+              style="max-width: 20%"
+              variant="outlined"
+            />
+            <section class="d-flex align-center">
+              <div>Add to Favourites?</div>
+              <v-checkbox v-model="bookRef.favourites" hide-details />
+            </section>
+            <ButtonText
+              @click="handleSubmitEditBook"
+              color="yellow"
+              text="Update"
+            />
+          </section>
+
+          <!--? MOVIES -->
+          <section v-if="props.mediaType === EMediaType.MOVIE" class="mb-n12">
+            <v-text-field
+              v-model="movieRef.title"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Movie Title"
+              :rules="[(val) => !!val || 'Title is required.']"
+              variant="outlined"
+            />
+            <v-select
+              v-model="movieRef.type"
+              class="mb-n3"
+              :items="movieType"
+              label="Select Type"
+              density="compact"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="movieRef.link1Name"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Link 1 Name"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="movieRef.link1"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Link 1 URL"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="movieRef.link2Name"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Link 2 Name"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="movieRef.link2"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Link 2 URL"
+              variant="outlined"
+            />
+            <v-text-field
+              v-model="movieRef.imageURL"
+              class="mb-2"
+              density="compact"
+              hide-details="auto"
+              label="Image URL"
+              variant="outlined"
+            />
+            <v-select
+              v-model="movieRef.rating"
+              class="mb-n3"
+              :items="mediaRating"
+              label="Rating"
+              density="compact"
+              variant="outlined"
+            />
+            <v-select
+              v-model="movieRef.status"
+              class="mb-n3"
+              :items="movieStatus"
+              label="Status"
+              density="compact"
+              variant="outlined"
+            />
+            <section class="d-flex align-center">
+              <div class="pe-2">Episodes</div>
+              <v-text-field
+                v-model.number="movieRef.episodesMin"
+                density="compact"
+                hide-details="auto"
+                label="Min"
+                maxlength="4"
+                style="max-width: 20%"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model.number="movieRef.episodesMax"
+                class="mx-2"
+                density="compact"
+                hide-details="auto"
+                label="Max"
+                maxlength="4"
+                style="max-width: 20%"
+                variant="outlined"
+              />
+            </section>
+            <section class="d-flex align-center mt-3">
+              <div class="pe-2">Seasons</div>
+              <v-text-field
+                v-model.number="movieRef.seasonsMin"
+                density="compact"
+                hide-details="auto"
+                label="Min"
+                maxlength="4"
+                style="max-width: 20%"
+                variant="outlined"
+              />
+              <v-text-field
+                v-model.number="movieRef.seasonsMax"
+                class="mx-2"
+                density="compact"
+                hide-details="auto"
+                label="Max"
+                maxlength="4"
+                style="max-width: 20%"
+                variant="outlined"
+              />
+            </section>
+            <section class="d-flex align-center">
+              <div>Add to Favourites?</div>
+              <v-checkbox v-model="movieRef.favourites" hide-details />
+            </section>
+            <ButtonText
+              @click="handleSubmitEditMovie"
+              color="yellow"
+              text="Update"
+            />
+          </section>
         </v-card-text>
         <v-card-actions class="d-flex justify-space-around"> </v-card-actions>
       </v-card>
@@ -449,6 +683,9 @@ import {
   gameStatus,
   characterSource,
   characterGender,
+  bookStatus,
+  movieType,
+  movieStatus,
 } from "@/utils/mediaUtils";
 import ButtonText from "../ui/ButtonText.vue";
 import ButtonIcon from "../ui/ButtonIcon.vue";
@@ -458,17 +695,22 @@ import {
   TCharacter,
   TGame,
   TManga,
+  TBook,
+  TMovie,
   TAnimeInput,
-  EMediaType,
+  TCharacterInput,
   TMangaInput,
   TGameInput,
-  TCharacterInput,
+  TBookInput,
+  TMovieInput,
   EAnimeStatus,
   EMangaStatus,
+  EMovieStatus,
+  EMediaType,
 } from "@/types";
 
 interface IFormComponentProps {
-  media: TAnime | TManga | TGame | TCharacter;
+  media: TAnime | TManga | TGame | TCharacter | TBook | TMovie;
   mediaType: EMediaType;
   title: string;
 }
@@ -482,6 +724,8 @@ const {
   submitEditManga,
   submitEditGame,
   submitEditCharacter,
+  submitEditBook,
+  submitEditMovie,
   userFromDB,
 } = mediaStore;
 
@@ -489,6 +733,8 @@ const animeRef = ref<TAnime>(props.media as TAnime);
 const mangaRef = ref<TManga>(props.media as TManga);
 const gameRef = ref<TGame>(props.media as TGame);
 const characterRef = ref<TCharacter>(props.media as TCharacter);
+const bookRef = ref<TBook>(props.media as TBook);
+const movieRef = ref<TMovie>(props.media as TMovie);
 
 const handleSubmitEditAnime = async () => {
   const updatedAnime: TAnimeInput = reactive({
@@ -581,6 +827,56 @@ const handleSubmitEditCharacter = async () => {
   emit("edit");
 };
 
+const handleSubmitEditBook = async () => {
+  const updatedBook: TBookInput = reactive({
+    author: bookRef.value.author,
+    favourites: bookRef.value.favourites,
+    genre: bookRef.value.genre,
+    imageURL: bookRef.value.imageURL,
+    lastModified: Date.now(),
+    link1: bookRef.value.link1,
+    link1Name: bookRef.value.link1Name,
+    link2: bookRef.value.link2,
+    link2Name: bookRef.value.link2Name,
+    owner: userFromDB?.email as string,
+    pages: bookRef.value.pages,
+    rating: bookRef.value.rating,
+    status: bookRef.value.status,
+    title: bookRef.value.title,
+  });
+  await submitEditBook(bookRef.value._id, updatedBook);
+  emit("edit");
+};
+
+const handleSubmitEditMovie = async () => {
+  const updatedMovie: TMovieInput = reactive({
+    episodesMax: movieRef.value.episodesMax,
+    episodesMin:
+      movieRef.value.status === EMovieStatus.COMPLETED
+        ? movieRef.value.episodesMax
+        : movieRef.value.episodesMin,
+    favourites: movieRef.value.favourites,
+    imageURL: movieRef.value.imageURL,
+    lastModified: Date.now(),
+    link1: movieRef.value.link1,
+    link1Name: movieRef.value.link1Name,
+    link2: movieRef.value.link2,
+    link2Name: movieRef.value.link2Name,
+    owner: userFromDB?.email as string,
+    rating: movieRef.value.rating,
+    seasonsMax: movieRef.value.seasonsMax,
+    seasonsMin:
+      movieRef.value.status === EMovieStatus.COMPLETED
+        ? movieRef.value.seasonsMax
+        : movieRef.value.seasonsMin,
+    status: movieRef.value.status,
+    title: movieRef.value.title,
+    type: movieRef.value.type,
+  });
+  await submitEditMovie(movieRef.value._id, updatedMovie);
+  emit("edit");
+};
+
 const handleCloseModal = () => {
   emit("close");
 };
@@ -590,5 +886,7 @@ onMounted(() => {
   mangaRef.value = { ...props.media } as TManga;
   gameRef.value = { ...props.media } as TGame;
   characterRef.value = { ...props.media } as TCharacter;
+  bookRef.value = { ...props.media } as TBook;
+  movieRef.value = { ...props.media } as TMovie;
 });
 </script>

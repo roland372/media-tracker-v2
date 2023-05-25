@@ -1,0 +1,232 @@
+<template>
+  <HeaderComponent title="Movies">
+    <FormComponent
+      v-if="formDialog"
+      v-model="formDialog"
+      @submit="handleSubmit"
+      @close="formDialog = !formDialog"
+      :media-type="EMediaType.MOVIE"
+      :title="`Add ${EMediaType.MOVIE}`"
+    />
+    <SnackbarComponent
+      v-if="snackbar"
+      :snackbar="snackbar"
+      :text="snackbarText"
+    />
+    <section class="d-sm-flex align-center justify-center">
+      <ButtonText
+        @click="formDialog = !formDialog"
+        color="indigo"
+        text="Add Movie"
+      />
+      <div class="px-3 text-color">
+        <p>or</p>
+      </div>
+      <v-text-field
+        v-model="movieFetchSearch"
+        @click:append-inner="handleFetchMovieSearch"
+        append-inner-icon="mdi-magnify"
+        class="text-color"
+        clearable
+        density="compact"
+        hide-details="auto"
+        label="Search for a Movie"
+        variant="outlined"
+      />
+    </section>
+  </HeaderComponent>
+  <StatsComponent
+    :mean-score="meanScore"
+    :media-type="EMediaType.MOVIE"
+    :progress="progress"
+    :status="status"
+    :stats="stats"
+    :total-days="totalDays"
+  />
+  <MediaTable
+    v-if="displayFlag === 'table'"
+    :media="orderBy(filteredMovies, ['title'], ['asc'])"
+    :media-type="EMediaType.MOVIE"
+    title="All Movies"
+  >
+    <DisplayFilterSearchPanel
+      @display="handleChangeDisplayFlag"
+      @filter="handleMovieFilter"
+      @search="handleMovieSearch"
+      :display-flag="displayFlag"
+      :media-type="EMediaType.MOVIE"
+    />
+  </MediaTable>
+  <MediaComponent
+    v-if="displayFlag === 'grid'"
+    all-media
+    :media="orderBy(filteredMovies, ['title'], ['asc'])"
+    :media-type="EMediaType.MOVIE"
+    title="All Movies"
+  >
+    <DisplayFilterSearchPanel
+      @display="handleChangeDisplayFlag"
+      @filter="handleMovieFilter"
+      @search="handleMovieSearch"
+      :display-flag="displayFlag"
+      :media-type="EMediaType.MOVIE"
+    />
+  </MediaComponent>
+  <MediaComponent
+    :media="orderBy(movies, ['lastModified'], ['desc']).slice(0, 20)"
+    :media-type="EMediaType.MOVIE"
+    title="Recent Movies"
+  />
+  <MediaComponent
+    :media-type="EMediaType.MOVIE"
+    :media="orderBy(filter(movies, { favourites: true }), ['title'], ['asc'])"
+    title="Favourite Movies"
+  />
+</template>
+<script setup lang="ts">
+import { computed, ref } from "vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import ButtonText from "@/components/ui/ButtonText.vue";
+import StatsComponent from "@/components/media/StatsComponent.vue";
+import MediaComponent from "@/components/media/MediaComponent.vue";
+import FormComponent from "@/components/media/FormComponent.vue";
+import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
+import MediaTable from "@/components/media/MediaTable.vue";
+
+import { useMediaStore } from "@/stores/useMediaStore";
+import { storeToRefs } from "pinia";
+import { round, calculatePercentage } from "@/utils/mediaUtils";
+import { filterMediaStatus } from "@/utils/mediaUtils";
+import { EMediaType, EMovieStatus } from "@/types";
+import { filter, orderBy } from "lodash";
+
+const displayFlag = ref<string>("grid");
+const formDialog = ref<boolean>(false);
+const snackbar = ref<boolean>(false);
+const snackbarText = ref<string>(EMediaType.MOVIE + " Added");
+const mediaStore = useMediaStore();
+const { movies } = storeToRefs(mediaStore);
+
+const movieFetchSearch = ref<string>("");
+const searchTerm = ref<string>("");
+const movieFilter = ref<string>("");
+
+const filteredMovies = computed(() =>
+  movies.value.filter((el) => {
+    const searchTermMatch = el.title
+      .toLowerCase()
+      .includes(searchTerm.value.toLowerCase());
+    const statusMatch =
+      movieFilter.value === "" || el.status === movieFilter.value;
+    return searchTermMatch && statusMatch;
+  })
+);
+
+const totalMovies = computed(() => movies.value.length);
+const filterZeroRating = computed(
+  () => movies.value.filter((movies) => movies.rating !== 0).length
+);
+const totalRating = computed(() =>
+  movies.value.reduce((accumulator, object) => accumulator + object.rating, 0)
+);
+
+const watching = computed(() => filterMediaStatus(movies, "watching").length);
+const completed = computed(() => filterMediaStatus(movies, "completed").length);
+const onHold = computed(() => filterMediaStatus(movies, "on-hold").length);
+const dropped = computed(() => filterMediaStatus(movies, "dropped").length);
+const planToWatch = computed(
+  () => filterMediaStatus(movies, "Plan to Watch").length
+);
+const favourites = computed(
+  () => movies.value.filter((movies) => movies.favourites).length
+);
+
+const filteredTotalMoviesAmount = computed(
+  () => movies.value.filter((movie) => movie.type === "Movie").length
+);
+
+const filteredTotalTVShowsAmount = computed(
+  () => movies.value.filter((movie) => movie.type === "TV-Show").length
+);
+
+const filteredTVShowsEpisodes = computed(() =>
+  movies.value
+    .filter((movie) => movie.type === "TV-Show")
+    .reduce((accumulator, object) => {
+      return accumulator + object.episodesMin;
+    }, 0)
+);
+
+const handleFetchMovieSearch = () => {
+  console.log(movieFetchSearch.value);
+};
+
+const progress = computed(() => [
+  {
+    color: "green",
+    value: calculatePercentage(watching.value, totalMovies.value),
+  },
+  {
+    color: "blue",
+    value: calculatePercentage(completed.value, totalMovies.value),
+  },
+  {
+    color: "yellow",
+    value: calculatePercentage(onHold.value, totalMovies.value),
+  },
+  {
+    color: "red",
+    value: calculatePercentage(dropped.value, totalMovies.value),
+  },
+  {
+    color: "white",
+    value: calculatePercentage(planToWatch.value, totalMovies.value),
+  },
+]);
+
+const status = computed(() => [
+  { color: "green", name: EMovieStatus.WATCHING, value: watching },
+  { color: "blue", name: EMovieStatus.COMPLETED, value: completed },
+  { color: "yellow", name: EMovieStatus.ON_HOLD, value: onHold },
+  { color: "red", name: EMovieStatus.DROPPED, value: dropped },
+  { color: "white", name: EMovieStatus.PLAN_TO_WATCH, value: planToWatch },
+]);
+
+const stats = computed(() => [
+  { name: "Total Movies", value: filteredTotalMoviesAmount.value },
+  { name: "Total TV-Shows", value: filteredTotalTVShowsAmount.value },
+  { name: "Favourites", value: favourites },
+]);
+
+const totalDays = computed(() =>
+  round(
+    (filteredTotalMoviesAmount.value * 2) / 24 +
+      (filteredTVShowsEpisodes.value * 1) / 24,
+    1
+  )
+);
+const meanScore = computed(() =>
+  filterZeroRating.value === 0
+    ? 0
+    : round(totalRating.value / filterZeroRating.value, 2)
+);
+
+const handleSubmit = () => {
+  formDialog.value = !formDialog.value;
+  snackbar.value = !snackbar.value;
+};
+
+const handleChangeDisplayFlag = () => {
+  if (displayFlag.value === "table") {
+    displayFlag.value = "grid";
+  } else if (displayFlag.value === "grid") {
+    displayFlag.value = "table";
+  }
+};
+
+const handleMovieSearch = (emittedValue: string) =>
+  (searchTerm.value = emittedValue);
+const handleMovieFilter = (emittedValue: string) =>
+  (movieFilter.value = emittedValue);
+</script>

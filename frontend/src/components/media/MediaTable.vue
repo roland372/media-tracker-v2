@@ -168,15 +168,109 @@
         </tr>
       </tbody>
     </v-table>
+    <h3
+      v-if="!media.length && mediaType === EMediaType.BOOK"
+      class="text-color"
+    >
+      Not found any items.
+    </h3>
+    <v-table
+      v-else-if="media.length && mediaType === EMediaType.BOOK"
+      density="compact"
+      fixed-header
+      height="500px"
+      ><thead class="text-left">
+        <tr>
+          <th>#</th>
+          <th>Image</th>
+          <th width="15%">Title</th>
+          <th>Author</th>
+          <th>Genre</th>
+          <th>Pages</th>
+          <th>Rating</th>
+          <th>Last Modified</th>
+        </tr>
+      </thead>
+      <tbody class="text-left">
+        <tr v-for="(book, index) in (media as TBook[])" :key="index">
+          <td>{{ index + 1 }}</td>
+          <td><v-img :src="book.imageURL" max-height="92px" /></td>
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.genre }}</td>
+          <td>{{ book.pages }}</td>
+          <td>{{ book.rating }}</td>
+          <td>
+            {{
+              new Date(book.lastModified).toLocaleDateString("en-GB", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            }}
+          </td>
+        </tr>
+      </tbody>
+    </v-table>
+    <h3
+      v-if="!media.length && mediaType === EMediaType.MOVIE"
+      class="text-color"
+    >
+      Not found any items.
+    </h3>
+    <v-table
+      v-else-if="media.length && mediaType === EMediaType.MOVIE"
+      density="compact"
+      fixed-header
+      height="500px"
+      ><thead class="text-left">
+        <tr>
+          <th>#</th>
+          <th>Image</th>
+          <th width="15%">Title</th>
+          <th>Rating</th>
+          <th>Type</th>
+          <th>Episodes</th>
+          <th>Seasons</th>
+          <th>Last Modified</th>
+        </tr>
+      </thead>
+      <tbody class="text-left">
+        <tr v-for="(movie, index) in (media as TMovie[])" :key="index">
+          <td>{{ index + 1 }}</td>
+          <td><v-img :src="movie.imageURL" max-height="92px" /></td>
+          <td>{{ movie.title }}</td>
+          <td>{{ movie.rating }}</td>
+          <td>{{ movie.type }}</td>
+          <td>{{ movie.episodesMin }} / {{ movie.episodesMax }}</td>
+          <td>{{ movie.seasonsMin }} / {{ movie.seasonsMax }}</td>
+          <td>
+            {{
+              new Date(movie.lastModified).toLocaleDateString("en-GB", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            }}
+          </td>
+        </tr>
+      </tbody>
+    </v-table>
   </CardComponent>
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue";
 import CardComponent from "@/components/media/CardComponent.vue";
-import { EMediaType, TAnime, TCharacter, TGame, TManga } from "@/types";
+import {
+  EMediaType,
+  TAnime,
+  TCharacter,
+  TGame,
+  TManga,
+  TBook,
+  TMovie,
+} from "@/types";
 
 interface IMediaTableProps {
-  media: TAnime[] | TManga[] | TGame[] | TCharacter[];
+  media: TAnime[] | TManga[] | TGame[] | TCharacter[] | TBook[] | TMovie[];
   mediaType: EMediaType;
   title: string;
 }

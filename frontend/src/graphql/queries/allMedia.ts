@@ -94,6 +94,44 @@ export const getAllMedia = async (userId: string) => {
           note
           title
         }
+        getAllBooks {
+          author
+          favourites
+          genre
+          _id
+          id
+          imageURL
+          lastModified
+          link1
+          link1Name
+          link2
+          link2Name
+          owner
+          pages
+          rating
+          status
+          title
+        }
+        getAllMovies {
+          episodesMax
+          episodesMin
+          favourites
+          _id
+          id
+          imageURL
+          lastModified
+          link1
+          link1Name
+          link2
+          link2Name
+          owner
+          rating
+          seasonsMax
+          seasonsMin
+          status
+          title
+          type
+        }
       }
     `,
     context: {

@@ -68,6 +68,42 @@
             <div><b>Series:</b> {{ (media as TCharacter).series }}</div>
             <div><b>Hair Color:</b> {{ (media as TCharacter).hairColor }}</div>
           </v-card-text>
+          <!--? BOOKS -->
+          <v-card-text v-if="mediaType === EMediaType.BOOK">
+            <div><b>Author:</b> {{ (media as TBook).author }}</div>
+            <div>
+              <b>Link: </b>
+              <a :href="(media as TBook).link1" target="_blank">{{
+                (media as TBook).link1Name
+              }}</a>
+            </div>
+            <div><b>Genre:</b> {{ (media as TBook).genre }}</div>
+            <div><b>Pages:</b> {{ (media as TBook).pages }}</div>
+            <div><b>Rating:</b> {{ (media as TBook).rating }}</div>
+            <div><b>Status:</b> {{ (media as TBook).status }}</div>
+          </v-card-text>
+          <!--? MOVIES -->
+          <v-card-text v-if="mediaType === EMediaType.MOVIE">
+            <div><b>Type:</b> {{ (media as TMovie).type }}</div>
+            <div>
+              <b>Link: </b>
+              <a :href="(media as TMovie).link1" target="_blank">{{
+                (media as TMovie).link1Name
+              }}</a>
+            </div>
+            <div v-if="(media as TMovie).type === 'TV-Show'">
+              <div>
+                <b>Episodes:</b> {{ (media as TMovie).episodesMin }} /
+                {{ (media as TMovie).episodesMax }}
+              </div>
+              <div>
+                <b>Seasons:</b> {{ (media as TMovie).seasonsMin }} /
+                {{ (media as TMovie).seasonsMax }}
+              </div>
+            </div>
+            <div><b>Rating:</b> {{ (media as TMovie).rating }}</div>
+            <div><b>Status:</b> {{ (media as TMovie).status }}</div>
+          </v-card-text>
         </v-card-text>
         <v-card-actions class="d-flex justify-space-around">
           <ButtonText
@@ -96,12 +132,20 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
-import { EMediaType, TAnime, TCharacter, TGame, TManga } from "@/types";
+import {
+  EMediaType,
+  TAnime,
+  TBook,
+  TCharacter,
+  TGame,
+  TManga,
+  TMovie,
+} from "@/types";
 
 interface IMediaModalProps {
   editClick: () => void;
   deleteClick: () => void;
-  media: TAnime | TManga | TGame | TCharacter;
+  media: TAnime | TManga | TGame | TCharacter | TBook | TMovie;
   mediaType: EMediaType;
   title: string;
   viewClick: () => void;

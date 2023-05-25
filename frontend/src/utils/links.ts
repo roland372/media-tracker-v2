@@ -36,6 +36,20 @@ export const navLinks: TNavLinks[] = [
     text: "Characters",
     title: "Characters",
   },
+  {
+    name: "MoviesPage",
+    route: EUserRole.PROTECTED,
+    url: "/movies",
+    text: "Movies",
+    title: "Movies",
+  },
+  {
+    name: "BooksPage",
+    route: EUserRole.PROTECTED,
+    url: "/books",
+    text: "Books",
+    title: "Books",
+  },
   // {
   //   name: "ChartsPage",
   //   route: EUserRole.PROTECTED,

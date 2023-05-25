@@ -35,11 +35,19 @@ import { defineProps, withDefaults, ref } from "vue";
 import CardComponent from "@/components/media/CardComponent.vue";
 import MediaCard from "@/components/media/MediaCard.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
-import { EMediaType, TAnime, TCharacter, TGame, TManga } from "@/types";
+import {
+  EMediaType,
+  TAnime,
+  TCharacter,
+  TGame,
+  TManga,
+  TBook,
+  TMovie,
+} from "@/types";
 
 interface IMediaComponentProps {
   allMedia?: boolean;
-  media: TAnime[] | TManga[] | TGame[] | TCharacter[];
+  media: TAnime[] | TManga[] | TGame[] | TCharacter[] | TBook[] | TMovie[];
   mediaType: EMediaType;
   title: string;
 }

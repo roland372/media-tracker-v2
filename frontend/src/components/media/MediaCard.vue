@@ -14,7 +14,10 @@
     </div>
     <ChipComponent
       v-if="
-        mediaType !== EMediaType.CHARACTER && mediaType !== EMediaType.MANGA
+        mediaType !== EMediaType.CHARACTER &&
+        mediaType !== EMediaType.MANGA &&
+        mediaType !== EMediaType.BOOK &&
+        mediaType !== EMediaType.MOVIE
       "
       class="bg-black image-text-overlay"
       color="white"
@@ -44,7 +47,7 @@
       color="white"
       size="x-small"
       text-color="white"
-      :text="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TGame | TManga).title"
+      :text="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TGame | TManga | TBook | TMovie).title"
     />
     <MediaModal
       v-if="dialog"
@@ -52,7 +55,7 @@
       :edit-click="handleEditClick"
       :media="media"
       :media-type="mediaType"
-      :title="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TGame | TManga).title"
+      :title="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TGame | TManga | TBook | TMovie).title"
       :view-click="handleViewClick"
       v-model="dialog"
     />
@@ -68,7 +71,7 @@
           {{
             props.mediaType === EMediaType.CHARACTER
               ? (props.media as TCharacter).name
-              : (props.media as TAnime | TManga | TGame).title
+              : (props.media as TAnime | TManga | TGame | TBook | TMovie).title
           }}
         </div>
         <v-card-text
@@ -125,6 +128,10 @@ import {
   EMangaStatus,
   EGameStatus,
   ECharacterSource,
+  TBook,
+  TMovie,
+  EBookStatus,
+  EMovieStatus,
 } from "@/types";
 
 const mediaStore = useMediaStore();
@@ -133,10 +140,12 @@ const {
   submitDeleteManga,
   submitDeleteGame,
   submitDeleteCharacter,
+  submitDeleteBook,
+  submitDeleteMovie,
 } = mediaStore;
 
 interface IMediaCardProps {
-  media: TCharacter | TAnime | TGame | TManga;
+  media: TCharacter | TAnime | TGame | TManga | TBook | TMovie;
   mediaType: EMediaType;
 }
 
@@ -148,7 +157,9 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>("");
 const deleteDialog = ref<boolean>(false);
 
-const displayImageText = (media: TAnime | TManga | TGame | TCharacter) => {
+const displayImageText = (
+  media: TAnime | TManga | TGame | TCharacter | TBook | TMovie
+) => {
   let imageText = "";
   switch (props.mediaType) {
     case EMediaType.ANIME:
@@ -165,7 +176,9 @@ const displayImageText = (media: TAnime | TManga | TGame | TCharacter) => {
   return imageText;
 };
 
-const statusColor = (media: TAnime | TManga | TGame | TCharacter) => {
+const statusColor = (
+  media: TAnime | TManga | TGame | TCharacter | TBook | TMovie
+) => {
   let color = "";
   if ((media as TCharacter).source) {
     switch ((media as TCharacter).source) {
@@ -180,30 +193,40 @@ const statusColor = (media: TAnime | TManga | TGame | TCharacter) => {
         break;
     }
   } else {
-    switch ((media as TAnime | TManga | TGame).status) {
+    switch ((media as TAnime | TManga | TGame | TBook | TMovie).status) {
       case EAnimeStatus.WATCHING:
       case EMangaStatus.READING:
       case EGameStatus.PLAYING:
+      case EBookStatus.READING:
+      case EMovieStatus.WATCHING:
         color = "green";
         break;
       case EAnimeStatus.COMPLETED:
       case EMangaStatus.COMPLETED:
       case EGameStatus.COMPLETED:
+      case EBookStatus.COMPLETED:
+      case EMovieStatus.COMPLETED:
         color = "blue";
         break;
       case EAnimeStatus.ON_HOLD:
       case EMangaStatus.ON_HOLD:
       case EGameStatus.ON_HOLD:
+      case EBookStatus.ON_HOLD:
+      case EMovieStatus.ON_HOLD:
         color = "yellow";
         break;
       case EAnimeStatus.DROPPED:
       case EMangaStatus.DROPPED:
       case EGameStatus.DROPPED:
+      case EBookStatus.DROPPED:
+      case EMovieStatus.DROPPED:
         color = "red";
         break;
       case EAnimeStatus.PLAN_TO_WATCH:
       case EMangaStatus.PLAN_TO_READ:
       case EGameStatus.PLAN_TO_PLAY:
+      case EBookStatus.PLAN_TO_READ:
+      case EMovieStatus.PLAN_TO_WATCH:
         color = "white";
         break;
     }
@@ -237,12 +260,18 @@ const handleDeleteConfirm = async () => {
     case EMediaType.CHARACTER:
       await submitDeleteCharacter(props.media._id);
       break;
+    case EMediaType.BOOK:
+      await submitDeleteBook(props.media._id);
+      break;
+    case EMediaType.MOVIE:
+      await submitDeleteMovie(props.media._id);
+      break;
   }
   deleteDialog.value = !deleteDialog.value;
   snackbarText.value = `${props.mediaType} ${
     props.mediaType === EMediaType.CHARACTER
       ? (props.media as TCharacter).name
-      : (props.media as TAnime | TManga | TGame).title
+      : (props.media as TAnime | TManga | TGame | TBook | TMovie).title
   } Deleted`;
   snackbar.value = !snackbar.value;
 };

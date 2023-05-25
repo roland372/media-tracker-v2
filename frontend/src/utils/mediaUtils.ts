@@ -9,6 +9,9 @@ import {
   ECharacterSource,
   ECharacterGender,
   EMediaType,
+  EMovieStatus,
+  EMovieType,
+  EBookStatus,
 } from "@/types";
 
 export const favouriteMedia = (media: Ref) =>
@@ -51,6 +54,8 @@ export const mediaList = [
   EMediaType.MANGA,
   EMediaType.GAME,
   EMediaType.CHARACTER,
+  EMediaType.MOVIE,
+  EMediaType.BOOK,
 ];
 
 export const mediaRating = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
@@ -109,4 +114,22 @@ export const characterGender = [
   ECharacterGender.FEMALE,
   ECharacterGender.MALE,
   ECharacterGender.OTHER,
+];
+
+export const movieStatus = [
+  EMovieStatus.WATCHING,
+  EMovieStatus.COMPLETED,
+  EMovieStatus.ON_HOLD,
+  EMovieStatus.DROPPED,
+  EMovieStatus.PLAN_TO_WATCH,
+];
+
+export const movieType = [EMovieType.MOVIE, EMovieType.TV_SHOW];
+
+export const bookStatus = [
+  EBookStatus.READING,
+  EBookStatus.COMPLETED,
+  EBookStatus.ON_HOLD,
+  EBookStatus.DROPPED,
+  EBookStatus.PLAN_TO_READ,
 ];

@@ -70,7 +70,24 @@
     :media-type="EMediaType.MANGA"
     title="Recent Manga"
   />
-  <ButtonText class="mt-n1 mb-3" color="indigo" text="All Manga" to="/manga" />
+  <ButtonText class="mt-n1 mb-3" color="indigo" text="All Books" to="/books" />
+  <MediaComponent
+    :media="orderBy(books, ['lastModified'], ['desc']).slice(0, 20)"
+    :media-type="EMediaType.BOOK"
+    title="Recent Books"
+  />
+  <ButtonText class="mt-n1 mb-3" color="indigo" text="All Books" to="/books" />
+  <MediaComponent
+    :media="orderBy(movies, ['lastModified'], ['desc']).slice(0, 20)"
+    :media-type="EMediaType.MOVIE"
+    title="Recent Movies"
+  />
+  <ButtonText
+    class="mt-n1 mb-3"
+    color="indigo"
+    text="All Movies"
+    to="/movies"
+  />
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
@@ -91,7 +108,8 @@ const snackbar = ref<boolean>(false);
 const mediaType = ref<string>("");
 
 const mediaStore = useMediaStore();
-const { anime, characters, games, manga } = storeToRefs(mediaStore);
+const { anime, characters, games, manga, books, movies } =
+  storeToRefs(mediaStore);
 
 const handleShowSelectDialog = () => {
   selectDialog.value = !selectDialog.value;
