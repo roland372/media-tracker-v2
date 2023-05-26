@@ -112,6 +112,7 @@
           <section class="d-flex align-center justify-space-between mb-2">
             <v-text-field
               v-model="newNote.title"
+              autofocus
               class="me-2"
               density="compact"
               hide-details="auto"

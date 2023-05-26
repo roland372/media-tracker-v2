@@ -21,6 +21,7 @@
             <v-form validate-on="input" @submit.prevent="handleSubmitAddAnime">
               <v-text-field
                 v-model="newAnime.title"
+                autofocus
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -129,6 +130,7 @@
             <v-form validate-on="input" @submit.prevent="handleSubmitAddManga">
               <v-text-field
                 v-model="newManga.title"
+                autofocus
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -261,6 +263,7 @@
             <v-form validate-on="input" @submit.prevent="handleSubmitAddGame">
               <v-text-field
                 v-model="newGame.title"
+                autofocus
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -364,6 +367,7 @@
             >
               <v-text-field
                 v-model="newCharacter.name"
+                autofocus
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -439,6 +443,7 @@
             <v-form validate-on="input" @submit.prevent="handleSubmitAddBook">
               <v-text-field
                 v-model="newBook.title"
+                autofocus
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -542,6 +547,7 @@
             <v-form validate-on="input" @submit.prevent="handleSubmitAddMovie">
               <v-text-field
                 v-model="newMovie.title"
+                autofocus
                 class="mb-2"
                 density="compact"
                 hide-details="auto"

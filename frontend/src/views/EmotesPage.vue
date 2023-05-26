@@ -119,6 +119,7 @@
         <v-card-text>
           <v-text-field
             v-model="newEmote.name"
+            autofocus
             class="mb-2"
             density="compact"
             hide-details="auto"
