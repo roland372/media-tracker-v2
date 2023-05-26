@@ -1,21 +1,21 @@
 import { typeAnime } from './animeTypeDefs';
-import { typeManga } from './mangaTypeDefs';
-import { typeGame } from './gameTypeDefs';
+import { typeBook } from './bookTypeDefs';
 import { typeCharacter } from './characterTypeDefs';
 import { typeEmote } from './emoteTypeDefs';
+import { typeGame } from './gameTypeDefs';
+import { typeManga } from './mangaTypeDefs';
+import { typeMovie } from './movieTypeDefs';
 import { typeNote } from './noteTypeDefs';
 import { typeUser } from './userTypeDefs';
-import { typeMovie } from './movieTypeDefs';
-import { typeBook } from './bookTypeDefs';
 
 export const typeDefs = [
 	typeAnime,
-	typeManga,
-	typeGame,
+	typeBook,
 	typeCharacter,
 	typeEmote,
+	typeGame,
+	typeManga,
+	typeMovie,
 	typeNote,
 	typeUser,
-	typeMovie,
-	typeBook,
 ];

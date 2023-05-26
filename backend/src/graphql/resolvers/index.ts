@@ -1,21 +1,21 @@
 import { animeResolvers } from './animeResolvers';
-import { mangaResolvers } from './mangaResolvers';
-import { gameResolvers } from './gameResolvers';
+import { bookResolvers } from './bookResolvers';
 import { characterResolvers } from './characterResolvers';
 import { emoteResolvers } from './emoteResolvers';
+import { gameResolvers } from './gameResolvers';
+import { mangaResolvers } from './mangaResolvers';
+import { movieResolvers } from './movieResolvers';
 import { noteResolvers } from './noteResolvers';
 import { userResolvers } from './userResolvers';
-import { movieResolvers } from './movieResolvers';
-import { bookResolvers } from './bookResolvers';
 
 export const resolvers = [
 	animeResolvers,
-	mangaResolvers,
-	gameResolvers,
+	bookResolvers,
 	characterResolvers,
 	emoteResolvers,
+	gameResolvers,
+	mangaResolvers,
+	movieResolvers,
 	noteResolvers,
 	userResolvers,
-	movieResolvers,
-	bookResolvers,
 ];

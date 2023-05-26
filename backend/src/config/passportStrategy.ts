@@ -1,21 +1,17 @@
 import dotenv from 'dotenv';
-import passport from "passport";
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
-import { Profile, DoneCallback } from 'passport';
-import User from '../db/models/User';
 import { CallbackError, Document } from 'mongoose';
-import { Request } from 'express';
+import User from '../db/models/User';
+import passport, { Profile, DoneCallback } from "passport";
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 dotenv.config();
 
 const GOOGLE_CALLBACK_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GOOGLE_CALLBACK_URL_DEVELOPMENT : process.env.NODE_GOOGLE_CALLBACK_URL;
 
-// const GOOGLE_CALLBACK_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_GOOGLE_CALLBACK_URL_DEVELOPMENT : process.env.NODE_GOOGLE_CALLBACK_URL_DEVELOPMENT;
-
 passport.use(new GoogleStrategy({
+  callbackURL: GOOGLE_CALLBACK_URL,
   clientID: process.env.NODE_GOOGLE_CLIENT_ID,
   clientSecret: process.env.NODE_GOOGLE_CLIENT_SECRET,
-  callbackURL: GOOGLE_CALLBACK_URL,
   passReqToCallback: true
 },
   function <T>(req: any, __: T, ___: T, profile: Profile, done: DoneCallback) {

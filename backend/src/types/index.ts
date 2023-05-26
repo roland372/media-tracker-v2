@@ -1,35 +1,9 @@
+//? <----- UTILS ----->
 export type TContext = {
 	userFromContext: TUser[];
 };
 
-//? <----- User ----->
-export enum EUserRole {
-	ADMIN = "ADMIN",
-	USER = "USER",
-};
-
-export type TUser = {
-	color: string;
-	email: string;
-	googleId: string;
-	ID: string;
-	profileDesc: string;
-	profileImg: string;
-	role: EUserRole;
-	username: string;
-};
-
-export type TUserInput = {
-	userInput: {
-		color: string;
-		profileDesc: string;
-		profileImg: string;
-		username: string;
-	};
-	ID: string;
-};
-
-//? <----- Anime ----->
+//? <----- ANIME ----->
 export enum EAnimeStatus {
 	WATCHING = 'Watching',
 	COMPLETED = 'Completed',
@@ -86,7 +60,171 @@ export type TAnimeInput = {
 	ID: string;
 };
 
-//? <----- Manga ----->
+//? <----- BOOKS ----->
+export enum EBookStatus {
+	READING = 'Reading',
+	COMPLETED = 'Completed',
+	ON_HOLD = 'On-Hold',
+	DROPPED = 'Dropped',
+	PLAN_TO_READ = 'Plan to Read',
+};
+
+export type TBook = {
+	author: string;
+	favourites: boolean;
+	genre: string;
+	id: string;
+	ID: string;
+	imageURL: string;
+	lastModified: number;
+	link1: string;
+	link1Name: string;
+	link2: string;
+	link2Name: string;
+	owner: string;
+	pages: number;
+	rating: number;
+	status: EBookStatus;
+	title: string;
+};
+
+export type TBookInput = {
+	bookInput: {
+		author: string;
+		favourites: boolean;
+		genre: string;
+		imageURL: string;
+		lastModified: number;
+		link1: string;
+		link1Name: string;
+		link2: string;
+		link2Name: string;
+		pages: number;
+		rating: number;
+		status: EBookStatus;
+		title: string;
+	};
+	ID: string;
+};
+
+//? <----- CHARACTERS ----->
+export enum ECharacterSource {
+	ANIME = 'Anime',
+	GAME = 'Game',
+	MANGA = 'Manga',
+};
+
+export enum ECharacterGender {
+	FEMALE = 'Female',
+	MALE = 'Male',
+	OTHER = 'Other',
+};
+
+export type TCharacter = {
+	favourites: boolean;
+	gender: ECharacterGender;
+	hairColor: string;
+	id: string;
+	ID: string;
+	imageURL: string;
+	lastModified: number;
+	link1: string;
+	link1Name: string;
+	mal_id: number;
+	name: string;
+	owner: string;
+	series: string;
+	source: ECharacterSource;
+};
+
+export type TCharacterInput = {
+	characterInput: {
+		favourites: boolean;
+		gender: ECharacterGender;
+		hairColor: string;
+		imageURL: string;
+		lastModified: number;
+		link1: string;
+		link1Name: string;
+		mal_id?: number;
+		name: string;
+		series: string;
+		source: ECharacterSource;
+	};
+	ID: string;
+};
+
+//? <----- EMOTES ----->
+export type TEmote = {
+	favourites: boolean;
+	id: string;
+	ID: string;
+	lastModified: number;
+	name: string;
+	url: string;
+};
+
+export type TEmoteInput = {
+	emoteInput: {
+		favourites: boolean;
+		name: string;
+		lastModified: number;
+		url: string;
+	};
+	ID: string;
+};
+
+//? <----- GAMES ----->
+export enum EGameStatus {
+	PLAYING = 'Playing',
+	COMPLETED = 'Completed',
+	ON_HOLD = 'On-Hold',
+	DROPPED = 'Dropped',
+	PLAN_TO_PLAY = 'Plan to Play',
+};
+
+export enum EGameType {
+	GAME = 'Game',
+	VISUAL_NOVEL = 'Visual Novel',
+};
+
+export type TGame = {
+	favourites: boolean;
+	id: string;
+	ID: string;
+	imageURL: string;
+	lastModified: number;
+	link1: string;
+	link1Name: string;
+	link2: string;
+	link2Name: string;
+	owner: string;
+	playtime: number;
+	rating: number;
+	status: EGameStatus;
+	title: string;
+	type: EGameType;
+};
+
+export type TGameInput = {
+	gameInput: {
+		favourites: boolean;
+		imageURL: string;
+		lastModified: number;
+		link1: string;
+		link1Name: string;
+		link2: string;
+		link2Name: string;
+		playtime: number;
+		rating: number;
+		status: EGameStatus;
+		title: string;
+		type: EGameType;
+	};
+	ID: string;
+};
+
+//? <----- MANGA ----->
 export enum EMangaStatus {
 	READING = 'Reading',
 	COMPLETED = 'Completed',
@@ -149,145 +287,7 @@ export type TMangaInput = {
 	ID: string;
 };
 
-//? <----- Games ----->
-export enum EGameStatus {
-	PLAYING = 'Playing',
-	COMPLETED = 'Completed',
-	ON_HOLD = 'On-Hold',
-	DROPPED = 'Dropped',
-	PLAN_TO_PLAY = 'Plan to Play',
-};
-
-export enum EGameType {
-	GAME = 'Game',
-	VISUAL_NOVEL = 'Visual Novel',
-};
-
-export type TGame = {
-	favourites: boolean;
-	id: string;
-	ID: string;
-	imageURL: string;
-	lastModified: number;
-	link1: string;
-	link1Name: string;
-	link2: string;
-	link2Name: string;
-	owner: string;
-	playtime: number;
-	rating: number;
-	status: EGameStatus;
-	title: string;
-	type: EGameType;
-};
-
-export type TGameInput = {
-	gameInput: {
-		favourites: boolean;
-		imageURL: string;
-		lastModified: number;
-		link1: string;
-		link1Name: string;
-		link2: string;
-		link2Name: string;
-		playtime: number;
-		rating: number;
-		status: EGameStatus;
-		title: string;
-		type: EGameType;
-	};
-	ID: string;
-};
-
-//? <----- Characters ----->
-export enum ECharacterSource {
-	ANIME = 'Anime',
-	GAME = 'Game',
-	MANGA = 'Manga',
-};
-
-export enum ECharacterGender {
-	FEMALE = 'Female',
-	MALE = 'Male',
-	OTHER = 'Other',
-};
-
-export type TCharacter = {
-	favourites: boolean;
-	gender: ECharacterGender;
-	hairColor: string;
-	id: string;
-	ID: string;
-	imageURL: string;
-	lastModified: number;
-	link1: string;
-	link1Name: string;
-	mal_id: number;
-	name: string;
-	owner: string;
-	series: string;
-	source: ECharacterSource;
-};
-
-export type TCharacterInput = {
-	characterInput: {
-		favourites: boolean;
-		gender: ECharacterGender;
-		hairColor: string;
-		imageURL: string;
-		lastModified: number;
-		link1: string;
-		link1Name: string;
-		mal_id?: number;
-		name: string;
-		series: string;
-		source: ECharacterSource;
-	};
-	ID: string;
-};
-
-//? <----- Emotes ----->
-export type TEmote = {
-	favourites: boolean;
-	id: string;
-	ID: string;
-	lastModified: number;
-	name: string;
-	url: string;
-};
-
-export type TEmoteInput = {
-	emoteInput: {
-		favourites: boolean;
-		name: string;
-		lastModified: number;
-		url: string;
-	};
-	ID: string;
-};
-
-//? <----- Notes ----->
-export type TNote = {
-	color: string;
-	id: string;
-	ID: string;
-	lastModified: number;
-	note: string;
-	owner: string;
-	title: string;
-};
-
-export type TNoteInput = {
-	noteInput: {
-		color: string;
-		lastModified: number;
-		note: string;
-		title: string;
-	};
-	ID: string;
-};
-
-//? <----- Movies ----->
+//? <----- MOVIES ----->
 export enum EMovieStatus {
 	WATCHING = 'Watching',
 	COMPLETED = 'Completed',
@@ -343,49 +343,50 @@ export type TMovieInput = {
 	ID: string;
 };
 
-//? <----- Books ----->
-export enum EBookStatus {
-	READING = 'Reading',
-	COMPLETED = 'Completed',
-	ON_HOLD = 'On-Hold',
-	DROPPED = 'Dropped',
-	PLAN_TO_READ = 'Plan to Read',
-};
-
-export type TBook = {
-	author: string;
-	favourites: boolean;
-	genre: string;
+//? <----- NOTES ----->
+export type TNote = {
+	color: string;
 	id: string;
 	ID: string;
-	imageURL: string;
 	lastModified: number;
-	link1: string;
-	link1Name: string;
-	link2: string;
-	link2Name: string;
+	note: string;
 	owner: string;
-	pages: number;
-	rating: number;
-	status: EBookStatus;
 	title: string;
 };
 
-export type TBookInput = {
-	bookInput: {
-		author: string;
-		favourites: boolean;
-		genre: string;
-		imageURL: string;
+export type TNoteInput = {
+	noteInput: {
+		color: string;
 		lastModified: number;
-		link1: string;
-		link1Name: string;
-		link2: string;
-		link2Name: string;
-		pages: number;
-		rating: number;
-		status: EBookStatus;
+		note: string;
 		title: string;
+	};
+	ID: string;
+};
+
+//? <----- USER ----->
+export enum EUserRole {
+	ADMIN = "ADMIN",
+	USER = "USER",
+};
+
+export type TUser = {
+	color: string;
+	email: string;
+	googleId: string;
+	ID: string;
+	profileDesc: string;
+	profileImg: string;
+	role: EUserRole;
+	username: string;
+};
+
+export type TUserInput = {
+	userInput: {
+		color: string;
+		profileDesc: string;
+		profileImg: string;
+		username: string;
 	};
 	ID: string;
 };

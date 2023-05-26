@@ -1,6 +1,6 @@
+import colors from 'colors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import colors from 'colors';
 
 dotenv.config();
 mongoose.set('strictQuery', false);

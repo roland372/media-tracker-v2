@@ -1,19 +1,18 @@
-import { Request, Response } from "express";
-import passport, { Profile } from "passport";
 import dotenv from 'dotenv';
-import User from "../db/models/User";
+import { Request, Response } from "express";
 import { CallbackError } from "mongoose";
+import User from "../db/models/User";
+import passport, { Profile } from "passport";
 
 dotenv.config();
 
 const authUser = passport.authenticate('google', { scope: ['email', 'profile'] });
-
 const CLIENT_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_CLIENT_URL_DEVELOPMENT : process.env.NODE_CLIENT_URL
 
 const googleCallback = passport.authenticate('google', {
-	successRedirect: CLIENT_URL!,
 	failureRedirect: '/login/failure',
 	scope: ['email', 'profile'],
+	successRedirect: CLIENT_URL!,
 });
 
 const authFailure = <T>(_: T, res: Response) => {
@@ -43,11 +42,11 @@ const authSuccess = async (req: Request, res: Response) => {
 		};
 
 		res.status(200).json({
-			success: true,
-			message: 'SUCCESS',
-			user: user,
-			sessionID: req.sessionID,
 			cookies: req.cookies,
+			message: 'SUCCESS',
+			sessionID: req.sessionID,
+			success: true,
+			user: user,
 		});
 	}
 	//? user already exists in db
@@ -57,22 +56,22 @@ const authSuccess = async (req: Request, res: Response) => {
 
 		if (!userFromDB) {
 			return res.status(401).json({
-				success: false,
 				message: 'FAILURE',
+				success: false,
 			});
 		}
 		res.status(200).json({
-			success: true,
-			message: 'SUCCESS',
-			user: userFromDB,
-			sessionID: req.sessionID,
 			cookies: req.cookies,
+			message: 'SUCCESS',
+			sessionID: req.sessionID,
+			success: true,
+			user: userFromDB,
 		});
 	}
 	else {
 		res.status(401).json({
-			success: false,
 			message: 'FAILURE',
+			success: false,
 		});
 	}
 }

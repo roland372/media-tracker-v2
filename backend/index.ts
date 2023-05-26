@@ -1,27 +1,28 @@
+import { json } from 'body-parser';
+import colors from 'colors';
+import cors from 'cors';
+import dotenv from 'dotenv';
 import express from 'express';
 import session from 'express-session';
 import http from 'http';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import colors from 'colors';
-import { json } from 'body-parser';
+import passport from "passport";
+import authRoute from "./src/routes/auth";
+require("./src/config/passportStrategy");
+
 import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { applyMiddleware } from 'graphql-middleware';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { ApolloServer } from '@apollo/server';
-import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import { databaseConnector } from './src/db/connector';
-import { typeDefs } from './src/graphql/typeDefs';
-import { resolvers } from './src/graphql/resolvers';
-import passport from "passport";
-import MongoStore from 'connect-mongo';
-import authRoute from "./src/routes/auth";
-import User from "./src/db/models/User";
 import shield from "./src/utils/permissions";
-require("./src/config/passportStrategy");
+import { resolvers } from './src/graphql/resolvers';
+import { typeDefs } from './src/graphql/typeDefs';
+
+import MongoStore from 'connect-mongo';
+import { databaseConnector } from './src/db/connector';
+import User from "./src/db/models/User";
 
 dotenv.config();
-
 console.log(colors.blue.bold(process.env.NODE_ENV!.trim()));
 
 const PORT = process.env.PORT || 5000;
