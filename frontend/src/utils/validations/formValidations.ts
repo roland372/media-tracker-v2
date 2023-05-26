@@ -1,9 +1,18 @@
 export const digitRegex = /^(?=.*[0-9])\d*$/;
 
+export const URLRegex = /^(https?:\/\/)?([^\s.]+\.\S{2}|localhost[:?\d]*)\S*$/i;
+
 export const stringRules = (fieldName: string) => [
   (value: string) => {
     if (value) return true;
     return `${fieldName} is required`;
+  },
+];
+
+export const URLRules = [
+  (value: string) => {
+    if (URLRegex.test(value)) return true;
+    return "Field must be a valid URL";
   },
 ];
 

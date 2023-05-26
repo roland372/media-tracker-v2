@@ -107,45 +107,47 @@
           variant="text"
         />
       </div>
-      <v-card-text class="mx-n2">
-        <section class="d-flex align-center justify-space-between mb-2">
-          <v-text-field
-            v-model="newNote.title"
-            class="me-2"
-            density="compact"
-            hide-details="auto"
-            label="Title"
-            :rules="[(val) => !!val || 'Title is required.']"
-            variant="outlined"
-          />
-          <v-menu open-on-hover :close-on-content-click="false">
-            <template v-slot:activator="{ props }">
-              <ButtonText
-                v-bind="props"
-                :color="newNote.color"
-                text="Select Color"
-              />
-            </template>
-            <v-color-picker
-              v-model="newNote.color"
-              :modes="['hexa']"
-              class="overflow-x-hidden"
+      <v-form validate-on="input" @submit.prevent="handleSubmitAddNote">
+        <v-card-text class="mx-n2">
+          <section class="d-flex align-center justify-space-between mb-2">
+            <v-text-field
+              v-model="newNote.title"
+              class="me-2"
+              density="compact"
+              hide-details="auto"
+              label="Title"
+              :rules="stringRules('Title')"
+              variant="outlined"
             />
-          </v-menu>
-        </section>
-        <TinyMCEEditor
-          @editor-change="handleGetEditorContent"
-          :editor-content="newNote.note"
-        />
-      </v-card-text>
-      <v-card-actions class="d-flex justify-start ms-2 mt-n2 mb-2">
-        <ButtonText
-          @click="handleSubmitAddNote"
-          color="green"
-          text="Add Note"
-          variant="flat"
-        />
-      </v-card-actions> </v-card
+            <v-menu open-on-hover :close-on-content-click="false">
+              <template v-slot:activator="{ props }">
+                <ButtonText
+                  v-bind="props"
+                  :color="newNote.color"
+                  text="Select Color"
+                />
+              </template>
+              <v-color-picker
+                v-model="newNote.color"
+                :modes="['hexa']"
+                class="overflow-x-hidden"
+              />
+            </v-menu>
+          </section>
+          <TinyMCEEditor
+            @editor-change="handleGetEditorContent"
+            :editor-content="newNote.note"
+          />
+        </v-card-text>
+        <v-card-actions class="d-flex justify-start ms-2 mt-n2 mb-2">
+          <ButtonText
+            color="green"
+            text="Add Note"
+            type="submit"
+            variant="flat"
+          />
+        </v-card-actions>
+      </v-form> </v-card
   ></v-dialog>
   <v-dialog
     v-if="editNoteModal"
@@ -168,45 +170,47 @@
           variant="text"
         />
       </div>
-      <v-card-text class="mx-n2">
-        <section class="d-flex align-center justify-space-between mb-2">
-          <v-text-field
-            v-model="noteRef.title"
-            class="me-2"
-            density="compact"
-            hide-details="auto"
-            label="Title"
-            :rules="[(val) => !!val || 'Title is required.']"
-            variant="outlined"
-          />
-          <v-menu open-on-hover :close-on-content-click="false">
-            <template v-slot:activator="{ props }">
-              <ButtonText
-                v-bind="props"
-                :color="noteRef.color"
-                text="Select Color"
-              />
-            </template>
-            <v-color-picker
-              v-model="noteRef.color"
-              :modes="['hexa']"
-              class="overflow-x-hidden"
+      <v-form validate-on="input" @submit.prevent="handleSubmitEditNote">
+        <v-card-text class="mx-n2">
+          <section class="d-flex align-center justify-space-between mb-2">
+            <v-text-field
+              v-model="noteRef.title"
+              class="me-2"
+              density="compact"
+              hide-details="auto"
+              label="Title"
+              :rules="stringRules('Title')"
+              variant="outlined"
             />
-          </v-menu>
-        </section>
-        <TinyMCEEditor
-          @editor-change="handleGetEditorContent"
-          :editor-content="noteRef.note"
-        />
-      </v-card-text>
-      <v-card-actions class="d-flex justify-start ms-2 mt-n2 mb-2">
-        <ButtonText
-          @click="handleSubmitEditNote"
-          color="yellow"
-          text="Update Note"
-          variant="flat"
-        />
-      </v-card-actions> </v-card
+            <v-menu open-on-hover :close-on-content-click="false">
+              <template v-slot:activator="{ props }">
+                <ButtonText
+                  v-bind="props"
+                  :color="noteRef.color"
+                  text="Select Color"
+                />
+              </template>
+              <v-color-picker
+                v-model="noteRef.color"
+                :modes="['hexa']"
+                class="overflow-x-hidden"
+              />
+            </v-menu>
+          </section>
+          <TinyMCEEditor
+            @editor-change="handleGetEditorContent"
+            :editor-content="noteRef.note"
+          />
+        </v-card-text>
+        <v-card-actions class="d-flex justify-start ms-2 mt-n2 mb-2">
+          <ButtonText
+            color="yellow"
+            text="Update Note"
+            type="submit"
+            variant="flat"
+          />
+        </v-card-actions>
+      </v-form> </v-card
   ></v-dialog>
   <v-dialog
     v-if="deleteNoteModal"
@@ -276,6 +280,7 @@ import { storeToRefs } from "pinia";
 import { TNoteInput } from "@/types";
 import { TNote } from "@/types";
 import { orderBy } from "lodash";
+import { stringRules } from "@/utils/validations/formValidations";
 
 const mediaStore = useMediaStore();
 const { notes } = storeToRefs(mediaStore);
@@ -313,15 +318,17 @@ const handleOpenAddNoteModal = () => {
 };
 
 const handleSubmitAddNote = async () => {
-  newNote.note = noteRef.value.note;
-  await submitAddNote(newNote);
-  snackbar.value.text = "Note Added";
-  snackbar.value.value = !snackbar.value.value;
-  addNoteModal.value = false;
+  if (newNote.title) {
+    newNote.note = noteRef.value.note;
+    await submitAddNote(newNote);
+    snackbar.value.text = "Note Added";
+    snackbar.value.value = !snackbar.value.value;
+    addNoteModal.value = false;
 
-  newNote.color = "#FFFFFF";
-  newNote.note = "";
-  newNote.title = "New Note";
+    newNote.color = "#FFFFFF";
+    newNote.note = "";
+    newNote.title = "New Note";
+  }
 };
 
 const handleOpenDeleteNoteModal = (id: string, note: TNote) => {
@@ -356,12 +363,13 @@ const handleOpenEditNoteModal = (id: string, note: TNote) => {
 };
 
 const handleSubmitEditNote = async () => {
-  await submitEditNote(noteID.value, noteRef.value);
-
-  snackbar.value.text = "Note Edited";
-  snackbar.value.value = !snackbar.value.value;
-  editNoteModal.value = false;
-  noteRef.value.note = "";
+  if (noteRef.value.title) {
+    await submitEditNote(noteID.value, noteRef.value);
+    snackbar.value.text = "Note Edited";
+    snackbar.value.value = !snackbar.value.value;
+    editNoteModal.value = false;
+    noteRef.value.note = "";
+  }
 };
 
 const handleOpenViewNoteModal = (id: string, note: TNote) => {

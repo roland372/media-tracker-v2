@@ -115,82 +115,86 @@
   <v-dialog v-if="addEmoteModal" v-model="addEmoteModal" max-width="500"
     ><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Emote</div>
-      <v-card-text>
-        <v-text-field
-          v-model="newEmote.name"
-          class="mb-2"
-          density="compact"
-          hide-details="auto"
-          label="Name"
-          :rules="[(val) => !!val || 'Name is required.']"
-          variant="outlined"
-        />
-        <v-text-field
-          v-model="newEmote.url"
-          class="mb-2"
-          density="compact"
-          hide-details="auto"
-          label="URL"
-          :rules="[(val) => !!val || 'URL is required.']"
-          variant="outlined"
-        />
-        <section class="d-flex align-center ms-2 mt-n4 mb-n6">
-          <div>Add to Favourites?</div>
-          <v-checkbox v-model="newEmote.favourites" hide-details />
-        </section>
-      </v-card-text>
-      <v-card-actions class="d-flex justify-start ms-4 mb-2">
-        <ButtonText
-          @click="handleSubmitAddEmote"
-          color="green"
-          text="Add Emote"
-          variant="flat"
-        />
-      </v-card-actions> </v-card
+      <v-form validate-on="input" @submit.prevent="handleSubmitAddEmote">
+        <v-card-text>
+          <v-text-field
+            v-model="newEmote.name"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="Name"
+            :rules="stringRules('Name')"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="newEmote.url"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="URL"
+            :rules="URLRules"
+            variant="outlined"
+          />
+          <section class="d-flex align-center ms-2 mt-n4 mb-n6">
+            <div>Add to Favourites?</div>
+            <v-checkbox v-model="newEmote.favourites" hide-details />
+          </section>
+        </v-card-text>
+        <v-card-actions class="d-flex justify-start ms-4 mb-2">
+          <ButtonText
+            color="green"
+            text="Add Emote"
+            type="submit"
+            variant="flat"
+          />
+        </v-card-actions>
+      </v-form> </v-card
   ></v-dialog>
   <v-dialog v-if="editEmoteModal" v-model="editEmoteModal" max-width="500"
     ><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         Edit Emote
       </div>
-      <v-card-text>
-        <img
-          :src="emoteRef.url"
-          :alt="emoteRef.name"
-          style="height: 64px"
-          class="mt-n2 mb-2"
-        />
-        <v-text-field
-          v-model="emoteRef.name"
-          class="mb-2"
-          density="compact"
-          hide-details="auto"
-          label="Name"
-          :rules="[(val) => !!val || 'Name is required.']"
-          variant="outlined"
-        />
-        <v-text-field
-          v-model="emoteRef.url"
-          class="mb-2"
-          density="compact"
-          hide-details="auto"
-          label="URL"
-          :rules="[(val) => !!val || 'URL is required.']"
-          variant="outlined"
-        />
-        <section class="d-flex align-center ms-2 mt-n4 mb-n6">
-          <div>Add to Favourites?</div>
-          <v-checkbox v-model="emoteRef.favourites" hide-details />
-        </section>
-      </v-card-text>
-      <v-card-actions class="d-flex justify-start ms-4 mb-2">
-        <ButtonText
-          @click="handleSubmitEditEmote"
-          color="yellow"
-          text="Update Emote"
-          variant="flat"
-        />
-      </v-card-actions> </v-card
+      <v-form validate-on="input" @submit.prevent="handleSubmitEditEmote">
+        <v-card-text>
+          <img
+            :src="emoteRef.url"
+            :alt="emoteRef.name"
+            style="height: 64px"
+            class="mt-n2 mb-2"
+          />
+          <v-text-field
+            v-model="emoteRef.name"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="Name"
+            :rules="stringRules('Name')"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="emoteRef.url"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="URL"
+            :rules="URLRules"
+            variant="outlined"
+          />
+          <section class="d-flex align-center ms-2 mt-n4 mb-n6">
+            <div>Add to Favourites?</div>
+            <v-checkbox v-model="emoteRef.favourites" hide-details />
+          </section>
+        </v-card-text>
+        <v-card-actions class="d-flex justify-start ms-4 mb-2">
+          <ButtonText
+            color="yellow"
+            text="Update Emote"
+            type="submit"
+            variant="flat"
+          />
+        </v-card-actions>
+      </v-form> </v-card
   ></v-dialog>
   <v-dialog
     v-if="deleteEmoteModal"
@@ -243,6 +247,11 @@ import { storeToRefs } from "pinia";
 import { TEmote, TEmoteInput } from "@/types";
 import { filter, orderBy } from "lodash";
 import { copyImageToClipboard } from "copy-image-clipboard";
+import {
+  stringRules,
+  URLRegex,
+  URLRules,
+} from "@/utils/validations/formValidations";
 
 const mediaStore = useMediaStore();
 const { emotes } = storeToRefs(mediaStore);
@@ -294,14 +303,16 @@ const handleOpenAddEmoteModal = () => {
 };
 
 const handleSubmitAddEmote = async () => {
-  await submitAddEmote(newEmote);
-  snackbar.value.text = "Emote Added";
-  snackbar.value.value = !snackbar.value.value;
-  addEmoteModal.value = false;
+  if (newEmote.name && URLRegex.test(newEmote.url)) {
+    await submitAddEmote(newEmote);
+    snackbar.value.text = "Emote Added";
+    snackbar.value.value = !snackbar.value.value;
+    addEmoteModal.value = false;
 
-  newEmote.favourites = false;
-  newEmote.name = "";
-  newEmote.url = "";
+    newEmote.favourites = false;
+    newEmote.name = "";
+    newEmote.url = "";
+  }
 };
 
 const handleOpenDeleteEmoteModal = (id: string, emote: TEmote) => {
@@ -337,10 +348,12 @@ const handleOpenEditEmoteModal = (id: string, emote: TEmote) => {
   emoteID.value = id;
 };
 const handleSubmitEditEmote = async () => {
-  await submitEditEmote(emoteID.value, emoteRef.value);
-  snackbar.value.text = "Emote Edited";
-  snackbar.value.value = !snackbar.value.value;
-  editEmoteModal.value = false;
+  if (emoteRef.value.name && URLRegex.test(emoteRef.value.url)) {
+    await submitEditEmote(emoteID.value, emoteRef.value);
+    snackbar.value.text = "Emote Edited";
+    snackbar.value.value = !snackbar.value.value;
+    editEmoteModal.value = false;
+  }
 };
 
 const handleEmoteClick = (url: string): void => {
