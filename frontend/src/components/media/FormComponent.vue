@@ -24,10 +24,9 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Anime Title"
-                :rules="stringRules"
+                label="Title"
+                :rules="stringRules('Title')"
                 variant="outlined"
-                required
               />
               <v-select
                 v-model="newAnime.type"
@@ -133,8 +132,8 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Manga Title"
-                :rules="stringRules"
+                label="Title"
+                :rules="stringRules('Title')"
                 variant="outlined"
               />
               <v-select
@@ -265,8 +264,8 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Game Title"
-                :rules="stringRules"
+                label="Title"
+                :rules="stringRules('Title')"
                 variant="outlined"
               />
               <v-select
@@ -368,8 +367,8 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Character Name"
-                :rules="stringRules"
+                label="Name"
+                :rules="stringRules('Name')"
                 variant="outlined"
               />
               <v-select
@@ -444,7 +443,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Title"
-                :rules="stringRules"
+                :rules="stringRules('Title')"
                 variant="outlined"
               />
               <v-text-field
@@ -453,7 +452,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Author"
-                :rules="stringRules"
+                :rules="stringRules('Author')"
                 variant="outlined"
               />
               <v-text-field
@@ -547,7 +546,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Title"
-                :rules="stringRules"
+                :rules="stringRules('Title')"
                 variant="outlined"
               />
               <v-select
@@ -714,6 +713,11 @@ import {
   EMovieType,
   EMovieStatus,
 } from "@/types";
+import {
+  digitRegex,
+  stringRules,
+  numberRules,
+} from "@/utils/validations/formValidations";
 
 interface IFormComponentProps {
   mediaType: EMediaType | string;
@@ -829,20 +833,6 @@ const newMovie: TMovieInput = reactive({
   title: "",
   type: EMovieType.MOVIE,
 });
-
-const digitRegex = /^(?=.*[0-9])\d*$/;
-
-const stringRules = [
-  (value: string) => {
-    if (value) return true;
-    return "Value is requred";
-  },
-];
-
-const numberRules = [
-  (v: string) =>
-    (v !== "" && /^\d+$/.test(v)) || "Value must be a non-empty number",
-];
 
 const handleSubmitAddAnime = async () => {
   if (
