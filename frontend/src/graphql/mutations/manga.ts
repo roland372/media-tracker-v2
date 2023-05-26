@@ -1,6 +1,6 @@
 import { apolloClient } from "@/graphql";
-import { TMangaInput } from "@/types";
 import gql from "graphql-tag";
+import { TMangaInput } from "@/types";
 
 export const addManga = async (
   userId: string | undefined,
@@ -41,17 +41,14 @@ export const addManga = async (
   });
 };
 
-export const editManga = async (
+export const deleteManga = async (
   userId: string | undefined,
-  variables: {
-    id: string;
-    mangaInput: TMangaInput;
-  }
+  variables: { id: string }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation EditManga($id: ID!, $mangaInput: MangaInput) {
-        editManga(ID: $id, mangaInput: $mangaInput)
+      mutation DeleteManga($id: ID!) {
+        deleteManga(ID: $id)
       }
     `,
     context: {
@@ -63,14 +60,17 @@ export const editManga = async (
   });
 };
 
-export const deleteManga = async (
+export const editManga = async (
   userId: string | undefined,
-  variables: { id: string }
+  variables: {
+    id: string;
+    mangaInput: TMangaInput;
+  }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation DeleteManga($id: ID!) {
-        deleteManga(ID: $id)
+      mutation EditManga($id: ID!, $mangaInput: MangaInput) {
+        editManga(ID: $id, mangaInput: $mangaInput)
       }
     `,
     context: {

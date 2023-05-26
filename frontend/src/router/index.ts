@@ -1,29 +1,29 @@
 import { watch } from "vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import { navLinks } from "@/utils/links";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
+import { navLinks } from "@/utils/links";
 
 const routes: Array<RouteRecordRaw> = [
-  {
-    component: () => import("@/views/LoginPage.vue"),
-    name: "LoginPage",
-    path: "/login",
-    meta: { title: "Login" + " | Media-Tracker" },
-  },
   ...navLinks.map((link) => {
     return {
       component: () => import(`@/views/${link.name}.vue`),
+      meta: { title: link.title + " | Media-Tracker" },
       name: link.name,
       path: link.url,
-      meta: { title: link.title + " | Media-Tracker" },
     };
   }),
   {
+    component: () => import("@/views/LoginPage.vue"),
+    meta: { title: "Login" + " | Media-Tracker" },
+    name: "LoginPage",
+    path: "/login",
+  },
+  {
     component: () => import("@/views/NotFound.vue"),
+    meta: { title: "Not Found" + " | Media-Tracker" },
     name: "NotFound",
     path: "/:catchAll(.*)*",
-    meta: { title: "Not Found" + " | Media-Tracker" },
   },
 ];
 

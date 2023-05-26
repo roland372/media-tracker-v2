@@ -14,9 +14,9 @@
         class="ma-1"
         color="primary"
         :text="
+          mediaType === EMediaType.BOOK ||
           mediaType === EMediaType.CHARACTER ||
           mediaType === EMediaType.GAME ||
-          mediaType === EMediaType.BOOK ||
           mediaType === EMediaType.MOVIE
             ? `All ${mediaType}s`
             : `All ${mediaType}`
@@ -52,6 +52,8 @@
 </template>
 <script setup lang="ts">
 import { defineEmits, defineProps, ref } from "vue";
+import ButtonIcon from "@/components/ui/ButtonIcon.vue";
+import ButtonText from "@/components/ui/ButtonText.vue";
 import {
   EAnimeStatus,
   EBookStatus,
@@ -61,16 +63,15 @@ import {
   EMediaType,
   EMovieStatus,
 } from "@/types";
-import ButtonText from "@/components/ui/ButtonText.vue";
-import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 
 interface IDisplayFilterSearchPanelProps {
   displayFlag: string;
   mediaType: EMediaType;
 }
 
-const props = defineProps<IDisplayFilterSearchPanelProps>();
 const emit = defineEmits(["display", "search", "filter"]);
+const props = defineProps<IDisplayFilterSearchPanelProps>();
+
 const mediaSearch = ref<string | undefined>("");
 
 const mediaStatus = () => {
@@ -78,7 +79,6 @@ const mediaStatus = () => {
 
   switch (props.mediaType) {
     case EMediaType.ANIME:
-      // statusArr = [...new Set(media.map((el) => (el as TAnime).status))];
       statusArr = [
         { status: EAnimeStatus.WATCHING, color: "green" },
         { status: EAnimeStatus.COMPLETED, color: "blue" },
@@ -87,13 +87,20 @@ const mediaStatus = () => {
         { status: EAnimeStatus.PLAN_TO_WATCH, color: "white" },
       ];
       break;
-    case EMediaType.MANGA:
+    case EMediaType.BOOK:
       statusArr = [
-        { status: EMangaStatus.READING, color: "green" },
-        { status: EMangaStatus.COMPLETED, color: "blue" },
-        { status: EMangaStatus.ON_HOLD, color: "yellow" },
-        { status: EMangaStatus.DROPPED, color: "red" },
-        { status: EMangaStatus.PLAN_TO_READ, color: "white" },
+        { status: EBookStatus.READING, color: "green" },
+        { status: EBookStatus.COMPLETED, color: "blue" },
+        { status: EBookStatus.ON_HOLD, color: "yellow" },
+        { status: EBookStatus.DROPPED, color: "red" },
+        { status: EBookStatus.PLAN_TO_READ, color: "white" },
+      ];
+      break;
+    case EMediaType.CHARACTER:
+      statusArr = [
+        { status: ECharacterSource.ANIME, color: "green" },
+        { status: ECharacterSource.GAME, color: "blue" },
+        { status: ECharacterSource.MANGA, color: "yellow" },
       ];
       break;
     case EMediaType.GAME:
@@ -105,20 +112,13 @@ const mediaStatus = () => {
         { status: EGameStatus.PLAN_TO_PLAY, color: "white" },
       ];
       break;
-    case EMediaType.CHARACTER:
+    case EMediaType.MANGA:
       statusArr = [
-        { status: ECharacterSource.ANIME, color: "green" },
-        { status: ECharacterSource.GAME, color: "blue" },
-        { status: ECharacterSource.MANGA, color: "yellow" },
-      ];
-      break;
-    case EMediaType.BOOK:
-      statusArr = [
-        { status: EBookStatus.READING, color: "green" },
-        { status: EBookStatus.COMPLETED, color: "blue" },
-        { status: EBookStatus.ON_HOLD, color: "yellow" },
-        { status: EBookStatus.DROPPED, color: "red" },
-        { status: EBookStatus.PLAN_TO_READ, color: "white" },
+        { status: EMangaStatus.READING, color: "green" },
+        { status: EMangaStatus.COMPLETED, color: "blue" },
+        { status: EMangaStatus.ON_HOLD, color: "yellow" },
+        { status: EMangaStatus.DROPPED, color: "red" },
+        { status: EMangaStatus.PLAN_TO_READ, color: "white" },
       ];
       break;
     case EMediaType.MOVIE:
@@ -138,10 +138,10 @@ const mediaStatus = () => {
 const handleStatusClick = (
   status:
     | EAnimeStatus
-    | EMangaStatus
-    | EGameStatus
-    | ECharacterSource
     | EBookStatus
+    | ECharacterSource
+    | EGameStatus
+    | EMangaStatus
     | EMovieStatus
 ) => emit("filter", status);
 

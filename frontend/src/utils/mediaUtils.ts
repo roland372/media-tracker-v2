@@ -1,45 +1,24 @@
 import { Ref } from "vue";
 import {
-  EAnimeType,
   EAnimeStatus,
-  EMangaType,
-  EMangaStatus,
-  EGameType,
-  EGameStatus,
-  ECharacterSource,
+  EAnimeType,
+  EBookStatus,
   ECharacterGender,
+  ECharacterSource,
+  EGameStatus,
+  EGameType,
+  EMangaStatus,
+  EMangaType,
   EMediaType,
   EMovieStatus,
   EMovieType,
-  EBookStatus,
 } from "@/types";
-
-export const favouriteMedia = (media: Ref) =>
-  media.value.filter((el: { favourites: boolean }) => el.favourites);
-
-export const sortMediaByDate = (media: Ref) =>
-  [...media.value].sort(
-    (a: { lastModified: number }, b: { lastModified: number }) =>
-      b.lastModified - a.lastModified
-  );
-
-export const filterMediaStatus = (media: Ref, status: string) =>
-  [...media.value].filter(
-    (media) => media.status.toLowerCase() === status.toLowerCase()
-  );
-
-export const filterGameSource = (media: Ref, source: string) =>
-  [...media.value].filter(
-    (media) => media.source.toLowerCase() === source.toLowerCase()
-  );
-
-export const round = (value: number, precision: number) => {
-  const multiplier = Math.pow(10, precision || 0);
-  return Math.round(value * multiplier) / multiplier;
-};
 
 export const calculatePercentage = (numerator: number, denominator: number) =>
   (numerator / denominator) * 100;
+
+export const favouriteMedia = (media: Ref) =>
+  media.value.filter((el: { favourites: boolean }) => el.favourites);
 
 export const fetchMediaURL = (
   mediaType: string,
@@ -49,13 +28,34 @@ export const fetchMediaURL = (
 ) =>
   `https://api.jikan.moe/v4/${mediaType}?q=${query}&order_by=${orderBy}&sort=${sort}`;
 
+export const filterGameSource = (media: Ref, source: string) =>
+  [...media.value].filter(
+    (media) => media.source.toLowerCase() === source.toLowerCase()
+  );
+
+export const filterMediaStatus = (media: Ref, status: string) =>
+  [...media.value].filter(
+    (media) => media.status.toLowerCase() === status.toLowerCase()
+  );
+
+export const round = (value: number, precision: number) => {
+  const multiplier = Math.pow(10, precision || 0);
+  return Math.round(value * multiplier) / multiplier;
+};
+
+export const sortMediaByDate = (media: Ref) =>
+  [...media.value].sort(
+    (a: { lastModified: number }, b: { lastModified: number }) =>
+      b.lastModified - a.lastModified
+  );
+
 export const mediaList = [
   EMediaType.ANIME,
-  EMediaType.MANGA,
-  EMediaType.GAME,
-  EMediaType.CHARACTER,
-  EMediaType.MOVIE,
   EMediaType.BOOK,
+  EMediaType.CHARACTER,
+  EMediaType.GAME,
+  EMediaType.MANGA,
+  EMediaType.MOVIE,
 ];
 
 export const mediaRating = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];

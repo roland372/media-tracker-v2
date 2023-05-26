@@ -2,11 +2,11 @@
   <v-btn
     @click="onClick"
     :append-icon="appendIcon"
+    class="text-none"
     :color="color"
     :disabled="disabled"
     :prepend-icon="prependIcon"
     :size="size"
-    class="text-none"
   >
     {{ text }}
   </v-btn>
@@ -19,18 +19,18 @@ interface IButtonTextProps {
   appendIcon?: string;
   color?: string;
   disabled?: boolean;
-  onClick?: () => void;
   prependIcon?: string;
   size?: string;
   text: string;
+  onClick?: () => void;
 }
 
 withDefaults(defineProps<IButtonTextProps>(), {
   color: "primary",
   disabled: false,
+  size: "default",
   onClick: () => {
     return;
   },
-  size: "default",
 });
 </script>

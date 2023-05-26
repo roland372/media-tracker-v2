@@ -21,33 +21,33 @@
     <ButtonText
       v-if="allMedia && media.length > 20"
       @click="displayMedia"
-      class="mt-3"
-      color="indigo"
       :append-icon="
         displayMediaFlag === 20 ? 'mdi-arrow-down-bold' : 'mdi-arrow-up-bold'
       "
+      class="mt-3"
+      color="indigo"
       :text="displayMediaFlag === 20 ? 'Display All' : 'Display Less'"
     />
   </CardComponent>
 </template>
 <script setup lang="ts">
-import { defineProps, withDefaults, ref } from "vue";
+import { defineProps, ref, withDefaults } from "vue";
+import ButtonText from "@/components/ui/ButtonText.vue";
 import CardComponent from "@/components/media/CardComponent.vue";
 import MediaCard from "@/components/media/MediaCard.vue";
-import ButtonText from "@/components/ui/ButtonText.vue";
 import {
   EMediaType,
   TAnime,
+  TBook,
   TCharacter,
   TGame,
   TManga,
-  TBook,
   TMovie,
 } from "@/types";
 
 interface IMediaComponentProps {
   allMedia?: boolean;
-  media: TAnime[] | TManga[] | TGame[] | TCharacter[] | TBook[] | TMovie[];
+  media: TAnime[] | TBook[] | TCharacter[] | TGame[] | TManga[] | TMovie[];
   mediaType: EMediaType;
   title: string;
 }

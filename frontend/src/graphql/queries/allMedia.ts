@@ -24,29 +24,10 @@ export const getAllMedia = async (userId: string) => {
           title
           type
         }
-        getAllManga {
-          chaptersMax
-          chaptersMin
+        getAllBooks {
+          author
           favourites
-          _id
-          id
-          imageURL
-          lastModified
-          link1
-          link1Name
-          link2
-          link2Name
-          mal_id
-          owner
-          rating
-          status
-          title
-          type
-          volumesMax
-          volumesMin
-        }
-        getAllGames {
-          favourites
+          genre
           _id
           id
           imageURL
@@ -56,11 +37,10 @@ export const getAllMedia = async (userId: string) => {
           link2
           link2Name
           owner
-          playtime
+          pages
           rating
           status
           title
-          type
         }
         getAllCharacters {
           favourites
@@ -86,18 +66,8 @@ export const getAllMedia = async (userId: string) => {
           name
           url
         }
-        getAllNotes {
-          color
-          _id
-          id
-          lastModified
-          note
-          title
-        }
-        getAllBooks {
-          author
+        getAllGames {
           favourites
-          genre
           _id
           id
           imageURL
@@ -107,10 +77,32 @@ export const getAllMedia = async (userId: string) => {
           link2
           link2Name
           owner
-          pages
+          playtime
           rating
           status
           title
+          type
+        }
+        getAllManga {
+          chaptersMax
+          chaptersMin
+          favourites
+          _id
+          id
+          imageURL
+          lastModified
+          link1
+          link1Name
+          link2
+          link2Name
+          mal_id
+          owner
+          rating
+          status
+          title
+          type
+          volumesMax
+          volumesMin
         }
         getAllMovies {
           episodesMax
@@ -131,6 +123,14 @@ export const getAllMedia = async (userId: string) => {
           status
           title
           type
+        }
+        getAllNotes {
+          color
+          _id
+          id
+          lastModified
+          note
+          title
         }
       }
     `,

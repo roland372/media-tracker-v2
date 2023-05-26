@@ -18,7 +18,7 @@
         <v-card-text>
           <!--? ANIME -->
           <section v-if="props.mediaType === EMediaType.ANIME" class="mb-n12">
-            <v-form validate-on="input" @submit.prevent="handleSubmitEditAnime">
+            <v-form @submit.prevent="handleSubmitEditAnime" validate-on="input">
               <v-text-field
                 v-model="animeRef.title"
                 class="mb-2"
@@ -31,9 +31,9 @@
               <v-select
                 v-model="animeRef.type"
                 class="mb-n3"
+                density="compact"
                 :items="animeType"
                 label="Select Type"
-                density="compact"
                 variant="outlined"
               />
               <v-text-field
@@ -79,17 +79,17 @@
               <v-select
                 v-model="animeRef.rating"
                 class="mb-n3"
+                density="compact"
                 :items="mediaRating"
                 label="Rating"
-                density="compact"
                 variant="outlined"
               />
               <v-select
                 v-model="animeRef.status"
                 class="mb-n3"
+                density="compact"
                 :items="animeStatus"
                 label="Status"
-                density="compact"
                 variant="outlined"
               />
               <section class="d-flex align-center me-n2">
@@ -120,13 +120,13 @@
                 <div>Add to Favourites?</div>
                 <v-checkbox v-model="animeRef.favourites" hide-details />
               </section>
-              <ButtonText type="submit" color="yellow" text="Update" />
+              <ButtonText color="yellow" text="Update" type="submit" />
             </v-form>
           </section>
 
           <!--? MANGA -->
           <section v-if="props.mediaType === EMediaType.MANGA" class="mb-n12">
-            <v-form validate-on="input" @submit.prevent="handleSubmitEditManga">
+            <v-form @submit.prevent="handleSubmitEditManga" validate-on="input">
               <v-text-field
                 v-model="mangaRef.title"
                 class="mb-2"
@@ -139,9 +139,9 @@
               <v-select
                 v-model="mangaRef.type"
                 class="mb-n3"
+                density="compact"
                 :items="mangaType"
                 label="Select Type"
-                density="compact"
                 variant="outlined"
               />
               <v-text-field
@@ -187,17 +187,17 @@
               <v-select
                 v-model="mangaRef.rating"
                 class="mb-n3"
+                density="compact"
                 :items="mediaRating"
                 label="Rating"
-                density="compact"
                 variant="outlined"
               />
               <v-select
                 v-model="mangaRef.status"
                 class="mb-n3"
+                density="compact"
                 :items="mangaStatus"
                 label="Status"
-                density="compact"
                 variant="outlined"
               />
               <section class="d-flex align-center me-n2">
@@ -252,13 +252,13 @@
                 <div>Add to Favourites?</div>
                 <v-checkbox v-model="mangaRef.favourites" hide-details />
               </section>
-              <ButtonText color="yellow" type="submit" text="Update" />
+              <ButtonText color="yellow" text="Update" type="submit" />
             </v-form>
           </section>
 
           <!--? GAMES -->
           <section v-if="props.mediaType === EMediaType.GAME" class="mb-n12">
-            <v-form validate-on="input" @submit.prevent="handleSubmitEditGame">
+            <v-form @submit.prevent="handleSubmitEditGame" validate-on="input">
               <v-text-field
                 v-model="gameRef.title"
                 class="mb-2"
@@ -271,9 +271,9 @@
               <v-select
                 v-model="gameRef.type"
                 class="mb-n3"
+                density="compact"
                 :items="gameType"
                 label="Select Type"
-                density="compact"
                 variant="outlined"
               />
               <v-text-field
@@ -319,17 +319,17 @@
               <v-select
                 v-model="gameRef.rating"
                 class="mb-n3"
+                density="compact"
                 :items="mediaRating"
                 label="Rating"
-                density="compact"
                 variant="outlined"
               />
               <v-select
                 v-model="gameRef.status"
                 class="mb-n3"
+                density="compact"
                 :items="gameStatus"
                 label="Status"
-                density="compact"
                 variant="outlined"
               />
               <section class="d-flex align-center">
@@ -349,7 +349,7 @@
                 <div>Add to Favourites?</div>
                 <v-checkbox v-model="gameRef.favourites" hide-details />
               </section>
-              <ButtonText color="yellow" type="submit" text="Update" />
+              <ButtonText color="yellow" text="Update" type="submit" />
             </v-form>
           </section>
 
@@ -359,8 +359,8 @@
             class="mb-n12"
           >
             <v-form
-              validate-on="input"
               @submit.prevent="handleSubmitEditCharacter"
+              validate-on="input"
             >
               <v-text-field
                 v-model="characterRef.name"
@@ -374,17 +374,17 @@
               <v-select
                 v-model="characterRef.source"
                 class="mb-n3"
+                density="compact"
                 :items="characterSource"
                 label="Select Source"
-                density="compact"
                 variant="outlined"
               />
               <v-select
                 v-model="characterRef.gender"
                 class="mb-n3"
+                density="compact"
                 :items="characterGender"
                 label="Select Gender"
-                density="compact"
                 variant="outlined"
               />
               <v-text-field
@@ -430,13 +430,13 @@
                 <div>Add to Favourites?</div>
                 <v-checkbox v-model="characterRef.favourites" hide-details />
               </section>
-              <ButtonText color="yellow" type="submit" text="Update" />
+              <ButtonText color="yellow" text="Update" type="submit" />
             </v-form>
           </section>
 
           <!--? BOOKS -->
           <section v-if="props.mediaType === EMediaType.BOOK" class="mb-n12">
-            <v-form validate-on="input" @submit.prevent="handleSubmitEditBook">
+            <v-form @submit.prevent="handleSubmitEditBook" validate-on="input">
               <v-text-field
                 v-model="bookRef.title"
                 class="mb-2"
@@ -506,17 +506,17 @@
               <v-select
                 v-model="bookRef.rating"
                 class="mb-n3"
+                density="compact"
                 :items="mediaRating"
                 label="Rating"
-                density="compact"
                 variant="outlined"
               />
               <v-select
                 v-model="bookRef.status"
                 class="mb-n3"
+                density="compact"
                 :items="bookStatus"
                 label="Status"
-                density="compact"
                 variant="outlined"
               />
               <v-text-field
@@ -533,13 +533,13 @@
                 <div>Add to Favourites?</div>
                 <v-checkbox v-model="bookRef.favourites" hide-details />
               </section>
-              <ButtonText color="yellow" type="submit" text="Update" />
+              <ButtonText color="yellow" text="Update" type="submit" />
             </v-form>
           </section>
 
           <!--? MOVIES -->
           <section v-if="props.mediaType === EMediaType.MOVIE" class="mb-n12">
-            <v-form validate-on="input" @submit.prevent="handleSubmitEditMovie">
+            <v-form @submit.prevent="handleSubmitEditMovie" validate-on="input">
               <v-text-field
                 v-model="movieRef.title"
                 class="mb-2"
@@ -552,9 +552,9 @@
               <v-select
                 v-model="movieRef.type"
                 class="mb-n3"
+                density="compact"
                 :items="movieType"
                 label="Select Type"
-                density="compact"
                 variant="outlined"
               />
               <v-text-field
@@ -600,17 +600,17 @@
               <v-select
                 v-model="movieRef.rating"
                 class="mb-n3"
+                density="compact"
                 :items="mediaRating"
                 label="Rating"
-                density="compact"
                 variant="outlined"
               />
               <v-select
                 v-model="movieRef.status"
                 class="mb-n3"
+                density="compact"
                 :items="movieStatus"
                 label="Status"
-                density="compact"
                 variant="outlined"
               />
               <section class="d-flex align-center me-n2">
@@ -665,7 +665,7 @@
                 <div>Add to Favourites?</div>
                 <v-checkbox v-model="movieRef.favourites" hide-details />
               </section>
-              <ButtonText color="yellow" type="submit" text="Update" />
+              <ButtonText color="yellow" text="Update" type="submit" />
             </v-form>
           </section>
         </v-card-text>
@@ -675,73 +675,73 @@
   </v-dialog>
 </template>
 <script setup lang="ts">
-import { defineEmits, defineProps, onMounted, ref, reactive } from "vue";
-import {
-  mediaRating,
-  animeType,
-  animeStatus,
-  mangaType,
-  mangaStatus,
-  gameType,
-  gameStatus,
-  characterSource,
-  characterGender,
-  bookStatus,
-  movieType,
-  movieStatus,
-} from "@/utils/mediaUtils";
-import ButtonText from "../ui/ButtonText.vue";
-import ButtonIcon from "../ui/ButtonIcon.vue";
+import { defineEmits, defineProps, onMounted, reactive, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import {
-  TAnime,
-  TCharacter,
-  TGame,
-  TManga,
-  TBook,
-  TMovie,
-  TAnimeInput,
-  TCharacterInput,
-  TMangaInput,
-  TGameInput,
-  TBookInput,
-  TMovieInput,
+  digitRegex,
+  numberRules,
+  stringRules,
+} from "@/utils/validations/formValidations";
+import {
+  animeStatus,
+  animeType,
+  bookStatus,
+  characterGender,
+  characterSource,
+  gameStatus,
+  gameType,
+  mangaStatus,
+  mangaType,
+  mediaRating,
+  movieStatus,
+  movieType,
+} from "@/utils/mediaUtils";
+import ButtonIcon from "../ui/ButtonIcon.vue";
+import ButtonText from "../ui/ButtonText.vue";
+import {
   EAnimeStatus,
   EMangaStatus,
-  EMovieStatus,
   EMediaType,
+  EMovieStatus,
+  TAnime,
+  TAnimeInput,
+  TBook,
+  TBookInput,
+  TCharacter,
+  TCharacterInput,
+  TGame,
+  TGameInput,
+  TManga,
+  TMangaInput,
+  TMovie,
+  TMovieInput,
 } from "@/types";
-import {
-  digitRegex,
-  stringRules,
-  numberRules,
-} from "@/utils/validations/formValidations";
 
 interface IFormComponentProps {
-  media: TAnime | TManga | TGame | TCharacter | TBook | TMovie;
+  media: TAnime | TBook | TCharacter | TGame | TManga | TMovie;
   mediaType: EMediaType;
   title: string;
 }
 
-const props = defineProps<IFormComponentProps>();
 const emit = defineEmits(["edit", "close"]);
+const props = defineProps<IFormComponentProps>();
 
 const mediaStore = useMediaStore();
 const {
   submitEditAnime,
-  submitEditManga,
-  submitEditGame,
-  submitEditCharacter,
   submitEditBook,
+  submitEditCharacter,
+  submitEditGame,
+  submitEditManga,
   submitEditMovie,
   userFromDB,
 } = mediaStore;
 
 const animeRef = ref<TAnime>(props.media as TAnime);
-const mangaRef = ref<TManga>(props.media as TManga);
-const gameRef = ref<TGame>(props.media as TGame);
-const characterRef = ref<TCharacter>(props.media as TCharacter);
 const bookRef = ref<TBook>(props.media as TBook);
+const characterRef = ref<TCharacter>(props.media as TCharacter);
+const gameRef = ref<TGame>(props.media as TGame);
+const mangaRef = ref<TManga>(props.media as TManga);
 const movieRef = ref<TMovie>(props.media as TMovie);
 
 const handleSubmitEditAnime = async () => {
@@ -771,6 +771,78 @@ const handleSubmitEditAnime = async () => {
     digitRegex.test(String(updatedAnime.episodesMin))
   ) {
     await submitEditAnime(animeRef.value._id, updatedAnime);
+    emit("edit");
+  }
+};
+
+const handleSubmitEditBook = async () => {
+  const updatedBook: TBookInput = reactive({
+    author: bookRef.value.author,
+    favourites: bookRef.value.favourites,
+    genre: bookRef.value.genre,
+    imageURL: bookRef.value.imageURL,
+    lastModified: Date.now(),
+    link1: bookRef.value.link1,
+    link1Name: bookRef.value.link1Name,
+    link2: bookRef.value.link2,
+    link2Name: bookRef.value.link2Name,
+    owner: userFromDB?.email as string,
+    pages: bookRef.value.pages,
+    rating: bookRef.value.rating,
+    status: bookRef.value.status,
+    title: bookRef.value.title,
+  });
+
+  if (
+    updatedBook.title &&
+    updatedBook.author &&
+    digitRegex.test(String(updatedBook.pages))
+  ) {
+    await submitEditBook(bookRef.value._id, updatedBook);
+    emit("edit");
+  }
+};
+
+const handleSubmitEditCharacter = async () => {
+  const updatedCharacter: TCharacterInput = reactive({
+    favourites: characterRef.value.favourites,
+    gender: characterRef.value.gender,
+    hairColor: characterRef.value.hairColor,
+    imageURL: characterRef.value.imageURL,
+    lastModified: Date.now(),
+    link1: characterRef.value.link1,
+    link1Name: characterRef.value.link1Name,
+    name: characterRef.value.name,
+    owner: userFromDB?.email as string,
+    series: characterRef.value.series,
+    source: characterRef.value.source,
+  });
+
+  if (updatedCharacter.name) {
+    await submitEditCharacter(characterRef.value._id, updatedCharacter);
+    emit("edit");
+  }
+};
+
+const handleSubmitEditGame = async () => {
+  const updatedGame: TGameInput = reactive({
+    favourites: gameRef.value.favourites,
+    imageURL: gameRef.value.imageURL,
+    lastModified: Date.now(),
+    link1: gameRef.value.link1,
+    link1Name: gameRef.value.link1Name,
+    link2: gameRef.value.link2,
+    link2Name: gameRef.value.link2Name,
+    owner: userFromDB?.email as string,
+    playtime: gameRef.value.playtime,
+    rating: gameRef.value.rating,
+    status: gameRef.value.status,
+    title: gameRef.value.title,
+    type: gameRef.value.type,
+  });
+
+  if (updatedGame.title && digitRegex.test(String(updatedGame.playtime))) {
+    await submitEditGame(gameRef.value._id, updatedGame);
     emit("edit");
   }
 };
@@ -809,78 +881,6 @@ const handleSubmitEditManga = async () => {
     digitRegex.test(String(updatedManga.volumesMin))
   ) {
     await submitEditManga(mangaRef.value._id, updatedManga);
-    emit("edit");
-  }
-};
-
-const handleSubmitEditGame = async () => {
-  const updatedGame: TGameInput = reactive({
-    favourites: gameRef.value.favourites,
-    imageURL: gameRef.value.imageURL,
-    lastModified: Date.now(),
-    link1: gameRef.value.link1,
-    link1Name: gameRef.value.link1Name,
-    link2: gameRef.value.link2,
-    link2Name: gameRef.value.link2Name,
-    owner: userFromDB?.email as string,
-    playtime: gameRef.value.playtime,
-    rating: gameRef.value.rating,
-    status: gameRef.value.status,
-    title: gameRef.value.title,
-    type: gameRef.value.type,
-  });
-
-  if (updatedGame.title && digitRegex.test(String(updatedGame.playtime))) {
-    await submitEditGame(gameRef.value._id, updatedGame);
-    emit("edit");
-  }
-};
-
-const handleSubmitEditCharacter = async () => {
-  const updatedCharacter: TCharacterInput = reactive({
-    favourites: characterRef.value.favourites,
-    gender: characterRef.value.gender,
-    hairColor: characterRef.value.hairColor,
-    imageURL: characterRef.value.imageURL,
-    lastModified: Date.now(),
-    link1: characterRef.value.link1,
-    link1Name: characterRef.value.link1Name,
-    name: characterRef.value.name,
-    owner: userFromDB?.email as string,
-    series: characterRef.value.series,
-    source: characterRef.value.source,
-  });
-
-  if (updatedCharacter.name) {
-    await submitEditCharacter(characterRef.value._id, updatedCharacter);
-    emit("edit");
-  }
-};
-
-const handleSubmitEditBook = async () => {
-  const updatedBook: TBookInput = reactive({
-    author: bookRef.value.author,
-    favourites: bookRef.value.favourites,
-    genre: bookRef.value.genre,
-    imageURL: bookRef.value.imageURL,
-    lastModified: Date.now(),
-    link1: bookRef.value.link1,
-    link1Name: bookRef.value.link1Name,
-    link2: bookRef.value.link2,
-    link2Name: bookRef.value.link2Name,
-    owner: userFromDB?.email as string,
-    pages: bookRef.value.pages,
-    rating: bookRef.value.rating,
-    status: bookRef.value.status,
-    title: bookRef.value.title,
-  });
-
-  if (
-    updatedBook.title &&
-    updatedBook.author &&
-    digitRegex.test(String(updatedBook.pages))
-  ) {
-    await submitEditBook(bookRef.value._id, updatedBook);
     emit("edit");
   }
 };
@@ -929,10 +929,10 @@ const handleCloseModal = () => {
 
 onMounted(() => {
   animeRef.value = { ...props.media } as TAnime;
-  mangaRef.value = { ...props.media } as TManga;
-  gameRef.value = { ...props.media } as TGame;
-  characterRef.value = { ...props.media } as TCharacter;
   bookRef.value = { ...props.media } as TBook;
+  characterRef.value = { ...props.media } as TCharacter;
+  gameRef.value = { ...props.media } as TGame;
+  mangaRef.value = { ...props.media } as TManga;
   movieRef.value = { ...props.media } as TMovie;
 });
 </script>

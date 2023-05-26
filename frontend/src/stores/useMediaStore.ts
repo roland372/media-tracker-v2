@@ -1,121 +1,100 @@
-import { defineStore } from "pinia";
 import { ref } from "vue";
+import { defineStore } from "pinia";
+import { sortedIndexBy } from "lodash";
 import {
+  //* <----- ALL MEDIA ----->
+  getAllMedia,
+  //* <----- ANIME ----->
+  addAnime,
+  deleteAnime,
+  editAnime,
+  getAllAnime,
+  getSingleAnime,
+  //* <----- BOOKS ----->
+  addBook,
+  deleteBook,
+  editBook,
+  getAllBooks,
+  getSingleBook,
+  //* <----- CHARACTERS ----->
+  addCharacter,
+  deleteCharacter,
+  editCharacter,
+  getAllCharacters,
+  getSingleCharacter,
+  //* <----- EMOTES ----->
+  addEmote,
+  deleteEmote,
+  editEmote,
+  getAllEmotes,
+  getSingleEmote,
+  //* <----- GAMES ----->
+  addGame,
+  deleteGame,
+  editGame,
+  getAllGames,
+  getSingleGame,
+  //* <----- MANGA ----->
+  addManga,
+  deleteManga,
+  editManga,
+  getAllManga,
+  getSingleManga,
+  //* <----- MOVIES ----->
+  addMovie,
+  deleteMovie,
+  editMovie,
+  getAllMovies,
+  getSingleMovie,
+  //* <----- NOTES ----->
+  addNote,
+  deleteNote,
+  editNote,
+  getAllNotes,
+  getSingleNote,
   //* <----- USER ----->
   getSingleUser,
   editUser,
-  //* <----- ANIME ----->
-  getAllAnime,
-  getSingleAnime,
-  addAnime,
-  editAnime,
-  deleteAnime,
-  //* <----- MANGA ----->
-  getAllManga,
-  getSingleManga,
-  addManga,
-  editManga,
-  deleteManga,
-  //* <----- GAMES ----->
-  getAllGames,
-  getSingleGame,
-  addGame,
-  editGame,
-  deleteGame,
-  //* <----- CHARACTERS ----->
-  getAllCharacters,
-  getSingleCharacter,
-  addCharacter,
-  editCharacter,
-  deleteCharacter,
-  //* <----- EMOTES ----->
-  getAllEmotes,
-  getSingleEmote,
-  addEmote,
-  editEmote,
-  deleteEmote,
-  //* <----- NOTES ----->
-  getAllNotes,
-  getSingleNote,
-  addNote,
-  editNote,
-  deleteNote,
-  //* <----- MOVIES ----->
-  getAllMovies,
-  getSingleMovie,
-  addMovie,
-  editMovie,
-  deleteMovie,
-  //* <----- BOOKS ----->
-  getAllBooks,
-  getSingleBook,
-  addBook,
-  editBook,
-  deleteBook,
-  //* <----- ALL MEDIA ----->
-  getAllMedia,
 } from "@/graphql";
 import {
-  TUser,
-  TUserInput,
   TAnime,
   TAnimeInput,
-  TManga,
-  TMangaInput,
-  TGame,
-  TGameInput,
+  TBook,
+  TBookInput,
   TCharacter,
   TCharacterInput,
   TEmote,
   TEmoteInput,
-  TNote,
-  TNoteInput,
+  TGame,
+  TGameInput,
+  TManga,
+  TMangaInput,
   TMovie,
   TMovieInput,
-  TBook,
-  TBookInput,
+  TNote,
+  TNoteInput,
+  TUser,
+  TUserInput,
 } from "@/types";
 
-import { sortedIndexBy } from "lodash";
-
 export const useMediaStore = defineStore("media", () => {
-  //* <----- UTILS ----->
-  const isLoading = ref<boolean>(true);
-  const setLoading = (payload: boolean): boolean => (isLoading.value = payload);
-
-  //* <----- USER ----->
-  const googleUser = ref<TUser>();
-  const setGoogleUser = (payload: TUser) => {
-    googleUser.value = payload;
-  };
-  const userFromDB = ref<TUser>();
-  const setUserFromDB = (payload: TUser) => {
-    userFromDB.value = payload;
-  };
-  const fetchUser = async (email: string, id: string) => {
+  //* <----- ALL MEDIA ----->
+  const fetchAllMedia = async (email: string) => {
     try {
-      const { data } = await getSingleUser(email, { id });
-      setUserFromDB(data.getSingleUser);
+      const { data, loading } = await getAllMedia(email);
+      isLoading.value = loading;
+      setAnime(data.getAllAnime);
+      setBooks(data.getAllBooks);
+      setCharacters(data.getAllCharacters);
+      setEmotes(data.getAllEmotes);
+      setGames(data.getAllGames);
+      setManga(data.getAllManga);
+      setMovies(data.getAllMovies);
+      setNotes(data.getAllNotes);
     } catch (err) {
       console.log(err);
     }
   };
-  const submitEditUser = async (
-    id: string | undefined,
-    userInput: TUserInput
-  ) => {
-    try {
-      const { data } = await editUser(googleUser.value?.email, {
-        id,
-        userInput,
-      });
-
-      console.log({ data });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   //* <----- ANIME ----->
   const anime = ref<TAnime[]>([]);
   const setAnime = (payload: TAnime[]) => {
@@ -164,6 +143,16 @@ export const useMediaStore = defineStore("media", () => {
       console.log(err);
     }
   };
+  const submitDeleteAnime = async (id: string) => {
+    try {
+      const { data } = await deleteAnime(googleUser.value?.email, { id });
+      setAnime(anime.value.filter((el) => el._id !== id));
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const submitEditAnime = async (id: string, animeInput: TAnimeInput) => {
     try {
       const { data } = await editAnime(googleUser.value?.email, {
@@ -179,148 +168,68 @@ export const useMediaStore = defineStore("media", () => {
       console.log(err);
     }
   };
-  const submitDeleteAnime = async (id: string) => {
+
+  //* <----- BOOKS ----->
+  const books = ref<TBook[]>([]);
+  const setBooks = (payload: TBook[]) => {
+    books.value = payload;
+  };
+  const singleBook = ref<TBook>();
+  const setSingleBook = (payload: TBook) => {
+    singleBook.value = payload;
+  };
+  const fetchBooks = async (email: string) => {
     try {
-      const { data } = await deleteAnime(googleUser.value?.email, { id });
-      setAnime(anime.value.filter((el) => el._id !== id));
+      const { data, loading } = await getAllBooks(email);
+      isLoading.value = loading;
+      setBooks(data.getAllBooks);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchSingleBook = async (id: string) => {
+    try {
+      const { data, loading } = await getSingleBook({ id });
+      isLoading.value = loading;
+      setSingleBook(data.getSingleBook);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitAddBook = async (bookInput: TBookInput) => {
+    try {
+      const { data } = await addBook(googleUser.value?.email, { bookInput });
+      const arrCopy = [...books.value];
+      const index = sortedIndexBy(arrCopy, data.addBook, (obj) => obj["title"]);
+      arrCopy.splice(index, 0, data.addBook);
+
+      setBooks(arrCopy);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitDeleteBook = async (id: string) => {
+    try {
+      const { data } = await deleteBook(googleUser.value?.email, { id });
+      setBooks(books.value.filter((book) => book._id !== id));
 
       console.log(data);
     } catch (err) {
       console.log(err);
     }
   };
-
-  //* <----- MANGA ----->
-  const manga = ref<TManga[]>([]);
-  const setManga = (payload: TManga[]) => {
-    manga.value = payload;
-  };
-  const singleManga = ref<TManga>();
-  const setSingleManga = (payload: TManga) => {
-    singleManga.value = payload;
-  };
-  const fetchManga = async () => {
+  const submitEditBook = async (id: string, bookInput: TBookInput) => {
     try {
-      const { data, loading } = await getAllManga();
-      isLoading.value = loading;
-      setManga(data.getAllManga);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const fetchSingleManga = async (id: string) => {
-    try {
-      const { data, loading } = await getSingleManga({ id });
-      isLoading.value = loading;
-      setSingleManga(data.getSingleManga);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const submitAddManga = async (mangaInput: TMangaInput) => {
-    try {
-      const { data } = await addManga(googleUser.value?.email, { mangaInput });
-      const arrCopy = [...manga.value];
-      const index = sortedIndexBy(
-        arrCopy,
-        data.addManga,
-        (obj) => obj["title"]
-      );
-      arrCopy.splice(index, 0, data.addManga);
-
-      setManga(arrCopy);
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const submitEditManga = async (id: string, mangaInput: TMangaInput) => {
-    try {
-      const { data } = await editManga(googleUser.value?.email, {
+      const { data } = await editBook(googleUser.value?.email, {
         id,
-        mangaInput,
+        bookInput,
       });
-      setManga(
-        manga.value.map((el) => (el._id === id ? { ...el, ...mangaInput } : el))
-      );
-
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const submitDeleteManga = async (id: string) => {
-    try {
-      const { data } = await deleteManga(googleUser.value?.email, { id });
-      setManga(manga.value.filter((el) => el._id !== id));
-
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  //* <----- GAMES ----->
-  const games = ref<TGame[]>([]);
-  const setGames = (payload: TGame[]) => {
-    games.value = payload;
-  };
-  const singleGame = ref<TGame>();
-  const setSingleGame = (payload: TGame) => {
-    singleGame.value = payload;
-  };
-  const fetchGames = async (email: string) => {
-    try {
-      const { data, loading } = await getAllGames(email);
-      isLoading.value = loading;
-      setGames(data.getAllGames);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const fetchSingleGame = async (id: string) => {
-    try {
-      const { data, loading } = await getSingleGame({ id });
-      isLoading.value = loading;
-      setSingleGame(data.getSingleGame);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const submitAddGame = async (gameInput: TGameInput) => {
-    try {
-      const { data } = await addGame(googleUser.value?.email, { gameInput });
-      const arrCopy = [...games.value];
-      const index = sortedIndexBy(arrCopy, data.addGame, (obj) => obj["title"]);
-      arrCopy.splice(index, 0, data.addGame);
-
-      setGames(arrCopy);
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const submitEditGame = async (id: string, gameInput: TGameInput) => {
-    try {
-      const { data } = await editGame(googleUser.value?.email, {
-        id,
-        gameInput,
-      });
-      setGames(
-        games.value.map((game) =>
-          game._id === id ? { ...game, ...gameInput } : game
+      setBooks(
+        books.value.map((book) =>
+          book._id === id ? { ...book, ...bookInput } : book
         )
       );
-
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const submitDeleteGame = async (id: string) => {
-    try {
-      const { data } = await deleteGame(googleUser.value?.email, { id });
-      setGames(games.value.filter((game) => game._id !== id));
 
       console.log(data);
     } catch (err) {
@@ -374,6 +283,18 @@ export const useMediaStore = defineStore("media", () => {
       console.log(err);
     }
   };
+  const submitDeleteCharacter = async (id: string) => {
+    try {
+      const { data } = await deleteCharacter(googleUser.value?.email, { id });
+      setCharacters(
+        characters.value.filter((character) => character._id !== id)
+      );
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const submitEditCharacter = async (
     id: string,
     characterInput: TCharacterInput
@@ -387,18 +308,6 @@ export const useMediaStore = defineStore("media", () => {
         characters.value.map((character) =>
           character._id === id ? { ...character, ...characterInput } : character
         )
-      );
-
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const submitDeleteCharacter = async (id: string) => {
-    try {
-      const { data } = await deleteCharacter(googleUser.value?.email, { id });
-      setCharacters(
-        characters.value.filter((character) => character._id !== id)
       );
 
       console.log(data);
@@ -447,6 +356,16 @@ export const useMediaStore = defineStore("media", () => {
       console.log(err);
     }
   };
+  const submitDeleteEmote = async (id: string) => {
+    try {
+      const { data } = await deleteEmote(googleUser.value?.email, { id });
+      setEmotes(emotes.value.filter((emote) => emote._id !== id));
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const submitEditEmote = async (id: string, emoteInput: TEmoteInput) => {
     try {
       const { data } = await editEmote(googleUser.value?.email, {
@@ -465,65 +384,65 @@ export const useMediaStore = defineStore("media", () => {
     }
   };
 
-  const submitDeleteEmote = async (id: string) => {
+  //* <----- GAMES ----->
+  const games = ref<TGame[]>([]);
+  const setGames = (payload: TGame[]) => {
+    games.value = payload;
+  };
+  const singleGame = ref<TGame>();
+  const setSingleGame = (payload: TGame) => {
+    singleGame.value = payload;
+  };
+  const fetchGames = async (email: string) => {
     try {
-      const { data } = await deleteEmote(googleUser.value?.email, { id });
-      setEmotes(emotes.value.filter((emote) => emote._id !== id));
+      const { data, loading } = await getAllGames(email);
+      isLoading.value = loading;
+      setGames(data.getAllGames);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchSingleGame = async (id: string) => {
+    try {
+      const { data, loading } = await getSingleGame({ id });
+      isLoading.value = loading;
+      setSingleGame(data.getSingleGame);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitAddGame = async (gameInput: TGameInput) => {
+    try {
+      const { data } = await addGame(googleUser.value?.email, { gameInput });
+      const arrCopy = [...games.value];
+      const index = sortedIndexBy(arrCopy, data.addGame, (obj) => obj["title"]);
+      arrCopy.splice(index, 0, data.addGame);
+
+      setGames(arrCopy);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitDeleteGame = async (id: string) => {
+    try {
+      const { data } = await deleteGame(googleUser.value?.email, { id });
+      setGames(games.value.filter((game) => game._id !== id));
 
       console.log(data);
     } catch (err) {
       console.log(err);
     }
   };
-
-  //* <----- NOTES ----->
-  const notes = ref<TNote[]>([]);
-  const setNotes = (payload: TNote[]) => {
-    notes.value = payload;
-  };
-  const singleNote = ref<TNote>();
-  const setSingleNote = (payload: TNote) => {
-    singleNote.value = payload;
-  };
-  const fetchNotes = async () => {
+  const submitEditGame = async (id: string, gameInput: TGameInput) => {
     try {
-      const { data, loading } = await getAllNotes();
-      isLoading.value = loading;
-      setNotes(data.getAllNotes);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const fetchSingleNote = async (id: string) => {
-    try {
-      const { data, loading } = await getSingleNote({ id });
-      isLoading.value = loading;
-      setSingleNote(data.getSingleNote);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const submitAddNote = async (noteInput: TNoteInput) => {
-    try {
-      const { data } = await addNote(googleUser.value?.email, { noteInput });
-      const arrCopy = [...notes.value];
-      arrCopy.splice(0, 0, data.addNote);
-
-      setNotes(arrCopy);
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const submitEditNote = async (id: string, noteInput: TNoteInput) => {
-    try {
-      const { data } = await editNote(googleUser.value?.email, {
+      const { data } = await editGame(googleUser.value?.email, {
         id,
-        noteInput,
+        gameInput,
       });
-      setNotes(
-        notes.value.map((note) =>
-          note._id === id ? { ...note, ...noteInput } : note
+      setGames(
+        games.value.map((game) =>
+          game._id === id ? { ...game, ...gameInput } : game
         )
       );
 
@@ -532,10 +451,70 @@ export const useMediaStore = defineStore("media", () => {
       console.log(err);
     }
   };
-  const submitDeleteNote = async (id: string) => {
+
+  //* <----- MANGA ----->
+  const manga = ref<TManga[]>([]);
+  const setManga = (payload: TManga[]) => {
+    manga.value = payload;
+  };
+  const singleManga = ref<TManga>();
+  const setSingleManga = (payload: TManga) => {
+    singleManga.value = payload;
+  };
+  const fetchManga = async () => {
     try {
-      const { data } = await deleteNote(googleUser.value?.email, { id });
-      setNotes(notes.value.filter((note) => note._id !== id));
+      const { data, loading } = await getAllManga();
+      isLoading.value = loading;
+      setManga(data.getAllManga);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchSingleManga = async (id: string) => {
+    try {
+      const { data, loading } = await getSingleManga({ id });
+      isLoading.value = loading;
+      setSingleManga(data.getSingleManga);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitAddManga = async (mangaInput: TMangaInput) => {
+    try {
+      const { data } = await addManga(googleUser.value?.email, { mangaInput });
+      const arrCopy = [...manga.value];
+      const index = sortedIndexBy(
+        arrCopy,
+        data.addManga,
+        (obj) => obj["title"]
+      );
+      arrCopy.splice(index, 0, data.addManga);
+
+      setManga(arrCopy);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitDeleteManga = async (id: string) => {
+    try {
+      const { data } = await deleteManga(googleUser.value?.email, { id });
+      setManga(manga.value.filter((el) => el._id !== id));
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitEditManga = async (id: string, mangaInput: TMangaInput) => {
+    try {
+      const { data } = await editManga(googleUser.value?.email, {
+        id,
+        mangaInput,
+      });
+      setManga(
+        manga.value.map((el) => (el._id === id ? { ...el, ...mangaInput } : el))
+      );
 
       console.log(data);
     } catch (err) {
@@ -587,6 +566,16 @@ export const useMediaStore = defineStore("media", () => {
       console.log(err);
     }
   };
+  const submitDeleteMovie = async (id: string) => {
+    try {
+      const { data } = await deleteMovie(googleUser.value?.email, { id });
+      setMovies(movies.value.filter((movie) => movie._id !== id));
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const submitEditMovie = async (id: string, movieInput: TMovieInput) => {
     try {
       const { data } = await editMovie(googleUser.value?.email, {
@@ -604,66 +593,65 @@ export const useMediaStore = defineStore("media", () => {
       console.log(err);
     }
   };
-  const submitDeleteMovie = async (id: string) => {
+
+  //* <----- NOTES ----->
+  const notes = ref<TNote[]>([]);
+  const setNotes = (payload: TNote[]) => {
+    notes.value = payload;
+  };
+  const singleNote = ref<TNote>();
+  const setSingleNote = (payload: TNote) => {
+    singleNote.value = payload;
+  };
+  const fetchNotes = async () => {
     try {
-      const { data } = await deleteMovie(googleUser.value?.email, { id });
-      setMovies(movies.value.filter((movie) => movie._id !== id));
+      const { data, loading } = await getAllNotes();
+      isLoading.value = loading;
+      setNotes(data.getAllNotes);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchSingleNote = async (id: string) => {
+    try {
+      const { data, loading } = await getSingleNote({ id });
+      isLoading.value = loading;
+      setSingleNote(data.getSingleNote);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitAddNote = async (noteInput: TNoteInput) => {
+    try {
+      const { data } = await addNote(googleUser.value?.email, { noteInput });
+      const arrCopy = [...notes.value];
+      arrCopy.splice(0, 0, data.addNote);
+
+      setNotes(arrCopy);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitDeleteNote = async (id: string) => {
+    try {
+      const { data } = await deleteNote(googleUser.value?.email, { id });
+      setNotes(notes.value.filter((note) => note._id !== id));
 
       console.log(data);
     } catch (err) {
       console.log(err);
     }
   };
-
-  //* <----- BOOKS ----->
-  const books = ref<TBook[]>([]);
-  const setBooks = (payload: TBook[]) => {
-    books.value = payload;
-  };
-  const singleBook = ref<TBook>();
-  const setSingleBook = (payload: TBook) => {
-    singleBook.value = payload;
-  };
-  const fetchBooks = async (email: string) => {
+  const submitEditNote = async (id: string, noteInput: TNoteInput) => {
     try {
-      const { data, loading } = await getAllBooks(email);
-      isLoading.value = loading;
-      setBooks(data.getAllBooks);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const fetchSingleBook = async (id: string) => {
-    try {
-      const { data, loading } = await getSingleBook({ id });
-      isLoading.value = loading;
-      setSingleBook(data.getSingleBook);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const submitAddBook = async (bookInput: TBookInput) => {
-    try {
-      const { data } = await addBook(googleUser.value?.email, { bookInput });
-      const arrCopy = [...books.value];
-      const index = sortedIndexBy(arrCopy, data.addBook, (obj) => obj["title"]);
-      arrCopy.splice(index, 0, data.addBook);
-
-      setBooks(arrCopy);
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const submitEditBook = async (id: string, bookInput: TBookInput) => {
-    try {
-      const { data } = await editBook(googleUser.value?.email, {
+      const { data } = await editNote(googleUser.value?.email, {
         id,
-        bookInput,
+        noteInput,
       });
-      setBooks(
-        books.value.map((book) =>
-          book._id === id ? { ...book, ...bookInput } : book
+      setNotes(
+        notes.value.map((note) =>
+          note._id === id ? { ...note, ...noteInput } : note
         )
       );
 
@@ -672,46 +660,47 @@ export const useMediaStore = defineStore("media", () => {
       console.log(err);
     }
   };
-  const submitDeleteBook = async (id: string) => {
-    try {
-      const { data } = await deleteBook(googleUser.value?.email, { id });
-      setBooks(books.value.filter((book) => book._id !== id));
 
-      console.log(data);
+  //* <----- USER ----->
+  const googleUser = ref<TUser>();
+  const setGoogleUser = (payload: TUser) => {
+    googleUser.value = payload;
+  };
+  const userFromDB = ref<TUser>();
+  const setUserFromDB = (payload: TUser) => {
+    userFromDB.value = payload;
+  };
+  const fetchUser = async (email: string, id: string) => {
+    try {
+      const { data } = await getSingleUser(email, { id });
+      setUserFromDB(data.getSingleUser);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitEditUser = async (
+    id: string | undefined,
+    userInput: TUserInput
+  ) => {
+    try {
+      const { data } = await editUser(googleUser.value?.email, {
+        id,
+        userInput,
+      });
+
+      console.log({ data });
     } catch (err) {
       console.log(err);
     }
   };
 
-  //* <----- ALL MEDIA ----->
-  const fetchAllMedia = async (email: string) => {
-    try {
-      const { data, loading } = await getAllMedia(email);
-      isLoading.value = loading;
-      setAnime(data.getAllAnime);
-      setManga(data.getAllManga);
-      setGames(data.getAllGames);
-      setCharacters(data.getAllCharacters);
-      setEmotes(data.getAllEmotes);
-      setNotes(data.getAllNotes);
-      setMovies(data.getAllMovies);
-      setBooks(data.getAllBooks);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //* <----- UTILS ----->
+  const isLoading = ref<boolean>(true);
+  const setLoading = (payload: boolean): boolean => (isLoading.value = payload);
 
   return {
-    //* <----- UTILS ----->
-    isLoading,
-    setLoading,
-    //* <----- USER ----->
-    googleUser,
-    setGoogleUser,
-    userFromDB,
-    setUserFromDB,
-    fetchUser,
-    submitEditUser,
+    //* <----- ALL MEDIA ----->
+    fetchAllMedia,
     //* <----- ANIME ----->
     anime,
     setAnime,
@@ -720,68 +709,8 @@ export const useMediaStore = defineStore("media", () => {
     fetchAnime,
     fetchSingleAnime,
     submitAddAnime,
-    submitEditAnime,
     submitDeleteAnime,
-    //* <----- MANGA ----->
-    manga,
-    setManga,
-    singleManga,
-    setSingleManga,
-    fetchManga,
-    fetchSingleManga,
-    submitAddManga,
-    submitEditManga,
-    submitDeleteManga,
-    //* <----- GAMES ----->
-    games,
-    setGames,
-    singleGame,
-    setSingleGame,
-    fetchGames,
-    fetchSingleGame,
-    submitAddGame,
-    submitEditGame,
-    submitDeleteGame,
-    //* <----- CHARACTERS ----->
-    characters,
-    setCharacters,
-    singleCharacter,
-    setSingleCharacter,
-    fetchCharacters,
-    fetchSingleCharacter,
-    submitAddCharacter,
-    submitEditCharacter,
-    submitDeleteCharacter,
-    //* <----- EMOTES ----->
-    emotes,
-    setEmotes,
-    singleEmote,
-    setSingleEmote,
-    fetchEmotes,
-    fetchSingleEmote,
-    submitAddEmote,
-    submitEditEmote,
-    submitDeleteEmote,
-    //* <----- NOTES ----->
-    notes,
-    setNotes,
-    singleNote,
-    setSingleNote,
-    fetchNotes,
-    fetchSingleNote,
-    submitAddNote,
-    submitEditNote,
-    submitDeleteNote,
-    //* <----- MOVIES ----->
-    movies,
-    setMovies,
-    singleMovie,
-    setSingleMovie,
-    fetchMovies,
-    fetchSingleMovie,
-    submitAddMovie,
-    submitEditMovie,
-    submitDeleteMovie,
+    submitEditAnime,
     //* <----- BOOKS ----->
     books,
     setBooks,
@@ -790,9 +719,77 @@ export const useMediaStore = defineStore("media", () => {
     fetchBooks,
     fetchSingleBook,
     submitAddBook,
-    submitEditBook,
     submitDeleteBook,
-    //* <----- ALL MEDIA ----->
-    fetchAllMedia,
+    submitEditBook,
+    //* <----- CHARACTERS ----->
+    characters,
+    setCharacters,
+    singleCharacter,
+    setSingleCharacter,
+    fetchCharacters,
+    fetchSingleCharacter,
+    submitAddCharacter,
+    submitDeleteCharacter,
+    submitEditCharacter,
+    //* <----- EMOTES ----->
+    emotes,
+    setEmotes,
+    singleEmote,
+    setSingleEmote,
+    fetchEmotes,
+    fetchSingleEmote,
+    submitAddEmote,
+    submitDeleteEmote,
+    submitEditEmote,
+    //* <----- GAMES ----->
+    games,
+    setGames,
+    singleGame,
+    setSingleGame,
+    fetchGames,
+    fetchSingleGame,
+    submitAddGame,
+    submitDeleteGame,
+    submitEditGame,
+    //* <----- MANGA ----->
+    manga,
+    setManga,
+    singleManga,
+    setSingleManga,
+    fetchManga,
+    fetchSingleManga,
+    submitAddManga,
+    submitDeleteManga,
+    submitEditManga,
+    //* <----- MOVIES ----->
+    movies,
+    setMovies,
+    singleMovie,
+    setSingleMovie,
+    fetchMovies,
+    fetchSingleMovie,
+    submitAddMovie,
+    submitDeleteMovie,
+    submitEditMovie,
+    //* <----- NOTES ----->
+    notes,
+    setNotes,
+    singleNote,
+    setSingleNote,
+    fetchNotes,
+    fetchSingleNote,
+    submitAddNote,
+    submitDeleteNote,
+    submitEditNote,
+    //* <----- USER ----->
+    googleUser,
+    setGoogleUser,
+    userFromDB,
+    setUserFromDB,
+    fetchUser,
+    submitEditUser,
+    //* <----- UTILS ----->
+    isLoading,
+    setLoading,
   };
 });

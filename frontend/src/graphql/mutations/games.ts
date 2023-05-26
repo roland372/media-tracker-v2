@@ -1,6 +1,6 @@
 import { apolloClient } from "@/graphql";
-import { TGameInput } from "@/types";
 import gql from "graphql-tag";
+import { TGameInput } from "@/types";
 
 export const addGame = async (
   userId: string | undefined,
@@ -37,17 +37,14 @@ export const addGame = async (
   });
 };
 
-export const editGame = async (
+export const deleteGame = async (
   userId: string | undefined,
-  variables: {
-    id: string;
-    gameInput: TGameInput;
-  }
+  variables: { id: string }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation EditGame($id: ID!, $gameInput: GameInput) {
-        editGame(ID: $id, gameInput: $gameInput)
+      mutation DeleteGame($id: ID!) {
+        deleteGame(ID: $id)
       }
     `,
     context: {
@@ -59,14 +56,17 @@ export const editGame = async (
   });
 };
 
-export const deleteGame = async (
+export const editGame = async (
   userId: string | undefined,
-  variables: { id: string }
+  variables: {
+    id: string;
+    gameInput: TGameInput;
+  }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation DeleteGame($id: ID!) {
-        deleteGame(ID: $id)
+      mutation EditGame($id: ID!, $gameInput: GameInput) {
+        editGame(ID: $id, gameInput: $gameInput)
       }
     `,
     context: {

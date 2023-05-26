@@ -1,6 +1,6 @@
 import { apolloClient } from "@/graphql";
-import { TBookInput } from "@/types";
 import gql from "graphql-tag";
+import { TBookInput } from "@/types";
 
 export const addBook = async (
   userId: string | undefined,
@@ -38,17 +38,14 @@ export const addBook = async (
   });
 };
 
-export const editBook = async (
+export const deleteBook = async (
   userId: string | undefined,
-  variables: {
-    id: string;
-    bookInput: TBookInput;
-  }
+  variables: { id: string }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation EditBook($id: ID!, $bookInput: BookInput) {
-        editBook(ID: $id, bookInput: $bookInput)
+      mutation DeleteBook($id: ID!) {
+        deleteBook(ID: $id)
       }
     `,
     context: {
@@ -60,14 +57,17 @@ export const editBook = async (
   });
 };
 
-export const deleteBook = async (
+export const editBook = async (
   userId: string | undefined,
-  variables: { id: string }
+  variables: {
+    id: string;
+    bookInput: TBookInput;
+  }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation DeleteBook($id: ID!) {
-        deleteBook(ID: $id)
+      mutation EditBook($id: ID!, $bookInput: BookInput) {
+        editBook(ID: $id, bookInput: $bookInput)
       }
     `,
     context: {

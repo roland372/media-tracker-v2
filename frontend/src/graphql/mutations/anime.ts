@@ -1,6 +1,6 @@
 import { apolloClient } from "@/graphql";
-import { TAnimeInput } from "@/types";
 import gql from "graphql-tag";
+import { TAnimeInput } from "@/types";
 
 export const addAnime = async (
   userId: string | undefined,
@@ -39,17 +39,14 @@ export const addAnime = async (
   });
 };
 
-export const editAnime = async (
+export const deleteAnime = async (
   userId: string | undefined,
-  variables: {
-    id: string;
-    animeInput: TAnimeInput;
-  }
+  variables: { id: string }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation EditAnime($id: ID!, $animeInput: AnimeInput) {
-        editAnime(ID: $id, animeInput: $animeInput)
+      mutation DeleteAnime($id: ID!) {
+        deleteAnime(ID: $id)
       }
     `,
     context: {
@@ -61,14 +58,17 @@ export const editAnime = async (
   });
 };
 
-export const deleteAnime = async (
+export const editAnime = async (
   userId: string | undefined,
-  variables: { id: string }
+  variables: {
+    id: string;
+    animeInput: TAnimeInput;
+  }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation DeleteAnime($id: ID!) {
-        deleteAnime(ID: $id)
+      mutation EditAnime($id: ID!, $animeInput: AnimeInput) {
+        editAnime(ID: $id, animeInput: $animeInput)
       }
     `,
     context: {

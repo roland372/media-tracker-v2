@@ -1,6 +1,6 @@
 import { apolloClient } from "@/graphql";
-import { TCharacterInput } from "@/types";
 import gql from "graphql-tag";
+import { TCharacterInput } from "@/types";
 
 export const addCharacter = async (
   userId: string | undefined,

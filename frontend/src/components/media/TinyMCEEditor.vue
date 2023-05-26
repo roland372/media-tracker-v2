@@ -29,11 +29,11 @@ interface ITinyMCEEditorProps {
   editorContent: string | undefined;
 }
 
+const emit = defineEmits(["editorChange"]);
 const props = defineProps<ITinyMCEEditorProps>();
+
 const editorContentRef = ref<string | undefined>(props.editorContent);
 const tinyMCEAPIKey = process.env.VUE_APP_TinyMCEAPIKey;
-
-const emit = defineEmits(["editorChange"]);
 
 const getEditorContent = () => {
   emit("editorChange", editorContentRef.value);

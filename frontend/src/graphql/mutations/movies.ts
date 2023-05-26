@@ -1,6 +1,6 @@
 import { apolloClient } from "@/graphql";
-import { TMovieInput } from "@/types";
 import gql from "graphql-tag";
+import { TMovieInput } from "@/types";
 
 export const addMovie = async (
   userId: string | undefined,
@@ -40,17 +40,14 @@ export const addMovie = async (
   });
 };
 
-export const editMovie = async (
+export const deleteMovie = async (
   userId: string | undefined,
-  variables: {
-    id: string;
-    movieInput: TMovieInput;
-  }
+  variables: { id: string }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation EditMovie($id: ID!, $movieInput: MovieInput) {
-        editMovie(ID: $id, movieInput: $movieInput)
+      mutation DeleteMovie($id: ID!) {
+        deleteMovie(ID: $id)
       }
     `,
     context: {
@@ -62,14 +59,17 @@ export const editMovie = async (
   });
 };
 
-export const deleteMovie = async (
+export const editMovie = async (
   userId: string | undefined,
-  variables: { id: string }
+  variables: {
+    id: string;
+    movieInput: TMovieInput;
+  }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation DeleteMovie($id: ID!) {
-        deleteMovie(ID: $id)
+      mutation EditMovie($id: ID!, $movieInput: MovieInput) {
+        editMovie(ID: $id, movieInput: $movieInput)
       }
     `,
     context: {

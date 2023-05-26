@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-center align-center">
-    <v-progress-circular :size="50" indeterminate color="indigo" />
+    <v-progress-circular color="indigo" indeterminate :size="50" />
   </div>
 </template>
 <script setup lang="ts"></script>

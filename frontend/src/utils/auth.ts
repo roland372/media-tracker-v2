@@ -1,6 +1,6 @@
-import axios from "axios";
 import { decodeCredential, CallbackTypes } from "vue3-google-login";
 import router from "@/router";
+import axios from "axios";
 
 const LOGIN_SUCCESS_URL =
   process.env.NODE_ENV?.trim() === "development"

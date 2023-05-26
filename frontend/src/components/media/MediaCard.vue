@@ -5,8 +5,8 @@
     cover
     :src="media.imageURL"
     :style="{
-      borderRight: `5px ${statusColor(media)} solid`,
       borderBottom: `5px ${statusColor(media)} solid`,
+      borderRight: `5px ${statusColor(media)} solid`,
     }"
   >
     <div class="image-overlay-icon">
@@ -14,9 +14,9 @@
     </div>
     <ChipComponent
       v-if="
+        mediaType !== EMediaType.BOOK &&
         mediaType !== EMediaType.CHARACTER &&
         mediaType !== EMediaType.MANGA &&
-        mediaType !== EMediaType.BOOK &&
         mediaType !== EMediaType.MOVIE
       "
       class="bg-black image-text-overlay"
@@ -25,45 +25,28 @@
       text-color="white"
       :text="displayImageText(media)"
     />
-    <!-- <ChipComponent
-      v-if="mediaType === EMediaType.MANGA"
-      class="bg-black image-manga-chapters"
-      color="white"
-      size="x-small"
-      text-color="white"
-      :text="`Ch ${(media as TManga).chaptersMin} / ${(media as TManga).chaptersMax
-        }`"
-    />
-    <ChipComponent
-      v-if="mediaType === EMediaType.MANGA"
-      class="bg-black image-manga-volumes"
-      color="white"
-      size="x-small"
-      text-color="white"
-      :text="`Vol ${(media as TManga).volumesMin} / ${(media as TManga).volumesMax}`"
-    /> -->
     <ChipComponent
       class="bg-black image-title-overlay"
       color="white"
       size="x-small"
+      :text="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TBook | TGame | TManga | TMovie).title"
       text-color="white"
-      :text="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TGame | TManga | TBook | TMovie).title"
     />
     <MediaModal
       v-if="dialog"
+      v-model="dialog"
       :delete-click="handleDeleteClick"
       :edit-click="handleEditClick"
       :media="media"
       :media-type="mediaType"
-      :title="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TGame | TManga | TBook | TMovie).title"
+      :title="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TBook | TGame | TManga | TMovie).title"
       :view-click="handleViewClick"
-      v-model="dialog"
     />
     <v-dialog
       v-if="deleteDialog"
       v-model="deleteDialog"
-      width="auto"
       class="delete-dialog-position"
+      width="auto"
     >
       <v-card max-width="250">
         <div class="bg-primary-light text-color px-5 py-3 text-h6">
@@ -71,7 +54,7 @@
           {{
             props.mediaType === EMediaType.CHARACTER
               ? (props.media as TCharacter).name
-              : (props.media as TAnime | TManga | TGame | TBook | TMovie).title
+              : (props.media as TAnime | TBook | TManga | TGame | TMovie).title
           }}
         </div>
         <v-card-text
@@ -97,8 +80,8 @@
     <EditFormComponent
       v-if="formDialog"
       v-model="formDialog"
-      @edit="handleCloseModal"
       @close="formDialog = !formDialog"
+      @edit="handleCloseModal"
       :media="media"
       :media-type="mediaType"
       :title="`Edit ${mediaType}`"
@@ -112,53 +95,53 @@
 </template>
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
-import MediaModal from "@/components/media/MediaModal.vue";
+import { useMediaStore } from "@/stores/useMediaStore";
+import ButtonText from "../ui/ButtonText.vue";
 import ChipComponent from "../ui/ChipComponent.vue";
 import EditFormComponent from "./EditFormComponent.vue";
+import MediaModal from "@/components/media/MediaModal.vue";
 import SnackbarComponent from "../ui/SnackbarComponent.vue";
-import ButtonText from "../ui/ButtonText.vue";
-import { useMediaStore } from "@/stores/useMediaStore";
 import {
+  EAnimeStatus,
+  EBookStatus,
+  ECharacterSource,
+  EGameStatus,
+  EMangaStatus,
+  EMediaType,
+  EMovieStatus,
   TAnime,
+  TBook,
   TCharacter,
   TGame,
   TManga,
-  EMediaType,
-  EAnimeStatus,
-  EMangaStatus,
-  EGameStatus,
-  ECharacterSource,
-  TBook,
   TMovie,
-  EBookStatus,
-  EMovieStatus,
 } from "@/types";
 
 const mediaStore = useMediaStore();
 const {
   submitDeleteAnime,
-  submitDeleteManga,
-  submitDeleteGame,
-  submitDeleteCharacter,
   submitDeleteBook,
+  submitDeleteCharacter,
+  submitDeleteGame,
+  submitDeleteManga,
   submitDeleteMovie,
 } = mediaStore;
 
 interface IMediaCardProps {
-  media: TCharacter | TAnime | TGame | TManga | TBook | TMovie;
+  media: TAnime | TBook | TCharacter | TGame | TManga | TMovie;
   mediaType: EMediaType;
 }
 
 const props = defineProps<IMediaCardProps>();
 
 const dialog = ref<boolean>(false);
+const deleteDialog = ref<boolean>(false);
 const formDialog = ref<boolean>(false);
 const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>("");
-const deleteDialog = ref<boolean>(false);
 
 const displayImageText = (
-  media: TAnime | TManga | TGame | TCharacter | TBook | TMovie
+  media: TAnime | TBook | TCharacter | TGame | TManga | TMovie
 ) => {
   let imageText = "";
   switch (props.mediaType) {
@@ -177,7 +160,7 @@ const displayImageText = (
 };
 
 const statusColor = (
-  media: TAnime | TManga | TGame | TCharacter | TBook | TMovie
+  media: TAnime | TBook | TCharacter | TGame | TManga | TMovie
 ) => {
   let color = "";
   if ((media as TCharacter).source) {
@@ -185,47 +168,47 @@ const statusColor = (
       case ECharacterSource.ANIME:
         color = "green";
         break;
-      case ECharacterSource.MANGA:
-        color = "yellow";
-        break;
       case ECharacterSource.GAME:
         color = "blue";
         break;
+      case ECharacterSource.MANGA:
+        color = "yellow";
+        break;
     }
   } else {
-    switch ((media as TAnime | TManga | TGame | TBook | TMovie).status) {
+    switch ((media as TAnime | TBook | TGame | TManga | TMovie).status) {
       case EAnimeStatus.WATCHING:
-      case EMangaStatus.READING:
-      case EGameStatus.PLAYING:
       case EBookStatus.READING:
+      case EGameStatus.PLAYING:
+      case EMangaStatus.READING:
       case EMovieStatus.WATCHING:
         color = "green";
         break;
       case EAnimeStatus.COMPLETED:
-      case EMangaStatus.COMPLETED:
-      case EGameStatus.COMPLETED:
       case EBookStatus.COMPLETED:
+      case EGameStatus.COMPLETED:
+      case EMangaStatus.COMPLETED:
       case EMovieStatus.COMPLETED:
         color = "blue";
         break;
       case EAnimeStatus.ON_HOLD:
-      case EMangaStatus.ON_HOLD:
-      case EGameStatus.ON_HOLD:
       case EBookStatus.ON_HOLD:
+      case EGameStatus.ON_HOLD:
+      case EMangaStatus.ON_HOLD:
       case EMovieStatus.ON_HOLD:
         color = "yellow";
         break;
       case EAnimeStatus.DROPPED:
-      case EMangaStatus.DROPPED:
-      case EGameStatus.DROPPED:
       case EBookStatus.DROPPED:
+      case EGameStatus.DROPPED:
+      case EMangaStatus.DROPPED:
       case EMovieStatus.DROPPED:
         color = "red";
         break;
       case EAnimeStatus.PLAN_TO_WATCH:
-      case EMangaStatus.PLAN_TO_READ:
-      case EGameStatus.PLAN_TO_PLAY:
       case EBookStatus.PLAN_TO_READ:
+      case EGameStatus.PLAN_TO_PLAY:
+      case EMangaStatus.PLAN_TO_READ:
       case EMovieStatus.PLAN_TO_WATCH:
         color = "white";
         break;
@@ -234,16 +217,19 @@ const statusColor = (
   return color;
 };
 
-const handleViewClick = () => {
-  dialog.value = !dialog.value;
+const handleDeleteCancel = () => {
+  deleteDialog.value = !deleteDialog.value;
 };
-const handleEditClick = () => {
-  dialog.value = !dialog.value;
-  formDialog.value = !formDialog.value;
-};
+
 const handleDeleteClick = async () => {
   dialog.value = !dialog.value;
   deleteDialog.value = !deleteDialog.value;
+};
+
+const handleCloseModal = () => {
+  formDialog.value = !formDialog.value;
+  snackbarText.value = `${props.mediaType} Edited`;
+  snackbar.value = !snackbar.value;
 };
 
 const handleDeleteConfirm = async () => {
@@ -251,17 +237,17 @@ const handleDeleteConfirm = async () => {
     case EMediaType.ANIME:
       await submitDeleteAnime(props.media._id);
       break;
-    case EMediaType.MANGA:
-      await submitDeleteManga(props.media._id);
-      break;
-    case EMediaType.GAME:
-      await submitDeleteGame(props.media._id);
+    case EMediaType.BOOK:
+      await submitDeleteBook(props.media._id);
       break;
     case EMediaType.CHARACTER:
       await submitDeleteCharacter(props.media._id);
       break;
-    case EMediaType.BOOK:
-      await submitDeleteBook(props.media._id);
+    case EMediaType.GAME:
+      await submitDeleteGame(props.media._id);
+      break;
+    case EMediaType.MANGA:
+      await submitDeleteManga(props.media._id);
       break;
     case EMediaType.MOVIE:
       await submitDeleteMovie(props.media._id);
@@ -271,19 +257,18 @@ const handleDeleteConfirm = async () => {
   snackbarText.value = `${props.mediaType} ${
     props.mediaType === EMediaType.CHARACTER
       ? (props.media as TCharacter).name
-      : (props.media as TAnime | TManga | TGame | TBook | TMovie).title
+      : (props.media as TAnime | TBook | TGame | TManga | TMovie).title
   } Deleted`;
   snackbar.value = !snackbar.value;
 };
 
-const handleDeleteCancel = () => {
-  deleteDialog.value = !deleteDialog.value;
+const handleEditClick = () => {
+  dialog.value = !dialog.value;
+  formDialog.value = !formDialog.value;
 };
 
-const handleCloseModal = () => {
-  formDialog.value = !formDialog.value;
-  snackbarText.value = `${props.mediaType} Edited`;
-  snackbar.value = !snackbar.value;
+const handleViewClick = () => {
+  dialog.value = !dialog.value;
 };
 </script>
 <style>

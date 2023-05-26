@@ -1,18 +1,27 @@
 import { TTheme } from "@/types";
 
-const defaultTheme: TTheme = {
+export const beigeTheme: TTheme = {
+  primaryDark: "#a67a5b",
+  primaryLight: "#e8dcb5",
+  primaryMedium: "#c19770",
+  secondaryMedium: "#d5b895",
+  secondaryLight: "#faf0dc",
+  textColor: "#000000",
+};
+
+export const blueTheme: TTheme = {
   primaryDark: "#12232e",
-  primaryMedium: "#203647",
   primaryLight: "#023e8a",
+  primaryMedium: "#203647",
   secondaryMedium: "#284155",
   secondaryLight: "#4da8da",
   textColor: "#ffffff",
 };
 
-export const blueTheme: TTheme = {
+const defaultTheme: TTheme = {
   primaryDark: "#12232e",
-  primaryMedium: "#203647",
   primaryLight: "#023e8a",
+  primaryMedium: "#203647",
   secondaryMedium: "#284155",
   secondaryLight: "#4da8da",
   textColor: "#ffffff",
@@ -20,20 +29,11 @@ export const blueTheme: TTheme = {
 
 export const grayTheme: TTheme = {
   primaryDark: "#1c1c1c",
-  primaryMedium: "#343434",
   primaryLight: "#696969",
+  primaryMedium: "#343434",
   secondaryMedium: "#555555",
   secondaryLight: "#7c7c7c",
   textColor: "#ffffff",
-};
-
-export const beigeTheme: TTheme = {
-  primaryDark: "#a67a5b",
-  primaryMedium: "#c19770",
-  primaryLight: "#e8dcb5",
-  secondaryMedium: "#d5b895",
-  secondaryLight: "#faf0dc",
-  textColor: "#000000",
 };
 
 export const setDefaultTheme = () => {
@@ -57,20 +57,20 @@ export const setAppTheme = (theme: TTheme) => {
     theme.primaryDark
   );
   document.documentElement.style.setProperty(
-    "--bg-primary-medium",
-    theme.primaryMedium
-  );
-  document.documentElement.style.setProperty(
     "--bg-primary-light",
     theme.primaryLight
   );
   document.documentElement.style.setProperty(
-    "--bg-secondary-medium",
-    theme.secondaryMedium
+    "--bg-primary-medium",
+    theme.primaryMedium
   );
   document.documentElement.style.setProperty(
     "--bg-secondary-light",
     theme.secondaryLight
+  );
+  document.documentElement.style.setProperty(
+    "--bg-secondary-medium",
+    theme.secondaryMedium
   );
   document.documentElement.style.setProperty("--text-color", theme.textColor);
   setThemeToLocalStorage(theme);

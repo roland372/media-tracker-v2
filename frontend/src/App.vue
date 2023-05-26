@@ -4,12 +4,12 @@
 </template>
 <script setup lang="ts">
 import { onMounted } from "vue";
-import LoaderComponent from "@/components/ui/LoaderComponent.vue";
-import MainLayout from "@/layouts/MainLayout.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { getUserData } from "@/utils/auth";
 import { setDefaultTheme } from "@/utils/themes";
+import LoaderComponent from "@/components/ui/LoaderComponent.vue";
+import MainLayout from "@/layouts/MainLayout.vue";
 
 const mediaStore = useMediaStore();
 const { fetchAllMedia, fetchUser, setLoading, setGoogleUser } = mediaStore;

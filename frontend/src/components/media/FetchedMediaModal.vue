@@ -37,8 +37,9 @@ interface IFetchedMediaComponentProps {
   viewMoreClick: () => void;
 }
 
-const props = defineProps<IFetchedMediaComponentProps>();
 const emit = defineEmits(["closeModal"]);
+const props = defineProps<IFetchedMediaComponentProps>();
+
 const showModalRef = ref<boolean>(props.showModal);
 const handleCloseModal = () => {
   emit("closeModal");

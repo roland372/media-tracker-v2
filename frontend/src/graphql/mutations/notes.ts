@@ -1,6 +1,6 @@
 import { apolloClient } from "@/graphql";
-import { TNoteInput } from "@/types";
 import gql from "graphql-tag";
+import { TNoteInput } from "@/types";
 
 export const addNote = async (
   userId: string | undefined,
@@ -29,17 +29,14 @@ export const addNote = async (
   });
 };
 
-export const editNote = async (
+export const deleteNote = async (
   userId: string | undefined,
-  variables: {
-    id: string;
-    noteInput: TNoteInput;
-  }
+  variables: { id: string }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation EditNote($id: ID!, $noteInput: NoteInput) {
-        editNote(ID: $id, noteInput: $noteInput)
+      mutation DeleteNote($id: ID!) {
+        deleteNote(ID: $id)
       }
     `,
     context: {
@@ -51,14 +48,17 @@ export const editNote = async (
   });
 };
 
-export const deleteNote = async (
+export const editNote = async (
   userId: string | undefined,
-  variables: { id: string }
+  variables: {
+    id: string;
+    noteInput: TNoteInput;
+  }
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation DeleteNote($id: ID!) {
-        deleteNote(ID: $id)
+      mutation EditNote($id: ID!, $noteInput: NoteInput) {
+        editNote(ID: $id, noteInput: $noteInput)
       }
     `,
     context: {

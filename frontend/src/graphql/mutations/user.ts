@@ -1,6 +1,6 @@
 import { apolloClient } from "@/graphql";
-import { TUserInput } from "@/types";
 import gql from "graphql-tag";
+import { TUserInput } from "@/types";
 
 export const editUser = async (
   userId: string | undefined,

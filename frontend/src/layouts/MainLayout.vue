@@ -11,11 +11,11 @@
   </section>
 </template>
 <script setup lang="ts">
-import NavbarComponent from "@/components/ui/NavbarComponent.vue";
-import FooterComponent from "@/components/ui/FooterComponent.vue";
-import ScrollToTopButton from "@/components/ui/ScrollToTopButton.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
+import FooterComponent from "@/components/ui/FooterComponent.vue";
+import NavbarComponent from "@/components/ui/NavbarComponent.vue";
+import ScrollToTopButton from "@/components/ui/ScrollToTopButton.vue";
 
 const mediaStore = useMediaStore();
 const { googleUser } = storeToRefs(mediaStore);

@@ -10,8 +10,8 @@
   />
 </template>
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
 import ButtonIcon from "./ButtonIcon.vue";
-import { ref, onMounted } from "vue";
 
 const isVisible = ref<boolean>(false);
 const scrollToTop = () => {
