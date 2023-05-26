@@ -40,13 +40,21 @@
               class="d-flex align-center justify-space-evenly pa-3 text-no-wrap"
             >
               <section>
-                <div v-for="media in mediaType.slice(0, 4)" :key="media.media">
+                <div
+                  v-for="media in mediaType.slice(0, 4)"
+                  :key="media.media"
+                  class="pb-1"
+                >
                   <b class="text-decoration-underline">{{ media.media }}</b>
                   <div>{{ media.total }} {{ media.media }}</div>
                 </div>
               </section>
               <section>
-                <div v-for="media in mediaType.slice(4)" :key="media.media">
+                <div
+                  v-for="media in mediaType.slice(4)"
+                  :key="media.media"
+                  class="pb-1"
+                >
                   <b class="text-decoration-underline">{{ media.media }}</b>
                   <div>{{ media.total }} {{ media.media }}</div>
                 </div>
