@@ -130,79 +130,86 @@
             variant="text"
           />
         </div>
-        <v-card-text>
-          <v-text-field
-            v-model="userRef.username"
-            class="mb-2"
-            density="compact"
-            hide-details="auto"
-            label="Name"
-            :rules="[(val) => !!val || 'Name is required.']"
-            variant="outlined"
-          />
-          <v-text-field
-            v-model="userRef.profileDesc"
-            class="mb-2"
-            density="compact"
-            hide-details="auto"
-            label="Description"
-            variant="outlined"
-          />
-          <div class="d-flex justify-space-around align-center">
+        <v-form validate-on="input" @submit.prevent="handleSubmitEditProfile">
+          <v-card-text>
             <v-text-field
-              v-model="userRef.profileImg"
-              class="me-2"
+              v-model="userRef.username"
+              class="mb-2"
               density="compact"
               hide-details="auto"
-              label="Avatar"
+              label="Name"
+              :rules="stringRules('Name')"
               variant="outlined"
             />
-            <img
-              alt="Avatar"
-              class="rounded-circle"
-              :src="userRef.profileImg"
-              style="width: 48px"
-            />
-          </div>
-          <!-- <div class="d-flex justify-space-around mb-n3">
-            <v-file-input
-              :v-model="avatarUpload"
+            <v-text-field
+              v-model="userRef.profileDesc"
+              class="mb-2"
               density="compact"
-              label="Upload Avatar"
-              prepend-icon=""
-              show-size
+              hide-details="auto"
+              label="Description"
               variant="outlined"
             />
-            <ButtonText
-              :on-click="handleSubmitUploadAvatar"
-              class="my-2 ms-2"
-              color="yellow"
-              size="small"
-              text="Upload"
-              variant="flat"
-            />
-          </div> -->
-          <div class="mt-n1">
-            <small class="ms-3">Select Color</small>
-            <div class="d-flex flex-wrap">
-              <v-color-picker v-model="userRef.color" hide-inputs width="200" />
-              <div class="ms-2">
-                <b>New color:</b>
-                <div :style="{ backgroundColor: userRef.color }" class="pa-1">
-                  {{ userRef.color }}
+            <div class="d-flex justify-space-around align-center">
+              <v-text-field
+                v-model="userRef.profileImg"
+                class="me-2"
+                density="compact"
+                hide-details="auto"
+                label="Avatar"
+                :rules="URLRules"
+                variant="outlined"
+              />
+              <img
+                alt="Avatar"
+                class="rounded-circle"
+                :src="userRef.profileImg"
+                style="width: 48px"
+              />
+            </div>
+            <!-- <div class="d-flex justify-space-around mb-n3">
+              <v-file-input
+                :v-model="avatarUpload"
+                density="compact"
+                label="Upload Avatar"
+                prepend-icon=""
+                show-size
+                variant="outlined"
+              />
+              <ButtonText
+                :on-click="handleSubmitUploadAvatar"
+                class="my-2 ms-2"
+                color="yellow"
+                size="small"
+                text="Upload"
+                variant="flat"
+              />
+            </div> -->
+            <div class="mt-n1">
+              <small class="ms-3">Select Color</small>
+              <div class="d-flex flex-wrap">
+                <v-color-picker
+                  v-model="userRef.color"
+                  hide-inputs
+                  width="200"
+                />
+                <div class="ms-2">
+                  <b>New color:</b>
+                  <div :style="{ backgroundColor: userRef.color }" class="pa-1">
+                    {{ userRef.color }}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </v-card-text>
-        <v-card-actions class="d-flex justify-start ms-4 mb-2">
-          <ButtonText
-            :on-click="handleSubmitEditProfile"
-            color="yellow"
-            text="Save Changes"
-            variant="flat"
-          />
-        </v-card-actions>
+          </v-card-text>
+          <v-card-actions class="d-flex justify-start ms-4 mb-2">
+            <ButtonText
+              color="yellow"
+              text="Save Changes"
+              type="submit"
+              variant="flat"
+            />
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
   </HeaderComponent>
@@ -235,6 +242,11 @@ import {
   // randomTheme,
   setAppTheme,
 } from "@/utils/themes";
+import {
+  stringRules,
+  URLRegex,
+  URLRules,
+} from "@/utils/validations/formValidations";
 
 const mediaStore = useMediaStore();
 const {
@@ -369,10 +381,14 @@ const handleSubmitEditProfile = () => {
     username: userRef.value.username,
   });
 
-  submitEditUser(userRef.value?._id, updatedProfile);
-  setUserFromDB(userRef.value as TUser);
-
-  settingsModal.value = false;
+  if (
+    updatedProfile.username &&
+    URLRegex.test(String(updatedProfile.profileImg))
+  ) {
+    submitEditUser(userRef.value?._id, updatedProfile);
+    setUserFromDB(userRef.value as TUser);
+    settingsModal.value = false;
+  }
 };
 
 const handleLogout = async () => {

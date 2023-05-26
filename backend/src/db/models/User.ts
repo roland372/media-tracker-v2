@@ -10,7 +10,7 @@ const UserSchema: Schema = new Schema<TUser>(
 		email: {
 			type: String, required: true, unique: true
 		},
-		googleId: { type: String },
+		googleId: { type: String, index: true },
 		profileDesc: { type: String, default: '' },
 		profileImg: { type: String, default: '' },
 		role: { type: String, enum: EUserRole, default: EUserRole.USER },
