@@ -67,8 +67,8 @@
             <div class="d-flex align-center justify-start flex-wrap py-3">
               <ButtonText
                 v-for="button in colorThemeButtons"
-                @click="setAppTheme(button.theme)"
                 :key="button.text"
+                @click="setAppTheme(button.theme)"
                 :class="button.class"
                 :color="button.color"
                 :size="button.size"
@@ -89,8 +89,8 @@
             <div class="d-flex align-center justify-start flex-wrap py-3">
               <ButtonText
                 v-for="button in backupButtons"
-                @click="handleDownloadMedia(button.data, button.text)"
                 :key="button.text"
+                @click="handleDownloadMedia(button.data, button.text)"
                 :class="button.class"
                 :color="button.color"
                 :size="button.size"
@@ -105,14 +105,14 @@
               class="d-flex align-center justify-space-evenly flex-wrap py-3"
             >
               <ButtonText
-                :on-click="handleOpenSettings"
+                @click="handleOpenSettings"
                 class="me-2 mt-2"
                 color="yellow"
                 size="small"
                 text="Edit Profile"
               />
               <ButtonText
-                :on-click="handleLogout"
+                @click="handleLogout"
                 class="me-2 mt-2"
                 color="indigo"
                 size="small"
@@ -138,7 +138,7 @@
             variant="text"
           />
         </div>
-        <v-form validate-on="input" @submit.prevent="handleSubmitEditProfile">
+        <v-form @submit.prevent="handleSubmitEditProfile" validate-on="input">
           <v-card-text>
             <v-text-field
               v-model="userRef.username"
@@ -184,7 +184,7 @@
                 variant="outlined"
               />
               <ButtonText
-                :on-click="handleSubmitUploadAvatar"
+                @click="handleSubmitUploadAvatar"
                 class="my-2 ms-2"
                 color="yellow"
                 size="small"
@@ -224,53 +224,46 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import {
-  TUserInput,
-  TUser,
-  TAnime,
-  TManga,
-  TGame,
-  TCharacter,
-  TNote,
-  TEmote,
-  TTheme,
-  TBook,
-  TMovie,
-} from "@/types/index";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import ButtonText from "@/components/ui/ButtonText.vue";
-import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { logout } from "@/utils/auth";
-import {
-  blueTheme,
-  grayTheme,
-  beigeTheme,
-  // randomTheme,
-  setAppTheme,
-} from "@/utils/themes";
+import { beigeTheme, blueTheme, grayTheme, setAppTheme } from "@/utils/themes";
 import {
   stringRules,
   URLRegex,
   URLRules,
 } from "@/utils/validations/formValidations";
+import ButtonIcon from "@/components/ui/ButtonIcon.vue";
+import ButtonText from "@/components/ui/ButtonText.vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import {
+  TAnime,
+  TBook,
+  TCharacter,
+  TEmote,
+  TGame,
+  TManga,
+  TMovie,
+  TNote,
+  TUser,
+  TUserInput,
+  TTheme,
+} from "@/types/index";
 
 const mediaStore = useMediaStore();
+const { setUserFromDB, submitEditUser } = mediaStore;
 const {
-  userFromDB,
   anime,
-  manga,
-  games,
-  characters,
   books,
-  movies,
+  characters,
   emotes,
+  games,
+  manga,
+  movies,
   notes,
+  userFromDB,
 } = storeToRefs(mediaStore);
-const { submitEditUser, setUserFromDB } = mediaStore;
 
-const settingsModal = ref<boolean>(false);
 const userProfile = reactive({
   _id: userFromDB.value?._id,
   color: userFromDB.value?.color,
@@ -281,18 +274,10 @@ const userProfile = reactive({
   role: userFromDB.value?.role,
   username: userFromDB.value?.username,
 });
-const userRef = ref(userProfile);
+
 // const avatarUpload = ref();
-const mediaType = [
-  { media: "Anime", total: anime.value.length },
-  { media: "Manga", total: manga.value.length },
-  { media: "Games", total: games.value.length },
-  { media: "Characters", total: characters.value.length },
-  { media: "Books", total: books.value.length },
-  { media: "Movies", total: movies.value.length },
-  { media: "Emotes", total: emotes.value.length },
-  { media: "Notes", total: notes.value.length },
-];
+const settingsModal = ref<boolean>(false);
+const userRef = ref(userProfile);
 
 const backupButtons = [
   {
@@ -377,30 +362,35 @@ const colorThemeButtons = [
   },
 ];
 
-const handleOpenSettings = () => {
-  settingsModal.value = !settingsModal.value;
-};
+const mediaType = [
+  { media: "Anime", total: anime.value.length },
+  { media: "Manga", total: manga.value.length },
+  { media: "Games", total: games.value.length },
+  { media: "Characters", total: characters.value.length },
+  { media: "Books", total: books.value.length },
+  { media: "Movies", total: movies.value.length },
+  { media: "Emotes", total: emotes.value.length },
+  { media: "Notes", total: notes.value.length },
+];
 
-const handleSubmitEditProfile = () => {
-  const updatedProfile: TUserInput = reactive({
-    color: userRef.value.color,
-    profileDesc: userRef.value.profileDesc,
-    profileImg: userRef.value.profileImg,
-    username: userRef.value.username,
-  });
+const generateAndSetRandomTheme = () => {
+  const randomColor1 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  const randomColor2 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  const randomColor3 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  const randomColor4 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  const randomColor5 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+  const randomColor6 = "#" + Math.floor(Math.random() * 16777215).toString(16);
 
-  if (
-    updatedProfile.username &&
-    URLRegex.test(String(updatedProfile.profileImg))
-  ) {
-    submitEditUser(userRef.value?._id, updatedProfile);
-    setUserFromDB(userRef.value as TUser);
-    settingsModal.value = false;
-  }
-};
+  const randomTheme: TTheme = {
+    primaryDark: randomColor1,
+    primaryMedium: randomColor2,
+    primaryLight: randomColor3,
+    secondaryMedium: randomColor4,
+    secondaryLight: randomColor5,
+    textColor: randomColor6,
+  };
 
-const handleLogout = async () => {
-  await logout();
+  setAppTheme(randomTheme);
 };
 
 const handleDownloadMedia = (
@@ -424,24 +414,30 @@ const handleDownloadMedia = (
   link.click();
 };
 
-const generateAndSetRandomTheme = () => {
-  const randomColor1 = "#" + Math.floor(Math.random() * 16777215).toString(16);
-  const randomColor2 = "#" + Math.floor(Math.random() * 16777215).toString(16);
-  const randomColor3 = "#" + Math.floor(Math.random() * 16777215).toString(16);
-  const randomColor4 = "#" + Math.floor(Math.random() * 16777215).toString(16);
-  const randomColor5 = "#" + Math.floor(Math.random() * 16777215).toString(16);
-  const randomColor6 = "#" + Math.floor(Math.random() * 16777215).toString(16);
+const handleLogout = async () => {
+  await logout();
+};
 
-  const randomTheme: TTheme = {
-    primaryDark: randomColor1,
-    primaryMedium: randomColor2,
-    primaryLight: randomColor3,
-    secondaryMedium: randomColor4,
-    secondaryLight: randomColor5,
-    textColor: randomColor6,
-  };
+const handleOpenSettings = () => {
+  settingsModal.value = !settingsModal.value;
+};
 
-  setAppTheme(randomTheme);
+const handleSubmitEditProfile = () => {
+  const updatedProfile: TUserInput = reactive({
+    color: userRef.value.color,
+    profileDesc: userRef.value.profileDesc,
+    profileImg: userRef.value.profileImg,
+    username: userRef.value.username,
+  });
+
+  if (
+    updatedProfile.username &&
+    URLRegex.test(String(updatedProfile.profileImg))
+  ) {
+    submitEditUser(userRef.value?._id, updatedProfile);
+    setUserFromDB(userRef.value as TUser);
+    settingsModal.value = false;
+  }
 };
 
 // const handleSubmitUploadAvatar = () => {

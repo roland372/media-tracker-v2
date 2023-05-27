@@ -6,12 +6,12 @@
       </div>
       <v-card-text class="my-1">
         <v-select
-          v-on:update:model-value="handleShowFormDialog"
           v-model="mediaType"
+          v-on:update:model-value="handleShowFormDialog"
           class="mb-n3"
+          density="compact"
           :items="mediaList"
           label="Select Type"
-          density="compact"
           variant="outlined"
         />
       </v-card-text>
@@ -20,8 +20,8 @@
   <FormComponent
     v-if="formDialog"
     v-model="formDialog"
-    @submit="handleSubmit"
     @close="formDialog = !formDialog"
+    @submit="handleSubmit"
     :media-type="mediaType"
     :title="`Add ${mediaType}`"
   />
@@ -91,35 +91,35 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import ButtonText from "@/components/ui/ButtonText.vue";
-import MediaComponent from "@/components/media/MediaComponent.vue";
-import FormComponent from "@/components/media/FormComponent.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { EMediaType } from "@/types";
-import { mediaList } from "@/utils/mediaUtils";
 import { orderBy } from "lodash";
-
-const selectDialog = ref<boolean>(false);
-const formDialog = ref<boolean>(false);
-const snackbar = ref<boolean>(false);
-const mediaType = ref<string>("");
+import { mediaList } from "@/utils/mediaUtils";
+import ButtonText from "@/components/ui/ButtonText.vue";
+import FormComponent from "@/components/media/FormComponent.vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import MediaComponent from "@/components/media/MediaComponent.vue";
+import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import { EMediaType } from "@/types";
 
 const mediaStore = useMediaStore();
 const { anime, characters, games, manga, books, movies } =
   storeToRefs(mediaStore);
 
-const handleShowSelectDialog = () => {
-  selectDialog.value = !selectDialog.value;
-  snackbar.value = false;
-  mediaType.value = "";
-};
+const formDialog = ref<boolean>(false);
+const mediaType = ref<string>("");
+const selectDialog = ref<boolean>(false);
+const snackbar = ref<boolean>(false);
 
 const handleShowFormDialog = () => {
   selectDialog.value = !selectDialog.value;
   formDialog.value = !formDialog.value;
+};
+
+const handleShowSelectDialog = () => {
+  selectDialog.value = !selectDialog.value;
+  snackbar.value = false;
+  mediaType.value = "";
 };
 
 const handleSubmit = () => {

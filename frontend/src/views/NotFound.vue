@@ -12,8 +12,8 @@
   ></CardComponent>
 </template>
 <script setup lang="ts">
-import CardComponent from "@/components/media/CardComponent.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
+import CardComponent from "@/components/media/CardComponent.vue";
 </script>
 <style scoped>
 .page-container {

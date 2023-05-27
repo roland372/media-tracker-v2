@@ -3,8 +3,8 @@
     <FormComponent
       v-if="formDialog"
       v-model="formDialog"
-      @submit="handleSubmit"
       @close="formDialog = !formDialog"
+      @submit="handleSubmit"
       :media-type="EMediaType.GAME"
       :title="`Add ${EMediaType.GAME}`"
     />
@@ -85,32 +85,38 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import ButtonText from "@/components/ui/ButtonText.vue";
-import StatsComponent from "@/components/media/StatsComponent.vue";
-import MediaComponent from "@/components/media/MediaComponent.vue";
-import FormComponent from "@/components/media/FormComponent.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
-import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
-import MediaTable from "@/components/media/MediaTable.vue";
-
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { round, calculatePercentage } from "@/utils/mediaUtils";
-import { filterMediaStatus } from "@/utils/mediaUtils";
-import { EMediaType, EGameStatus } from "@/types";
 import { filter, orderBy } from "lodash";
+import {
+  calculatePercentage,
+  filterMediaStatus,
+  round,
+} from "@/utils/mediaUtils";
+import ButtonText from "@/components/ui/ButtonText.vue";
+import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
+import FormComponent from "@/components/media/FormComponent.vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import MediaComponent from "@/components/media/MediaComponent.vue";
+import MediaTable from "@/components/media/MediaTable.vue";
+import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import StatsComponent from "@/components/media/StatsComponent.vue";
+import { EGameStatus, EMediaType } from "@/types";
 
-const displayFlag = ref<string>("grid");
-const formDialog = ref<boolean>(false);
-const snackbar = ref<boolean>(false);
-const snackbarText = ref<string>(EMediaType.GAME + " Added");
 const mediaStore = useMediaStore();
 const { games } = storeToRefs(mediaStore);
 
-const gameFetchSearch = ref<string>("");
+const displayFlag = ref<string>("grid");
+const formDialog = ref<boolean>(false);
 const searchTerm = ref<string>("");
+const snackbar = ref<boolean>(false);
+const snackbarText = ref<string>(EMediaType.GAME + " Added");
 const gameFilter = ref<string>("");
+const gameFetchSearch = ref<string>("");
+
+const favourites = computed(
+  () => games.value.filter((games) => games.favourites).length
+);
 
 const filteredGames = computed(() =>
   games.value.filter((el) => {
@@ -123,17 +129,26 @@ const filteredGames = computed(() =>
   })
 );
 
-const totalGames = computed(() => games.value.length);
 const filterZeroRating = computed(
   () => games.value.filter((games) => games.rating !== 0).length
 );
-const totalRating = computed(() =>
-  games.value.reduce((accumulator, object) => accumulator + object.rating, 0)
-);
+
+const totalDays = computed(() => round(totalPlaytime.value / 24, 1));
+const totalGames = computed(() => games.value.length);
 const totalPlaytime = computed(() =>
   games.value.reduce((accumulator, object) => {
     return accumulator + object.playtime;
   }, 0)
+);
+
+const totalRating = computed(() =>
+  games.value.reduce((accumulator, object) => accumulator + object.rating, 0)
+);
+
+const meanScore = computed(() =>
+  filterZeroRating.value === 0
+    ? 0
+    : round(totalRating.value / filterZeroRating.value, 2)
 );
 
 const playing = computed(() => filterMediaStatus(games, "playing").length);
@@ -143,13 +158,6 @@ const dropped = computed(() => filterMediaStatus(games, "dropped").length);
 const planToPlay = computed(
   () => filterMediaStatus(games, "Plan to Play").length
 );
-const favourites = computed(
-  () => games.value.filter((games) => games.favourites).length
-);
-
-const handleFetchGameSearch = () => {
-  console.log(gameFetchSearch.value);
-};
 
 const progress = computed(() => [
   {
@@ -188,18 +196,6 @@ const stats = computed(() => [
   { name: "Playtime", value: totalPlaytime.value + " hours" },
 ]);
 
-const totalDays = computed(() => round(totalPlaytime.value / 24, 1));
-const meanScore = computed(() =>
-  filterZeroRating.value === 0
-    ? 0
-    : round(totalRating.value / filterZeroRating.value, 2)
-);
-
-const handleSubmit = () => {
-  formDialog.value = !formDialog.value;
-  snackbar.value = !snackbar.value;
-};
-
 const handleChangeDisplayFlag = () => {
   if (displayFlag.value === "table") {
     displayFlag.value = "grid";
@@ -208,8 +204,18 @@ const handleChangeDisplayFlag = () => {
   }
 };
 
-const handleGameSearch = (emittedValue: string) =>
-  (searchTerm.value = emittedValue);
+const handleFetchGameSearch = () => {
+  console.log(gameFetchSearch.value);
+};
+
 const handleGameFilter = (emittedValue: string) =>
   (gameFilter.value = emittedValue);
+
+const handleGameSearch = (emittedValue: string) =>
+  (searchTerm.value = emittedValue);
+
+const handleSubmit = () => {
+  formDialog.value = !formDialog.value;
+  snackbar.value = !snackbar.value;
+};
 </script>

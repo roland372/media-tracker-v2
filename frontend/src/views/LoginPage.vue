@@ -6,9 +6,9 @@
   </HeaderComponent>
 </template>
 <script setup lang="ts">
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import { GoogleLogin } from "vue3-google-login";
 import { login } from "@/utils/auth";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
 </script>
 <style scoped>
 .page-container {

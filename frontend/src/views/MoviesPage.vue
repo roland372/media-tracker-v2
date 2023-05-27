@@ -3,8 +3,8 @@
     <FormComponent
       v-if="formDialog"
       v-model="formDialog"
-      @submit="handleSubmit"
       @close="formDialog = !formDialog"
+      @submit="handleSubmit"
       :media-type="EMediaType.MOVIE"
       :title="`Add ${EMediaType.MOVIE}`"
     />
@@ -85,32 +85,38 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import ButtonText from "@/components/ui/ButtonText.vue";
-import StatsComponent from "@/components/media/StatsComponent.vue";
-import MediaComponent from "@/components/media/MediaComponent.vue";
-import FormComponent from "@/components/media/FormComponent.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
-import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
-import MediaTable from "@/components/media/MediaTable.vue";
-
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { round, calculatePercentage } from "@/utils/mediaUtils";
-import { filterMediaStatus } from "@/utils/mediaUtils";
-import { EMediaType, EMovieStatus } from "@/types";
 import { filter, orderBy } from "lodash";
+import {
+  calculatePercentage,
+  filterMediaStatus,
+  round,
+} from "@/utils/mediaUtils";
+import ButtonText from "@/components/ui/ButtonText.vue";
+import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
+import FormComponent from "@/components/media/FormComponent.vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import MediaComponent from "@/components/media/MediaComponent.vue";
+import MediaTable from "@/components/media/MediaTable.vue";
+import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import StatsComponent from "@/components/media/StatsComponent.vue";
+import { EMediaType, EMovieStatus } from "@/types";
 
-const displayFlag = ref<string>("grid");
-const formDialog = ref<boolean>(false);
-const snackbar = ref<boolean>(false);
-const snackbarText = ref<string>(EMediaType.MOVIE + " Added");
 const mediaStore = useMediaStore();
 const { movies } = storeToRefs(mediaStore);
 
-const movieFetchSearch = ref<string>("");
+const displayFlag = ref<string>("grid");
+const formDialog = ref<boolean>(false);
 const searchTerm = ref<string>("");
+const snackbar = ref<boolean>(false);
+const snackbarText = ref<string>(EMediaType.MOVIE + " Added");
+const movieFetchSearch = ref<string>("");
 const movieFilter = ref<string>("");
+
+const favourites = computed(
+  () => movies.value.filter((movies) => movies.favourites).length
+);
 
 const filteredMovies = computed(() =>
   movies.value.filter((el) => {
@@ -123,23 +129,8 @@ const filteredMovies = computed(() =>
   })
 );
 
-const totalMovies = computed(() => movies.value.length);
 const filterZeroRating = computed(
   () => movies.value.filter((movies) => movies.rating !== 0).length
-);
-const totalRating = computed(() =>
-  movies.value.reduce((accumulator, object) => accumulator + object.rating, 0)
-);
-
-const watching = computed(() => filterMediaStatus(movies, "watching").length);
-const completed = computed(() => filterMediaStatus(movies, "completed").length);
-const onHold = computed(() => filterMediaStatus(movies, "on-hold").length);
-const dropped = computed(() => filterMediaStatus(movies, "dropped").length);
-const planToWatch = computed(
-  () => filterMediaStatus(movies, "Plan to Watch").length
-);
-const favourites = computed(
-  () => movies.value.filter((movies) => movies.favourites).length
 );
 
 const filteredTotalMoviesAmount = computed(
@@ -158,9 +149,32 @@ const filteredTVShowsEpisodes = computed(() =>
     }, 0)
 );
 
-const handleFetchMovieSearch = () => {
-  console.log(movieFetchSearch.value);
-};
+const totalDays = computed(() =>
+  round(
+    (filteredTotalMoviesAmount.value * 2) / 24 +
+      (filteredTVShowsEpisodes.value * 1) / 24,
+    1
+  )
+);
+
+const totalMovies = computed(() => movies.value.length);
+const totalRating = computed(() =>
+  movies.value.reduce((accumulator, object) => accumulator + object.rating, 0)
+);
+
+const meanScore = computed(() =>
+  filterZeroRating.value === 0
+    ? 0
+    : round(totalRating.value / filterZeroRating.value, 2)
+);
+
+const watching = computed(() => filterMediaStatus(movies, "watching").length);
+const completed = computed(() => filterMediaStatus(movies, "completed").length);
+const onHold = computed(() => filterMediaStatus(movies, "on-hold").length);
+const dropped = computed(() => filterMediaStatus(movies, "dropped").length);
+const planToWatch = computed(
+  () => filterMediaStatus(movies, "Plan to Watch").length
+);
 
 const progress = computed(() => [
   {
@@ -199,24 +213,6 @@ const stats = computed(() => [
   { name: "Favourites", value: favourites },
 ]);
 
-const totalDays = computed(() =>
-  round(
-    (filteredTotalMoviesAmount.value * 2) / 24 +
-      (filteredTVShowsEpisodes.value * 1) / 24,
-    1
-  )
-);
-const meanScore = computed(() =>
-  filterZeroRating.value === 0
-    ? 0
-    : round(totalRating.value / filterZeroRating.value, 2)
-);
-
-const handleSubmit = () => {
-  formDialog.value = !formDialog.value;
-  snackbar.value = !snackbar.value;
-};
-
 const handleChangeDisplayFlag = () => {
   if (displayFlag.value === "table") {
     displayFlag.value = "grid";
@@ -225,8 +221,18 @@ const handleChangeDisplayFlag = () => {
   }
 };
 
-const handleMovieSearch = (emittedValue: string) =>
-  (searchTerm.value = emittedValue);
+const handleFetchMovieSearch = () => {
+  console.log(movieFetchSearch.value);
+};
+
 const handleMovieFilter = (emittedValue: string) =>
   (movieFilter.value = emittedValue);
+
+const handleMovieSearch = (emittedValue: string) =>
+  (searchTerm.value = emittedValue);
+
+const handleSubmit = () => {
+  formDialog.value = !formDialog.value;
+  snackbar.value = !snackbar.value;
+};
 </script>

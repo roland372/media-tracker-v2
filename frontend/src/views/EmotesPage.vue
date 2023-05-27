@@ -31,7 +31,7 @@
           @click="handleEmoteClick(emote.url)"
           class="bg-primary-dark pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded image-hover"
         >
-          <img :src="emote.url" :alt="emote.name" style="height: 64px" />
+          <img :alt="emote.name" :src="emote.url" style="height: 64px" />
           <v-icon
             v-if="emote.favourites"
             class="image-overlay-icon"
@@ -69,10 +69,10 @@
           <div>
             <div @click="handleEmoteClick(emote.url)" class="image-hover">
               <img
-                :src="emote.url"
                 :alt="emote.name"
-                style="height: 64px"
                 class="mb-n1"
+                :src="emote.url"
+                style="height: 64px"
               />
               <v-icon
                 v-if="emote.favourites"
@@ -104,18 +104,18 @@
     <ButtonText
       v-if="emotes.length > 20"
       @click="displayEmotes"
-      class="mt-3"
-      color="indigo"
       :append-icon="
         displayEmotesFlag === 20 ? 'mdi-arrow-down-bold' : 'mdi-arrow-up-bold'
       "
+      class="mt-3"
+      color="indigo"
       :text="displayEmotesFlag === 20 ? 'Display All' : 'Display Less'"
     />
   </HeaderComponent>
   <v-dialog v-if="addEmoteModal" v-model="addEmoteModal" max-width="500"
     ><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Emote</div>
-      <v-form validate-on="input" @submit.prevent="handleSubmitAddEmote">
+      <v-form @submit.prevent="handleSubmitAddEmote" validate-on="input">
         <v-card-text>
           <v-text-field
             v-model="newEmote.name"
@@ -159,10 +159,10 @@
       <v-form validate-on="input" @submit.prevent="handleSubmitEditEmote">
         <v-card-text>
           <img
-            :src="emoteRef.url"
             :alt="emoteRef.name"
-            style="height: 64px"
             class="mt-n2 mb-2"
+            :src="emoteRef.url"
+            style="height: 64px"
           />
           <v-text-field
             v-model="emoteRef.name"
@@ -200,8 +200,8 @@
   <v-dialog
     v-if="deleteEmoteModal"
     v-model="deleteEmoteModal"
-    max-width="300"
     class="delete-dialog-position"
+    max-width="300"
     ><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         Deleting Emote
@@ -209,10 +209,10 @@
       <v-card-text>
         <p>Are you sure you want to delete this emote?</p>
         <img
-          :src="emoteRef.url"
           :alt="emoteRef.name"
-          style="height: 64px"
           class="mt-1 mb-n2"
+          :src="emoteRef.url"
+          style="height: 64px"
         />
       </v-card-text>
       <v-card-actions class="d-flex justify-start mb-2 ms-2">
@@ -238,14 +238,8 @@
 </template>
 <script setup lang="ts">
 import { computed, ref, reactive } from "vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import ButtonText from "@/components/ui/ButtonText.vue";
-import ButtonIcon from "@/components/ui/ButtonIcon.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
-
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { TEmote, TEmoteInput } from "@/types";
 import { filter, orderBy } from "lodash";
 import { copyImageToClipboard } from "copy-image-clipboard";
 import {
@@ -253,26 +247,35 @@ import {
   URLRegex,
   URLRules,
 } from "@/utils/validations/formValidations";
+import ButtonIcon from "@/components/ui/ButtonIcon.vue";
+import ButtonText from "@/components/ui/ButtonText.vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import { TEmote, TEmoteInput } from "@/types";
 
 const mediaStore = useMediaStore();
-const { emotes } = storeToRefs(mediaStore);
 const { submitAddEmote, submitDeleteEmote, submitEditEmote } = mediaStore;
+const { emotes } = storeToRefs(mediaStore);
 
-const isEditing = ref<boolean>(false);
+const newEmote: TEmoteInput = reactive({
+  favourites: false,
+  lastModified: Date.now(),
+  name: "",
+  url: "",
+});
+
 const addEmoteModal = ref<boolean>(false);
-const editEmoteModal = ref<boolean>(false);
 const deleteEmoteModal = ref<boolean>(false);
 const displayEmotesFlag = ref<number>(20);
-
-const displayEmotes = () => {
-  displayEmotesFlag.value === 20
-    ? (displayEmotesFlag.value = emotes.value.length)
-    : (displayEmotesFlag.value = 20);
-};
-
-const favouriteEmotes = computed(() =>
-  orderBy(filter(emotes.value, { favourites: true }), ["name"], ["asc"])
-);
+const editEmoteModal = ref<boolean>(false);
+const emoteID = ref<string>("");
+const emoteRef = ref<TEmoteInput>(newEmote);
+const emoteSearch = ref<string>("");
+const isEditing = ref<boolean>(false);
+const snackbar = ref({
+  text: "",
+  value: false,
+});
 
 const allEmotes = computed(() =>
   orderBy(emotes.value, ["name"], ["asc"])
@@ -282,25 +285,59 @@ const allEmotes = computed(() =>
     .slice(0, displayEmotesFlag.value)
 );
 
-const snackbar = ref({
-  text: "",
-  value: false,
-});
+const favouriteEmotes = computed(() =>
+  orderBy(filter(emotes.value, { favourites: true }), ["name"], ["asc"])
+);
 
-const newEmote: TEmoteInput = reactive({
-  favourites: false,
-  lastModified: Date.now(),
-  name: "",
-  url: "",
-});
+const handleDeleteCancel = () => {
+  deleteEmoteModal.value = false;
+};
 
-const emoteID = ref<string>("");
-const emoteRef = ref<TEmoteInput>(newEmote);
+const handleDeleteConfirm = async () => {
+  await submitDeleteEmote(emoteID.value);
+  snackbar.value.text = "Emote Deleted";
+  snackbar.value.value = !snackbar.value.value;
+  emoteID.value = "";
+  deleteEmoteModal.value = false;
+};
 
-const emoteSearch = ref<string>("");
+const displayEmotes = () => {
+  displayEmotesFlag.value === 20
+    ? (displayEmotesFlag.value = emotes.value.length)
+    : (displayEmotesFlag.value = 20);
+};
+
+const handleEmoteClick = (url: string): void => {
+  copyImageToClipboard(url)
+    .then(() => {
+      console.log("image copied");
+    })
+    .catch(() => {
+      navigator.clipboard.writeText(url);
+    });
+};
 
 const handleOpenAddEmoteModal = () => {
   addEmoteModal.value = !addEmoteModal.value;
+};
+const handleOpenDeleteEmoteModal = (id: string, emote: TEmote) => {
+  deleteEmoteModal.value = !deleteEmoteModal.value;
+
+  emoteID.value = id;
+  emoteRef.value = emote;
+};
+
+const handleOpenEditEmoteModal = (id: string, emote: TEmote) => {
+  editEmoteModal.value = !editEmoteModal.value;
+
+  const updatedEmote: TEmoteInput = reactive({
+    favourites: emote.favourites,
+    lastModified: Date.now(),
+    name: emote.name,
+    url: emote.url,
+  });
+  emoteRef.value = updatedEmote;
+  emoteID.value = id;
 };
 
 const handleSubmitAddEmote = async () => {
@@ -316,38 +353,6 @@ const handleSubmitAddEmote = async () => {
   }
 };
 
-const handleOpenDeleteEmoteModal = (id: string, emote: TEmote) => {
-  deleteEmoteModal.value = !deleteEmoteModal.value;
-
-  emoteID.value = id;
-  emoteRef.value = emote;
-};
-const handleDeleteCancel = () => {
-  deleteEmoteModal.value = false;
-};
-const handleDeleteConfirm = async () => {
-  await submitDeleteEmote(emoteID.value);
-  snackbar.value.text = "Emote Deleted";
-  snackbar.value.value = !snackbar.value.value;
-  emoteID.value = "";
-  deleteEmoteModal.value = false;
-};
-
-const handleToggleEditingMode = () => {
-  isEditing.value = !isEditing.value;
-};
-const handleOpenEditEmoteModal = (id: string, emote: TEmote) => {
-  editEmoteModal.value = !editEmoteModal.value;
-
-  const updatedEmote: TEmoteInput = reactive({
-    favourites: emote.favourites,
-    lastModified: Date.now(),
-    name: emote.name,
-    url: emote.url,
-  });
-  emoteRef.value = updatedEmote;
-  emoteID.value = id;
-};
 const handleSubmitEditEmote = async () => {
   if (emoteRef.value.name && URLRegex.test(emoteRef.value.url)) {
     await submitEditEmote(emoteID.value, emoteRef.value);
@@ -357,14 +362,8 @@ const handleSubmitEditEmote = async () => {
   }
 };
 
-const handleEmoteClick = (url: string): void => {
-  copyImageToClipboard(url)
-    .then(() => {
-      console.log("image copied");
-    })
-    .catch(() => {
-      navigator.clipboard.writeText(url);
-    });
+const handleToggleEditingMode = () => {
+  isEditing.value = !isEditing.value;
 };
 </script>
 <style scoped>

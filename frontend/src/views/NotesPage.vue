@@ -89,9 +89,9 @@
   <v-dialog
     v-if="addNoteModal"
     v-model="addNoteModal"
+    :eager="true"
     max-width="1000"
     persistent
-    :eager="true"
     :retain-focus="false"
     ><v-card>
       <div
@@ -107,7 +107,7 @@
           variant="text"
         />
       </div>
-      <v-form validate-on="input" @submit.prevent="handleSubmitAddNote">
+      <v-form @submit.prevent="handleSubmitAddNote" validate-on="input">
         <v-card-text class="mx-n2">
           <section class="d-flex align-center justify-space-between mb-2">
             <v-text-field
@@ -130,8 +130,8 @@
               </template>
               <v-color-picker
                 v-model="newNote.color"
-                :modes="['hexa']"
                 class="overflow-x-hidden"
+                :modes="['hexa']"
               />
             </v-menu>
           </section>
@@ -153,9 +153,9 @@
   <v-dialog
     v-if="editNoteModal"
     v-model="editNoteModal"
+    :eager="true"
     max-width="1000"
     persistent
-    :eager="true"
     :retain-focus="false"
     ><v-card>
       <div
@@ -171,7 +171,7 @@
           variant="text"
         />
       </div>
-      <v-form validate-on="input" @submit.prevent="handleSubmitEditNote">
+      <v-form @submit.prevent="handleSubmitEditNote" validate-on="input">
         <v-card-text class="mx-n2">
           <section class="d-flex align-center justify-space-between mb-2">
             <v-text-field
@@ -193,8 +193,8 @@
               </template>
               <v-color-picker
                 v-model="noteRef.color"
-                :modes="['hexa']"
                 class="overflow-x-hidden"
+                :modes="['hexa']"
               />
             </v-menu>
           </section>
@@ -216,8 +216,8 @@
   <v-dialog
     v-if="deleteNoteModal"
     v-model="deleteNoteModal"
-    max-width="300"
     class="delete-dialog-position"
+    max-width="300"
     ><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         Deleting Note
@@ -269,34 +269,22 @@
   />
 </template>
 <script setup lang="ts">
-import { ref, reactive, onMounted } from "vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import ButtonText from "@/components/ui/ButtonText.vue";
-import ButtonIcon from "@/components/ui/ButtonIcon.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
-import TinyMCEEditor from "@/components/media/TinyMCEEditor.vue";
-
+import { onMounted, ref, reactive } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { TNoteInput } from "@/types";
-import { TNote } from "@/types";
 import { orderBy } from "lodash";
 import { stringRules } from "@/utils/validations/formValidations";
+import ButtonIcon from "@/components/ui/ButtonIcon.vue";
+import ButtonText from "@/components/ui/ButtonText.vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import TinyMCEEditor from "@/components/media/TinyMCEEditor.vue";
+import { TNote, TNoteInput } from "@/types";
 
 const mediaStore = useMediaStore();
-const { notes } = storeToRefs(mediaStore);
 const { submitAddNote, submitEditNote, submitDeleteNote, userFromDB } =
   mediaStore;
-
-const addNoteModal = ref<boolean>(false);
-const editNoteModal = ref<boolean>(false);
-const deleteNoteModal = ref<boolean>(false);
-const viewNoteModal = ref<boolean>(false);
-
-const snackbar = ref({
-  text: "",
-  value: false,
-});
+const { notes } = storeToRefs(mediaStore);
 
 const newNote: TNoteInput = reactive({
   color: "#FFFFFF",
@@ -306,9 +294,29 @@ const newNote: TNoteInput = reactive({
   title: "New Note",
 });
 
+const addNoteModal = ref<boolean>(false);
+const deleteNoteModal = ref<boolean>(false);
+const editNoteModal = ref<boolean>(false);
 const noteID = ref<string>("");
 const noteRef = ref<TNoteInput>(newNote);
+const viewNoteModal = ref<boolean>(false);
+const snackbar = ref({
+  text: "",
+  value: false,
+});
 const viewNoteText = '<ul style="margin-left: 1rem;">';
+
+const handleDeleteCancel = () => {
+  deleteNoteModal.value = false;
+};
+
+const handleDeleteConfirm = async () => {
+  await submitDeleteNote(noteID.value);
+  snackbar.value.text = "Note Deleted";
+  snackbar.value.value = !snackbar.value.value;
+  noteID.value = "";
+  deleteNoteModal.value = false;
+};
 
 const handleGetEditorContent = (emittedValue: string) => {
   noteRef.value.note = emittedValue;
@@ -318,34 +326,10 @@ const handleOpenAddNoteModal = () => {
   addNoteModal.value = !addNoteModal.value;
 };
 
-const handleSubmitAddNote = async () => {
-  if (newNote.title) {
-    newNote.note = noteRef.value.note;
-    await submitAddNote(newNote);
-    snackbar.value.text = "Note Added";
-    snackbar.value.value = !snackbar.value.value;
-    addNoteModal.value = false;
-
-    newNote.color = "#FFFFFF";
-    newNote.note = "";
-    newNote.title = "New Note";
-  }
-};
-
 const handleOpenDeleteNoteModal = (id: string, note: TNote) => {
   deleteNoteModal.value = !deleteNoteModal.value;
   noteRef.value = note;
   noteID.value = id;
-};
-const handleDeleteCancel = () => {
-  deleteNoteModal.value = false;
-};
-const handleDeleteConfirm = async () => {
-  await submitDeleteNote(noteID.value);
-  snackbar.value.text = "Note Deleted";
-  snackbar.value.value = !snackbar.value.value;
-  noteID.value = "";
-  deleteNoteModal.value = false;
 };
 
 const handleOpenEditNoteModal = (id: string, note: TNote) => {
@@ -363,6 +347,26 @@ const handleOpenEditNoteModal = (id: string, note: TNote) => {
   noteID.value = id;
 };
 
+const handleOpenViewNoteModal = (id: string, note: TNote) => {
+  viewNoteModal.value = !viewNoteModal.value;
+  noteRef.value = note;
+  noteID.value = id;
+};
+
+const handleSubmitAddNote = async () => {
+  if (newNote.title) {
+    newNote.note = noteRef.value.note;
+    await submitAddNote(newNote);
+    snackbar.value.text = "Note Added";
+    snackbar.value.value = !snackbar.value.value;
+    addNoteModal.value = false;
+
+    newNote.color = "#FFFFFF";
+    newNote.note = "";
+    newNote.title = "New Note";
+  }
+};
+
 const handleSubmitEditNote = async () => {
   if (noteRef.value.title) {
     await submitEditNote(noteID.value, noteRef.value);
@@ -371,12 +375,6 @@ const handleSubmitEditNote = async () => {
     editNoteModal.value = false;
     noteRef.value.note = "";
   }
-};
-
-const handleOpenViewNoteModal = (id: string, note: TNote) => {
-  viewNoteModal.value = !viewNoteModal.value;
-  noteRef.value = note;
-  noteID.value = id;
 };
 
 const setStyle = () => {

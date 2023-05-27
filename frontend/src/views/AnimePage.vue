@@ -3,8 +3,8 @@
     <FormComponent
       v-if="formDialog"
       v-model="formDialog"
-      @submit="handleSubmit"
       @close="formDialog = !formDialog"
+      @submit="handleSubmit"
       :media-type="EMediaType.ANIME"
       :title="`Add ${EMediaType.ANIME}`"
     />
@@ -40,9 +40,9 @@
       <section v-for="(item, index) in fetchedAnime" :key="index">
         <v-img
           @click="handleOpenFetchAnimeModal(item)"
-          :src="item.images.jpg.image_url"
           class="rounded media-img-card image-hover"
           cover
+          :src="item.images.jpg.image_url"
         />
       </section>
     </section>
@@ -51,8 +51,8 @@
     v-if="fetchedAnimeModal"
     @close-modal="handleCloseFetchAnimeModal"
     :show-modal="fetchedAnimeModal"
-    :title="fetchedSingleAnime?.title as string"
     :submit-click="handleFetchedAnimeSubmit"
+    :title="fetchedSingleAnime?.title as string"
     :view-more-click="handleFetchedAnimeViewMore"
   >
     <section>
@@ -118,42 +118,45 @@
 </template>
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import ButtonText from "@/components/ui/ButtonText.vue";
-import StatsComponent from "@/components/media/StatsComponent.vue";
-import MediaComponent from "@/components/media/MediaComponent.vue";
-import FormComponent from "@/components/media/FormComponent.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
-import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
-import MediaTable from "@/components/media/MediaTable.vue";
-import FetchedMediaModal from "@/components/media/FetchedMediaModal.vue";
-
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import {
-  round,
-  calculatePercentage,
-  filterMediaStatus,
-  fetchMediaURL,
-} from "@/utils/mediaUtils";
-import { EMediaType, EAnimeStatus, TAnimeInput, EAnimeType } from "@/types";
 import { filter, orderBy } from "lodash";
+import {
+  calculatePercentage,
+  fetchMediaURL,
+  filterMediaStatus,
+  round,
+} from "@/utils/mediaUtils";
+import ButtonText from "@/components/ui/ButtonText.vue";
+import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
+import FetchedMediaModal from "@/components/media/FetchedMediaModal.vue";
+import FormComponent from "@/components/media/FormComponent.vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import MediaComponent from "@/components/media/MediaComponent.vue";
+import MediaTable from "@/components/media/MediaTable.vue";
+import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import StatsComponent from "@/components/media/StatsComponent.vue";
 import { Anime } from "@tutkli/jikan-ts";
+import { EAnimeStatus, EAnimeType, EMediaType, TAnimeInput } from "@/types";
 
-const displayFlag = ref<string>("grid");
-const formDialog = ref<boolean>(false);
-const fetchedAnimeModal = ref<boolean>(false);
-const snackbar = ref<boolean>(false);
-const snackbarText = ref<string>(EMediaType.ANIME + " Added");
 const mediaStore = useMediaStore();
 const { submitAddAnime, userFromDB } = mediaStore;
 const { anime } = storeToRefs(mediaStore);
+
+const displayFlag = ref<string>("grid");
+const formDialog = ref<boolean>(false);
 const fetchedAnime = ref<Anime[]>();
 const fetchedSingleAnime = ref<Anime>();
-
-const animeFetchSearch = ref<string>("");
+const fetchedAnimeModal = ref<boolean>(false);
 const searchTerm = ref<string>("");
+const snackbar = ref<boolean>(false);
+const snackbarText = ref<string>(EMediaType.ANIME + " Added");
+const animeFetchSearch = ref<string>("");
 const animeFilter = ref<string>("");
+
+const favourites = computed(
+  () => anime.value.filter((anime) => anime.favourites).length
+);
 
 const filteredAnime = computed(() =>
   anime.value.filter((el) => {
@@ -166,34 +169,42 @@ const filteredAnime = computed(() =>
   })
 );
 
-const totalAnime = computed(() => anime.value.length);
 const filterZeroRating = computed(
   () => anime.value.filter((anime) => anime.rating !== 0).length
 );
-const totalRating = computed(() =>
-  anime.value.reduce((accumulator, object) => accumulator + object.rating, 0)
-);
-const totalEpisodesSum = computed(() =>
-  anime.value.reduce(
-    (accumulator, object) => accumulator + object.episodesMax,
-    0
-  )
-);
+
 const watchedEpisodesSum = computed(() =>
   anime.value.reduce(
     (accumulator, object) => accumulator + object.episodesMin,
     0
   )
 );
+
+const totalAnime = computed(() => anime.value.length);
+const totalDays = computed(() => round(watchedEpisodesSum.value / 60, 1));
+const totalEpisodesSum = computed(() =>
+  anime.value.reduce(
+    (accumulator, object) => accumulator + object.episodesMax,
+    0
+  )
+);
+
+const totalRating = computed(() =>
+  anime.value.reduce((accumulator, object) => accumulator + object.rating, 0)
+);
+
+const meanScore = computed(() =>
+  filterZeroRating.value === 0
+    ? 0
+    : round(totalRating.value / filterZeroRating.value, 2)
+);
+
 const watching = computed(() => filterMediaStatus(anime, "watching").length);
 const completed = computed(() => filterMediaStatus(anime, "completed").length);
 const onHold = computed(() => filterMediaStatus(anime, "on-hold").length);
 const dropped = computed(() => filterMediaStatus(anime, "dropped").length);
 const planToWatch = computed(
   () => filterMediaStatus(anime, "Plan to Watch").length
-);
-const favourites = computed(
-  () => anime.value.filter((anime) => anime.favourites).length
 );
 
 const progress = computed(() => [
@@ -235,17 +246,11 @@ const stats = computed(() => [
   { name: "", value: null },
 ]);
 
-const totalDays = computed(() => round(watchedEpisodesSum.value / 60, 1));
-const meanScore = computed(() =>
-  filterZeroRating.value === 0
-    ? 0
-    : round(totalRating.value / filterZeroRating.value, 2)
-);
+const handleAnimeFilter = (emittedValue: string) =>
+  (animeFilter.value = emittedValue);
 
-const handleSubmit = () => {
-  formDialog.value = !formDialog.value;
-  snackbar.value = !snackbar.value;
-};
+const handleAnimeSearch = (emittedValue: string) =>
+  (searchTerm.value = emittedValue);
 
 const handleChangeDisplayFlag = () => {
   if (displayFlag.value === "table") {
@@ -255,10 +260,14 @@ const handleChangeDisplayFlag = () => {
   }
 };
 
-const handleAnimeSearch = (emittedValue: string) =>
-  (searchTerm.value = emittedValue);
-const handleAnimeFilter = (emittedValue: string) =>
-  (animeFilter.value = emittedValue);
+const handleClearAnimeSearch = () => {
+  animeFetchSearch.value = "";
+  fetchedAnime.value = [];
+};
+
+const handleCloseFetchAnimeModal = () => {
+  fetchedAnimeModal.value = !fetchedAnimeModal.value;
+};
 
 const handleFetchAnimeSearch = async () => {
   if (animeFetchSearch.value.length) {
@@ -270,22 +279,6 @@ const handleFetchAnimeSearch = async () => {
   } else {
     console.log("empty search");
   }
-};
-
-const handleClearAnimeSearch = () => {
-  animeFetchSearch.value = "";
-  fetchedAnime.value = [];
-};
-
-const handleOpenFetchAnimeModal = (item: Anime) => {
-  fetchedSingleAnime.value = item;
-  fetchedAnimeModal.value = !fetchedAnimeModal.value;
-};
-const handleCloseFetchAnimeModal = () => {
-  fetchedAnimeModal.value = !fetchedAnimeModal.value;
-};
-const handleFetchedAnimeViewMore = () => {
-  window.open(fetchedSingleAnime.value?.url, "_blank");
 };
 
 const handleFetchedAnimeSubmit = async () => {
@@ -310,6 +303,20 @@ const handleFetchedAnimeSubmit = async () => {
 
   await submitAddAnime(fetchedAnime);
   fetchedAnimeModal.value = false;
+  snackbar.value = !snackbar.value;
+};
+
+const handleFetchedAnimeViewMore = () => {
+  window.open(fetchedSingleAnime.value?.url, "_blank");
+};
+
+const handleOpenFetchAnimeModal = (item: Anime) => {
+  fetchedSingleAnime.value = item;
+  fetchedAnimeModal.value = !fetchedAnimeModal.value;
+};
+
+const handleSubmit = () => {
+  formDialog.value = !formDialog.value;
   snackbar.value = !snackbar.value;
 };
 </script>

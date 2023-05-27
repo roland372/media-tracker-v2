@@ -3,8 +3,8 @@
     <FormComponent
       v-if="formDialog"
       v-model="formDialog"
-      @submit="handleSubmit"
       @close="formDialog = !formDialog"
+      @submit="handleSubmit"
       :media-type="EMediaType.MANGA"
       :title="`Add ${EMediaType.MANGA}`"
     />
@@ -40,9 +40,9 @@
       <section v-for="(item, index) in fetchedManga" :key="index">
         <v-img
           @click="handleOpenFetchMangaModal(item)"
-          :src="item.images.jpg.image_url"
           class="rounded media-img-card image-hover"
           cover
+          :src="item.images.jpg.image_url"
         />
       </section>
     </section>
@@ -119,42 +119,45 @@
 </template>
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import ButtonText from "@/components/ui/ButtonText.vue";
-import StatsComponent from "@/components/media/StatsComponent.vue";
-import MediaComponent from "@/components/media/MediaComponent.vue";
-import FormComponent from "@/components/media/FormComponent.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
-import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
-import MediaTable from "@/components/media/MediaTable.vue";
-import FetchedMediaModal from "@/components/media/FetchedMediaModal.vue";
-
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
+import { filter, orderBy } from "lodash";
 import {
-  round,
   calculatePercentage,
   fetchMediaURL,
   filterMediaStatus,
+  round,
 } from "@/utils/mediaUtils";
-import { EMediaType, EMangaStatus, TMangaInput, EMangaType } from "@/types";
-import { filter, orderBy } from "lodash";
+import ButtonText from "@/components/ui/ButtonText.vue";
+import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
+import FetchedMediaModal from "@/components/media/FetchedMediaModal.vue";
+import FormComponent from "@/components/media/FormComponent.vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import MediaComponent from "@/components/media/MediaComponent.vue";
+import MediaTable from "@/components/media/MediaTable.vue";
+import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import StatsComponent from "@/components/media/StatsComponent.vue";
 import { Manga } from "@tutkli/jikan-ts";
+import { EMangaStatus, EMangaType, EMediaType, TMangaInput } from "@/types";
 
-const displayFlag = ref<string>("grid");
-const formDialog = ref<boolean>(false);
-const fetchedMangaModal = ref<boolean>(false);
-const snackbar = ref<boolean>(false);
-const snackbarText = ref<string>(EMediaType.MANGA + " Added");
 const mediaStore = useMediaStore();
 const { submitAddManga, userFromDB } = mediaStore;
 const { manga } = storeToRefs(mediaStore);
+
+const displayFlag = ref<string>("grid");
+const formDialog = ref<boolean>(false);
 const fetchedManga = ref<Manga[]>();
 const fetchedSingleManga = ref<Manga>();
-
-const mangaFetchSearch = ref<string>("");
+const fetchedMangaModal = ref<boolean>(false);
 const searchTerm = ref<string>("");
+const snackbar = ref<boolean>(false);
+const snackbarText = ref<string>(EMediaType.MANGA + " Added");
+const mangaFetchSearch = ref<string>("");
 const mangaFilter = ref<string>("");
+
+const favourites = computed(
+  () => manga.value.filter((manga) => manga.favourites).length
+);
 
 const filteredManga = computed(() =>
   manga.value.filter((el) => {
@@ -167,51 +170,21 @@ const filteredManga = computed(() =>
   })
 );
 
-const totalManga = computed(() => manga.value.length);
 const filterZeroRating = computed(
   () => manga.value.filter((manga) => manga.rating !== 0).length
-);
-const totalRating = computed(() =>
-  manga.value.reduce((accumulator, object) => accumulator + object.rating, 0)
-);
-const totalChaptersSum = computed(() =>
-  manga.value.reduce(
-    (accumulator, object) => accumulator + object.chaptersMax,
-    0
-  )
-);
-const readChaptersSum = computed(() =>
-  manga.value.reduce(
-    (accumulator, object) => accumulator + object.chaptersMin,
-    0
-  )
-);
-const totalVolumesSum = computed(() =>
-  manga.value.reduce(
-    (accumulator, object) => accumulator + object.volumesMax,
-    0
-  )
-);
-const readVolumesSum = computed(() =>
-  manga.value.reduce(
-    (accumulator, object) => accumulator + object.volumesMin,
-    0
-  )
-);
-const reading = computed(() => filterMediaStatus(manga, "reading").length);
-const completed = computed(() => filterMediaStatus(manga, "completed").length);
-const onHold = computed(() => filterMediaStatus(manga, "on-hold").length);
-const dropped = computed(() => filterMediaStatus(manga, "dropped").length);
-const planToRead = computed(
-  () => filterMediaStatus(manga, "Plan to Read").length
-);
-const favourites = computed(
-  () => manga.value.filter((manga) => manga.favourites).length
 );
 
 const filteredMangaVolumes = computed(() =>
   manga.value
     .filter((manga) => manga.type === "Manga")
+    .reduce((accumulator, object) => {
+      return accumulator + object.volumesMin;
+    }, 0)
+);
+
+const filteredLightNovelVolumes = computed(() =>
+  manga.value
+    .filter((manga) => manga.type === "Light Novel")
     .reduce((accumulator, object) => {
       return accumulator + object.volumesMin;
     }, 0)
@@ -225,12 +198,60 @@ const filteredWebtoonChapters = computed(() =>
     }, 0)
 );
 
-const filteredLightNovelVolumes = computed(() =>
-  manga.value
-    .filter((manga) => manga.type === "Light Novel")
-    .reduce((accumulator, object) => {
-      return accumulator + object.volumesMin;
-    }, 0)
+const readChaptersSum = computed(() =>
+  manga.value.reduce(
+    (accumulator, object) => accumulator + object.chaptersMin,
+    0
+  )
+);
+
+const readVolumesSum = computed(() =>
+  manga.value.reduce(
+    (accumulator, object) => accumulator + object.volumesMin,
+    0
+  )
+);
+
+const totalChaptersSum = computed(() =>
+  manga.value.reduce(
+    (accumulator, object) => accumulator + object.chaptersMax,
+    0
+  )
+);
+
+const totalDays = computed(() =>
+  round(
+    (filteredMangaVolumes.value * 1) / 24 +
+      (filteredWebtoonChapters.value * (1 / 12)) / 24 +
+      (filteredLightNovelVolumes.value * 6) / 24,
+    1
+  )
+);
+
+const totalManga = computed(() => manga.value.length);
+const totalRating = computed(() =>
+  manga.value.reduce((accumulator, object) => accumulator + object.rating, 0)
+);
+
+const totalVolumesSum = computed(() =>
+  manga.value.reduce(
+    (accumulator, object) => accumulator + object.volumesMax,
+    0
+  )
+);
+
+const meanScore = computed(() =>
+  filterZeroRating.value === 0
+    ? 0
+    : round(totalRating.value / filterZeroRating.value, 2)
+);
+
+const reading = computed(() => filterMediaStatus(manga, "reading").length);
+const completed = computed(() => filterMediaStatus(manga, "completed").length);
+const onHold = computed(() => filterMediaStatus(manga, "on-hold").length);
+const dropped = computed(() => filterMediaStatus(manga, "dropped").length);
+const planToRead = computed(
+  () => filterMediaStatus(manga, "Plan to Read").length
 );
 
 const progress = computed(() => [
@@ -273,25 +294,6 @@ const stats = computed(() => [
   { name: "Read Volumes", value: readVolumesSum },
 ]);
 
-const totalDays = computed(() =>
-  round(
-    (filteredMangaVolumes.value * 1) / 24 +
-      (filteredWebtoonChapters.value * (1 / 12)) / 24 +
-      (filteredLightNovelVolumes.value * 6) / 24,
-    1
-  )
-);
-const meanScore = computed(() =>
-  filterZeroRating.value === 0
-    ? 0
-    : round(totalRating.value / filterZeroRating.value, 2)
-);
-
-const handleSubmit = () => {
-  formDialog.value = !formDialog.value;
-  snackbar.value = !snackbar.value;
-};
-
 const handleChangeDisplayFlag = () => {
   if (displayFlag.value === "table") {
     displayFlag.value = "grid";
@@ -300,10 +302,19 @@ const handleChangeDisplayFlag = () => {
   }
 };
 
-const handleMangaSearch = (emittedValue: string) =>
-  (searchTerm.value = emittedValue);
-const handleMangaFilter = (emittedValue: string) =>
-  (mangaFilter.value = emittedValue);
+const handleClearMangaSearch = () => {
+  mangaFetchSearch.value = "";
+  fetchedManga.value = [];
+};
+
+const handleCloseFetchMangaModal = () => {
+  fetchedMangaModal.value = !fetchedMangaModal.value;
+};
+
+const handleOpenFetchMangaModal = (item: Manga) => {
+  fetchedSingleManga.value = item;
+  fetchedMangaModal.value = !fetchedMangaModal.value;
+};
 
 const handleFetchMangaSearch = async () => {
   if (mangaFetchSearch.value.length) {
@@ -315,22 +326,6 @@ const handleFetchMangaSearch = async () => {
   } else {
     console.log("empty search");
   }
-};
-
-const handleClearMangaSearch = () => {
-  mangaFetchSearch.value = "";
-  fetchedManga.value = [];
-};
-
-const handleOpenFetchMangaModal = (item: Manga) => {
-  fetchedSingleManga.value = item;
-  fetchedMangaModal.value = !fetchedMangaModal.value;
-};
-const handleCloseFetchMangaModal = () => {
-  fetchedMangaModal.value = !fetchedMangaModal.value;
-};
-const handleFetchedMangaViewMore = () => {
-  window.open(fetchedSingleManga.value?.url, "_blank");
 };
 
 const handleFetchedMangaSubmit = async () => {
@@ -359,6 +354,21 @@ const handleFetchedMangaSubmit = async () => {
 
   await submitAddManga(fetchedManga);
   fetchedMangaModal.value = false;
+  snackbar.value = !snackbar.value;
+};
+
+const handleFetchedMangaViewMore = () => {
+  window.open(fetchedSingleManga.value?.url, "_blank");
+};
+
+const handleMangaFilter = (emittedValue: string) =>
+  (mangaFilter.value = emittedValue);
+
+const handleMangaSearch = (emittedValue: string) =>
+  (searchTerm.value = emittedValue);
+
+const handleSubmit = () => {
+  formDialog.value = !formDialog.value;
   snackbar.value = !snackbar.value;
 };
 </script>

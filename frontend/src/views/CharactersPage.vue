@@ -3,8 +3,8 @@
     <FormComponent
       v-if="formDialog"
       v-model="formDialog"
-      @submit="handleSubmit"
       @close="formDialog = !formDialog"
+      @submit="handleSubmit"
       :media-type="EMediaType.CHARACTER"
       :title="`Add ${EMediaType.CHARACTER}`"
     />
@@ -40,9 +40,9 @@
       <section v-for="(item, index) in fetchedCharacters" :key="index">
         <v-img
           @click="handleOpenFetchCharacterModal(item)"
-          :src="item.images.jpg.image_url"
           class="rounded media-img-card image-hover"
           cover
+          :src="item.images.jpg.image_url"
         />
       </section>
     </section>
@@ -51,8 +51,8 @@
     v-if="fetchedCharacterModal"
     @close-modal="handleCloseFetchCharacterModal"
     :show-modal="fetchedCharacterModal"
-    :title="fetchedSingleCharacter?.name as string"
     :submit-click="handleFetchedCharacterSubmit"
+    :title="fetchedSingleCharacter?.name as string"
     :view-more-click="handleFetchedCharacterViewMore"
   >
     <section>
@@ -119,50 +119,53 @@
 </template>
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import ButtonText from "@/components/ui/ButtonText.vue";
-import StatsComponent from "@/components/media/StatsComponent.vue";
-import MediaComponent from "@/components/media/MediaComponent.vue";
-import FormComponent from "@/components/media/FormComponent.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
-import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
-import MediaTable from "@/components/media/MediaTable.vue";
-import FetchedMediaModal from "@/components/media/FetchedMediaModal.vue";
-
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
+import { filter, orderBy } from "lodash";
 import {
   calculatePercentage,
   filterGameSource,
   fetchMediaURL,
 } from "@/utils/mediaUtils";
-import {
-  EMediaType,
-  ECharacterSource,
-  TCharacterInput,
-  ECharacterGender,
-} from "@/types";
-import { filter, orderBy } from "lodash";
+import ButtonText from "@/components/ui/ButtonText.vue";
+import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
+import FetchedMediaModal from "@/components/media/FetchedMediaModal.vue";
+import FormComponent from "@/components/media/FormComponent.vue";
+import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import MediaComponent from "@/components/media/MediaComponent.vue";
+import MediaTable from "@/components/media/MediaTable.vue";
+import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import StatsComponent from "@/components/media/StatsComponent.vue";
 import { CommonCharacterData } from "@tutkli/jikan-ts";
+import {
+  ECharacterGender,
+  ECharacterSource,
+  EMediaType,
+  TCharacterInput,
+} from "@/types";
 
 interface CommonCharacterDataWithAbout extends CommonCharacterData {
   about?: string;
 }
 
-const displayFlag = ref<string>("grid");
-const formDialog = ref<boolean>(false);
-const fetchedCharacterModal = ref<boolean>(false);
-const snackbar = ref<boolean>(false);
-const snackbarText = ref<string>(EMediaType.CHARACTER + " Added");
 const mediaStore = useMediaStore();
 const { submitAddCharacter, userFromDB } = mediaStore;
 const { characters } = storeToRefs(mediaStore);
+
+const displayFlag = ref<string>("grid");
+const formDialog = ref<boolean>(false);
 const fetchedCharacters = ref<CommonCharacterDataWithAbout[]>();
 const fetchedSingleCharacter = ref<CommonCharacterDataWithAbout>();
-
-const characterFetchSearch = ref<string>("");
+const fetchedCharacterModal = ref<boolean>(false);
 const searchTerm = ref<string>("");
+const snackbar = ref<boolean>(false);
+const snackbarText = ref<string>(EMediaType.CHARACTER + " Added");
+const characterFetchSearch = ref<string>("");
 const characterFilter = ref<string>("");
+
+const favourites = computed(
+  () => characters.value.filter((characters) => characters.favourites).length
+);
 
 const filteredCharacters = computed(() =>
   characters.value.filter((el) => {
@@ -179,10 +182,6 @@ const totalCharacters = computed(() => characters.value.length);
 const anime = computed(() => filterGameSource(characters, "anime").length);
 const game = computed(() => filterGameSource(characters, "game").length);
 const manga = computed(() => filterGameSource(characters, "manga").length);
-const favourites = computed(
-  () => characters.value.filter((characters) => characters.favourites).length
-);
-
 const progress = computed(() => [
   {
     color: "green",
@@ -209,11 +208,6 @@ const stats = computed(() => [
   { name: "Favourites", value: favourites },
 ]);
 
-const handleSubmit = () => {
-  formDialog.value = !formDialog.value;
-  snackbar.value = !snackbar.value;
-};
-
 const handleChangeDisplayFlag = () => {
   if (displayFlag.value === "table") {
     displayFlag.value = "grid";
@@ -222,10 +216,20 @@ const handleChangeDisplayFlag = () => {
   }
 };
 
-const handleCharacterSearch = (emittedValue: string) =>
-  (searchTerm.value = emittedValue);
 const handleCharacterFilter = (emittedValue: string) =>
   (characterFilter.value = emittedValue);
+
+const handleCharacterSearch = (emittedValue: string) =>
+  (searchTerm.value = emittedValue);
+
+const handleClearCharacterSearch = () => {
+  characterFetchSearch.value = "";
+  fetchedCharacters.value = [];
+};
+
+const handleCloseFetchCharacterModal = () => {
+  fetchedCharacterModal.value = !fetchedCharacterModal.value;
+};
 
 const handleFetchCharacterSearch = async () => {
   if (characterFetchSearch.value.length) {
@@ -242,22 +246,6 @@ const handleFetchCharacterSearch = async () => {
   } else {
     console.log("empty search");
   }
-};
-
-const handleClearCharacterSearch = () => {
-  characterFetchSearch.value = "";
-  fetchedCharacters.value = [];
-};
-
-const handleOpenFetchCharacterModal = (item: CommonCharacterDataWithAbout) => {
-  fetchedSingleCharacter.value = item;
-  fetchedCharacterModal.value = !fetchedCharacterModal.value;
-};
-const handleCloseFetchCharacterModal = () => {
-  fetchedCharacterModal.value = !fetchedCharacterModal.value;
-};
-const handleFetchedCharacterViewMore = () => {
-  window.open(fetchedSingleCharacter.value?.url, "_blank");
 };
 
 const handleFetchedCharacterSubmit = async () => {
@@ -277,6 +265,20 @@ const handleFetchedCharacterSubmit = async () => {
 
   await submitAddCharacter(fetchedCharacter);
   fetchedCharacterModal.value = false;
+  snackbar.value = !snackbar.value;
+};
+
+const handleFetchedCharacterViewMore = () => {
+  window.open(fetchedSingleCharacter.value?.url, "_blank");
+};
+
+const handleOpenFetchCharacterModal = (item: CommonCharacterDataWithAbout) => {
+  fetchedSingleCharacter.value = item;
+  fetchedCharacterModal.value = !fetchedCharacterModal.value;
+};
+
+const handleSubmit = () => {
+  formDialog.value = !formDialog.value;
   snackbar.value = !snackbar.value;
 };
 </script>
