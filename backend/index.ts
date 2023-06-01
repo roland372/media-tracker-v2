@@ -23,7 +23,6 @@ import { databaseConnector } from './src/db/connector';
 import User from "./src/db/models/User";
 
 dotenv.config();
-
 console.log(colors.blue.bold(process.env.NODE_ENV!.trim()));
 
 const PORT = process.env.PORT || 5000;
