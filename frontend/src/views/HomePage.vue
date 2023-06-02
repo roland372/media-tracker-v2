@@ -88,6 +88,7 @@
     text="All Movies"
     to="/movies"
   />
+  <LinksComponent />
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
@@ -98,6 +99,7 @@ import { mediaList } from "@/utils/mediaUtils";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import FormComponent from "@/components/media/FormComponent.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import LinksComponent from "@/components/media/LinksComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import { EMediaType } from "@/types";

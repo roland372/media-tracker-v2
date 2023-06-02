@@ -386,11 +386,6 @@ export type TNavLinks = {
   title: string;
 };
 
-export type TUsefulLinks = {
-  url: string;
-  text: string;
-};
-
 export type TTheme = {
   primaryDark: string;
   primaryLight: string;

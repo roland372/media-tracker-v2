@@ -1,4 +1,4 @@
-import { TNavLinks, TUsefulLinks, EUserRole } from "@/types";
+import { TNavLinks, EUserRole } from "@/types";
 
 export const navLinks: TNavLinks[] = [
   {
@@ -94,37 +94,101 @@ export const navLinks: TNavLinks[] = [
   },
 ];
 
-export const usefulLinks: TUsefulLinks[] = [
-  {
-    url: "https://myanimelist.net/",
-    text: "MyAnimeList",
-  },
-  {
-    url: "https://9anime.id/",
-    text: "9anime",
-  },
-  {
-    url: "https://subsplease.org/",
-    text: "SubsPlease",
-  },
-  {
-    url: "https://www.bookdepository.com/",
-    text: "Book Depository",
-  },
-  {
-    url: "https://manga4life.com/",
-    text: "MangaLife",
-  },
-  {
-    url: "https://mangasee123.com/",
-    text: "MangaSee",
-  },
-  {
-    url: "https://store.steampowered.com/",
-    text: "Steam",
-  },
-  {
-    url: "https://howlongtobeat.com/",
-    text: "HowLongToBeat",
-  },
-];
+export const usefulLinks = {
+  anime: [
+    {
+      url: "https://9anime.to/",
+      text: "9anime",
+    },
+    {
+      url: "https://www.erai-raws.info/",
+      text: "Erai-raws",
+    },
+    {
+      url: "https://subsplease.org/",
+      text: "SubsPlease",
+    },
+  ],
+  books: [
+    {
+      url: "https://www.amazon.com/",
+      text: "Amazon - Kindle Store",
+    },
+  ],
+  games: [
+    {
+      url: "https://erogedownload.com/downloads/",
+      text: "Eroge Download",
+    },
+    {
+      url: "https://howlongtobeat.com/",
+      text: "HowLongToBeat",
+    },
+    {
+      url: "https://www.igdb.com/",
+      text: "IGDB",
+    },
+    {
+      url: "https://www.ryuugames.com/",
+      text: "Ryuugames",
+    },
+    {
+      url: "https://www.skidrowcodex.net/",
+      text: "SKiDROW CODEX GAMES",
+    },
+    {
+      url: "https://steamunlocked.net/",
+      text: "STEAMUNLOCKED",
+    },
+    {
+      url: "https://store.steampowered.com/",
+      text: "Steam",
+    },
+    {
+      url: "https://vndb.org/",
+      text: "The Visual Novel Database",
+    },
+  ],
+  manga: [
+    {
+      url: "https://www.justlightnovels.com/light-novels-list/",
+      text: "Just Light Novels",
+    },
+    {
+      url: "https://manga4life.com/",
+      text: "MangaLife",
+    },
+    {
+      url: "https://mangasee123.com/",
+      text: "MangaSee",
+    },
+    {
+      url: "https://tachiyomi.org/",
+      text: "Tachiyomi",
+    },
+  ],
+  movies: [
+    {
+      url: "https://movies2watch.tv/",
+      text: "Movies2Watch",
+    },
+    {
+      url: "https://www.themoviedb.org/",
+      text: "The Movie Database",
+    },
+  ],
+  other: [
+    {
+      url: "https://www.1337x.tw/",
+      text: "1337x",
+    },
+    {
+      url: "https://myanimelist.net/",
+      text: "MyAnimeList",
+    },
+    {
+      url: "https://thepiratebay.org/index.html",
+      text: "The Pirate Bay",
+    },
+  ],
+};

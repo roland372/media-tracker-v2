@@ -98,7 +98,7 @@ onMounted(async () => {
 }
 
 .link-color {
-  color: var(--text-color);
+  color: var(--link-color);
 }
 
 @media (max-width: 480px) {
