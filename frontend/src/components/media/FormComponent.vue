@@ -42,7 +42,7 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Link 1 Name"
+                label="Link Name"
                 variant="outlined"
               />
               <v-text-field
@@ -50,10 +50,10 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Link 1 URL"
+                label="Link URL"
                 variant="outlined"
               />
-              <v-text-field
+              <!-- <v-text-field
                 v-model="newAnime.link2Name"
                 class="mb-2"
                 density="compact"
@@ -68,7 +68,7 @@
                 hide-details="auto"
                 label="Link 2 URL"
                 variant="outlined"
-              />
+              /> -->
               <v-text-field
                 v-model="newAnime.imageURL"
                 class="mb-2"
@@ -151,7 +151,7 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Link 1 Name"
+                label="Link Name"
                 variant="outlined"
               />
               <v-text-field
@@ -159,10 +159,10 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Link 1 URL"
+                label="Link URL"
                 variant="outlined"
               />
-              <v-text-field
+              <!-- <v-text-field
                 v-model="newManga.link2Name"
                 class="mb-2"
                 density="compact"
@@ -177,7 +177,7 @@
                 hide-details="auto"
                 label="Link 2 URL"
                 variant="outlined"
-              />
+              /> -->
               <v-text-field
                 v-model="newManga.imageURL"
                 class="mb-2"
@@ -284,7 +284,7 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Link 1 Name"
+                label="Link Name"
                 variant="outlined"
               />
               <v-text-field
@@ -292,10 +292,10 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Link 1 URL"
+                label="Link URL"
                 variant="outlined"
               />
-              <v-text-field
+              <!-- <v-text-field
                 v-model="newGame.link2Name"
                 class="mb-2"
                 density="compact"
@@ -310,7 +310,7 @@
                 hide-details="auto"
                 label="Link 2 URL"
                 variant="outlined"
-              />
+              /> -->
               <v-text-field
                 v-model="newGame.imageURL"
                 class="mb-2"
@@ -473,7 +473,7 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Link 1 Name"
+                label="Link Name"
                 variant="outlined"
               />
               <v-text-field
@@ -481,10 +481,10 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Link 1 URL"
+                label="Link URL"
                 variant="outlined"
               />
-              <v-text-field
+              <!-- <v-text-field
                 v-model="newBook.link2Name"
                 class="mb-2"
                 density="compact"
@@ -499,7 +499,7 @@
                 hide-details="auto"
                 label="Link 2 URL"
                 variant="outlined"
-              />
+              /> -->
               <v-text-field
                 v-model="newBook.imageURL"
                 class="mb-2"
@@ -568,7 +568,7 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Link 1 Name"
+                label="Link Name"
                 variant="outlined"
               />
               <v-text-field
@@ -576,10 +576,10 @@
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
-                label="Link 1 URL"
+                label="Link URL"
                 variant="outlined"
               />
-              <v-text-field
+              <!-- <v-text-field
                 v-model="newMovie.link2Name"
                 class="mb-2"
                 density="compact"
@@ -594,7 +594,7 @@
                 hide-details="auto"
                 label="Link 2 URL"
                 variant="outlined"
-              />
+              /> -->
               <v-text-field
                 v-model="newMovie.imageURL"
                 class="mb-2"
