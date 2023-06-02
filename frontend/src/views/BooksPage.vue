@@ -116,12 +116,17 @@ const favourites = computed(
 
 const filteredBooks = computed(() =>
   books.value.filter((el) => {
-    const searchTermMatch = el.title
+    const authorMarch = el.author
       .toLowerCase()
       .includes(searchTerm.value.toLowerCase());
+
+    const titleMatch = el.title
+      .toLowerCase()
+      .includes(searchTerm.value.toLowerCase());
+
     const statusMatch =
       bookFilter.value === "" || el.status === bookFilter.value;
-    return searchTermMatch && statusMatch;
+    return (authorMarch || titleMatch) && statusMatch;
   })
 );
 

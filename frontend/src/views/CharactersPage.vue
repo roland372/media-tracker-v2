@@ -165,14 +165,24 @@ const favourites = computed(
 
 const filteredCharacters = computed(() =>
   characters.value.filter((el) => {
-    const searchTermMatch = el.name
-      .toLowerCase()
-      .includes(searchTerm.value.toLowerCase());
+    const searchTermMatch =
+      el.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+      el.series.toLowerCase().includes(searchTerm.value.toLowerCase());
     const sourceMatch =
       characterFilter.value === "" || el.source === characterFilter.value;
     return searchTermMatch && sourceMatch;
   })
 );
+
+// const filteredCharacters = computed(() =>
+//   characters.value.filter((el) => {
+//     const searchTermMatch =
+//       el.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+//       el.series.toLowerCase().includes(searchTerm.value.toLowerCase());
+
+//     return searchTermMatch;
+//   })
+// );
 
 const totalCharacters = computed(() => characters.value.length);
 const anime = computed(() => filterGameSource(characters, "anime").length);
