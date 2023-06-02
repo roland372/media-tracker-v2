@@ -8,11 +8,7 @@
       :media-type="EMediaType.ANIME"
       :title="`Add ${EMediaType.ANIME}`"
     />
-    <SnackbarComponent
-      v-if="snackbar"
-      :snackbar="snackbar"
-      :text="snackbarText"
-    />
+    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
     <section class="d-sm-flex align-center justify-center">
       <ButtonText
         @click="formDialog = !formDialog"
@@ -303,7 +299,7 @@ const handleFetchedAnimeSubmit = async () => {
 
   await submitAddAnime(fetchedAnime);
   fetchedAnimeModal.value = false;
-  snackbar.value = !snackbar.value;
+  snackbar.value = true;
 };
 
 const handleFetchedAnimeViewMore = () => {
@@ -317,6 +313,6 @@ const handleOpenFetchAnimeModal = (item: Anime) => {
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
-  snackbar.value = !snackbar.value;
+  snackbar.value = true;
 };
 </script>

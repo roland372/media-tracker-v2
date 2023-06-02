@@ -220,6 +220,7 @@
         </v-form>
       </v-card>
     </v-dialog>
+    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
   </HeaderComponent>
 </template>
 <script setup lang="ts">
@@ -236,6 +237,7 @@ import {
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
+import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import {
   TAnime,
   TBook,
@@ -277,6 +279,8 @@ const userProfile = reactive({
 
 // const avatarUpload = ref();
 const settingsModal = ref<boolean>(false);
+const snackbar = ref<boolean>(false);
+const snackbarText = ref<string>("");
 const userRef = ref(userProfile);
 
 const backupButtons = [
@@ -416,6 +420,8 @@ const handleDownloadMedia = (
 
 const handleLogout = async () => {
   await logout();
+  snackbarText.value = "Logged out";
+  snackbar.value = true;
 };
 
 const handleOpenSettings = () => {
@@ -437,6 +443,8 @@ const handleSubmitEditProfile = () => {
     submitEditUser(userRef.value?._id, updatedProfile);
     setUserFromDB(userRef.value as TUser);
     settingsModal.value = false;
+    snackbarText.value = "Profile updated";
+    snackbar.value = true;
   }
 };
 

@@ -8,11 +8,7 @@
       :media-type="EMediaType.CHARACTER"
       :title="`Add ${EMediaType.CHARACTER}`"
     />
-    <SnackbarComponent
-      v-if="snackbar"
-      :snackbar="snackbar"
-      :text="snackbarText"
-    />
+    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
     <section class="d-sm-flex align-center justify-center">
       <ButtonText
         @click="formDialog = !formDialog"
@@ -265,7 +261,7 @@ const handleFetchedCharacterSubmit = async () => {
 
   await submitAddCharacter(fetchedCharacter);
   fetchedCharacterModal.value = false;
-  snackbar.value = !snackbar.value;
+  snackbar.value = true;
 };
 
 const handleFetchedCharacterViewMore = () => {
@@ -279,6 +275,6 @@ const handleOpenFetchCharacterModal = (item: CommonCharacterDataWithAbout) => {
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
-  snackbar.value = !snackbar.value;
+  snackbar.value = true;
 };
 </script>

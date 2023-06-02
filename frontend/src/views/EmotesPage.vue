@@ -230,11 +230,7 @@
         />
       </v-card-actions> </v-card
   ></v-dialog>
-  <SnackbarComponent
-    v-if="snackbar.value"
-    :snackbar="snackbar.value"
-    :text="snackbar.text"
-  />
+  <SnackbarComponent v-model="snackbar.value" :text="snackbar.text" />
 </template>
 <script setup lang="ts">
 import { computed, ref, reactive } from "vue";
@@ -296,7 +292,7 @@ const handleDeleteCancel = () => {
 const handleDeleteConfirm = async () => {
   await submitDeleteEmote(emoteID.value);
   snackbar.value.text = "Emote Deleted";
-  snackbar.value.value = !snackbar.value.value;
+  snackbar.value.value = true;
   emoteID.value = "";
   deleteEmoteModal.value = false;
 };
@@ -344,7 +340,7 @@ const handleSubmitAddEmote = async () => {
   if (newEmote.name && URLRegex.test(newEmote.url)) {
     await submitAddEmote(newEmote);
     snackbar.value.text = "Emote Added";
-    snackbar.value.value = !snackbar.value.value;
+    snackbar.value.value = true;
     addEmoteModal.value = false;
 
     newEmote.favourites = false;
@@ -356,8 +352,8 @@ const handleSubmitAddEmote = async () => {
 const handleSubmitEditEmote = async () => {
   if (emoteRef.value.name && URLRegex.test(emoteRef.value.url)) {
     await submitEditEmote(emoteID.value, emoteRef.value);
-    snackbar.value.text = "Emote Edited";
-    snackbar.value.value = !snackbar.value.value;
+    snackbar.value.text = "Emote Updated";
+    snackbar.value.value = true;
     editEmoteModal.value = false;
   }
 };

@@ -8,11 +8,7 @@
       :media-type="EMediaType.MANGA"
       :title="`Add ${EMediaType.MANGA}`"
     />
-    <SnackbarComponent
-      v-if="snackbar"
-      :snackbar="snackbar"
-      :text="snackbarText"
-    />
+    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
     <section class="d-sm-flex align-center justify-center">
       <ButtonText
         @click="formDialog = !formDialog"
@@ -354,7 +350,7 @@ const handleFetchedMangaSubmit = async () => {
 
   await submitAddManga(fetchedManga);
   fetchedMangaModal.value = false;
-  snackbar.value = !snackbar.value;
+  snackbar.value = true;
 };
 
 const handleFetchedMangaViewMore = () => {
@@ -369,6 +365,6 @@ const handleMangaSearch = (emittedValue: string) =>
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
-  snackbar.value = !snackbar.value;
+  snackbar.value = true;
 };
 </script>

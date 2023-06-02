@@ -25,11 +25,7 @@
     :media-type="mediaType"
     :title="`Add ${mediaType}`"
   />
-  <SnackbarComponent
-    v-if="snackbar"
-    :snackbar="snackbar"
-    :text="`${mediaType} Added`"
-  />
+  <SnackbarComponent v-model="snackbar" :text="`${mediaType} Added`" />
   <HeaderComponent
     title="Welcome to Media-Tracker
 "

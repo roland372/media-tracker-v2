@@ -262,11 +262,7 @@
         </section>
       </v-card-text> </v-card
   ></v-dialog>
-  <SnackbarComponent
-    v-if="snackbar.value"
-    :snackbar="snackbar.value"
-    :text="snackbar.text"
-  />
+  <SnackbarComponent v-model="snackbar.value" :text="snackbar.text" />
 </template>
 <script setup lang="ts">
 import { onMounted, ref, reactive } from "vue";
@@ -313,7 +309,7 @@ const handleDeleteCancel = () => {
 const handleDeleteConfirm = async () => {
   await submitDeleteNote(noteID.value);
   snackbar.value.text = "Note Deleted";
-  snackbar.value.value = !snackbar.value.value;
+  snackbar.value.value = true;
   noteID.value = "";
   deleteNoteModal.value = false;
 };
@@ -358,7 +354,7 @@ const handleSubmitAddNote = async () => {
     newNote.note = noteRef.value.note;
     await submitAddNote(newNote);
     snackbar.value.text = "Note Added";
-    snackbar.value.value = !snackbar.value.value;
+    snackbar.value.value = true;
     addNoteModal.value = false;
 
     newNote.color = "#FFFFFF";
@@ -370,8 +366,8 @@ const handleSubmitAddNote = async () => {
 const handleSubmitEditNote = async () => {
   if (noteRef.value.title) {
     await submitEditNote(noteID.value, noteRef.value);
-    snackbar.value.text = "Note Edited";
-    snackbar.value.value = !snackbar.value.value;
+    snackbar.value.text = "Note Updated";
+    snackbar.value.value = true;
     editNoteModal.value = false;
     noteRef.value.note = "";
   }

@@ -8,11 +8,7 @@
       :media-type="EMediaType.BOOK"
       :title="`Add ${EMediaType.BOOK}`"
     />
-    <SnackbarComponent
-      v-if="snackbar"
-      :snackbar="snackbar"
-      :text="snackbarText"
-    />
+    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
     <section class="d-sm-flex align-center justify-center">
       <ButtonText
         @click="formDialog = !formDialog"
@@ -215,6 +211,6 @@ const handleFetchBookSearch = () => {
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
-  snackbar.value = !snackbar.value;
+  snackbar.value = true;
 };
 </script>

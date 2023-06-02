@@ -85,11 +85,7 @@
       :media-type="mediaType"
       :title="`Edit ${mediaType}`"
     />
-    <SnackbarComponent
-      v-if="snackbar"
-      :snackbar="snackbar"
-      :text="snackbarText"
-    />
+    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
   </v-img>
 </template>
 <script setup lang="ts">
@@ -237,8 +233,8 @@ const handleDeleteClick = async () => {
 
 const handleCloseModal = () => {
   formDialog.value = !formDialog.value;
-  snackbarText.value = `${props.mediaType} Edited`;
-  snackbar.value = !snackbar.value;
+  snackbarText.value = `${props.mediaType} Updated`;
+  snackbar.value = true;
 };
 
 const handleDeleteConfirm = async () => {
@@ -263,12 +259,8 @@ const handleDeleteConfirm = async () => {
       break;
   }
   deleteDialog.value = !deleteDialog.value;
-  snackbarText.value = `${props.mediaType} ${
-    props.mediaType === EMediaType.CHARACTER
-      ? (props.media as TCharacter).name
-      : (props.media as TAnime | TBook | TGame | TManga | TMovie).title
-  } Deleted`;
-  snackbar.value = !snackbar.value;
+  snackbarText.value = props.mediaType + " Deleted";
+  snackbar.value = true;
 };
 
 const handleEditClick = () => {
