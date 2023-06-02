@@ -2,6 +2,7 @@
   <CardComponent :title="`${mediaType} Stats`">
     <section v-for="(item, index) in progress" :key="index" class="text-color">
       <v-progress-linear
+        :class="{ 'text-black': item.color === 'white' }"
         :color="item.color"
         height="20"
         :model-value="item.value"

@@ -14,7 +14,6 @@
     </div>
     <ChipComponent
       v-if="
-        mediaType !== EMediaType.BOOK &&
         mediaType !== EMediaType.CHARACTER &&
         mediaType !== EMediaType.MANGA &&
         mediaType !== EMediaType.MOVIE
@@ -29,7 +28,7 @@
       class="bg-black image-title-overlay"
       color="white"
       size="x-small"
-      :text="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TBook | TGame | TManga | TMovie).title"
+      :text="mediaType === EMediaType.CHARACTER ? formatString((media as TCharacter).name) : formatString((media as TAnime | TBook | TGame | TManga | TMovie).title)"
       text-color="white"
     />
     <MediaModal
@@ -150,6 +149,9 @@ const displayImageText = (
         (media as TAnime).episodesMax
       }`;
       break;
+    case EMediaType.BOOK:
+      imageText = `${(media as TBook).author}`;
+      break;
     case EMediaType.GAME:
       imageText = `${(media as TGame).playtime} hours`;
       break;
@@ -215,6 +217,13 @@ const statusColor = (
     }
   }
   return color;
+};
+
+const formatString = (string: string) => {
+  if (string.length > 25) {
+    return string.slice(0, 12) + "...";
+  }
+  return string;
 };
 
 const handleDeleteCancel = () => {
