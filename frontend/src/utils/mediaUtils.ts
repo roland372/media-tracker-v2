@@ -49,16 +49,13 @@ export const sortMediaByDate = (media: Ref) =>
       b.lastModified - a.lastModified
   );
 
-export const mediaList = [
-  EMediaType.ANIME,
-  EMediaType.BOOK,
-  EMediaType.CHARACTER,
-  EMediaType.GAME,
-  EMediaType.MANGA,
-  EMediaType.MOVIE,
+export const animeStatus = [
+  EAnimeStatus.WATCHING,
+  EAnimeStatus.COMPLETED,
+  EAnimeStatus.ON_HOLD,
+  EAnimeStatus.DROPPED,
+  EAnimeStatus.PLAN_TO_WATCH,
 ];
-
-export const mediaRating = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
 
 export const animeType = [
   EAnimeType.MOVIE,
@@ -68,12 +65,42 @@ export const animeType = [
   EAnimeType.TV_SHOW,
 ];
 
-export const animeStatus = [
-  EAnimeStatus.WATCHING,
-  EAnimeStatus.COMPLETED,
-  EAnimeStatus.ON_HOLD,
-  EAnimeStatus.DROPPED,
-  EAnimeStatus.PLAN_TO_WATCH,
+export const bookStatus = [
+  EBookStatus.READING,
+  EBookStatus.COMPLETED,
+  EBookStatus.ON_HOLD,
+  EBookStatus.DROPPED,
+  EBookStatus.PLAN_TO_READ,
+];
+
+export const characterGender = [
+  ECharacterGender.FEMALE,
+  ECharacterGender.MALE,
+  ECharacterGender.OTHER,
+];
+
+export const characterSource = [
+  ECharacterSource.ANIME,
+  ECharacterSource.GAME,
+  ECharacterSource.MANGA,
+];
+
+export const gameStatus = [
+  EGameStatus.PLAYING,
+  EGameStatus.COMPLETED,
+  EGameStatus.ON_HOLD,
+  EGameStatus.DROPPED,
+  EGameStatus.PLAN_TO_PLAY,
+];
+
+export const gameType = [EGameType.GAME, EGameType.VISUAL_NOVEL];
+
+export const mangaStatus = [
+  EMangaStatus.READING,
+  EMangaStatus.COMPLETED,
+  EMangaStatus.ON_HOLD,
+  EMangaStatus.DROPPED,
+  EMangaStatus.PLAN_TO_READ,
 ];
 
 export const mangaType = [
@@ -86,35 +113,16 @@ export const mangaType = [
   EMangaType.WEBTOON,
 ];
 
-export const mangaStatus = [
-  EMangaStatus.READING,
-  EMangaStatus.COMPLETED,
-  EMangaStatus.ON_HOLD,
-  EMangaStatus.DROPPED,
-  EMangaStatus.PLAN_TO_READ,
+export const mediaList = [
+  EMediaType.ANIME,
+  EMediaType.BOOK,
+  EMediaType.CHARACTER,
+  EMediaType.GAME,
+  EMediaType.MANGA,
+  EMediaType.MOVIE,
 ];
 
-export const gameType = [EGameType.GAME, EGameType.VISUAL_NOVEL];
-
-export const gameStatus = [
-  EGameStatus.PLAYING,
-  EGameStatus.COMPLETED,
-  EGameStatus.ON_HOLD,
-  EGameStatus.DROPPED,
-  EGameStatus.PLAN_TO_PLAY,
-];
-
-export const characterSource = [
-  ECharacterSource.ANIME,
-  ECharacterSource.GAME,
-  ECharacterSource.MANGA,
-];
-
-export const characterGender = [
-  ECharacterGender.FEMALE,
-  ECharacterGender.MALE,
-  ECharacterGender.OTHER,
-];
+export const mediaRating = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
 
 export const movieStatus = [
   EMovieStatus.WATCHING,
@@ -126,10 +134,4 @@ export const movieStatus = [
 
 export const movieType = [EMovieType.MOVIE, EMovieType.TV_SHOW];
 
-export const bookStatus = [
-  EBookStatus.READING,
-  EBookStatus.COMPLETED,
-  EBookStatus.ON_HOLD,
-  EBookStatus.DROPPED,
-  EBookStatus.PLAN_TO_READ,
-];
+export const placeholderImg = "https://placehold.co/225x300?text=Image";

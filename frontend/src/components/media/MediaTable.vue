@@ -29,7 +29,9 @@
       <tbody class="text-left">
         <tr v-for="(anime, index) in (media as TAnime[])" :key="index">
           <td>{{ index + 1 }}</td>
-          <td><v-img :src="anime.imageURL" max-height="92px" /></td>
+          <td>
+            <v-img :src="anime.imageURL || placeholderImg" max-height="92px" />
+          </td>
           <td>{{ anime.title }}</td>
           <td>{{ anime.rating }}</td>
           <td>{{ anime.type }}</td>
@@ -73,7 +75,9 @@
       <tbody class="text-left">
         <tr v-for="(book, index) in (media as TBook[])" :key="index">
           <td>{{ index + 1 }}</td>
-          <td><v-img :src="book.imageURL" max-height="92px" /></td>
+          <td>
+            <v-img :src="book.imageURL || placeholderImg" max-height="92px" />
+          </td>
           <td>{{ book.title }}</td>
           <td>{{ book.author }}</td>
           <td>{{ book.genre }}</td>
@@ -118,7 +122,12 @@
       <tbody class="text-left">
         <tr v-for="(character, index) in (media as TCharacter[])" :key="index">
           <td>{{ index + 1 }}</td>
-          <td><v-img :src="character.imageURL" max-height="92px" /></td>
+          <td>
+            <v-img
+              :src="character.imageURL || placeholderImg"
+              max-height="92px"
+            />
+          </td>
           <td>{{ character.name }}</td>
           <td>{{ character.source }}</td>
           <td>{{ character.gender }}</td>
@@ -161,7 +170,9 @@
       <tbody class="text-left">
         <tr v-for="(game, index) in (media as TGame[])" :key="index">
           <td>{{ index + 1 }}</td>
-          <td><v-img :src="game.imageURL" max-height="92px" /></td>
+          <td>
+            <v-img :src="game.imageURL || placeholderImg" max-height="92px" />
+          </td>
           <td>{{ game.title }}</td>
           <td>{{ game.type }}</td>
           <td>{{ game.playtime }}</td>
@@ -204,7 +215,9 @@
       <tbody class="text-left">
         <tr v-for="(manga, index) in (media as TManga[])" :key="index">
           <td>{{ index + 1 }}</td>
-          <td><v-img :src="manga.imageURL" max-height="92px" /></td>
+          <td>
+            <v-img :src="manga.imageURL || placeholderImg" max-height="92px" />
+          </td>
           <td>{{ manga.title }}</td>
           <td>{{ manga.rating }}</td>
           <td>{{ manga.type }}</td>
@@ -249,7 +262,9 @@
       <tbody class="text-left">
         <tr v-for="(movie, index) in (media as TMovie[])" :key="index">
           <td>{{ index + 1 }}</td>
-          <td><v-img :src="movie.imageURL" max-height="92px" /></td>
+          <td>
+            <v-img :src="movie.imageURL || placeholderImg" max-height="92px" />
+          </td>
           <td>{{ movie.title }}</td>
           <td>{{ movie.rating }}</td>
           <td>{{ movie.type }}</td>
@@ -270,6 +285,7 @@
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue";
+import { placeholderImg } from "@/utils/mediaUtils";
 import CardComponent from "@/components/media/CardComponent.vue";
 import {
   EMediaType,

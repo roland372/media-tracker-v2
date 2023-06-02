@@ -3,7 +3,7 @@
     @click="dialog = !dialog"
     class="rounded image-hover"
     cover
-    :src="media.imageURL"
+    :src="media.imageURL || placeholderImg"
     :style="{
       borderBottom: `5px ${statusColor(media)} solid`,
       borderRight: `5px ${statusColor(media)} solid`,
@@ -91,6 +91,7 @@
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
+import { placeholderImg } from "@/utils/mediaUtils";
 import ButtonText from "../ui/ButtonText.vue";
 import ChipComponent from "../ui/ChipComponent.vue";
 import EditFormComponent from "./EditFormComponent.vue";
