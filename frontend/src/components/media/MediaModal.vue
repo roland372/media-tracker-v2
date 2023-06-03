@@ -1,122 +1,135 @@
 <template>
   <v-dialog width="auto">
     <template v-slot:default>
-      <v-card max-width="250">
+      <v-card max-width="350">
         <div class="bg-primary-light text-color px-5 py-3 text-h6">
           {{ title }}
         </div>
-        <v-card-text class="ms-n5 my-n3">
-          <!--? ANIME -->
-          <v-card-text v-if="mediaType === EMediaType.ANIME">
-            <div><b>Type:</b> {{ (media as TAnime).type }}</div>
-            <div>
-              <b>Link: </b>
-              <a :href="(media as TAnime).link1" target="_blank">{{
-                (media as TAnime).link1Name
-              }}</a>
-            </div>
-            <div>
-              <b>Episodes:</b> {{ (media as TAnime).episodesMin }} /
-              {{ (media as TAnime).episodesMax }}
-            </div>
-            <div><b>Rating:</b> {{ (media as TAnime).rating }}</div>
-            <div><b>Status:</b> {{ (media as TAnime).status }}</div>
-          </v-card-text>
-
-          <!--? BOOKS -->
-          <v-card-text v-if="mediaType === EMediaType.BOOK">
-            <div><b>Author:</b> {{ (media as TBook).author }}</div>
-            <div>
-              <b>Link: </b>
-              <a :href="(media as TBook).link1" target="_blank">{{
-                (media as TBook).link1Name
-              }}</a>
-            </div>
-            <div><b>Genre:</b> {{ (media as TBook).genre }}</div>
-            <div><b>Pages:</b> {{ (media as TBook).pages }}</div>
-            <div><b>Rating:</b> {{ (media as TBook).rating }}</div>
-            <div><b>Status:</b> {{ (media as TBook).status }}</div>
-          </v-card-text>
-
-          <!--? CHARACTERS -->
-          <v-card-text v-if="mediaType === EMediaType.CHARACTER">
-            <div>
-              <b>Link: </b>
-              <a :href="(media as TCharacter).link1" target="_blank">{{
-                (media as TCharacter).link1Name
-              }}</a>
-            </div>
-            <div><b>Source:</b> {{ (media as TCharacter).source }}</div>
-            <div><b>Gender:</b> {{ (media as TCharacter).gender }}</div>
-            <div><b>Series:</b> {{ (media as TCharacter).series }}</div>
-            <div><b>Hair Color:</b> {{ (media as TCharacter).hairColor }}</div>
-          </v-card-text>
-
-          <!--? GAMES -->
-          <v-card-text v-if="mediaType === EMediaType.GAME">
-            <div><b>Type:</b> {{ (media as TGame).type }}</div>
-            <div>
-              <b>Link: </b>
-              <a :href="(media as TGame).link1" target="_blank">{{
-                (media as TGame).link1Name
-              }}</a>
-            </div>
-            <div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
-            <div><b>Rating:</b> {{ (media as TGame).rating }}</div>
-            <div><b>Status:</b> {{ (media as TGame).status }}</div>
-          </v-card-text>
-
-          <!--? MANGA -->
-          <v-card-text v-if="mediaType === EMediaType.MANGA">
-            <div><b>Type:</b> {{ (media as TManga).type }}</div>
-            <div>
-              <b>Link: </b>
-              <a :href="(media as TManga).link1" target="_blank">{{
-                (media as TManga).link1Name
-              }}</a>
-            </div>
-            <div>
-              <b>Chapters:</b> {{ (media as TManga).chaptersMin }} /
-              {{ (media as TManga).chaptersMax }}
-            </div>
-            <div>
-              <b>Volumes:</b> {{ (media as TManga).volumesMin }} /
-              {{ (media as TManga).volumesMax }}
-            </div>
-            <div><b>Rating:</b> {{ (media as TManga).rating }}</div>
-            <div><b>Status:</b> {{ (media as TManga).status }}</div>
-          </v-card-text>
-
-          <!--? MOVIES -->
-          <v-card-text v-if="mediaType === EMediaType.MOVIE">
-            <div><b>Type:</b> {{ (media as TMovie).type }}</div>
-            <div>
-              <b>Link: </b>
-              <a :href="(media as TMovie).link1" target="_blank">{{
-                (media as TMovie).link1Name
-              }}</a>
-            </div>
-            <div v-if="(media as TMovie).type === 'TV-Show'">
+        <div class="d-sm-flex align-start">
+          <v-img
+            class="rounded ms-2 me-2 me-sm-0 mt-2"
+            cover
+            min-height="200px"
+            min-width="150px"
+            :src="media.imageURL"
+          />
+          <!-- ms-n5 my-n2 -->
+          <v-card-text class="ms-n3 my-n4 mb-n6">
+            <!--? ANIME -->
+            <v-card-text v-if="mediaType === EMediaType.ANIME">
+              <div><b>Type:</b> {{ (media as TAnime).type }}</div>
               <div>
-                <b>Episodes:</b> {{ (media as TMovie).episodesMin }} /
-                {{ (media as TMovie).episodesMax }}
+                <b>Link: </b>
+                <a :href="(media as TAnime).link1" target="_blank">{{
+                  (media as TAnime).link1Name
+                }}</a>
               </div>
               <div>
-                <b>Seasons:</b> {{ (media as TMovie).seasonsMin }} /
-                {{ (media as TMovie).seasonsMax }}
+                <b>Episodes:</b> {{ (media as TAnime).episodesMin }} /
+                {{ (media as TAnime).episodesMax }}
               </div>
-            </div>
-            <div><b>Rating:</b> {{ (media as TMovie).rating }}</div>
-            <div><b>Status:</b> {{ (media as TMovie).status }}</div>
+              <div><b>Rating:</b> {{ (media as TAnime).rating }}</div>
+              <div><b>Status:</b> {{ (media as TAnime).status }}</div>
+            </v-card-text>
+
+            <!--? BOOKS -->
+            <v-card-text v-if="mediaType === EMediaType.BOOK">
+              <div><b>Author:</b> {{ (media as TBook).author }}</div>
+              <div>
+                <b>Link: </b>
+                <a :href="(media as TBook).link1" target="_blank">{{
+                  (media as TBook).link1Name
+                }}</a>
+              </div>
+              <div><b>Genre:</b> {{ (media as TBook).genre }}</div>
+              <div><b>Pages:</b> {{ (media as TBook).pages }}</div>
+              <div><b>Rating:</b> {{ (media as TBook).rating }}</div>
+              <div><b>Status:</b> {{ (media as TBook).status }}</div>
+            </v-card-text>
+
+            <!--? CHARACTERS -->
+            <v-card-text v-if="mediaType === EMediaType.CHARACTER">
+              <div>
+                <b>Link: </b>
+                <a :href="(media as TCharacter).link1" target="_blank">{{
+                  (media as TCharacter).link1Name
+                }}</a>
+              </div>
+              <div><b>Source:</b> {{ (media as TCharacter).source }}</div>
+              <div><b>Gender:</b> {{ (media as TCharacter).gender }}</div>
+              <div><b>Series:</b> {{ (media as TCharacter).series }}</div>
+              <div>
+                <b>Hair Color:</b> {{ (media as TCharacter).hairColor }}
+              </div>
+            </v-card-text>
+
+            <!--? GAMES -->
+            <v-card-text v-if="mediaType === EMediaType.GAME">
+              <div><b>Type:</b> {{ (media as TGame).type }}</div>
+              <div>
+                <b>Link: </b>
+                <a :href="(media as TGame).link1" target="_blank">{{
+                  (media as TGame).link1Name
+                }}</a>
+              </div>
+              <div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
+              <div><b>Rating:</b> {{ (media as TGame).rating }}</div>
+              <div><b>Status:</b> {{ (media as TGame).status }}</div>
+            </v-card-text>
+
+            <!--? MANGA -->
+            <v-card-text v-if="mediaType === EMediaType.MANGA">
+              <div><b>Type:</b> {{ (media as TManga).type }}</div>
+              <div>
+                <b>Link: </b>
+                <a :href="(media as TManga).link1" target="_blank">{{
+                  (media as TManga).link1Name
+                }}</a>
+              </div>
+              <div>
+                <b>Chapters:</b> {{ (media as TManga).chaptersMin }} /
+                {{ (media as TManga).chaptersMax }}
+              </div>
+              <div>
+                <b>Volumes:</b> {{ (media as TManga).volumesMin }} /
+                {{ (media as TManga).volumesMax }}
+              </div>
+              <div><b>Rating:</b> {{ (media as TManga).rating }}</div>
+              <div><b>Status:</b> {{ (media as TManga).status }}</div>
+            </v-card-text>
+
+            <!--? MOVIES -->
+            <v-card-text v-if="mediaType === EMediaType.MOVIE">
+              <div><b>Type:</b> {{ (media as TMovie).type }}</div>
+              <div>
+                <b>Link: </b>
+                <a :href="(media as TMovie).link1" target="_blank">{{
+                  (media as TMovie).link1Name
+                }}</a>
+              </div>
+              <div v-if="(media as TMovie).type === 'TV-Show'">
+                <div>
+                  <b>Episodes:</b> {{ (media as TMovie).episodesMin }} /
+                  {{ (media as TMovie).episodesMax }}
+                </div>
+                <div>
+                  <b>Seasons:</b> {{ (media as TMovie).seasonsMin }} /
+                  {{ (media as TMovie).seasonsMax }}
+                </div>
+              </div>
+              <div><b>Rating:</b> {{ (media as TMovie).rating }}</div>
+              <div><b>Status:</b> {{ (media as TMovie).status }}</div>
+            </v-card-text>
           </v-card-text>
-        </v-card-text>
-        <v-card-actions class="d-flex justify-space-around">
-          <ButtonText
+        </div>
+
+        <v-card-actions class="d-flex justify-start">
+          <!-- <ButtonText
             @click="viewClick"
             color="indigo"
             text="View"
             variant="flat"
-          />
+          /> -->
           <ButtonText
             @click="editClick"
             color="green"

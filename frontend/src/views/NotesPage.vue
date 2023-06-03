@@ -7,7 +7,7 @@
         color="indigo"
         text="Add Note"
       />
-      <ButtonText color="yellow" text="Settings" />
+      <!-- <ButtonText color="yellow" text="Settings" /> -->
     </section>
     <h3 v-if="!notes.length" class="text-color">Not found any items.</h3>
     <section v-else class="v-row my-1">
