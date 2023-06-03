@@ -28,7 +28,7 @@
       class="bg-black image-title-overlay"
       color="white"
       size="x-small"
-      :text="mediaType === EMediaType.CHARACTER ? formatString((media as TCharacter).name) : formatString((media as TAnime | TBook | TGame | TManga | TMovie).title)"
+      :text="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TBook | TGame | TManga | TMovie).title"
       text-color="white"
     />
     <MediaModal
@@ -214,13 +214,6 @@ const statusColor = (
     }
   }
   return color;
-};
-
-const formatString = (string: string) => {
-  if (string.length > 25) {
-    return string.slice(0, 12) + "...";
-  }
-  return string;
 };
 
 const handleDeleteCancel = () => {

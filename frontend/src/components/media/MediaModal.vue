@@ -11,9 +11,8 @@
             cover
             min-height="200px"
             min-width="150px"
-            :src="media.imageURL"
+            :src="media.imageURL || placeholderImg"
           />
-          <!-- ms-n5 my-n2 -->
           <v-card-text class="ms-n3 my-n4 mb-n6">
             <!--? ANIME -->
             <v-card-text v-if="mediaType === EMediaType.ANIME">
@@ -149,6 +148,7 @@
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue";
+import { placeholderImg } from "@/utils/mediaUtils";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import {
   EMediaType,

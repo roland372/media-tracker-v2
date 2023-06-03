@@ -6,7 +6,7 @@
     :prepend-icon="prependIcon"
     :size="size"
   >
-    <div class="chip-text">
+    <div class="text-truncate">
       {{ text }}
     </div>
   </v-chip>
@@ -30,10 +30,4 @@ withDefaults(defineProps<IChipComponentProps>(), {
   size: "default",
 });
 </script>
-<style scoped>
-.chip-text {
-  white-space: wrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-</style>
+<style scoped></style>
