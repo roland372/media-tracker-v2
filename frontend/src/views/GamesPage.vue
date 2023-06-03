@@ -41,7 +41,7 @@
   />
   <MediaTable
     v-if="displayFlag === 'table'"
-    :media="orderBy(filteredGames, ['title'], ['asc'])"
+    :media="filteredGames"
     :media-type="EMediaType.GAME"
     title="All Games"
   >
@@ -49,6 +49,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleGameFilter"
       @search="handleGameSearch"
+      @sort="handleGameSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.GAME"
     />
@@ -56,7 +57,7 @@
   <MediaComponent
     v-if="displayFlag === 'grid'"
     all-media
-    :media="orderBy(filteredGames, ['title'], ['asc'])"
+    :media="filteredGames"
     :media-type="EMediaType.GAME"
     title="All Games"
   >
@@ -64,6 +65,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleGameFilter"
       @search="handleGameSearch"
+      @sort="handleGameSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.GAME"
     />
@@ -97,7 +99,7 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
-import { EGameStatus, EMediaType } from "@/types";
+import { EGameStatus, EMediaType, TSortingOptions } from "@/types";
 
 const mediaStore = useMediaStore();
 const { games } = storeToRefs(mediaStore);
@@ -109,21 +111,33 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.GAME + " Added");
 const gameFilter = ref<string>("");
 const gameFetchSearch = ref<string>("");
+const sortingOptions = ref<TSortingOptions>({
+  sortField: "title",
+  sortOrder: "asc",
+});
 
 const favourites = computed(
   () => games.value.filter((games) => games.favourites).length
 );
 
-const filteredGames = computed(() =>
-  games.value.filter((el) => {
+const filteredGames = computed(() => {
+  const filteredItems = games.value.filter((el) => {
     const searchTermMatch = el.title
       .toLowerCase()
       .includes(searchTerm.value.toLowerCase());
     const statusMatch =
       gameFilter.value === "" || el.status === gameFilter.value;
     return searchTermMatch && statusMatch;
-  })
-);
+  });
+
+  const sortedGames = orderBy(
+    filteredItems,
+    [sortingOptions.value.sortField],
+    [sortingOptions.value.sortOrder]
+  );
+
+  return sortedGames;
+});
 
 const filterZeroRating = computed(
   () => games.value.filter((games) => games.rating !== 0).length
@@ -209,6 +223,9 @@ const handleGameFilter = (emittedValue: string) =>
 
 const handleGameSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);
+
+const handleGameSort = (emittedValue: TSortingOptions) =>
+  (sortingOptions.value = emittedValue);
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;

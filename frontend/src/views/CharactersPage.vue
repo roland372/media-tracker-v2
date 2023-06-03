@@ -73,7 +73,7 @@
   />
   <MediaTable
     v-if="displayFlag === 'table'"
-    :media="orderBy(filteredCharacters, ['name'], ['asc'])"
+    :media="filteredCharacters"
     :media-type="EMediaType.CHARACTER"
     title="All Characters"
   >
@@ -81,6 +81,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleCharacterFilter"
       @search="handleCharacterSearch"
+      @sort="handleCharacterSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.CHARACTER"
     />
@@ -88,7 +89,7 @@
   <MediaComponent
     v-if="displayFlag === 'grid'"
     all-media
-    :media="orderBy(filteredCharacters, ['name'], ['asc'])"
+    :media="filteredCharacters"
     :media-type="EMediaType.CHARACTER"
     title="All Characters"
   >
@@ -96,6 +97,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleCharacterFilter"
       @search="handleCharacterSearch"
+      @sort="handleCharacterSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.CHARACTER"
     />
@@ -138,6 +140,7 @@ import {
   ECharacterSource,
   EMediaType,
   TCharacterInput,
+  TSortingOptions,
 } from "@/types";
 
 interface CommonCharacterDataWithAbout extends CommonCharacterData {
@@ -158,31 +161,33 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.CHARACTER + " Added");
 const characterFetchSearch = ref<string>("");
 const characterFilter = ref<string>("");
+const sortingOptions = ref<TSortingOptions>({
+  sortField: "name",
+  sortOrder: "asc",
+});
 
 const favourites = computed(
   () => characters.value.filter((characters) => characters.favourites).length
 );
 
-const filteredCharacters = computed(() =>
-  characters.value.filter((el) => {
+const filteredCharacters = computed(() => {
+  const filteredItems = characters.value.filter((el) => {
     const searchTermMatch =
       el.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
       el.series.toLowerCase().includes(searchTerm.value.toLowerCase());
     const sourceMatch =
       characterFilter.value === "" || el.source === characterFilter.value;
     return searchTermMatch && sourceMatch;
-  })
-);
+  });
 
-// const filteredCharacters = computed(() =>
-//   characters.value.filter((el) => {
-//     const searchTermMatch =
-//       el.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-//       el.series.toLowerCase().includes(searchTerm.value.toLowerCase());
+  const sortedCharacters = orderBy(
+    filteredItems,
+    [sortingOptions.value.sortField],
+    [sortingOptions.value.sortOrder]
+  );
 
-//     return searchTermMatch;
-//   })
-// );
+  return sortedCharacters;
+});
 
 const totalCharacters = computed(() => characters.value.length);
 const anime = computed(() => filterGameSource(characters, "anime").length);
@@ -227,6 +232,9 @@ const handleCharacterFilter = (emittedValue: string) =>
 
 const handleCharacterSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);
+
+const handleCharacterSort = (emittedValue: TSortingOptions) =>
+  (sortingOptions.value = emittedValue);
 
 const handleClearCharacterSearch = () => {
   characterFetchSearch.value = "";

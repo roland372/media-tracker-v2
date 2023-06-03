@@ -7,6 +7,13 @@
         :icon="displayFlag === 'table' ? 'mdi-view-grid' : 'mdi-table'"
         icon-size="25"
       />
+      <ButtonIcon
+        @click="handleOpenSettingsModal"
+        class="ms-2"
+        color="grey-darken-3"
+        icon="mdi-cog"
+        icon-size="25"
+      />
     </div>
     <div class="d-flex align-center flex-wrap">
       <ButtonText
@@ -49,6 +56,96 @@
       variant="outlined"
     />
   </section>
+  <v-dialog v-if="settingsModal" v-model="settingsModal" max-width="300"
+    ><v-card>
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">
+        Select sorting options
+      </div>
+      <v-card-text class="d-sm-flex justify-space-between ms-n1">
+        <div>
+          <strong> Sort by </strong>
+          <v-radio-group v-model="sortingOptions.sortField" class="ms-n3">
+            <!--? ANIME -->
+            <div v-if="props.mediaType === EMediaType.ANIME">
+              <v-radio label="Last Modified" value="lastModified" />
+              <v-radio label="Progress" value="episodesMin" />
+              <v-radio label="Rating" value="rating" />
+              <v-radio label="Status" value="status" />
+              <v-radio label="Title" value="title" />
+              <v-radio label="Type" value="type" />
+            </div>
+
+            <!--? BOOKS -->
+            <div v-if="props.mediaType === EMediaType.BOOK">
+              <v-radio label="Author" value="author" />
+              <v-radio label="Genre" value="genre" />
+              <v-radio label="Last Modified" value="lastModified" />
+              <v-radio label="Pages" value="pages" />
+              <v-radio label="Rating" value="rating" />
+              <v-radio label="Status" value="status" />
+              <v-radio label="Title" value="title" />
+            </div>
+
+            <!--? CHARACTERS -->
+            <div v-if="props.mediaType === EMediaType.CHARACTER">
+              <v-radio label="Gender" value="gender" />
+              <v-radio label="Hair Color" value="hairColor" />
+              <v-radio label="Last Modified" value="lastModified" />
+              <v-radio label="Name" value="name" />
+              <v-radio label="Series" value="series" />
+              <v-radio label="Source" value="source" />
+            </div>
+
+            <!--? GAMES -->
+            <div v-if="props.mediaType === EMediaType.GAME">
+              <v-radio label="Last Modified" value="lastModified" />
+              <v-radio label="Playtime" value="playtime" />
+              <v-radio label="Rating" value="rating" />
+              <v-radio label="Status" value="status" />
+              <v-radio label="Title" value="title" />
+              <v-radio label="Type" value="type" />
+            </div>
+
+            <!--? MANGA -->
+            <div v-if="props.mediaType === EMediaType.MANGA">
+              <v-radio label="Chapters" value="chaptersMin" />
+              <v-radio label="Last Modified" value="lastModified" />
+              <v-radio label="Rating" value="rating" />
+              <v-radio label="Status" value="status" />
+              <v-radio label="Title" value="title" />
+              <v-radio label="Type" value="type" />
+              <v-radio label="Volumes" value="volumesMin" />
+            </div>
+
+            <!--? MOVIES -->
+            <div v-if="props.mediaType === EMediaType.MOVIE">
+              <v-radio label="Episodes" value="episodesMin" />
+              <v-radio label="Last Modified" value="lastModified" />
+              <v-radio label="Rating" value="rating" />
+              <v-radio label="Seasons" value="seasonsMin" />
+              <v-radio label="Status" value="status" />
+              <v-radio label="Title" value="title" />
+              <v-radio label="Type" value="type" />
+            </div>
+          </v-radio-group>
+        </div>
+        <div>
+          <strong>Order</strong>
+          <v-radio-group v-model="sortingOptions.sortOrder" class="ms-n3">
+            <v-radio label="Ascending" value="asc" />
+            <v-radio label="Descending" value="desc" />
+          </v-radio-group>
+        </div>
+      </v-card-text>
+      <v-card-actions class="ms-2 mb-2 mt-n7">
+        <ButtonText
+          @click="handleSortMedia"
+          color="green"
+          text="Confirm"
+          variant="flat"
+        />
+      </v-card-actions> </v-card
+  ></v-dialog>
 </template>
 <script setup lang="ts">
 import { defineEmits, defineProps, ref } from "vue";
@@ -62,6 +159,7 @@ import {
   EMangaStatus,
   EMediaType,
   EMovieStatus,
+  TSortingOptions,
 } from "@/types";
 
 interface IDisplayFilterSearchPanelProps {
@@ -69,10 +167,15 @@ interface IDisplayFilterSearchPanelProps {
   mediaType: EMediaType;
 }
 
-const emit = defineEmits(["display", "search", "filter"]);
+const emit = defineEmits(["display", "search", "sort", "filter"]);
 const props = defineProps<IDisplayFilterSearchPanelProps>();
 
 const mediaSearch = ref<string | undefined>("");
+const settingsModal = ref<boolean>(false);
+const sortingOptions = ref<TSortingOptions>({
+  sortField: props.mediaType === EMediaType.CHARACTER ? "name" : "title",
+  sortOrder: "asc",
+});
 
 const mediaStatus = () => {
   let statusArr = [];
@@ -135,6 +238,24 @@ const mediaStatus = () => {
   return statusArr;
 };
 
+const handleDisplayClick = () => {
+  emit("display");
+  emit("search", "");
+  emit("filter", "");
+};
+
+const handleFilterClear = () => emit("filter", "");
+const handleMediaSearch = () => emit("search", mediaSearch.value);
+const handleOpenSettingsModal = () => {
+  settingsModal.value = !settingsModal.value;
+};
+const handleSearchClear = () => emit("search", "");
+const handleSortMedia = () => {
+  emit("sort", sortingOptions.value);
+  // console.log("Sort By:", sortingOptions.value.sortField);
+  // console.log("Sort Order:", sortingOptions.value.sortOrder);
+  settingsModal.value = !settingsModal.value;
+};
 const handleStatusClick = (
   status:
     | EAnimeStatus
@@ -144,13 +265,4 @@ const handleStatusClick = (
     | EMangaStatus
     | EMovieStatus
 ) => emit("filter", status);
-
-const handleDisplayClick = () => {
-  emit("display");
-  emit("search", "");
-  emit("filter", "");
-};
-const handleMediaSearch = () => emit("search", mediaSearch.value);
-const handleSearchClear = () => emit("search", "");
-const handleFilterClear = () => emit("filter", "");
 </script>

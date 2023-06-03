@@ -386,6 +386,11 @@ export type TNavLinks = {
   title: string;
 };
 
+export type TSortingOptions = {
+  sortField: string;
+  sortOrder: "asc" | "desc";
+};
+
 export type TTheme = {
   primaryDark: string;
   primaryLight: string;

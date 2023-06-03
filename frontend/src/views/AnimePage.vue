@@ -74,7 +74,7 @@
   />
   <MediaTable
     v-if="displayFlag === 'table'"
-    :media="orderBy(filteredAnime, ['title'], ['asc'])"
+    :media="filteredAnime"
     :media-type="EMediaType.ANIME"
     title="All Anime"
   >
@@ -82,6 +82,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleAnimeFilter"
       @search="handleAnimeSearch"
+      @sort="handleAnimeSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.ANIME"
     />
@@ -89,7 +90,7 @@
   <MediaComponent
     v-if="displayFlag === 'grid'"
     all-media
-    :media="orderBy(filteredAnime, ['title'], ['asc'])"
+    :media="filteredAnime"
     :media-type="EMediaType.ANIME"
     title="All Anime"
   >
@@ -97,6 +98,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleAnimeFilter"
       @search="handleAnimeSearch"
+      @sort="handleAnimeSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.ANIME"
     />
@@ -133,7 +135,13 @@ import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { Anime } from "@tutkli/jikan-ts";
-import { EAnimeStatus, EAnimeType, EMediaType, TAnimeInput } from "@/types";
+import {
+  EAnimeStatus,
+  EAnimeType,
+  EMediaType,
+  TAnimeInput,
+  TSortingOptions,
+} from "@/types";
 
 const mediaStore = useMediaStore();
 const { submitAddAnime, userFromDB } = mediaStore;
@@ -149,21 +157,33 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.ANIME + " Added");
 const animeFetchSearch = ref<string>("");
 const animeFilter = ref<string>("");
+const sortingOptions = ref<TSortingOptions>({
+  sortField: "title",
+  sortOrder: "asc",
+});
 
 const favourites = computed(
   () => anime.value.filter((anime) => anime.favourites).length
 );
 
-const filteredAnime = computed(() =>
-  anime.value.filter((el) => {
+const filteredAnime = computed(() => {
+  const filteredItems = anime.value.filter((el) => {
     const searchTermMatch = el.title
       .toLowerCase()
       .includes(searchTerm.value.toLowerCase());
     const statusMatch =
       animeFilter.value === "" || el.status === animeFilter.value;
     return searchTermMatch && statusMatch;
-  })
-);
+  });
+
+  const sortedAnime = orderBy(
+    filteredItems,
+    [sortingOptions.value.sortField],
+    [sortingOptions.value.sortOrder]
+  );
+
+  return sortedAnime;
+});
 
 const filterZeroRating = computed(
   () => anime.value.filter((anime) => anime.rating !== 0).length
@@ -247,6 +267,9 @@ const handleAnimeFilter = (emittedValue: string) =>
 
 const handleAnimeSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);
+
+const handleAnimeSort = (emittedValue: TSortingOptions) =>
+  (sortingOptions.value = emittedValue);
 
 const handleChangeDisplayFlag = () => {
   if (displayFlag.value === "table") {

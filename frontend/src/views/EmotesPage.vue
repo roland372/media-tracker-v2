@@ -136,12 +136,12 @@
             :rules="URLRules"
             variant="outlined"
           />
-          <section class="d-flex align-center ms-2 mt-n4 mb-n6">
+          <section class="d-flex align-center ms-1 mt-n4 mb-n6">
             <div>Add to Favourites?</div>
             <v-checkbox v-model="newEmote.favourites" hide-details />
           </section>
         </v-card-text>
-        <v-card-actions class="d-flex justify-start ms-4 mb-2">
+        <v-card-actions class="d-flex justify-start ms-2 mb-2">
           <ButtonText
             color="green"
             text="Add Emote"
@@ -182,12 +182,12 @@
             :rules="URLRules"
             variant="outlined"
           />
-          <section class="d-flex align-center ms-2 mt-n4 mb-n6">
+          <section class="d-flex align-center ms-1 mt-n4 mb-n6">
             <div>Add to Favourites?</div>
             <v-checkbox v-model="emoteRef.favourites" hide-details />
           </section>
         </v-card-text>
-        <v-card-actions class="d-flex justify-start ms-4 mb-2">
+        <v-card-actions class="d-flex justify-start ms-2 mb-2">
           <ButtonText
             color="yellow"
             text="Update Emote"

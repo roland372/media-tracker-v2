@@ -41,7 +41,7 @@
   />
   <MediaTable
     v-if="displayFlag === 'table'"
-    :media="orderBy(filteredBooks, ['title'], ['asc'])"
+    :media="filteredBooks"
     :media-type="EMediaType.BOOK"
     title="All Books"
   >
@@ -49,6 +49,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleBookFilter"
       @search="handleBookSearch"
+      @sort="handleBookSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.BOOK"
     />
@@ -56,7 +57,7 @@
   <MediaComponent
     v-if="displayFlag === 'grid'"
     all-media
-    :media="orderBy(filteredBooks, ['title'], ['asc'])"
+    :media="filteredBooks"
     :media-type="EMediaType.BOOK"
     title="All Books"
   >
@@ -64,6 +65,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleBookFilter"
       @search="handleBookSearch"
+      @sort="handleBookSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.BOOK"
     />
@@ -97,7 +99,7 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
-import { EBookStatus, EMediaType } from "@/types";
+import { EBookStatus, EMediaType, TSortingOptions } from "@/types";
 
 const mediaStore = useMediaStore();
 const { books } = storeToRefs(mediaStore);
@@ -109,13 +111,17 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.BOOK + " Added");
 const bookFetchSearch = ref<string>("");
 const bookFilter = ref<string>("");
+const sortingOptions = ref<TSortingOptions>({
+  sortField: "title",
+  sortOrder: "asc",
+});
 
 const favourites = computed(
   () => books.value.filter((books) => books.favourites).length
 );
 
-const filteredBooks = computed(() =>
-  books.value.filter((el) => {
+const filteredBooks = computed(() => {
+  const filteredItems = books.value.filter((el) => {
     const authorMarch = el.author
       .toLowerCase()
       .includes(searchTerm.value.toLowerCase());
@@ -127,8 +133,16 @@ const filteredBooks = computed(() =>
     const statusMatch =
       bookFilter.value === "" || el.status === bookFilter.value;
     return (authorMarch || titleMatch) && statusMatch;
-  })
-);
+  });
+
+  const sortedBooks = orderBy(
+    filteredItems,
+    [sortingOptions.value.sortField],
+    [sortingOptions.value.sortOrder]
+  );
+
+  return sortedBooks;
+});
 
 const filterZeroRating = computed(
   () => books.value.filter((books) => books.rating !== 0).length
@@ -201,6 +215,9 @@ const handleBookFilter = (emittedValue: string) =>
 
 const handleBookSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);
+
+const handleBookSort = (emittedValue: TSortingOptions) =>
+  (sortingOptions.value = emittedValue);
 
 const handleChangeDisplayFlag = () => {
   if (displayFlag.value === "table") {

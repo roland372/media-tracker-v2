@@ -75,7 +75,7 @@
   />
   <MediaTable
     v-if="displayFlag === 'table'"
-    :media="orderBy(filteredManga, ['title'], ['asc'])"
+    :media="filteredManga"
     :media-type="EMediaType.MANGA"
     title="All Manga"
   >
@@ -83,6 +83,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleMangaFilter"
       @search="handleMangaSearch"
+      @sort="handleMangaSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.MANGA"
     />
@@ -90,7 +91,7 @@
   <MediaComponent
     v-if="displayFlag === 'grid'"
     all-media
-    :media="orderBy(filteredManga, ['title'], ['asc'])"
+    :media="filteredManga"
     :media-type="EMediaType.MANGA"
     title="All Manga"
   >
@@ -98,6 +99,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleMangaFilter"
       @search="handleMangaSearch"
+      @sort="handleMangaSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.MANGA"
     />
@@ -134,7 +136,13 @@ import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { Manga } from "@tutkli/jikan-ts";
-import { EMangaStatus, EMangaType, EMediaType, TMangaInput } from "@/types";
+import {
+  EMangaStatus,
+  EMangaType,
+  EMediaType,
+  TMangaInput,
+  TSortingOptions,
+} from "@/types";
 
 const mediaStore = useMediaStore();
 const { submitAddManga, userFromDB } = mediaStore;
@@ -150,21 +158,33 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.MANGA + " Added");
 const mangaFetchSearch = ref<string>("");
 const mangaFilter = ref<string>("");
+const sortingOptions = ref<TSortingOptions>({
+  sortField: "title",
+  sortOrder: "asc",
+});
 
 const favourites = computed(
   () => manga.value.filter((manga) => manga.favourites).length
 );
 
-const filteredManga = computed(() =>
-  manga.value.filter((el) => {
+const filteredManga = computed(() => {
+  const filteredItems = manga.value.filter((el) => {
     const searchTermMatch = el.title
       .toLowerCase()
       .includes(searchTerm.value.toLowerCase());
     const statusMatch =
       mangaFilter.value === "" || el.status === mangaFilter.value;
     return searchTermMatch && statusMatch;
-  })
-);
+  });
+
+  const sortedManga = orderBy(
+    filteredItems,
+    [sortingOptions.value.sortField],
+    [sortingOptions.value.sortOrder]
+  );
+
+  return sortedManga;
+});
 
 const filterZeroRating = computed(
   () => manga.value.filter((manga) => manga.rating !== 0).length
@@ -362,6 +382,9 @@ const handleMangaFilter = (emittedValue: string) =>
 
 const handleMangaSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);
+
+const handleMangaSort = (emittedValue: TSortingOptions) =>
+  (sortingOptions.value = emittedValue);
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;

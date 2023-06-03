@@ -41,7 +41,7 @@
   />
   <MediaTable
     v-if="displayFlag === 'table'"
-    :media="orderBy(filteredMovies, ['title'], ['asc'])"
+    :media="filteredMovies"
     :media-type="EMediaType.MOVIE"
     title="All Movies"
   >
@@ -49,6 +49,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleMovieFilter"
       @search="handleMovieSearch"
+      @sort="handleMovieSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.MOVIE"
     />
@@ -56,7 +57,7 @@
   <MediaComponent
     v-if="displayFlag === 'grid'"
     all-media
-    :media="orderBy(filteredMovies, ['title'], ['asc'])"
+    :media="filteredMovies"
     :media-type="EMediaType.MOVIE"
     title="All Movies"
   >
@@ -64,6 +65,7 @@
       @display="handleChangeDisplayFlag"
       @filter="handleMovieFilter"
       @search="handleMovieSearch"
+      @sort="handleMovieSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.MOVIE"
     />
@@ -97,7 +99,7 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
-import { EMediaType, EMovieStatus } from "@/types";
+import { EMediaType, EMovieStatus, TSortingOptions } from "@/types";
 
 const mediaStore = useMediaStore();
 const { movies } = storeToRefs(mediaStore);
@@ -109,21 +111,33 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.MOVIE + " Added");
 const movieFetchSearch = ref<string>("");
 const movieFilter = ref<string>("");
+const sortingOptions = ref<TSortingOptions>({
+  sortField: "title",
+  sortOrder: "asc",
+});
 
 const favourites = computed(
   () => movies.value.filter((movies) => movies.favourites).length
 );
 
-const filteredMovies = computed(() =>
-  movies.value.filter((el) => {
+const filteredMovies = computed(() => {
+  const filteredItems = movies.value.filter((el) => {
     const searchTermMatch = el.title
       .toLowerCase()
       .includes(searchTerm.value.toLowerCase());
     const statusMatch =
       movieFilter.value === "" || el.status === movieFilter.value;
     return searchTermMatch && statusMatch;
-  })
-);
+  });
+
+  const sortedMovies = orderBy(
+    filteredItems,
+    [sortingOptions.value.sortField],
+    [sortingOptions.value.sortOrder]
+  );
+
+  return sortedMovies;
+});
 
 const filterZeroRating = computed(
   () => movies.value.filter((movies) => movies.rating !== 0).length
@@ -226,6 +240,9 @@ const handleMovieFilter = (emittedValue: string) =>
 
 const handleMovieSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);
+
+const handleMovieSort = (emittedValue: TSortingOptions) =>
+  (sortingOptions.value = emittedValue);
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
