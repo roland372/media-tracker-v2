@@ -230,7 +230,11 @@
         />
       </v-card-actions> </v-card
   ></v-dialog>
-  <SnackbarComponent v-model="snackbar.value" :text="snackbar.text" />
+  <SnackbarComponent
+    v-model="snackbar.value"
+    :img="snackbar.img"
+    :text="snackbar.text"
+  />
 </template>
 <script setup lang="ts">
 import { computed, ref, reactive } from "vue";
@@ -269,6 +273,7 @@ const emoteRef = ref<TEmoteInput>(newEmote);
 const emoteSearch = ref<string>("");
 const isEditing = ref<boolean>(false);
 const snackbar = ref({
+  img: "",
   text: "",
   value: false,
 });
@@ -291,8 +296,7 @@ const handleDeleteCancel = () => {
 
 const handleDeleteConfirm = async () => {
   await submitDeleteEmote(emoteID.value);
-  snackbar.value.text = "Emote Deleted";
-  snackbar.value.value = true;
+  snackbar.value = { img: "", text: "Emote Deleted", value: true };
   emoteID.value = "";
   deleteEmoteModal.value = false;
 };
@@ -306,10 +310,11 @@ const displayEmotes = () => {
 const handleEmoteClick = (url: string): void => {
   copyImageToClipboard(url)
     .then(() => {
-      console.log("image copied");
+      snackbar.value = { img: url, text: "Copied to Clipboard", value: true };
     })
     .catch(() => {
       navigator.clipboard.writeText(url);
+      snackbar.value = { img: url, text: "Copied to Clipboard", value: true };
     });
 };
 
@@ -339,8 +344,7 @@ const handleOpenEditEmoteModal = (id: string, emote: TEmote) => {
 const handleSubmitAddEmote = async () => {
   if (newEmote.name && URLRegex.test(newEmote.url)) {
     await submitAddEmote(newEmote);
-    snackbar.value.text = "Emote Added";
-    snackbar.value.value = true;
+    snackbar.value = { img: "", text: "Emote Added", value: true };
     addEmoteModal.value = false;
 
     newEmote.favourites = false;
@@ -352,8 +356,7 @@ const handleSubmitAddEmote = async () => {
 const handleSubmitEditEmote = async () => {
   if (emoteRef.value.name && URLRegex.test(emoteRef.value.url)) {
     await submitEditEmote(emoteID.value, emoteRef.value);
-    snackbar.value.text = "Emote Updated";
-    snackbar.value.value = true;
+    snackbar.value = { img: "", text: "Emote Updated", value: true };
     editEmoteModal.value = false;
   }
 };
