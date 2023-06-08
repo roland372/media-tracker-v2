@@ -319,6 +319,7 @@ const handleGetEditorContent = (emittedValue: string) => {
 };
 
 const handleOpenAddNoteModal = () => {
+  noteRef.value = newNote;
   addNoteModal.value = !addNoteModal.value;
 };
 
@@ -351,7 +352,6 @@ const handleOpenViewNoteModal = (id: string, note: TNote) => {
 
 const handleSubmitAddNote = async () => {
   if (newNote.title) {
-    newNote.note = noteRef.value.note;
     await submitAddNote(newNote);
     snackbar.value.text = "Note Added";
     snackbar.value.value = true;
