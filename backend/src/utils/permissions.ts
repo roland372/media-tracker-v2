@@ -7,7 +7,7 @@ const authErrorCode = 403;
 const isAuthenticated = rule()(async (_, __, ctx) => {
   if (ctx.userFromContext.length) {
     // console.log("permissions: authenticated");
-    return ctx.userFromContext.email !== null;
+    return ctx.userFromContext[0].email !== null;
   } else {
     // console.log("permissions: not authenticated");
     return new GraphQLError(authErrorMessage, {
@@ -32,6 +32,8 @@ export default shield({
     getSingleManga: isAuthenticated,
     getAllMovies: isAuthenticated,
     getSingleMovie: isAuthenticated,
+    getAllMusic: isAuthenticated,
+    getSingleMusic: isAuthenticated,
     getAllNotes: isAuthenticated,
     getSingleNote: isAuthenticated,
     getSingleUser: isAuthenticated,
@@ -59,6 +61,9 @@ export default shield({
     addMovie: isAuthenticated,
     deleteMovie: isAuthenticated,
     editMovie: isAuthenticated,
+    addMusic: isAuthenticated,
+    deleteMusic: isAuthenticated,
+    editMusic: isAuthenticated,
     addNote: isAuthenticated,
     deleteNote: isAuthenticated,
     editNote: isAuthenticated,

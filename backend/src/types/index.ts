@@ -343,6 +343,40 @@ export type TMovieInput = {
 	ID: string;
 };
 
+//? <----- MUSIC ----->
+export enum EMusicCategory {
+	ANIME = 'Anime',
+	GAME = 'Game',
+	JAPANESE = 'Japanese',
+	OTHER = 'Other',
+	TOUHOU = 'Touhou'
+}
+
+export type TMusic = {
+	artist: string;
+	category: EMusicCategory;
+	favourites: boolean;
+	id: string;
+	ID: string;
+	imageURL: string;
+	lastModified: number;
+	link: string;
+	owner: string;
+	title: string;
+}
+
+export type TMusicInput = {
+	musicInput: {
+		artist: string;
+		category: EMusicCategory;
+		favourites: boolean;
+		imageURL: string;
+		link: string;
+		title: string;
+	}
+	ID: string;
+}
+
 //? <----- NOTES ----->
 export type TNote = {
 	color: string;

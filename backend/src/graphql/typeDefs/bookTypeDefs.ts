@@ -23,7 +23,7 @@ export const typeBook = gql`
 	}
 
 	input BookInput {
-    author: String
+    author: String!
 		favourites: Boolean
     genre: String
 		imageURL: String
@@ -32,11 +32,11 @@ export const typeBook = gql`
 		link1Name: String
 		link2: String
 		link2Name: String
-		owner: String
+		owner: String!
     pages: Int
 		rating: Int
 		status: String
-		title: String
+		title: String!
 	}
 
 	type Query {

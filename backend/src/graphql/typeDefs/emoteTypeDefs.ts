@@ -15,8 +15,8 @@ export const typeEmote = gql`
 	input EmoteInput {
 		favourites: Boolean
 		lastModified: Date
-		name: String
-		url: String
+		name: String!
+		url: String!
 	}
 
 	type Query {

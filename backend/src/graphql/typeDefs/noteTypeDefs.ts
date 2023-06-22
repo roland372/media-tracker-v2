@@ -17,8 +17,8 @@ export const typeNote = gql`
 		color: String
 		lastModified: Date
 		note: String
-		owner: String
-		title: String
+		owner: String!
+		title: String!
 	}
 
 	type Query {

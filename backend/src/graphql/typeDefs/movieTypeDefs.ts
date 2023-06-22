@@ -34,12 +34,12 @@ export const typeMovie = gql`
 		link1Name: String
 		link2: String
 		link2Name: String
-		owner: String
+		owner: String!
 		rating: Int
     seasonsMax: Int
 		seasonsMin: Int
 		status: String
-		title: String
+		title: String!
 		type: String
 	}
 
