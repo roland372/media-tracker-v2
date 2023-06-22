@@ -46,6 +46,12 @@ import {
   editMovie,
   getAllMovies,
   getSingleMovie,
+  //* <----- MUSIC ----->
+  addMusic,
+  deleteMusic,
+  editMusic,
+  getAllMusic,
+  getSingleMusic,
   //* <----- NOTES ----->
   addNote,
   deleteNote,
@@ -71,6 +77,8 @@ import {
   TMangaInput,
   TMovie,
   TMovieInput,
+  TMusic,
+  TMusicInput,
   TNote,
   TNoteInput,
   TUser,
@@ -90,6 +98,7 @@ export const useMediaStore = defineStore("media", () => {
       setGames(data.getAllGames);
       setManga(data.getAllManga);
       setMovies(data.getAllMovies);
+      setMusic(data.getAllMusic);
       setNotes(data.getAllNotes);
     } catch (err) {
       console.log(err);
@@ -104,13 +113,13 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleAnime = (payload: TAnime) => {
     singleAnime.value = payload;
   };
-  const fetchAnime = async () => {
+  const fetchAnime = async (email: string) => {
     try {
       const {
         data,
         loading,
         // error
-      } = await getAllAnime();
+      } = await getAllAnime(email);
       isLoading.value = loading;
       setAnime(data.getAllAnime);
     } catch (err) {
@@ -246,9 +255,9 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleCharacter = (payload: TCharacter) => {
     singleCharacter.value = payload;
   };
-  const fetchCharacters = async () => {
+  const fetchCharacters = async (email: string) => {
     try {
-      const { data, loading } = await getAllCharacters();
+      const { data, loading } = await getAllCharacters(email);
       isLoading.value = loading;
       setCharacters(data.getAllCharacters);
     } catch (err) {
@@ -325,9 +334,9 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleEmote = (payload: TEmote) => {
     singleEmote.value = payload;
   };
-  const fetchEmotes = async () => {
+  const fetchEmotes = async (email: string) => {
     try {
-      const { data, loading } = await getAllEmotes();
+      const { data, loading } = await getAllEmotes(email);
       isLoading.value = loading;
       setEmotes(data.getAllEmotes);
     } catch (err) {
@@ -461,9 +470,9 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleManga = (payload: TManga) => {
     singleManga.value = payload;
   };
-  const fetchManga = async () => {
+  const fetchManga = async (email: string) => {
     try {
-      const { data, loading } = await getAllManga();
+      const { data, loading } = await getAllManga(email);
       isLoading.value = loading;
       setManga(data.getAllManga);
     } catch (err) {
@@ -594,6 +603,76 @@ export const useMediaStore = defineStore("media", () => {
     }
   };
 
+  //* <----- MUSIC ----->
+  const music = ref<TMusic[]>([]);
+  const setMusic = (payload: TMusic[]) => {
+    music.value = payload;
+  };
+  const singleMusic = ref<TMusic>();
+  const setSingleMusic = (payload: TMusic) => {
+    singleMusic.value = payload;
+  };
+  const fetchMusic = async (email: string) => {
+    try {
+      const { data, loading } = await getAllMusic(email);
+      isLoading.value = loading;
+      setMusic(data.getAllMusic);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchSingleMusic = async (id: string) => {
+    try {
+      const { data, loading } = await getSingleMusic({ id });
+      isLoading.value = loading;
+      setSingleMusic(data.getSingleMusic);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitAddMusic = async (musicInput: TMusicInput) => {
+    try {
+      const { data } = await addMusic(googleUser.value?.email, { musicInput });
+      const arrCopy = [...music.value];
+      const index = sortedIndexBy(
+        arrCopy,
+        data.addMusic,
+        (obj) => obj["artist"]
+      );
+      arrCopy.splice(index, 0, data.addMusic);
+
+      setMusic(arrCopy);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitDeleteMusic = async (id: string) => {
+    try {
+      const { data } = await deleteMusic(googleUser.value?.email, { id });
+      setMusic(music.value.filter((el) => el._id !== id));
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const submitEditMusic = async (id: string, musicInput: TMusicInput) => {
+    try {
+      const { data } = await editMusic(googleUser.value?.email, {
+        id,
+        musicInput,
+      });
+      setMusic(
+        music.value.map((el) => (el._id === id ? { ...el, ...musicInput } : el))
+      );
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   //* <----- NOTES ----->
   const notes = ref<TNote[]>([]);
   const setNotes = (payload: TNote[]) => {
@@ -603,9 +682,9 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleNote = (payload: TNote) => {
     singleNote.value = payload;
   };
-  const fetchNotes = async () => {
+  const fetchNotes = async (email: string) => {
     try {
-      const { data, loading } = await getAllNotes();
+      const { data, loading } = await getAllNotes(email);
       isLoading.value = loading;
       setNotes(data.getAllNotes);
     } catch (err) {
@@ -771,6 +850,16 @@ export const useMediaStore = defineStore("media", () => {
     submitAddMovie,
     submitDeleteMovie,
     submitEditMovie,
+    //* <----- MUSIC ----->
+    music,
+    setMusic,
+    singleMusic,
+    setSingleMusic,
+    fetchMusic,
+    fetchSingleMusic,
+    submitAddMusic,
+    submitDeleteMusic,
+    submitEditMusic,
     //* <----- NOTES ----->
     notes,
     setNotes,

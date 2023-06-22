@@ -1,17 +1,21 @@
 import { apolloClient } from "@/graphql";
 import gql from "graphql-tag";
 
-export const getAllEmotes = async (userId: string) => {
+export const getAllMusic = async (userId: string) => {
   return await apolloClient.query({
     query: gql`
-      query GetAllEmotes {
-        getAllEmotes {
+      query GetAllMusic {
+        getAllMusic {
+          artist
+          category
           favourites
           _id
           id
+          imageURL
           lastModified
-          name
-          url
+          link
+          owner
+          title
         }
       }
     `,
@@ -23,17 +27,21 @@ export const getAllEmotes = async (userId: string) => {
   });
 };
 
-export const getSingleEmote = async (variables: { id: string }) => {
+export const getSingleMusic = async (variables: { id: string }) => {
   return await apolloClient.query({
     query: gql`
-      query GetSingleEmote($id: ID!) {
-        getSingleEmote(ID: $id) {
+      query GetSingleMusic($id: ID!) {
+        getSingleMusic(ID: $id) {
+          artist
+          category
           favourites
           _id
           id
+          imageURL
           lastModified
-          name
-          url
+          link
+          owner
+          title
         }
       }
     `,

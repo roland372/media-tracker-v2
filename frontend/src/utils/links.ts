@@ -16,6 +16,27 @@ export const navLinks: TNavLinks[] = [
     title: "Anime",
   },
   {
+    name: "BooksPage",
+    route: EUserRole.PROTECTED,
+    url: "/books",
+    text: "Books",
+    title: "Books",
+  },
+  {
+    name: "CharactersPage",
+    route: EUserRole.PROTECTED,
+    url: "/characters",
+    text: "Characters",
+    title: "Characters",
+  },
+  {
+    name: "EmotesPage",
+    route: EUserRole.ADMIN,
+    url: "/emotes",
+    text: "Emotes",
+    title: "Emotes",
+  },
+  {
     name: "GamesPage",
     route: EUserRole.PROTECTED,
     url: "/games",
@@ -30,13 +51,6 @@ export const navLinks: TNavLinks[] = [
     title: "Manga",
   },
   {
-    name: "CharactersPage",
-    route: EUserRole.PROTECTED,
-    url: "/characters",
-    text: "Characters",
-    title: "Characters",
-  },
-  {
     name: "MoviesPage",
     route: EUserRole.PROTECTED,
     url: "/movies",
@@ -44,11 +58,18 @@ export const navLinks: TNavLinks[] = [
     title: "Movies",
   },
   {
-    name: "BooksPage",
+    name: "MusicPage",
     route: EUserRole.PROTECTED,
-    url: "/books",
-    text: "Books",
-    title: "Books",
+    url: "/music",
+    text: "Music",
+    title: "Music",
+  },
+  {
+    name: "NotesPage",
+    route: EUserRole.PROTECTED,
+    url: "/notes",
+    text: "Notes",
+    title: "Notes",
   },
   // {
   //   name: "ChartsPage",
@@ -64,20 +85,6 @@ export const navLinks: TNavLinks[] = [
   //   text: "News",
   //   title: "News",
   // },
-  {
-    name: "NotesPage",
-    route: EUserRole.PROTECTED,
-    url: "/notes",
-    text: "Notes",
-    title: "Notes",
-  },
-  {
-    name: "EmotesPage",
-    route: EUserRole.ADMIN,
-    url: "/emotes",
-    text: "Emotes",
-    title: "Emotes",
-  },
   // {
   //   name: "AboutPage",
   //   route: EUserRole.PROTECTED,
@@ -85,13 +92,13 @@ export const navLinks: TNavLinks[] = [
   //   text: "About",
   //   title: "About",
   // },
-  {
-    name: "ProfilePage",
-    route: EUserRole.PROTECTED,
-    url: "/profile",
-    text: "Profile",
-    title: "Profile",
-  },
+  // {
+  //   name: "ProfilePage",
+  //   route: EUserRole.PROTECTED,
+  //   url: "/profile",
+  //   text: "Profile",
+  //   title: "Profile",
+  // },
 ];
 
 export const usefulLinks = {

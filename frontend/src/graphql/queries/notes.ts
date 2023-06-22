@@ -1,7 +1,7 @@
 import { apolloClient } from "@/graphql";
 import gql from "graphql-tag";
 
-export const getAllNotes = async () => {
+export const getAllNotes = async (userId: string) => {
   return await apolloClient.query({
     query: gql`
       query GetAllNotes {
@@ -15,6 +15,11 @@ export const getAllNotes = async () => {
         }
       }
     `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
   });
 };
 

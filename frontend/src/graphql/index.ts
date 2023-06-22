@@ -56,6 +56,9 @@ export * from "./mutations/manga";
 export * from "./queries/movies";
 export * from "./mutations/movies";
 
+export * from "./queries/music";
+export * from "./mutations/music";
+
 export * from "./queries/notes";
 export * from "./mutations/notes";
 

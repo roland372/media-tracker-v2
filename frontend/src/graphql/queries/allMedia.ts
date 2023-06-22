@@ -124,6 +124,18 @@ export const getAllMedia = async (userId: string) => {
           title
           type
         }
+        getAllMusic {
+          artist
+          category
+          favourites
+          _id
+          id
+          imageURL
+          lastModified
+          link
+          owner
+          title
+        }
         getAllNotes {
           color
           _id

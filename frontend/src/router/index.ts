@@ -20,6 +20,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/login",
   },
   {
+    component: () => import("@/views/ProfilePage.vue"),
+    meta: { title: "Profile" + " | Media-Tracker" },
+    name: "ProfilePage",
+    path: "/profile",
+  },
+  {
     component: () => import("@/views/NotFound.vue"),
     meta: { title: "Not Found" + " | Media-Tracker" },
     name: "NotFound",

@@ -107,7 +107,7 @@ const filteredLinks = computed(() =>
 
 const {
   mdAndUp,
-  // lgAndUp
+  // lgAndUp,
 } = useDisplay();
 const drawer = ref<boolean>(false);
 </script>
