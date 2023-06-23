@@ -360,6 +360,7 @@ export type TMusicInput = {
   category?: EMusicCategory;
   favourites?: boolean;
   imageURL?: string;
+  lastModified?: number;
   link?: string;
   owner: string;
   title: string;

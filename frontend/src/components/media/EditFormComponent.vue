@@ -50,6 +50,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <!-- <v-text-field
@@ -74,6 +75,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-select
@@ -158,6 +160,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <!-- <v-text-field
@@ -182,6 +185,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-select
@@ -290,6 +294,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <!-- <v-text-field
@@ -314,6 +319,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-select
@@ -417,6 +423,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-text-field
@@ -424,6 +431,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <section class="d-flex align-center">
@@ -477,6 +485,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <!-- <v-text-field
@@ -501,6 +510,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-select
@@ -571,6 +581,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <!-- <v-text-field
@@ -595,6 +606,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-select
@@ -679,8 +691,10 @@ import { defineEmits, defineProps, onMounted, reactive, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import {
   digitRegex,
+  emptyURLRules,
   numberRules,
   stringRules,
+  URLRegex,
 } from "@/utils/validations/formValidations";
 import {
   animeStatus,
@@ -768,7 +782,9 @@ const handleSubmitEditAnime = async () => {
   if (
     updatedAnime.title &&
     digitRegex.test(String(updatedAnime.episodesMax)) &&
-    digitRegex.test(String(updatedAnime.episodesMin))
+    digitRegex.test(String(updatedAnime.episodesMin)) &&
+    (!updatedAnime.link1 || URLRegex.test(String(updatedAnime.link1))) &&
+    (!updatedAnime.imageURL || URLRegex.test(String(updatedAnime.imageURL)))
   ) {
     await submitEditAnime(animeRef.value._id, updatedAnime);
     emit("edit");
@@ -796,7 +812,9 @@ const handleSubmitEditBook = async () => {
   if (
     updatedBook.title &&
     updatedBook.author &&
-    digitRegex.test(String(updatedBook.pages))
+    digitRegex.test(String(updatedBook.pages)) &&
+    (!updatedBook.link1 || URLRegex.test(String(updatedBook.link1))) &&
+    (!updatedBook.imageURL || URLRegex.test(String(updatedBook.imageURL)))
   ) {
     await submitEditBook(bookRef.value._id, updatedBook);
     emit("edit");
@@ -818,7 +836,13 @@ const handleSubmitEditCharacter = async () => {
     source: characterRef.value.source,
   });
 
-  if (updatedCharacter.name) {
+  if (
+    updatedCharacter.name &&
+    (!updatedCharacter.link1 ||
+      URLRegex.test(String(updatedCharacter.link1))) &&
+    (!updatedCharacter.imageURL ||
+      URLRegex.test(String(updatedCharacter.imageURL)))
+  ) {
     await submitEditCharacter(characterRef.value._id, updatedCharacter);
     emit("edit");
   }
@@ -841,7 +865,12 @@ const handleSubmitEditGame = async () => {
     type: gameRef.value.type,
   });
 
-  if (updatedGame.title && digitRegex.test(String(updatedGame.playtime))) {
+  if (
+    updatedGame.title &&
+    digitRegex.test(String(updatedGame.playtime)) &&
+    (!updatedGame.link1 || URLRegex.test(String(updatedGame.link1))) &&
+    (!updatedGame.imageURL || URLRegex.test(String(updatedGame.imageURL)))
+  ) {
     await submitEditGame(gameRef.value._id, updatedGame);
     emit("edit");
   }
@@ -878,7 +907,9 @@ const handleSubmitEditManga = async () => {
     digitRegex.test(String(updatedManga.chaptersMax)) &&
     digitRegex.test(String(updatedManga.chaptersMin)) &&
     digitRegex.test(String(updatedManga.volumesMax)) &&
-    digitRegex.test(String(updatedManga.volumesMin))
+    digitRegex.test(String(updatedManga.volumesMin)) &&
+    (!updatedManga.link1 || URLRegex.test(String(updatedManga.link1))) &&
+    (!updatedManga.imageURL || URLRegex.test(String(updatedManga.imageURL)))
   ) {
     await submitEditManga(mangaRef.value._id, updatedManga);
     emit("edit");
@@ -916,7 +947,9 @@ const handleSubmitEditMovie = async () => {
     digitRegex.test(String(updatedMovie.episodesMax)) &&
     digitRegex.test(String(updatedMovie.episodesMin)) &&
     digitRegex.test(String(updatedMovie.seasonsMax)) &&
-    digitRegex.test(String(updatedMovie.seasonsMin))
+    digitRegex.test(String(updatedMovie.seasonsMin)) &&
+    (!updatedMovie.link1 || URLRegex.test(String(updatedMovie.link1))) &&
+    (!updatedMovie.imageURL || URLRegex.test(String(updatedMovie.imageURL)))
   ) {
     await submitEditMovie(movieRef.value._id, updatedMovie);
     emit("edit");

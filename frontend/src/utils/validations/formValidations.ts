@@ -19,3 +19,11 @@ export const URLRules = [
     return "Field must be a valid URL";
   },
 ];
+
+export const emptyURLRules = [
+  (value: string) => {
+    if (!value) return true;
+    if (URLRegex.test(value)) return true;
+    return "Field must be a valid URL";
+  },
+];

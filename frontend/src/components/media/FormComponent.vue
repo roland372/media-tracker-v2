@@ -51,6 +51,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <!-- <v-text-field
@@ -75,6 +76,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-select
@@ -160,6 +162,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <!-- <v-text-field
@@ -184,6 +187,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-select
@@ -293,6 +297,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <!-- <v-text-field
@@ -317,6 +322,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-select
@@ -421,6 +427,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-text-field
@@ -428,6 +435,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <section class="d-flex align-center">
@@ -482,6 +490,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <!-- <v-text-field
@@ -506,6 +515,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-select
@@ -577,6 +587,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Link URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <!-- <v-text-field
@@ -601,6 +612,7 @@
                 density="compact"
                 hide-details="auto"
                 label="Image URL"
+                :rules="emptyURLRules"
                 variant="outlined"
               />
               <v-select
@@ -685,8 +697,10 @@ import { defineEmits, defineProps, reactive } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import {
   digitRegex,
+  emptyURLRules,
   numberRules,
   stringRules,
+  URLRegex,
 } from "@/utils/validations/formValidations";
 import {
   animeStatus,
@@ -844,7 +858,9 @@ const handleSubmitAddAnime = async () => {
   if (
     newAnime.title &&
     digitRegex.test(String(newAnime.episodesMax)) &&
-    digitRegex.test(String(newAnime.episodesMin))
+    digitRegex.test(String(newAnime.episodesMin)) &&
+    (!newAnime.link1 || URLRegex.test(String(newAnime.link1))) &&
+    (!newAnime.imageURL || URLRegex.test(String(newAnime.imageURL)))
   ) {
     await submitAddAnime(newAnime);
     emit("submit");
@@ -855,7 +871,9 @@ const handleSubmitAddBook = async () => {
   if (
     newBook.title &&
     newBook.author &&
-    digitRegex.test(String(newBook.pages))
+    digitRegex.test(String(newBook.pages)) &&
+    (!newBook.link1 || URLRegex.test(String(newBook.link1))) &&
+    (!newBook.imageURL || URLRegex.test(String(newBook.imageURL)))
   ) {
     await submitAddBook(newBook);
     emit("submit");
@@ -863,14 +881,23 @@ const handleSubmitAddBook = async () => {
 };
 
 const handleSubmitAddCharacter = async () => {
-  if (newCharacter.name) {
+  if (
+    newCharacter.name &&
+    (!newCharacter.link1 || URLRegex.test(String(newCharacter.link1))) &&
+    (!newCharacter.imageURL || URLRegex.test(String(newCharacter.imageURL)))
+  ) {
     await submitAddCharacter(newCharacter);
     emit("submit");
   }
 };
 
 const handleSubmitAddGame = async () => {
-  if (newGame.title && digitRegex.test(String(newGame.playtime))) {
+  if (
+    newGame.title &&
+    digitRegex.test(String(newGame.playtime)) &&
+    (!newGame.link1 || URLRegex.test(String(newGame.link1))) &&
+    (!newGame.imageURL || URLRegex.test(String(newGame.imageURL)))
+  ) {
     await submitAddGame(newGame);
     emit("submit");
   }
@@ -882,7 +909,9 @@ const handleSubmitAddManga = async () => {
     digitRegex.test(String(newManga.chaptersMax)) &&
     digitRegex.test(String(newManga.chaptersMin)) &&
     digitRegex.test(String(newManga.volumesMax)) &&
-    digitRegex.test(String(newManga.volumesMin))
+    digitRegex.test(String(newManga.volumesMin)) &&
+    (!newManga.link1 || URLRegex.test(String(newManga.link1))) &&
+    (!newManga.imageURL || URLRegex.test(String(newManga.imageURL)))
   ) {
     await submitAddManga(newManga);
     emit("submit");
@@ -895,7 +924,9 @@ const handleSubmitAddMovie = async () => {
     digitRegex.test(String(newMovie.episodesMax)) &&
     digitRegex.test(String(newMovie.episodesMin)) &&
     digitRegex.test(String(newMovie.seasonsMax)) &&
-    digitRegex.test(String(newMovie.seasonsMin))
+    digitRegex.test(String(newMovie.seasonsMin)) &&
+    (!newMovie.link1 || URLRegex.test(String(newMovie.link1))) &&
+    (!newMovie.imageURL || URLRegex.test(String(newMovie.imageURL)))
   ) {
     await submitAddMovie(newMovie);
     emit("submit");
