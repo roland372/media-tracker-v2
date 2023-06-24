@@ -342,7 +342,7 @@ const handleSubmitEditMusic = async () => {
 
 onMounted(() => console.log(music.value));
 </script>
-<style scoped>
+<!-- <style scoped>
 /* .image-overlay-icon {
   position: absolute;
   right: 5px;
@@ -493,4 +493,4 @@ onMounted(() => console.log(music.value));
     width: 120px;
   }
 }
-</style>
+</style> -->
