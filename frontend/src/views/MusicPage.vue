@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
-      test 8
+      test 9
       <ButtonText
         @click="handleOpenAddMusicModal"
         class="me-2"
@@ -85,6 +85,14 @@
             hide-details="auto"
             label="Image URL"
             :rules="emptyURLRules"
+            variant="outlined"
+          />
+          <v-select
+            v-model="newMusic.category"
+            class="mb-n3"
+            density="compact"
+            :items="musicCategory"
+            label="Select Category"
             variant="outlined"
           />
           <section class="d-flex align-center ms-1 mt-n4 mb-n6">
