@@ -15,7 +15,7 @@
     <h3 v-if="!favouriteMusic.length" class="text-color">
       Not found any items.
     </h3>
-    <section v-else class="d-flex flex-wrap justify-space-between">
+    <!-- <section v-else class="d-flex flex-wrap justify-space-between">
       <div
         v-for="song in allMusic"
         :key="song.id"
@@ -24,7 +24,7 @@
         <div
           class="bg-primary-dark d-flex align-end justify-center flex-grow-1 position-relative rounded"
         >
-          <!-- <v-card class="media-music-card" variant="text">
+          <v-card class="media-music-card" variant="text">
             <v-img
               :alt="song.title"
               :class="
@@ -37,10 +37,10 @@
               <v-card-title>{{ song.artist }}</v-card-title>
               <v-card-subtitle> {{ song.title }}</v-card-subtitle>
             </div>
-          </v-card> -->
+          </v-card>
         </div>
       </div>
-    </section>
+    </section> -->
   </HeaderComponent>
   <HeaderComponent title="All Music">
     <h3 v-if="!allMusic.length" class="text-color">Not found any items.</h3>
