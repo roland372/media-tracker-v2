@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
-      test 2
+      test 3
       <ButtonText
         @click="handleOpenAddMusicModal"
         class="me-2"
@@ -11,7 +11,7 @@
       <ButtonText color="yellow" text="Settings" />
     </section>
   </HeaderComponent>
-  <!-- <HeaderComponent title="Favourite Music">
+  <HeaderComponent title="Favourite Music">
     <h3 v-if="!favouriteMusic.length" class="text-color">
       Not found any items.
     </h3>
@@ -27,9 +27,7 @@
           <v-card class="media-music-card" variant="text">
             <v-img
               :alt="song.title"
-              :class="
-                song.imageURL.includes('youtube') ? null : 'media-music-img'
-              "
+              class="media-music-img"
               :cover="song.imageURL.includes('youtube') ? true : false"
               :src="song.imageURL"
             />
@@ -44,7 +42,7 @@
         </div>
       </div>
     </section>
-  </HeaderComponent> -->
+  </HeaderComponent>
   <HeaderComponent title="All Music">
     <h3 v-if="!allMusic.length" class="text-color">Not found any items.</h3>
   </HeaderComponent>
