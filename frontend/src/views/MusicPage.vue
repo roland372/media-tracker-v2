@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
-      test 6
+      test 7
       <ButtonText
         @click="handleOpenAddMusicModal"
         class="me-2"
@@ -56,8 +56,8 @@
             class="mb-2"
             density="compact"
             hide-details="auto"
-            label="Name"
-            :rules="stringRules('Name')"
+            label="Artist"
+            :rules="stringRules('Artist')"
             variant="outlined"
           />
           <v-text-field
@@ -149,7 +149,7 @@
       </v-form>
     </v-card>
   </v-dialog> -->
-  <v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
+  <!-- <v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
     <v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         Edit Music
@@ -216,7 +216,7 @@
         </v-card-actions>
       </v-form>
     </v-card>
-  </v-dialog>
+  </v-dialog> -->
   <!-- <v-dialog
     v-if="deleteMusicModal"
     v-model="deleteMusicModal"
