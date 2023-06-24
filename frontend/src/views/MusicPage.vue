@@ -95,12 +95,14 @@
             label="Select Category"
             variant="outlined"
           /> -->
-          <select v-model="newMusic.category">
-            <option disabled value="">Please select one</option>
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
-          </select>
+          <v-autocomplete
+            v-model="newMusic.category"
+            class="mb-n7"
+            density="compact"
+            :items="musicCategory"
+            label="Category"
+            variant="outlined"
+          ></v-autocomplete>
           <section class="d-flex align-center ms-1 mt-n4 mb-n6">
             <div>Add to Favourites?</div>
             <v-checkbox v-model="newMusic.favourites" hide-details />
