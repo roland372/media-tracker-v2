@@ -23,10 +23,12 @@
         <div
           class="bg-primary-dark d-flex align-end justify-center flex-grow-1 position-relative rounded"
         >
-          <v-card class="music-card" variant="text">
+          <v-card class="media-music-card" variant="text">
             <v-img
               :alt="song.title"
-              :class="song.imageURL.includes('youtube') ? null : 'music-img'"
+              :class="
+                song.imageURL.includes('youtube') ? null : 'media-music-img'
+              "
               :cover="song.imageURL.includes('youtube') ? true : false"
               :src="song.imageURL"
             />
@@ -351,145 +353,145 @@ onMounted(() => console.log(music.value));
 .delete-dialog-position {
   margin-top: -50vh;
 }
-.music-img {
+.media-music-img {
   max-height: 260px;
 }
-.music-card {
+.media-music-card {
   max-width: 350px;
 }
 @media (max-width: 3250px) {
-  .music-img {
+  .media-music-img {
     max-height: 260px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 350px;
   }
 }
 @media (max-width: 2560px) {
-  .music-img {
+  .media-music-img {
     max-height: 210px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 280px;
   }
 }
 @media (max-width: 2550px) {
-  .music-img {
+  .media-music-img {
     max-height: 210px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 280px;
   }
 }
 @media (max-width: 1920px) {
-  .music-img {
+  .media-music-img {
     max-height: 205px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 275px;
   }
 }
 @media (max-width: 1440px) {
-  .music-img {
+  .media-music-img {
     max-height: 260px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 350px;
   }
 }
 @media (max-width: 1280px) {
-  .music-img {
+  .media-music-img {
     max-height: 200px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 270px;
   }
 }
 @media (max-width: 1024px) {
-  .music-img {
+  .media-music-img {
     max-height: 270px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 400px;
   }
 }
 @media (max-width: 960px) {
-  .music-img {
+  .media-music-img {
     max-height: 270px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 370px;
   }
 }
 @media (max-width: 880px) {
-  .music-img {
+  .media-music-img {
     max-height: 255px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 340px;
   }
 }
 @media (max-width: 768px) {
-  .music-img {
+  .media-music-img {
     max-height: 230px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 310px;
   }
 }
 @media (max-width: 700px) {
-  .music-img {
+  .media-music-img {
     max-height: 205px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 275px;
   }
 }
 @media (max-width: 630px) {
-  .music-img {
+  .media-music-img {
     max-height: 185px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 250px;
   }
 }
 @media (max-width: 580px) {
-  .music-img {
+  .media-music-img {
     max-height: 155px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 210px;
   }
 }
 @media (max-width: 500px) {
-  .music-img {
+  .media-music-img {
     max-height: 125px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 170px;
   }
 }
 @media (max-width: 425px) {
-  .music-img {
+  .media-music-img {
     max-height: 110px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 145px;
   }
 }
 @media (max-width: 375px) {
-  .music-img {
+  .media-music-img {
     max-height: 90px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 120px;
   }
 }
 @media (max-width: 320px) {
-  .music-img {
+  .media-music-img {
     max-height: 90px;
   }
-  .music-card {
+  .media-music-card {
     max-width: 120px;
   }
 }
