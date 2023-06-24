@@ -625,54 +625,56 @@
                 label="Status"
                 variant="outlined"
               />
-              <section class="d-flex align-center me-n2">
-                <div class="pe-2">Episodes</div>
-                <v-text-field
-                  v-model.number="movieRef.episodesMin"
-                  density="compact"
-                  hide-details="auto"
-                  label="Min"
-                  maxlength="4"
-                  :rules="numberRules"
-                  style="max-width: 50%"
-                  variant="outlined"
-                />
-                <v-text-field
-                  v-model.number="movieRef.episodesMax"
-                  class="mx-2"
-                  density="compact"
-                  hide-details="auto"
-                  label="Max"
-                  maxlength="4"
-                  :rules="numberRules"
-                  style="max-width: 50%"
-                  variant="outlined"
-                />
-              </section>
-              <section class="d-flex align-center mt-3 me-n2">
-                <div class="pe-2">Seasons</div>
-                <v-text-field
-                  v-model.number="movieRef.seasonsMin"
-                  density="compact"
-                  hide-details="auto"
-                  label="Min"
-                  maxlength="4"
-                  :rules="numberRules"
-                  style="max-width: 50%"
-                  variant="outlined"
-                />
-                <v-text-field
-                  v-model.number="movieRef.seasonsMax"
-                  class="mx-2"
-                  density="compact"
-                  hide-details="auto"
-                  label="Max"
-                  maxlength="4"
-                  :rules="numberRules"
-                  style="max-width: 50%"
-                  variant="outlined"
-                />
-              </section>
+              <div v-if="movieRef.type === EMovieType.TV_SHOW">
+                <section class="d-flex align-center me-n2">
+                  <div class="pe-2">Episodes</div>
+                  <v-text-field
+                    v-model.number="movieRef.episodesMin"
+                    density="compact"
+                    hide-details="auto"
+                    label="Min"
+                    maxlength="4"
+                    :rules="numberRules"
+                    style="max-width: 50%"
+                    variant="outlined"
+                  />
+                  <v-text-field
+                    v-model.number="movieRef.episodesMax"
+                    class="mx-2"
+                    density="compact"
+                    hide-details="auto"
+                    label="Max"
+                    maxlength="4"
+                    :rules="numberRules"
+                    style="max-width: 50%"
+                    variant="outlined"
+                  />
+                </section>
+                <section class="d-flex align-center mt-3 me-n2">
+                  <div class="pe-2">Seasons</div>
+                  <v-text-field
+                    v-model.number="movieRef.seasonsMin"
+                    density="compact"
+                    hide-details="auto"
+                    label="Min"
+                    maxlength="4"
+                    :rules="numberRules"
+                    style="max-width: 50%"
+                    variant="outlined"
+                  />
+                  <v-text-field
+                    v-model.number="movieRef.seasonsMax"
+                    class="mx-2"
+                    density="compact"
+                    hide-details="auto"
+                    label="Max"
+                    maxlength="4"
+                    :rules="numberRules"
+                    style="max-width: 50%"
+                    variant="outlined"
+                  />
+                </section>
+              </div>
               <section class="d-flex align-center">
                 <div>Add to Favourites?</div>
                 <v-checkbox v-model="movieRef.favourites" hide-details />
@@ -717,6 +719,7 @@ import {
   EMangaStatus,
   EMediaType,
   EMovieStatus,
+  EMovieType,
   TAnime,
   TAnimeInput,
   TBook,
