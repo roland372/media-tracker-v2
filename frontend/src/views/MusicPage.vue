@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
-      test 3
+      test 2
       <ButtonText
         @click="handleOpenAddMusicModal"
         class="me-2"
@@ -27,16 +27,15 @@
           <v-card class="media-music-card" variant="text">
             <v-img
               :alt="song.title"
-              class="media-music-img"
+              :class="
+                song.imageURL.includes('youtube') ? '' : 'media-music-img'
+              "
               :cover="song.imageURL.includes('youtube') ? true : false"
               :src="song.imageURL"
             />
             <div class="text-start text-color pb-4">
-              <v-card-title> Top western road trips</v-card-title>
-              <v-card-subtitle>
-                1,000 miles of wonder
-                aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</v-card-subtitle
-              >
+              <v-card-title>{{ song.artist }}</v-card-title>
+              <v-card-subtitle> {{ song.title }}</v-card-subtitle>
             </div>
           </v-card>
         </div>
