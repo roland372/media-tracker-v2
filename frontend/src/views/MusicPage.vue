@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
-      test 4
+      test 5
       <ButtonText
         @click="handleOpenAddMusicModal"
         class="me-2"
@@ -15,7 +15,7 @@
     <h3 v-if="!favouriteMusic.length" class="text-color">
       Not found any items.
     </h3>
-    <!-- <section v-else class="d-flex flex-wrap justify-space-between">
+    <section v-else class="d-flex flex-wrap justify-space-between">
       <div
         v-for="song in allMusic"
         :key="song.id"
@@ -40,7 +40,7 @@
           </v-card>
         </div>
       </div>
-    </section> -->
+    </section>
   </HeaderComponent>
   <HeaderComponent title="All Music">
     <h3 v-if="!allMusic.length" class="text-color">Not found any items.</h3>
@@ -342,7 +342,7 @@ const handleSubmitEditMusic = async () => {
 
 onMounted(() => console.log(music.value));
 </script>
-<!-- <style scoped>
+<style scoped>
 /* .image-overlay-icon {
   position: absolute;
   right: 5px;
@@ -493,4 +493,4 @@ onMounted(() => console.log(music.value));
     width: 120px;
   }
 }
-</style> -->
+</style>
