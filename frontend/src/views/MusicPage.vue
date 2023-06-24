@@ -352,145 +352,145 @@ onMounted(() => console.log(music.value));
   margin-top: -50vh;
 }
 .media-music-img {
-  max-height: 260px;
+  height: 260px;
 }
 .media-music-card {
-  max-width: 350px;
+  width: 350px;
 }
 @media (max-width: 3250px) {
   .media-music-img {
-    max-height: 260px;
+    height: 260px;
   }
   .media-music-card {
-    max-width: 350px;
+    width: 350px;
   }
 }
 @media (max-width: 2560px) {
   .media-music-img {
-    max-height: 210px;
+    height: 210px;
   }
   .media-music-card {
-    max-width: 280px;
+    width: 280px;
   }
 }
 @media (max-width: 2550px) {
   .media-music-img {
-    max-height: 210px;
+    height: 210px;
   }
   .media-music-card {
-    max-width: 280px;
+    width: 280px;
   }
 }
 @media (max-width: 1920px) {
   .media-music-img {
-    max-height: 205px;
+    height: 205px;
   }
   .media-music-card {
-    max-width: 275px;
+    width: 275px;
   }
 }
 @media (max-width: 1440px) {
   .media-music-img {
-    max-height: 260px;
+    height: 260px;
   }
   .media-music-card {
-    max-width: 350px;
+    width: 350px;
   }
 }
 @media (max-width: 1280px) {
   .media-music-img {
-    max-height: 200px;
+    height: 200px;
   }
   .media-music-card {
-    max-width: 270px;
+    width: 270px;
   }
 }
 @media (max-width: 1024px) {
   .media-music-img {
-    max-height: 270px;
+    height: 270px;
   }
   .media-music-card {
-    max-width: 400px;
+    width: 400px;
   }
 }
 @media (max-width: 960px) {
   .media-music-img {
-    max-height: 270px;
+    height: 270px;
   }
   .media-music-card {
-    max-width: 370px;
+    width: 370px;
   }
 }
 @media (max-width: 880px) {
   .media-music-img {
-    max-height: 255px;
+    height: 255px;
   }
   .media-music-card {
-    max-width: 340px;
+    width: 340px;
   }
 }
 @media (max-width: 768px) {
   .media-music-img {
-    max-height: 230px;
+    height: 230px;
   }
   .media-music-card {
-    max-width: 310px;
+    width: 310px;
   }
 }
 @media (max-width: 700px) {
   .media-music-img {
-    max-height: 205px;
+    height: 205px;
   }
   .media-music-card {
-    max-width: 275px;
+    width: 275px;
   }
 }
 @media (max-width: 630px) {
   .media-music-img {
-    max-height: 185px;
+    height: 185px;
   }
   .media-music-card {
-    max-width: 250px;
+    width: 250px;
   }
 }
 @media (max-width: 580px) {
   .media-music-img {
-    max-height: 155px;
+    height: 155px;
   }
   .media-music-card {
-    max-width: 210px;
+    width: 210px;
   }
 }
 @media (max-width: 500px) {
   .media-music-img {
-    max-height: 125px;
+    height: 125px;
   }
   .media-music-card {
-    max-width: 170px;
+    width: 170px;
   }
 }
 @media (max-width: 425px) {
   .media-music-img {
-    max-height: 110px;
+    height: 110px;
   }
   .media-music-card {
-    max-width: 145px;
+    width: 145px;
   }
 }
 @media (max-width: 375px) {
   .media-music-img {
-    max-height: 90px;
+    height: 90px;
   }
   .media-music-card {
-    max-width: 120px;
+    width: 120px;
   }
 }
 @media (max-width: 320px) {
   .media-music-img {
-    max-height: 90px;
+    height: 90px;
   }
   .media-music-card {
-    max-width: 120px;
+    width: 120px;
   }
 }
 </style>
