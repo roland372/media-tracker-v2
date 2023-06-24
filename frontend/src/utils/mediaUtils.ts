@@ -135,4 +135,12 @@ export const movieStatus = [
 
 export const movieType = [EMovieType.MOVIE, EMovieType.TV_SHOW];
 
+export const musicCategory = [
+  EMusicCategory.ANIME,
+  EMusicCategory.GAME,
+  EMusicCategory.JAPANESE,
+  EMusicCategory.OTHER,
+  EMusicCategory.TOUHOU,
+];
+
 export const placeholderImg = "https://placehold.co/225x300?text=Image";
