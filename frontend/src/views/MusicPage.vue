@@ -10,8 +10,41 @@
       <ButtonText color="yellow" text="Settings" />
     </section>
   </HeaderComponent>
-  <HeaderComponent title="Favourite Music"> </HeaderComponent>
-  <HeaderComponent title="All Music"> </HeaderComponent>
+  <HeaderComponent title="Favourite Music">
+    <h3 v-if="!favouriteMusic.length" class="text-color">
+      Not found any items.
+    </h3>
+    <section v-else class="d-flex flex-wrap justify-space-between">
+      <div
+        v-for="song in allMusic"
+        :key="song.id"
+        class="d-flex flex-fill align-stretch pa-1"
+      >
+        <div
+          class="bg-primary-dark d-flex align-end justify-center flex-grow-1 position-relative rounded"
+        >
+          <v-card class="music-card" variant="text">
+            <v-img
+              :alt="song.title"
+              :class="song.imageURL.includes('youtube') ? null : 'music-img'"
+              :cover="song.imageURL.includes('youtube') ? true : false"
+              :src="song.imageURL"
+            />
+            <div class="text-start text-color pb-4">
+              <v-card-title> Top western road trips</v-card-title>
+              <v-card-subtitle>
+                1,000 miles of wonder
+                aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</v-card-subtitle
+              >
+            </div>
+          </v-card>
+        </div>
+      </div>
+    </section>
+  </HeaderComponent>
+  <HeaderComponent title="All Music">
+    <h3 v-if="!allMusic.length" class="text-color">Not found any items.</h3>
+  </HeaderComponent>
   <v-dialog v-if="addMusicModal" v-model="addMusicModal" max-width="500">
     <v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Music</div>
@@ -29,7 +62,6 @@
           />
           <v-text-field
             v-model="newMusic.title"
-            autofocus
             class="mb-2"
             density="compact"
             hide-details="auto"
@@ -39,22 +71,34 @@
           />
           <v-text-field
             v-model="newMusic.link"
-            autofocus
             class="mb-2"
             density="compact"
             hide-details="auto"
             label="Link"
+            :rules="emptyURLRules"
             variant="outlined"
           />
           <v-text-field
-            v-model="newMusic.link"
-            autofocus
+            v-model="newMusic.imageURL"
             class="mb-2"
             density="compact"
             hide-details="auto"
-            label="Link"
+            label="Image URL"
+            :rules="emptyURLRules"
             variant="outlined"
           />
+          <v-select
+            v-model="newMusic.category"
+            class="mb-n3"
+            density="compact"
+            :items="musicCategory"
+            label="Select Category"
+            variant="outlined"
+          />
+          <section class="d-flex align-center ms-1 mt-n6 mb-n6">
+            <div>Add to Favourites?</div>
+            <v-checkbox v-model="newMusic.favourites" hide-details />
+          </section>
         </v-card-text>
         <v-card-actions class="d-flex justify-start ms-2 mb-2">
           <ButtonText
@@ -67,6 +111,111 @@
       </v-form>
     </v-card>
   </v-dialog>
+  <v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
+    <v-card>
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">
+        Edit Music
+      </div>
+      <v-form @submit.prevent="handleSubmitEditMusic" validate-on="input">
+        <v-card-text>
+          <v-text-field
+            v-model="musicRef.artist"
+            autofocus
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="Artist"
+            :rules="stringRules('Artist')"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="musicRef.title"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="Title"
+            :rules="stringRules('Title')"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="musicRef.link"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="Link"
+            :rules="emptyURLRules"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="musicRef.imageURL"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="Image URL"
+            :rules="emptyURLRules"
+            variant="outlined"
+          />
+          <v-select
+            v-model="musicRef.category"
+            class="mb-n3"
+            density="compact"
+            :items="musicCategory"
+            label="Select Category"
+            variant="outlined"
+          />
+          <section class="d-flex align-center ms-1 mt-n6 mb-n6">
+            <div>Add to Favourites?</div>
+            <v-checkbox v-model="musicRef.favourites" hide-details />
+          </section>
+        </v-card-text>
+        <v-card-actions class="d-flex justify-start ms-2 mb-2">
+          <ButtonText
+            color="green"
+            text="Add Music"
+            type="submit"
+            variant="flat"
+          />
+        </v-card-actions>
+      </v-form>
+    </v-card>
+  </v-dialog>
+  <v-dialog
+    v-if="deleteMusicModal"
+    v-model="deleteMusicModal"
+    class="delete-dialog-position"
+    max-width="300"
+    ><v-card>
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">
+        Deleting {{ musicRef.artist }} - {{ musicRef.title }}
+      </div>
+      <v-card-text>
+        <p>Are you sure you want to delete this music?</p>
+      </v-card-text>
+      <v-card-actions class="d-flex justify-start mb-2 ms-2">
+        <ButtonText
+          @click="handleDeleteCancel"
+          color="yellow"
+          text="Cancel"
+          variant="flat"
+        />
+        <ButtonText
+          @click="handleDeleteConfirm"
+          color="red"
+          text="Delete"
+          variant="flat"
+        />
+      </v-card-actions> </v-card
+  ></v-dialog>
+  <v-dialog v-if="viewMusicModal" v-model="viewMusicModal" max-width="300"
+    ><v-card>
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">
+        {{ musicRef.artist }} - {{ musicRef.title }}
+      </div>
+      <v-card-text>
+        <p>Are you sure you want to delete this music?</p>
+      </v-card-text>
+    </v-card></v-dialog
+  >
 </template>
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from "vue";
@@ -75,9 +224,10 @@ import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
 import {
   stringRules,
+  emptyURLRules,
   URLRegex,
-  URLRules,
 } from "@/utils/validations/formValidations";
+import { musicCategory } from "@/utils/mediaUtils";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
@@ -165,16 +315,23 @@ const handleOpenEditMusicModal = (id: string, music: TMusic) => {
 };
 
 const handleSubmitAddMusic = async () => {
-  await submitAddMusic(newMusic);
-  snackbar.value = { text: "Music Added", value: true };
-  addMusicModal.value = false;
+  if (
+    newMusic.artist &&
+    newMusic.title &&
+    (!newMusic.link || URLRegex.test(String(newMusic.link))) &&
+    (!newMusic.imageURL || URLRegex.test(String(newMusic.imageURL)))
+  ) {
+    await submitAddMusic(newMusic);
+    snackbar.value = { text: "Music Added", value: true };
+    addMusicModal.value = false;
 
-  newMusic.artist = "";
-  newMusic.category = EMusicCategory.JAPANESE;
-  newMusic.favourites = false;
-  newMusic.imageURL = "";
-  newMusic.link = "";
-  newMusic.title = "";
+    newMusic.artist = "";
+    newMusic.category = EMusicCategory.JAPANESE;
+    newMusic.favourites = false;
+    newMusic.imageURL = "";
+    newMusic.link = "";
+    newMusic.title = "";
+  }
 };
 
 const handleSubmitEditMusic = async () => {
@@ -193,5 +350,150 @@ onMounted(() => console.log(music.value));
 }
 .delete-dialog-position {
   margin-top: -50vh;
+}
+.music-img {
+  max-height: 260px;
+}
+.music-card {
+  max-width: 350px;
+}
+.music-img-card {
+  width: 250px;
+}
+@media (max-width: 3250px) {
+  .music-img {
+    max-height: 260px;
+  }
+  .music-card {
+    max-width: 350px;
+  }
+}
+@media (max-width: 2560px) {
+  .music-img {
+    max-height: 210px;
+  }
+  .music-card {
+    max-width: 280px;
+  }
+}
+@media (max-width: 2550px) {
+  .music-img {
+    max-height: 210px;
+  }
+  .music-card {
+    max-width: 280px;
+  }
+}
+@media (max-width: 1920px) {
+  .music-img {
+    max-height: 205px;
+  }
+  .music-card {
+    max-width: 275px;
+  }
+}
+@media (max-width: 1440px) {
+  .music-img {
+    max-height: 260px;
+  }
+  .music-card {
+    max-width: 350px;
+  }
+}
+@media (max-width: 1280px) {
+  .music-img {
+    max-height: 200px;
+  }
+  .music-card {
+    max-width: 270px;
+  }
+}
+@media (max-width: 1024px) {
+  .music-img {
+    max-height: 270px;
+  }
+  .music-card {
+    max-width: 400px;
+  }
+}
+@media (max-width: 960px) {
+  .music-img {
+    max-height: 270px;
+  }
+  .music-card {
+    max-width: 370px;
+  }
+}
+@media (max-width: 880px) {
+  .music-img {
+    max-height: 255px;
+  }
+  .music-card {
+    max-width: 340px;
+  }
+}
+@media (max-width: 768px) {
+  .music-img {
+    max-height: 230px;
+  }
+  .music-card {
+    max-width: 310px;
+  }
+}
+@media (max-width: 700px) {
+  .music-img {
+    max-height: 205px;
+  }
+  .music-card {
+    max-width: 275px;
+  }
+}
+@media (max-width: 630px) {
+  .music-img {
+    max-height: 185px;
+  }
+  .music-card {
+    max-width: 250px;
+  }
+}
+@media (max-width: 580px) {
+  .music-img {
+    max-height: 155px;
+  }
+  .music-card {
+    max-width: 210px;
+  }
+}
+@media (max-width: 500px) {
+  .music-img {
+    max-height: 125px;
+  }
+  .music-card {
+    max-width: 170px;
+  }
+}
+@media (max-width: 425px) {
+  .music-img {
+    max-height: 110px;
+  }
+  .music-card {
+    max-width: 145px;
+  }
+}
+@media (max-width: 375px) {
+  .music-img {
+    max-height: 90px;
+  }
+  .music-card {
+    max-width: 120px;
+  }
+}
+@media (max-width: 320px) {
+  .music-img {
+    max-height: 90px;
+  }
+  .music-card {
+    max-width: 120px;
+  }
 }
 </style>
