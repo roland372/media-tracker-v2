@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
-      test 2
+      test 3
       <ButtonText
         @click="handleOpenAddMusicModal"
         class="me-2"
@@ -24,7 +24,7 @@
         <div
           class="bg-primary-dark d-flex align-end justify-center flex-grow-1 position-relative rounded"
         >
-          <v-card class="media-music-card" variant="text">
+          <!-- <v-card class="media-music-card" variant="text">
             <v-img
               :alt="song.title"
               :class="
@@ -37,7 +37,7 @@
               <v-card-title>{{ song.artist }}</v-card-title>
               <v-card-subtitle> {{ song.title }}</v-card-subtitle>
             </div>
-          </v-card>
+          </v-card> -->
         </div>
       </div>
     </section>
