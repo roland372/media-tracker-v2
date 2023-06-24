@@ -87,15 +87,32 @@
             :rules="emptyURLRules"
             variant="outlined"
           />
-          <v-select
+          <!-- <v-select
             v-model="newMusic.category"
             class="mb-n3"
             density="compact"
             :items="musicCategory"
             label="Select Category"
-            style="max-width: 50%"
             variant="outlined"
-          />
+          /> -->
+          <!-- <select v-model="newMusic.category" class="v-select">
+            <option disabled value="">Please select one</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+          </select> -->
+          <div class="v-select">
+            <label for="category">Category</label>
+            <select id="category" v-model="newMusic.category">
+              <option
+                v-for="category in musicCategory"
+                :value="category"
+                :key="category"
+              >
+                {{ category }}
+              </option>
+            </select>
+          </div>
           <!-- <v-autocomplete
             v-model="newMusic.category"
             class="mb-n7"
@@ -566,5 +583,31 @@ onMounted(() => console.log(music.value));
   .media-music-card {
     width: 120px;
   }
+}
+
+.v-select {
+  display: inline-block;
+  position: relative;
+}
+
+.v-select label {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  background-color: white;
+  padding: 0 5px;
+}
+
+.v-select select {
+  appearance: none;
+  padding: 8px 32px 8px 10px;
+  border: 1px solid #c4c4c4;
+  border-radius: 4px;
+  background-image: url("https://cdn.jsdelivr.net/npm/material-design-icons/iconfont/material-icons.css");
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 24px;
+  background-color: white;
+  width: 200px;
 }
 </style>
