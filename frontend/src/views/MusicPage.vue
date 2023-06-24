@@ -343,11 +343,11 @@ const handleSubmitEditMusic = async () => {
 onMounted(() => console.log(music.value));
 </script>
 <style scoped>
-.image-overlay-icon {
+/* .image-overlay-icon {
   position: absolute;
   right: 5px;
   top: 5px;
-}
+} */
 .delete-dialog-position {
   margin-top: -50vh;
 }
@@ -356,9 +356,6 @@ onMounted(() => console.log(music.value));
 }
 .music-card {
   max-width: 350px;
-}
-.music-img-card {
-  width: 250px;
 }
 @media (max-width: 3250px) {
   .music-img {
