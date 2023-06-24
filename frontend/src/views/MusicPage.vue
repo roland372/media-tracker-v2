@@ -1,7 +1,6 @@
 <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
-      test 9
       <ButtonText
         @click="handleOpenAddMusicModal"
         class="me-2"
@@ -80,30 +79,28 @@
           />
           <v-text-field
             v-model="newMusic.imageURL"
-            class="mb-2"
+            class="mb-3"
             density="compact"
             hide-details="auto"
             label="Image URL"
             :rules="emptyURLRules"
             variant="outlined"
           />
-          <!-- <v-select
-            v-model="newMusic.category"
-            class="mb-n3"
-            density="compact"
-            :items="musicCategory"
-            label="Select Category"
-            variant="outlined"
-          /> -->
-          <!-- <select v-model="newMusic.category" class="v-select">
-            <option disabled value="">Please select one</option>
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
-          </select> -->
           <div class="v-select">
-            <label for="category">Category</label>
-            <select id="category" v-model="newMusic.category">
+            <label
+              for="category"
+              :class="{
+                'select-text-gray': !selectActive,
+                'select-text-black': selectActive,
+              }"
+              >Category</label
+            >
+            <select
+              id="category"
+              v-model="newMusic.category"
+              @focus="selectActive = true"
+              @blur="selectActive = false"
+            >
               <option
                 v-for="category in musicCategory"
                 :value="category"
@@ -113,80 +110,15 @@
               </option>
             </select>
           </div>
-          <!-- <v-autocomplete
-            v-model="newMusic.category"
-            class="mb-n7"
-            density="compact"
-            :items="musicCategory"
-            label="Category"
-            variant="outlined"
-          ></v-autocomplete> -->
-          <section class="d-flex align-center ms-1 mt-n4 mb-n6">
-            <div>Add to Favourites?</div>
-            <v-checkbox v-model="newMusic.favourites" hide-details />
-          </section>
-        </v-card-text>
-        <v-card-actions class="d-flex justify-start ms-2 mb-2">
-          <ButtonText
-            color="green"
-            text="Add Emote"
-            type="submit"
-            variant="flat"
-          />
-        </v-card-actions>
-      </v-form> </v-card
-  ></v-dialog>
-  <!-- <v-dialog v-if="addMusicModal" v-model="addMusicModal" max-width="500">
-    <v-card>
-      <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Music</div>
-      <v-form @submit.prevent="handleSubmitAddMusic" validate-on="input">
-        <v-card-text>
-          <v-text-field
-            v-model="newMusic.artist"
-            autofocus
-            class="mb-2"
-            density="compact"
-            hide-details="auto"
-            label="Artist"
-            :rules="stringRules('Artist')"
-            variant="outlined"
-          />
-          <v-text-field
-            v-model="newMusic.title"
-            class="mb-2"
-            density="compact"
-            hide-details="auto"
-            label="Title"
-            :rules="stringRules('Title')"
-            variant="outlined"
-          />
-          <v-text-field
-            v-model="newMusic.link"
-            class="mb-2"
-            density="compact"
-            hide-details="auto"
-            label="Link"
-            :rules="emptyURLRules"
-            variant="outlined"
-          />
-          <v-text-field
-            v-model="newMusic.imageURL"
-            class="mb-2"
-            density="compact"
-            hide-details="auto"
-            label="Image URL"
-            :rules="emptyURLRules"
-            variant="outlined"
-          />
-          <v-select
+          <!-- <v-select
             v-model="newMusic.category"
             class="mb-n3"
             density="compact"
             :items="musicCategory"
             label="Select Category"
             variant="outlined"
-          />
-          <section class="d-flex align-center ms-1 mt-n6 mb-n6">
+          /> -->
+          <section class="d-flex align-center ms-1 mt-n2 mb-n6">
             <div>Add to Favourites?</div>
             <v-checkbox v-model="newMusic.favourites" hide-details />
           </section>
@@ -199,10 +131,9 @@
             variant="flat"
           />
         </v-card-actions>
-      </v-form>
-    </v-card>
-  </v-dialog> -->
-  <!-- <v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
+      </v-form> </v-card
+  ></v-dialog>
+  <v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
     <v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         Edit Music
@@ -246,14 +177,38 @@
             :rules="emptyURLRules"
             variant="outlined"
           />
-          <v-select
+          <!-- <v-select
             v-model="musicRef.category"
             class="mb-n3"
             density="compact"
             :items="musicCategory"
             label="Select Category"
             variant="outlined"
-          />
+          /> -->
+          <div class="v-select">
+            <label
+              for="category"
+              :class="{
+                'select-text-gray': !selectActive,
+                'select-text-black': selectActive,
+              }"
+              >Category</label
+            >
+            <select
+              id="category"
+              v-model="musicRef.category"
+              @focus="selectActive = true"
+              @blur="selectActive = false"
+            >
+              <option
+                v-for="category in musicCategory"
+                :value="category"
+                :key="category"
+              >
+                {{ category }}
+              </option>
+            </select>
+          </div>
           <section class="d-flex align-center ms-1 mt-n6 mb-n6">
             <div>Add to Favourites?</div>
             <v-checkbox v-model="musicRef.favourites" hide-details />
@@ -269,8 +224,8 @@
         </v-card-actions>
       </v-form>
     </v-card>
-  </v-dialog> -->
-  <!-- <v-dialog
+  </v-dialog>
+  <v-dialog
     v-if="deleteMusicModal"
     v-model="deleteMusicModal"
     class="delete-dialog-position"
@@ -296,8 +251,8 @@
           variant="flat"
         />
       </v-card-actions> </v-card
-  ></v-dialog> -->
-  <!-- <v-dialog v-if="viewMusicModal" v-model="viewMusicModal" max-width="300"
+  ></v-dialog>
+  <v-dialog v-if="viewMusicModal" v-model="viewMusicModal" max-width="300"
     ><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         {{ musicRef.artist }} - {{ musicRef.title }}
@@ -306,7 +261,7 @@
         <p>Are you sure you want to delete this music?</p>
       </v-card-text>
     </v-card></v-dialog
-  > -->
+  >
 </template>
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from "vue";
@@ -348,6 +303,7 @@ const editMusicModal = ref<boolean>(false);
 const musicID = ref<string>("");
 const musicRef = ref<TMusicInput>(newMusic);
 const musicSearch = ref<string>("");
+const selectActive = ref<boolean>(false);
 const viewMusicModal = ref<boolean>(false);
 
 const snackbar = ref({
@@ -434,6 +390,35 @@ const handleSubmitEditMusic = async () => {
 onMounted(() => console.log(music.value));
 </script>
 <style scoped>
+.v-select {
+  display: inline-block;
+  position: relative;
+}
+.v-select label {
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  background-color: white;
+  padding: 0 5px;
+}
+.v-select select {
+  appearance: none;
+  padding: 8px 32px 8px 10px;
+  border: 1px solid #c4c4c4;
+  border-radius: 4px;
+  background-image: url("https://cdn.jsdelivr.net/npm/material-design-icons/iconfont/material-icons.css");
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 24px;
+  background-color: white;
+  width: 200px;
+}
+.select-text-gray {
+  color: gray;
+}
+.select-text-black {
+  color: black;
+}
 /* .image-overlay-icon {
   position: absolute;
   right: 5px;
@@ -583,31 +568,5 @@ onMounted(() => console.log(music.value));
   .media-music-card {
     width: 120px;
   }
-}
-
-.v-select {
-  display: inline-block;
-  position: relative;
-}
-
-.v-select label {
-  position: absolute;
-  top: -10px;
-  left: 10px;
-  background-color: white;
-  padding: 0 5px;
-}
-
-.v-select select {
-  appearance: none;
-  padding: 8px 32px 8px 10px;
-  border: 1px solid #c4c4c4;
-  border-radius: 4px;
-  background-image: url("https://cdn.jsdelivr.net/npm/material-design-icons/iconfont/material-icons.css");
-  background-repeat: no-repeat;
-  background-position: right center;
-  background-size: 24px;
-  background-color: white;
-  width: 200px;
 }
 </style>
