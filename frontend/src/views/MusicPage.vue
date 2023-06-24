@@ -87,22 +87,23 @@
             :rules="emptyURLRules"
             variant="outlined"
           />
-          <!-- <v-select
+          <v-select
             v-model="newMusic.category"
             class="mb-n3"
             density="compact"
             :items="musicCategory"
             label="Select Category"
+            style="max-width: 50%"
             variant="outlined"
-          /> -->
-          <v-autocomplete
+          />
+          <!-- <v-autocomplete
             v-model="newMusic.category"
             class="mb-n7"
             density="compact"
             :items="musicCategory"
             label="Category"
             variant="outlined"
-          ></v-autocomplete>
+          ></v-autocomplete> -->
           <section class="d-flex align-center ms-1 mt-n4 mb-n6">
             <div>Add to Favourites?</div>
             <v-checkbox v-model="newMusic.favourites" hide-details />
