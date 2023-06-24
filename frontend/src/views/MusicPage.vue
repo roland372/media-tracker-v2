@@ -45,7 +45,45 @@
   <HeaderComponent title="All Music">
     <h3 v-if="!allMusic.length" class="text-color">Not found any items.</h3>
   </HeaderComponent>
-  <v-dialog v-if="addMusicModal" v-model="addMusicModal" max-width="500">
+  <v-dialog v-if="addMusicModal" v-model="addMusicModal" max-width="500"
+    ><v-card>
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Emote</div>
+      <v-form @submit.prevent="handleSubmitAddMusic" validate-on="input">
+        <v-card-text>
+          <v-text-field
+            v-model="newMusic.artist"
+            autofocus
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="Name"
+            :rules="stringRules('Name')"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="newMusic.link"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="URL"
+            variant="outlined"
+          />
+          <section class="d-flex align-center ms-1 mt-n4 mb-n6">
+            <div>Add to Favourites?</div>
+            <v-checkbox v-model="newMusic.favourites" hide-details />
+          </section>
+        </v-card-text>
+        <v-card-actions class="d-flex justify-start ms-2 mb-2">
+          <ButtonText
+            color="green"
+            text="Add Emote"
+            type="submit"
+            variant="flat"
+          />
+        </v-card-actions>
+      </v-form> </v-card
+  ></v-dialog>
+  <!-- <v-dialog v-if="addMusicModal" v-model="addMusicModal" max-width="500">
     <v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Music</div>
       <v-form @submit.prevent="handleSubmitAddMusic" validate-on="input">
@@ -110,7 +148,7 @@
         </v-card-actions>
       </v-form>
     </v-card>
-  </v-dialog>
+  </v-dialog> -->
   <!-- <v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
     <v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
