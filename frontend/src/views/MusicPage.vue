@@ -1,4 +1,5 @@
-<template>
+<template>music</template>
+<!-- <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
       <ButtonText
@@ -495,4 +496,4 @@ onMounted(() => console.log(music.value));
     max-width: 120px;
   }
 } */
-</style>
+</style> -->
