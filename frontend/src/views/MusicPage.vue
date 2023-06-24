@@ -5,7 +5,7 @@
         @click="handleOpenAddMusicModal"
         class="me-2"
         color="indigo"
-        text="Add Music"
+        text="Add Song"
       />
       <ButtonText color="yellow" text="Settings" />
     </section>
@@ -14,6 +14,65 @@
     <h3 v-if="!favouriteMusic.length" class="text-color">
       Not found any items.
     </h3>
+    <section v-else class="d-flex flex-wrap justify-space-between">
+      <div
+        v-for="song in favouriteMusic"
+        :key="song.id"
+        class="d-flex flex-fill align-stretch pa-1"
+      >
+        <div
+          class="bg-primary-dark d-flex align-end justify-center flex-grow-1 position-relative rounded"
+        >
+          <v-card class="media-music-card" variant="text">
+            <v-img
+              @click="handleOpenViewMusicModal(song._id, song)"
+              :alt="song.title"
+              :class="
+                song.imageURL.includes('youtube') ? '' : 'media-music-img'
+              "
+              class="image-hover"
+              :cover="song.imageURL.includes('youtube') ? true : false"
+              :src="song.imageURL || placeholderMusicImg"
+            />
+            <v-icon
+              v-if="song.favourites"
+              class="image-overlay-icon"
+              color="yellow-accent-4"
+              icon="mdi-star"
+            />
+            <div class="text-start text-color pb-4">
+              <v-card-title>{{ song.artist }}</v-card-title>
+              <v-card-subtitle> {{ song.title }}</v-card-subtitle>
+            </div>
+          </v-card>
+        </div>
+      </div>
+    </section>
+    <ButtonText
+      v-if="favouriteMusicCount.length > 20"
+      @click="displayFavouriteMusic"
+      :append-icon="
+        displayFavouriteMusicFlag === 20
+          ? 'mdi-arrow-down-bold'
+          : 'mdi-arrow-up-bold'
+      "
+      class="mt-3"
+      color="indigo"
+      :text="displayFavouriteMusicFlag === 20 ? 'Display All' : 'Display Less'"
+    />
+  </HeaderComponent>
+  <HeaderComponent title="All Music">
+    <v-text-field
+      v-model="musicSearch"
+      @click:clear="() => (musicSearch = '')"
+      clearable
+      class="mb-2 text-color"
+      density="compact"
+      hide-details="auto"
+      label="Search for a Song"
+      variant="outlined"
+    />
+    <h3 v-if="!allMusic.length" class="text-color">Not found any items.</h3>
     <section v-else class="d-flex flex-wrap justify-space-between">
       <div
         v-for="song in allMusic"
@@ -25,12 +84,20 @@
         >
           <v-card class="media-music-card" variant="text">
             <v-img
+              @click="handleOpenViewMusicModal(song._id, song)"
               :alt="song.title"
               :class="
                 song.imageURL.includes('youtube') ? '' : 'media-music-img'
               "
+              class="image-hover"
               :cover="song.imageURL.includes('youtube') ? true : false"
-              :src="song.imageURL"
+              :src="song.imageURL || placeholderMusicImg"
+            />
+            <v-icon
+              v-if="song.favourites"
+              class="image-overlay-icon"
+              color="yellow-accent-4"
+              icon="mdi-star"
             />
             <div class="text-start text-color pb-4">
               <v-card-title>{{ song.artist }}</v-card-title>
@@ -40,13 +107,20 @@
         </div>
       </div>
     </section>
-  </HeaderComponent>
-  <HeaderComponent title="All Music">
-    <h3 v-if="!allMusic.length" class="text-color">Not found any items.</h3>
+    <ButtonText
+      v-if="music.length > 20"
+      @click="displayMusic"
+      :append-icon="
+        displayMusicFlag === 20 ? 'mdi-arrow-down-bold' : 'mdi-arrow-up-bold'
+      "
+      class="mt-3"
+      color="indigo"
+      :text="displayMusicFlag === 20 ? 'Display All' : 'Display Less'"
+    />
   </HeaderComponent>
   <v-dialog v-if="addMusicModal" v-model="addMusicModal" max-width="500"
     ><v-card>
-      <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Emote</div>
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Song</div>
       <v-form @submit.prevent="handleSubmitAddMusic" validate-on="input">
         <v-card-text>
           <v-text-field
@@ -126,7 +200,7 @@
         <v-card-actions class="d-flex justify-start ms-2 mb-2">
           <ButtonText
             color="green"
-            text="Add Music"
+            text="Add Song"
             type="submit"
             variant="flat"
           />
@@ -135,9 +209,7 @@
   ></v-dialog>
   <v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
     <v-card>
-      <div class="bg-primary-light text-color px-5 py-3 text-h6">
-        Edit Music
-      </div>
+      <div class="bg-primary-light text-color px-5 py-3 text-h6">Edit Song</div>
       <v-form @submit.prevent="handleSubmitEditMusic" validate-on="input">
         <v-card-text>
           <v-text-field
@@ -170,7 +242,7 @@
           />
           <v-text-field
             v-model="musicRef.imageURL"
-            class="mb-2"
+            class="mb-3"
             density="compact"
             hide-details="auto"
             label="Image URL"
@@ -209,15 +281,15 @@
               </option>
             </select>
           </div>
-          <section class="d-flex align-center ms-1 mt-n6 mb-n6">
+          <section class="d-flex align-center ms-1 mt-n2 mb-n6">
             <div>Add to Favourites?</div>
             <v-checkbox v-model="musicRef.favourites" hide-details />
           </section>
         </v-card-text>
         <v-card-actions class="d-flex justify-start ms-2 mb-2">
           <ButtonText
-            color="green"
-            text="Add Music"
+            color="yellow"
+            text="Update"
             type="submit"
             variant="flat"
           />
@@ -235,7 +307,7 @@
         Deleting {{ musicRef.artist }} - {{ musicRef.title }}
       </div>
       <v-card-text>
-        <p>Are you sure you want to delete this music?</p>
+        <p>Are you sure you want to delete this song?</p>
       </v-card-text>
       <v-card-actions class="d-flex justify-start mb-2 ms-2">
         <ButtonText
@@ -252,19 +324,43 @@
         />
       </v-card-actions> </v-card
   ></v-dialog>
-  <v-dialog v-if="viewMusicModal" v-model="viewMusicModal" max-width="300"
+  <v-dialog v-if="viewMusicModal" v-model="viewMusicModal" max-width="500"
     ><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         {{ musicRef.artist }} - {{ musicRef.title }}
       </div>
-      <v-card-text>
-        <p>Are you sure you want to delete this music?</p>
-      </v-card-text>
-    </v-card></v-dialog
-  >
+      <div class="d-sm-flex align-start">
+        <v-img
+          class="rounded ms-2 me-2 me-sm-0 mt-2"
+          :src="musicRef.imageURL || placeholderMusicImg"
+        />
+        <v-card-text style="max-width: 200px">
+          <div><b>Category:</b> {{ musicRef.category }}</div>
+          <div>
+            <b>Link: </b>
+            <a :href="musicRef.link" target="_blank">{{ displayLinkText() }}</a>
+          </div>
+        </v-card-text>
+      </div>
+      <v-card-actions class="d-flex justify-start">
+        <ButtonText
+          @click="handleOpenEditMusicModal"
+          color="green"
+          text="Edit"
+          variant="flat"
+        />
+        <ButtonText
+          @click="handleOpenDeleteMusicModal"
+          color="red"
+          text="Delete"
+          variant="flat"
+        />
+      </v-card-actions> </v-card
+  ></v-dialog>
+  <SnackbarComponent v-model="snackbar.value" :text="snackbar.text" />
 </template>
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
@@ -273,8 +369,7 @@ import {
   emptyURLRules,
   URLRegex,
 } from "@/utils/validations/formValidations";
-import { musicCategory } from "@/utils/mediaUtils";
-import ButtonIcon from "@/components/ui/ButtonIcon.vue";
+import { musicCategory, placeholderMusicImg } from "@/utils/mediaUtils";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
@@ -299,6 +394,7 @@ const newMusic: TMusicInput = reactive({
 const addMusicModal = ref<boolean>(false);
 const deleteMusicModal = ref<boolean>(false);
 const displayMusicFlag = ref<number>(20);
+const displayFavouriteMusicFlag = ref<number>(20);
 const editMusicModal = ref<boolean>(false);
 const musicID = ref<string>("");
 const musicRef = ref<TMusicInput>(newMusic);
@@ -311,9 +407,27 @@ const snackbar = ref({
   value: false,
 });
 
-const allMusic = music.value;
+const allMusic = computed(() =>
+  orderBy(music.value, ["artist", "title"], ["asc", "asc"])
+    .filter((el) => {
+      const searchTermMatch =
+        el.artist.toLowerCase().includes(musicSearch.value.toLowerCase()) ||
+        el.title.toLowerCase().includes(musicSearch.value.toLowerCase());
+
+      return searchTermMatch;
+    })
+    .slice(0, displayMusicFlag.value)
+);
+
 const favouriteMusic = computed(() =>
-  orderBy(filter(music.value, { favourites: true }), ["artist"], ["asc"])
+  orderBy(filter(music.value, { favourites: true }), ["artist"], ["asc"]).slice(
+    0,
+    displayFavouriteMusicFlag.value
+  )
+);
+
+const favouriteMusicCount = computed(() =>
+  filter(music.value, { favourites: true })
 );
 
 const handleDeleteCancel = () => {
@@ -322,9 +436,19 @@ const handleDeleteCancel = () => {
 
 const handleDeleteConfirm = async () => {
   await submitDeleteMusic(musicID.value);
-  snackbar.value = { text: "Music Deleted", value: true };
+  snackbar.value = { text: "Song Deleted", value: true };
   musicID.value = "";
   deleteMusicModal.value = false;
+};
+
+const displayLinkText = () => {
+  if (musicRef.value.link?.toLowerCase().includes("youtube")) {
+    return "YouTube";
+  } else if (musicRef.value.link?.toLowerCase().includes("spotify")) {
+    return "Spotify";
+  } else {
+    return "Link";
+  }
 };
 
 const displayMusic = () => {
@@ -333,31 +457,42 @@ const displayMusic = () => {
     : (displayMusicFlag.value = 20);
 };
 
+const displayFavouriteMusic = () => {
+  displayFavouriteMusicFlag.value === 20
+    ? (displayFavouriteMusicFlag.value = favouriteMusicCount.value.length)
+    : (displayFavouriteMusicFlag.value = 20);
+};
+
 const handleOpenAddMusicModal = () => {
   addMusicModal.value = !addMusicModal.value;
 };
 
-const handleOpenDeleteMusicModal = (id: string, music: TMusic) => {
+const handleOpenDeleteMusicModal = () => {
+  viewMusicModal.value = false;
   deleteMusicModal.value = !deleteMusicModal.value;
-
-  musicID.value = id;
-  musicRef.value = music;
 };
 
-const handleOpenEditMusicModal = (id: string, music: TMusic) => {
+const handleOpenEditMusicModal = () => {
+  viewMusicModal.value = false;
   editMusicModal.value = !editMusicModal.value;
 
   const updatedMusic: TMusicInput = reactive({
-    artist: music.artist,
-    category: music.category,
-    favourites: music.favourites,
-    imageURL: music.imageURL,
+    artist: musicRef.value.artist,
+    category: musicRef.value.category,
+    favourites: musicRef.value.favourites,
+    imageURL: musicRef.value.imageURL,
     lastModified: Date.now(),
-    link: music.link,
+    link: musicRef.value.link,
     owner: userFromDB?.email as string,
-    title: music.title,
+    title: musicRef.value.title,
   });
+
   musicRef.value = updatedMusic;
+};
+
+const handleOpenViewMusicModal = (id: string, song: TMusic) => {
+  viewMusicModal.value = !viewMusicModal.value;
+  musicRef.value = song;
   musicID.value = id;
 };
 
@@ -369,7 +504,7 @@ const handleSubmitAddMusic = async () => {
     (!newMusic.imageURL || URLRegex.test(String(newMusic.imageURL)))
   ) {
     await submitAddMusic(newMusic);
-    snackbar.value = { text: "Music Added", value: true };
+    snackbar.value = { text: "Song Added", value: true };
     addMusicModal.value = false;
 
     newMusic.artist = "";
@@ -382,12 +517,17 @@ const handleSubmitAddMusic = async () => {
 };
 
 const handleSubmitEditMusic = async () => {
-  await submitEditMusic(musicID.value, musicRef.value);
-  snackbar.value = { text: "Music Updated", value: true };
-  editMusicModal.value = false;
+  if (
+    musicRef.value.artist &&
+    musicRef.value.title &&
+    (!musicRef.value.link || URLRegex.test(String(musicRef.value.link))) &&
+    (!musicRef.value.imageURL || URLRegex.test(String(musicRef.value.imageURL)))
+  ) {
+    await submitEditMusic(musicID.value, musicRef.value);
+    snackbar.value = { text: "Song Updated", value: true };
+    editMusicModal.value = false;
+  }
 };
-
-onMounted(() => console.log(music.value));
 </script>
 <style scoped>
 .v-select {
@@ -419,11 +559,11 @@ onMounted(() => console.log(music.value));
 .select-text-black {
   color: black;
 }
-/* .image-overlay-icon {
+.image-overlay-icon {
   position: absolute;
   right: 5px;
   top: 5px;
-} */
+}
 .delete-dialog-position {
   margin-top: -50vh;
 }

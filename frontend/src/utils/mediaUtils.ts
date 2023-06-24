@@ -144,3 +144,4 @@ export const musicCategory = [
 ];
 
 export const placeholderImg = "https://placehold.co/225x300?text=Image";
+export const placeholderMusicImg = "https://placehold.co/600x400";
