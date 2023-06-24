@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
-      test 7
+      test 8
       <ButtonText
         @click="handleOpenAddMusicModal"
         class="me-2"
@@ -61,11 +61,30 @@
             variant="outlined"
           />
           <v-text-field
+            v-model="newMusic.title"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="Title"
+            :rules="stringRules('Title')"
+            variant="outlined"
+          />
+          <v-text-field
             v-model="newMusic.link"
             class="mb-2"
             density="compact"
             hide-details="auto"
-            label="URL"
+            label="Link"
+            :rules="emptyURLRules"
+            variant="outlined"
+          />
+          <v-text-field
+            v-model="newMusic.imageURL"
+            class="mb-2"
+            density="compact"
+            hide-details="auto"
+            label="Image URL"
+            :rules="emptyURLRules"
             variant="outlined"
           />
           <section class="d-flex align-center ms-1 mt-n4 mb-n6">
