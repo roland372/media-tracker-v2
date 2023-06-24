@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
-      test 1
+      test 2
       <ButtonText
         @click="handleOpenAddMusicModal"
         class="me-2"
@@ -11,7 +11,7 @@
       <ButtonText color="yellow" text="Settings" />
     </section>
   </HeaderComponent>
-  <HeaderComponent title="Favourite Music">
+  <!-- <HeaderComponent title="Favourite Music">
     <h3 v-if="!favouriteMusic.length" class="text-color">
       Not found any items.
     </h3>
@@ -44,7 +44,7 @@
         </div>
       </div>
     </section>
-  </HeaderComponent>
+  </HeaderComponent> -->
   <HeaderComponent title="All Music">
     <h3 v-if="!allMusic.length" class="text-color">Not found any items.</h3>
   </HeaderComponent>
