@@ -350,7 +350,7 @@ onMounted(() => console.log(music.value));
   right: 5px;
   top: 5px;
 } */
-.delete-dialog-position {
+/* .delete-dialog-position {
   margin-top: -50vh;
 }
 .media-music-img {
@@ -494,5 +494,5 @@ onMounted(() => console.log(music.value));
   .media-music-card {
     max-width: 120px;
   }
-}
+} */
 </style>
