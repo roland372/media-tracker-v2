@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
-      test 5
+      test 6
       <ButtonText
         @click="handleOpenAddMusicModal"
         class="me-2"
@@ -45,7 +45,7 @@
   <HeaderComponent title="All Music">
     <h3 v-if="!allMusic.length" class="text-color">Not found any items.</h3>
   </HeaderComponent>
-  <!-- <v-dialog v-if="addMusicModal" v-model="addMusicModal" max-width="500">
+  <v-dialog v-if="addMusicModal" v-model="addMusicModal" max-width="500">
     <v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Music</div>
       <v-form @submit.prevent="handleSubmitAddMusic" validate-on="input">
@@ -111,7 +111,7 @@
       </v-form>
     </v-card>
   </v-dialog>
-  <v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
+  <!-- <v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
     <v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         Edit Music
@@ -178,8 +178,8 @@
         </v-card-actions>
       </v-form>
     </v-card>
-  </v-dialog>
-  <v-dialog
+  </v-dialog> -->
+  <!-- <v-dialog
     v-if="deleteMusicModal"
     v-model="deleteMusicModal"
     class="delete-dialog-position"
@@ -205,8 +205,8 @@
           variant="flat"
         />
       </v-card-actions> </v-card
-  ></v-dialog>
-  <v-dialog v-if="viewMusicModal" v-model="viewMusicModal" max-width="300"
+  ></v-dialog> -->
+  <!-- <v-dialog v-if="viewMusicModal" v-model="viewMusicModal" max-width="300"
     ><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         {{ musicRef.artist }} - {{ musicRef.title }}
