@@ -149,7 +149,7 @@
       </v-form>
     </v-card>
   </v-dialog> -->
-  <!-- <v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
+  <v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
     <v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         Edit Music
@@ -216,7 +216,7 @@
         </v-card-actions>
       </v-form>
     </v-card>
-  </v-dialog> -->
+  </v-dialog>
   <!-- <v-dialog
     v-if="deleteMusicModal"
     v-model="deleteMusicModal"
