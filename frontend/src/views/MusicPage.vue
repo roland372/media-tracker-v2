@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Music">
     <section class="d-flex align-center justify-space-between">
-      test 3
+      test 4
       <ButtonText
         @click="handleOpenAddMusicModal"
         class="me-2"
@@ -45,7 +45,7 @@
   <HeaderComponent title="All Music">
     <h3 v-if="!allMusic.length" class="text-color">Not found any items.</h3>
   </HeaderComponent>
-  <v-dialog v-if="addMusicModal" v-model="addMusicModal" max-width="500">
+  <!-- <v-dialog v-if="addMusicModal" v-model="addMusicModal" max-width="500">
     <v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Music</div>
       <v-form @submit.prevent="handleSubmitAddMusic" validate-on="input">
@@ -215,7 +215,7 @@
         <p>Are you sure you want to delete this music?</p>
       </v-card-text>
     </v-card></v-dialog
-  >
+  > -->
 </template>
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from "vue";
