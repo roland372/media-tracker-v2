@@ -292,7 +292,6 @@ import {
   emptyURLRules,
   URLRegex,
 } from "@/utils/validations/formValidations";
-import { musicCategory } from "@/utils/mediaUtils";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
@@ -303,6 +302,14 @@ const mediaStore = useMediaStore();
 const { submitAddMusic, submitEditMusic, submitDeleteMusic, userFromDB } =
   mediaStore;
 const { music } = storeToRefs(mediaStore);
+
+const musicCategory = [
+  EMusicCategory.ANIME,
+  EMusicCategory.GAME,
+  EMusicCategory.JAPANESE,
+  EMusicCategory.OTHER,
+  EMusicCategory.TOUHOU,
+];
 
 const newMusic: TMusicInput = reactive({
   artist: "",
