@@ -259,6 +259,7 @@ import {
   TGame,
   TManga,
   TMovie,
+  TMusic,
   TNote,
   TUser,
   TUserInput,
@@ -307,17 +308,10 @@ const backupButtons = [
   },
   {
     class: "me-2 mt-2",
-    color: "green",
-    data: manga.value,
+    color: "purple",
+    data: books.value,
     size: "small",
-    text: "Manga",
-  },
-  {
-    class: "me-2 mt-2",
-    color: "amber",
-    data: games.value,
-    size: "small",
-    text: "Games",
+    text: "Books",
   },
   {
     class: "me-2 mt-2",
@@ -328,10 +322,24 @@ const backupButtons = [
   },
   {
     class: "me-2 mt-2",
-    color: "purple",
-    data: books.value,
+    color: "white",
+    data: emotes.value,
     size: "small",
-    text: "Books",
+    text: "Emotes",
+  },
+  {
+    class: "me-2 mt-2",
+    color: "amber",
+    data: games.value,
+    size: "small",
+    text: "Games",
+  },
+  {
+    class: "me-2 mt-2",
+    color: "green",
+    data: manga.value,
+    size: "small",
+    text: "Manga",
   },
   {
     class: "me-2 mt-2",
@@ -342,10 +350,10 @@ const backupButtons = [
   },
   {
     class: "me-2 mt-2",
-    color: "white",
-    data: emotes.value,
+    color: "deep-purple",
+    data: music.value,
     size: "small",
-    text: "Emotes",
+    text: "Music",
   },
   {
     class: "mt-2",
@@ -415,13 +423,14 @@ const generateAndSetRandomTheme = () => {
 const handleDownloadMedia = (
   jsonData:
     | TAnime[]
-    | TManga[]
-    | TGame[]
-    | TCharacter[]
-    | TNote[]
-    | TEmote[]
     | TBook[]
-    | TMovie[],
+    | TCharacter[]
+    | TEmote[]
+    | TGame[]
+    | TManga[]
+    | TMovie[]
+    | TMusic[]
+    | TNote[],
   fileName: string
 ) => {
   const fileData = JSON.stringify(jsonData);
