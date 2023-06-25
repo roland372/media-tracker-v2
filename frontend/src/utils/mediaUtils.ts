@@ -29,6 +29,9 @@ export const fetchMediaURL = (
 ) =>
   `https://api.jikan.moe/v4/${mediaType}?q=${query}&order_by=${orderBy}&sort=${sort}`;
 
+export const fetchMusicURL = (query: string) =>
+  `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${process.env.VUE_APP_YOUTUBE_API_KEY}&type=video&regionCode=us&maxResults=20&q=${query}`;
+
 export const filterGameSource = (media: Ref, source: string) =>
   [...media.value].filter(
     (media) => media.source.toLowerCase() === source.toLowerCase()

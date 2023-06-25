@@ -17,6 +17,7 @@
     "copy-image-clipboard": "^2.1.2",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
+    "he": "^1.2.0",
     "lodash": "^4.17.21",
     "pinia": "^2.0.33",
     "roboto-fontface": "*",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.1.96",
+    "@types/he": "^1.2.0",
     "@types/lodash": "^4.14.194",
     "@types/webfontloader": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",

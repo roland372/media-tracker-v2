@@ -366,6 +366,28 @@ export type TMusicInput = {
   title: string;
 };
 
+export type TYouTubeVideo = {
+  id: {
+    videoId: string;
+  };
+  snippet: {
+    title: string;
+    thumbnails: TThumbnailUrls;
+  };
+};
+
+export type TThumbnailUrls = {
+  high: {
+    url: string;
+  };
+  medium: {
+    url: string;
+  };
+  low: {
+    url: string;
+  };
+};
+
 //? <----- NOTES ----->
 export type TNote = {
   color: string;
