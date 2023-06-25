@@ -41,7 +41,7 @@
             >
               <section>
                 <div
-                  v-for="media in mediaType.slice(0, 4)"
+                  v-for="media in mediaType.slice(0, 3)"
                   :key="media.media"
                   class="pb-1"
                 >
@@ -51,12 +51,25 @@
               </section>
               <section>
                 <div
-                  v-for="media in mediaType.slice(4)"
+                  v-for="media in mediaType.slice(3, 6)"
                   :key="media.media"
                   class="pb-1"
                 >
                   <b class="text-decoration-underline">{{ media.media }}</b>
                   <div>{{ media.total }} {{ media.media }}</div>
+                </div>
+              </section>
+              <section>
+                <div
+                  v-for="media in mediaType.slice(6)"
+                  :key="media.media"
+                  class="pb-1"
+                >
+                  <b class="text-decoration-underline">{{ media.media }}</b>
+                  <div>
+                    {{ media.total }}
+                    {{ media.media === "Music" ? "Songs" : media.media }}
+                  </div>
                 </div>
               </section>
             </section>
@@ -262,6 +275,7 @@ const {
   games,
   manga,
   movies,
+  music,
   notes,
   userFromDB,
 } = storeToRefs(mediaStore);
@@ -368,12 +382,13 @@ const colorThemeButtons = [
 
 const mediaType = [
   { media: "Anime", total: anime.value.length },
-  { media: "Manga", total: manga.value.length },
-  { media: "Games", total: games.value.length },
-  { media: "Characters", total: characters.value.length },
   { media: "Books", total: books.value.length },
-  { media: "Movies", total: movies.value.length },
+  { media: "Characters", total: characters.value.length },
   { media: "Emotes", total: emotes.value.length },
+  { media: "Games", total: games.value.length },
+  { media: "Manga", total: manga.value.length },
+  { media: "Movies", total: movies.value.length },
+  { media: "Music", total: music.value.length },
   { media: "Notes", total: notes.value.length },
 ];
 
