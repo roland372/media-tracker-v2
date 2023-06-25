@@ -37,7 +37,7 @@
             <v-card class="media-music-card" variant="text">
               <v-img
                 :alt="song.snippet.title"
-                class="media-music-img image-hover"
+                class="media-music-img"
                 cover
                 :src="displayYouTubeImg(song.snippet.thumbnails)"
               />
@@ -71,6 +71,7 @@
                 <ButtonText
                   @click="handleOpenAddFetchedMusicModal(song)"
                   color="green"
+                  size="small"
                   text="Add Song"
                   type="submit"
                   variant="flat"
@@ -370,7 +371,6 @@
         <v-card-text>
           <v-text-field
             v-model="musicRef.artist"
-            autofocus
             class="mb-2"
             density="compact"
             hide-details="auto"
