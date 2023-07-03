@@ -176,6 +176,18 @@ export const usefulLinks = {
   ],
   movies: [
     {
+      url: "https://bflix.io/home",
+      text: "BFLIX",
+    },
+    {
+      url: "https://lookmovie2.to/",
+      text: "Lookmovie",
+    },
+    {
+      url: "https://kissasian.pe/",
+      text: "Kissasian",
+    },
+    {
       url: "https://movies2watch.tv/",
       text: "Movies2Watch",
     },
