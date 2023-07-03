@@ -29,7 +29,8 @@
         }}</v-tooltip>
         <div
           @click="handleEmoteClick(emote.url)"
-          class="bg-primary-dark pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded image-hover"
+          class="bg-primary-dark pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded"
+          style="cursor: pointer"
         >
           <img :alt="emote.name" :src="emote.url" style="height: 64px" />
           <v-icon
@@ -67,7 +68,7 @@
           class="bg-primary-dark pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded"
         >
           <div>
-            <div @click="handleEmoteClick(emote.url)" class="image-hover">
+            <div @click="handleEmoteClick(emote.url)" style="cursor: pointer">
               <img
                 :alt="emote.name"
                 class="mb-n1"
