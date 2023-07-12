@@ -8,6 +8,7 @@ import { loadFonts } from "./plugins/webfontloader";
 
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import { apolloClient } from "@/graphql";
+import "./registerServiceWorker";
 
 const pinia = createPinia();
 

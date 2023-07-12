@@ -5,4 +5,9 @@ module.exports = defineConfig({
       // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
     },
   },
+  pwa: {
+    name: "Media-Tracker",
+    startUrl: "/",
+    themeColor: "#12232e",
+  },
 });
