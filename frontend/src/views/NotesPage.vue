@@ -258,14 +258,16 @@
       </div>
       <v-card-text class="mx-n2 mb-2">
         <section>
-          <section v-html="noteRef?.note?.replace(/<ul>/g, viewNoteText)" />
+          <section
+            v-html="noteRef?.note?.replace(/<(ul|ol)>/g, viewNoteText)"
+          />
         </section>
       </v-card-text> </v-card
   ></v-dialog>
   <SnackbarComponent v-model="snackbar.value" :text="snackbar.text" />
 </template>
 <script setup lang="ts">
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, onUpdated, ref, reactive } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { orderBy } from "lodash";
@@ -377,9 +379,16 @@ const setStyle = () => {
   document
     .querySelectorAll("ul")
     .forEach((el) => (el.style.marginLeft = "1rem"));
+  document
+    .querySelectorAll("ol")
+    .forEach((el) => (el.style.marginLeft = "1rem"));
 };
 
 onMounted(() => {
+  setStyle();
+});
+
+onUpdated(() => {
   setStyle();
 });
 </script>
