@@ -103,9 +103,9 @@
               :class="
                 song.imageURL.includes('youtube') ? '' : 'media-music-img'
               "
-              class="image-hover"
               :cover="song.imageURL.includes('youtube') ? true : false"
               :src="song.imageURL || placeholderMusicImg"
+              style="cursor: pointer"
             />
             <v-icon
               v-if="song.favourites"
@@ -162,9 +162,9 @@
               :class="
                 song.imageURL.includes('youtube') ? '' : 'media-music-img'
               "
-              class="image-hover"
               :cover="song.imageURL.includes('youtube') ? true : false"
               :src="song.imageURL || placeholderMusicImg"
+              style="cursor: pointer"
             />
             <v-icon
               v-if="song.favourites"
@@ -233,7 +233,7 @@
             :rules="emptyURLRules"
             variant="outlined"
           />
-          <div class="v-select">
+          <!-- <div class="v-select">
             <label
               for="category"
               :class="{
@@ -256,16 +256,16 @@
                 {{ category }}
               </option>
             </select>
-          </div>
-          <!-- <v-select
+          </div> -->
+          <v-select
             v-model="newMusic.category"
             class="mb-n3"
             density="compact"
             :items="musicCategory"
             label="Select Category"
             variant="outlined"
-          /> -->
-          <section class="d-flex align-center ms-1 mt-n2 mb-n6">
+          />
+          <section class="d-flex align-center ms-1 mt-n8 mb-n7">
             <div>Add to Favourites?</div>
             <v-checkbox v-model="newMusic.favourites" hide-details />
           </section>
@@ -325,7 +325,7 @@
             :rules="emptyURLRules"
             variant="outlined"
           />
-          <div class="v-select">
+          <!-- <div class="v-select">
             <label
               for="category"
               :class="{
@@ -348,8 +348,16 @@
                 {{ category }}
               </option>
             </select>
-          </div>
-          <section class="d-flex align-center ms-1 mt-n2 mb-n6">
+          </div> -->
+          <v-select
+            v-model="newMusic.category"
+            class="mb-n3"
+            density="compact"
+            :items="musicCategory"
+            label="Select Category"
+            variant="outlined"
+          />
+          <section class="d-flex align-center ms-1 mt-n8 mb-n7">
             <div>Add to Favourites?</div>
             <v-checkbox v-model="newMusic.favourites" hide-details />
           </section>
@@ -405,7 +413,7 @@
             :rules="emptyURLRules"
             variant="outlined"
           />
-          <div class="v-select">
+          <!-- <div class="v-select">
             <label
               for="category"
               :class="{
@@ -428,8 +436,16 @@
                 {{ category }}
               </option>
             </select>
-          </div>
-          <section class="d-flex align-center ms-1 mt-n2 mb-n6">
+          </div> -->
+          <v-select
+            v-model="musicRef.category"
+            class="mb-n3"
+            density="compact"
+            :items="musicCategory"
+            label="Select Category"
+            variant="outlined"
+          />
+          <section class="d-flex align-center ms-1 mt-n8 mb-n7">
             <div>Add to Favourites?</div>
             <v-checkbox v-model="musicRef.favourites" hide-details />
           </section>
@@ -561,7 +577,7 @@ const musicID = ref<string>("");
 const musicRef = ref<TMusicInput>(newMusic);
 const musicFetchSearch = ref<string>("");
 const musicSearch = ref<string>("");
-const selectActive = ref<boolean>(false);
+// const selectActive = ref<boolean>(false);
 const viewMusicModal = ref<boolean>(false);
 
 const snackbar = ref({
@@ -723,7 +739,7 @@ const handleSubmitEditMusic = async () => {
 };
 </script>
 <style scoped>
-.v-select {
+/* .v-select {
   display: inline-block;
   position: relative;
 }
@@ -751,7 +767,7 @@ const handleSubmitEditMusic = async () => {
 }
 .select-text-black {
   color: black;
-}
+} */
 .image-overlay-icon {
   position: absolute;
   right: 5px;
