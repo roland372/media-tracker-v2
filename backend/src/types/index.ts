@@ -224,6 +224,220 @@ export type TGameInput = {
 	ID: string;
 };
 
+//? <----- GENSHIN IMPACT ----->
+export enum EGenshinImpactElement {
+	ANEMO = "Anemo",
+	CRYO = "Cryo",
+	DENDRO = "Dendro",
+	ELECTRO = "Electro",
+	GEO = "Geo",
+	HYDRO = "Hydro",
+	PYRO = "Pyro",
+};
+
+export enum EGenshinImpactRegion {
+	MONDSTADT = "Mondstadt",
+	LIYUE = "Liyue",
+	INAZUMA = "Inazuma",
+	SUMERU = "Sumeru",
+	FONTAINE = "Fontaine",
+	NATLAN = "Natlan",
+	SNEZHNAAYA = "Snezhnaya",
+	KHAENRIAH = "Khaenri'ah",
+};
+
+export enum EGenshinImpactTalentBook {
+	FREEDOM = "Freedom",
+	RESISTANCE = "Resistance",
+	BALLAD = "Ballad",
+	PROSPERITY = "Prosperity",
+	DILIGENCE = "Diligence",
+	GOLD = "Gold",
+	TRANSIENCE = "Transience",
+	ELEGANCE = "Elegance",
+	LIGHT = "Light",
+	ADMONITION = "Admonition",
+	INGENUITY = "Ingenuity",
+	PRAXIS = "Praxis",
+	EQUITY = "Equity",
+	JUSTICE = "Justice",
+	ORDER = "Order",
+};
+
+export enum EGenshinImpactWeapon {
+	BOW = "Bow",
+	CATALYST = "Catalyst",
+	CLAYMORE = "Claymore",
+	POLEARM = "Polearm",
+	SWORD = "Sword",
+};
+
+type TCommonGenshinImpactCharacterProps = {
+	avatar: string;
+	element: EGenshinImpactElement;
+	gender: ECharacterGender;
+	lastModified: Date;
+	name: string;
+	rarity: 4 | 5;
+	region: EGenshinImpactRegion;
+	talentBook: EGenshinImpactTalentBook;
+	version: string;
+	weapon: EGenshinImpactWeapon;
+};
+
+export type TGenshinImpactCharacter = TCommonGenshinImpactCharacterProps & {
+	id: string;
+	ID: string;
+};
+
+export type TGenshinImpactCharacterInput = {
+	characterInput: Partial<TCommonGenshinImpactCharacterProps>;
+	ID: string;
+};
+
+export type TGenshinImpactBuildObj = {
+	artifacts: string;
+	artifactStats: {
+		sands: string;
+		goblet: string;
+		circlet: string;
+	};
+	desiredStats: TStatusValue<string>;
+	imageURL: string;
+	role: string;
+	weapon: TStatusValue<string>;
+};
+
+export type TStatusValue<T> = {
+	status: boolean;
+	value: T;
+};
+
+type TCommonGenshinImpactCharacterBuildProps = {
+	characterId: string;
+	constellation: TStatusValue<number>;
+	favourites: boolean;
+	imageURL: string;
+	lastModified: Date;
+	level: TStatusValue<string>;
+	note: string;
+	owner: string;
+	status: boolean;
+	talents: {
+		normalAttack: TStatusValue<number>;
+		elementalSkill: TStatusValue<number>;
+		elementalBurst: TStatusValue<number>;
+	};
+	builds: TGenshinImpactBuildObj[];
+};
+
+export type TGenshinImpactCharacterBuild = TCommonGenshinImpactCharacterBuildProps & {
+	id: string;
+	ID: string;
+};
+
+export type TGenshinImpactCharacterBuildInput = {
+	buildInput: Partial<TCommonGenshinImpactCharacterBuildProps>;
+	ID: string;
+};
+
+//? <----- HONKAI STAR RAIL ----->
+export enum EHonkaiStarRailFaction {
+	ASTRAL_EXPRESS = "Astral Express",
+	STELLARON_HUNTERS = "Stellaron Hunters",
+	HERTA_SPACE_STATION = "Herta Space Station",
+	JARILO_VI = "Jarilo-VI",
+	THE_XIANZHOU_LUOFU = "The Xianzhou Luofu",
+};
+
+export enum EHonkaiStarRailPath {
+	THE_DESTRUCTION = "The Destruction",
+	THE_HUNT = "The Hunt",
+	THE_ERUDITION = "The Erudition",
+	THE_HARMONY = "The Harmony",
+	THE_NIHILITY = "The Nihility",
+	THE_PRESERVATION = "The Preservation",
+	THE_ABUNDANCE = "The Abundance",
+};
+
+export enum EHonkaiStarRailType {
+	PHYSICAL = "Physical",
+	FIRE = "Fire",
+	ICE = "Ice",
+	LIGHTNING = "Lightning",
+	WIND = "Wind",
+	QUANTUM = "Quantum",
+	IMAGINARY = "Imaginary",
+};
+
+type TCommonHonkaiStarRailCharacterProps = {
+	avatar: string;
+	faction: EHonkaiStarRailFaction;
+	gender: ECharacterGender;
+	lastModified: Date;
+	name: string;
+	path: EHonkaiStarRailPath;
+	rarity: 4 | 5;
+	type: EHonkaiStarRailType;
+	version: string;
+};
+
+export type THonkaiStarRailCharacter = TCommonHonkaiStarRailCharacterProps & {
+	id: string;
+	ID: string;
+};
+
+export type THonkaiStarRailCharacterInput = {
+	characterInput: Partial<TCommonHonkaiStarRailCharacterProps>,
+	ID: string;
+};
+
+export type THonkaiStarRailBuildObj = {
+	desiredStats: TStatusValue<string>;
+	imageURL: string;
+	lightCone: TStatusValue<string>;
+	planarOrnaments: string;
+	planarOrnamentsStats: {
+		linkRope: string;
+		planarSphere: string;
+	};
+	relics: string;
+	relicsStats: {
+		body: string;
+		feet: string;
+	};
+	role: string;
+};
+
+type TCommonHonkaiStarRailCharacterBuildProps = {
+	abilities: {
+		basicATK: TStatusValue<number>;
+		skill: TStatusValue<number>;
+		ultimate: TStatusValue<number>;
+		talent: TStatusValue<number>;
+	};
+	builds: THonkaiStarRailBuildObj[];
+	characterId: string;
+	eidolon: TStatusValue<number>;
+	favourites: boolean;
+	imageURL: string;
+	lastModified: Date;
+	level: TStatusValue<string>;
+	note: string;
+	owner: string;
+	status: boolean;
+};
+
+export type THonkaiStarRailCharacterBuild = TCommonHonkaiStarRailCharacterBuildProps & {
+	id: string;
+	ID: string;
+};
+
+export type THonkaiStarRailCharacterBuildInput = {
+	buildInput: Partial<TCommonHonkaiStarRailCharacterBuildProps>,
+	ID: string;
+};
+
 //? <----- MANGA ----->
 export enum EMangaStatus {
 	READING = 'Reading',
