@@ -20,12 +20,10 @@ export enum EAnimeType {
 	TV_SHOW = 'TV-Show',
 };
 
-export type TAnime = {
+type TCommonAnimeProps = {
 	episodesMax: number;
 	episodesMin: number;
 	favourites: boolean;
-	id: string;
-	ID: string;
 	imageURL: string;
 	lastModified: number;
 	link1: string;
@@ -33,30 +31,20 @@ export type TAnime = {
 	link2: string;
 	link2Name: string;
 	mal_id: number;
-	owner: string;
 	rating: number;
 	status: EAnimeStatus;
 	title: string;
 	type: EAnimeType;
 };
 
+export type TAnime = TCommonAnimeProps & {
+	id: string;
+	ID: string;
+	owner: string;
+};
+
 export type TAnimeInput = {
-	animeInput: {
-		episodesMax: number;
-		episodesMin: number;
-		favourites: boolean;
-		imageURL: string;
-		lastModified: number;
-		link1: string;
-		link1Name: string;
-		link2: string;
-		link2Name: string;
-		mal_id?: number;
-		rating: number;
-		status: EAnimeStatus;
-		title: string;
-		type: EAnimeType;
-	};
+	animeInput: Partial<TCommonAnimeProps>;
 	ID: string;
 };
 
@@ -69,41 +57,30 @@ export enum EBookStatus {
 	PLAN_TO_READ = 'Plan to Read',
 };
 
-export type TBook = {
+type TCommonBookProps = {
 	author: string;
 	favourites: boolean;
 	genre: string;
-	id: string;
-	ID: string;
 	imageURL: string;
 	lastModified: number;
 	link1: string;
 	link1Name: string;
 	link2: string;
 	link2Name: string;
-	owner: string;
 	pages: number;
 	rating: number;
 	status: EBookStatus;
 	title: string;
 };
 
+export type TBook = TCommonBookProps & {
+	id: string;
+	ID: string;
+	owner: string;
+};
+
 export type TBookInput = {
-	bookInput: {
-		author: string;
-		favourites: boolean;
-		genre: string;
-		imageURL: string;
-		lastModified: number;
-		link1: string;
-		link1Name: string;
-		link2: string;
-		link2Name: string;
-		pages: number;
-		rating: number;
-		status: EBookStatus;
-		title: string;
-	};
+	bookInput: Partial<TCommonBookProps>;
 	ID: string;
 };
 
@@ -120,57 +97,46 @@ export enum ECharacterGender {
 	OTHER = 'Other',
 };
 
-export type TCharacter = {
+type TCommonCharacterProps = {
 	favourites: boolean;
 	gender: ECharacterGender;
 	hairColor: string;
-	id: string;
-	ID: string;
 	imageURL: string;
 	lastModified: number;
 	link1: string;
 	link1Name: string;
 	mal_id: number;
 	name: string;
-	owner: string;
 	series: string;
 	source: ECharacterSource;
 };
 
+export type TCharacter = TCommonCharacterProps & {
+	id: string;
+	ID: string;
+	owner: string;
+};
+
 export type TCharacterInput = {
-	characterInput: {
-		favourites: boolean;
-		gender: ECharacterGender;
-		hairColor: string;
-		imageURL: string;
-		lastModified: number;
-		link1: string;
-		link1Name: string;
-		mal_id?: number;
-		name: string;
-		series: string;
-		source: ECharacterSource;
-	};
+	characterInput: Partial<TCommonCharacterProps>;
 	ID: string;
 };
 
 //? <----- EMOTES ----->
-export type TEmote = {
+type TCommonEmoteProps = {
 	favourites: boolean;
-	id: string;
-	ID: string;
 	lastModified: number;
 	name: string;
 	url: string;
 };
 
+export type TEmote = TCommonEmoteProps & {
+	id: string;
+	ID: string;
+};
+
 export type TEmoteInput = {
-	emoteInput: {
-		favourites: boolean;
-		name: string;
-		lastModified: number;
-		url: string;
-	};
+	emoteInput: Partial<TCommonEmoteProps>;
 	ID: string;
 };
 
@@ -188,17 +154,14 @@ export enum EGameType {
 	VISUAL_NOVEL = 'Visual Novel',
 };
 
-export type TGame = {
+type TCommonGameProps = {
 	favourites: boolean;
-	id: string;
-	ID: string;
 	imageURL: string;
 	lastModified: number;
 	link1: string;
 	link1Name: string;
 	link2: string;
 	link2Name: string;
-	owner: string;
 	playtime: number;
 	rating: number;
 	status: EGameStatus;
@@ -206,21 +169,14 @@ export type TGame = {
 	type: EGameType;
 };
 
+export type TGame = TCommonGameProps & {
+	id: string;
+	ID: string;
+	owner: string;
+};
+
 export type TGameInput = {
-	gameInput: {
-		favourites: boolean;
-		imageURL: string;
-		lastModified: number;
-		link1: string;
-		link1Name: string;
-		link2: string;
-		link2Name: string;
-		playtime: number;
-		rating: number;
-		status: EGameStatus;
-		title: string;
-		type: EGameType;
-	};
+	gameInput: Partial<TCommonGameProps>;
 	ID: string;
 };
 
@@ -321,7 +277,6 @@ type TCommonGenshinImpactCharacterBuildProps = {
 	lastModified: Date;
 	level: TStatusValue<string>;
 	note: string;
-	owner: string;
 	status: boolean;
 	talents: {
 		normalAttack: TStatusValue<number>;
@@ -334,6 +289,7 @@ type TCommonGenshinImpactCharacterBuildProps = {
 export type TGenshinImpactCharacterBuild = TCommonGenshinImpactCharacterBuildProps & {
 	id: string;
 	ID: string;
+	owner: string;
 };
 
 export type TGenshinImpactCharacterBuildInput = {
@@ -424,13 +380,13 @@ type TCommonHonkaiStarRailCharacterBuildProps = {
 	lastModified: Date;
 	level: TStatusValue<string>;
 	note: string;
-	owner: string;
 	status: boolean;
 };
 
 export type THonkaiStarRailCharacterBuild = TCommonHonkaiStarRailCharacterBuildProps & {
 	id: string;
 	ID: string;
+	owner: string;
 };
 
 export type THonkaiStarRailCharacterBuildInput = {
@@ -457,20 +413,17 @@ export enum EMangaType {
 	WEBTOON = 'Webtoon',
 };
 
-export type TManga = {
+type TCommonMangaProps = {
 	chaptersMax: number;
 	chaptersMin: number;
 	favourites: boolean;
-	id: string;
-	ID: string;
 	imageURL: string;
 	lastModified: number;
 	link1: string;
 	link1Name: string;
 	link2: string;
 	link2Name: string;
-	mal_id: number;
-	owner: string;
+	mal_id?: number;
 	rating: number;
 	status: EMangaStatus;
 	title: string;
@@ -479,25 +432,14 @@ export type TManga = {
 	volumesMin: number;
 };
 
+export type TManga = TCommonMangaProps & {
+	id: string;
+	ID: string;
+	owner: string;
+};
+
 export type TMangaInput = {
-	mangaInput: {
-		chaptersMax: number;
-		chaptersMin: number;
-		favourites: boolean;
-		imageURL: string;
-		lastModified: number;
-		link1: string;
-		link1Name: string;
-		link2: string;
-		link2Name: string;
-		mal_id?: number;
-		rating: number;
-		status: EMangaStatus;
-		title: string;
-		type: EMangaType;
-		volumesMax: number;
-		volumesMin: number;
-	};
+	mangaInput: Partial<TCommonMangaProps>;
 	ID: string;
 };
 
@@ -515,45 +457,32 @@ export enum EMovieType {
 	TV_SHOW = 'TV-Show',
 };
 
-export type TMovie = {
+type TCommonMovieProps = {
 	episodesMax: number;
 	episodesMin: number;
 	favourites: boolean;
-	id: string;
-	ID: string;
 	imageURL: string;
 	lastModified: number;
 	link1: string;
 	link1Name: string;
 	link2: string;
 	link2Name: string;
-	owner: string;
 	rating: number;
 	seasonsMax: number;
 	seasonsMin: number;
 	status: EMovieStatus;
 	title: string;
-	type: EMovieType
+	type: EMovieType;
+};
+
+export type TMovie = TCommonMovieProps & {
+	id: string;
+	ID: string;
+	owner: string;
 };
 
 export type TMovieInput = {
-	movieInput: {
-		episodesMax: number;
-		episodesMin: number;
-		favourites: boolean;
-		imageURL: string;
-		lastModified: number;
-		link1: string;
-		link1Name: string;
-		link2: string;
-		link2Name: string;
-		rating: number;
-		seasonsMax: number;
-		seasonsMin: number;
-		status: EMovieStatus;
-		title: string;
-		type: EMovieType
-	};
+	movieInput: Partial<TCommonMovieProps>;
 	ID: string;
 };
 
@@ -564,51 +493,44 @@ export enum EMusicCategory {
 	JAPANESE = 'Japanese',
 	OTHER = 'Other',
 	TOUHOU = 'Touhou'
-}
+};
 
-export type TMusic = {
+export type TCommonMusicProps = {
 	artist: string;
 	category: EMusicCategory;
 	favourites: boolean;
-	id: string;
-	ID: string;
 	imageURL: string;
-	lastModified: number;
 	link: string;
-	owner: string;
-	title: string;
-}
-
-export type TMusicInput = {
-	musicInput: {
-		artist: string;
-		category: EMusicCategory;
-		favourites: boolean;
-		imageURL: string;
-		link: string;
-		title: string;
-	}
-	ID: string;
-}
-
-//? <----- NOTES ----->
-export type TNote = {
-	color: string;
-	id: string;
-	ID: string;
-	lastModified: number;
-	note: string;
-	owner: string;
 	title: string;
 };
 
+export type TMusic = TCommonMusicProps & {
+	id: string;
+	ID: string;
+	owner: string;
+};
+
+export type TMusicInput = {
+	musicInput: Partial<TCommonMusicProps>;
+	ID: string;
+};
+
+//? <----- NOTES ----->
+type TCommonNoteProps = {
+	color: string;
+	lastModified: number;
+	note: string;
+	title: string;
+};
+
+export type TNote = TCommonNoteProps & {
+	id: string;
+	ID: string;
+	owner: string;
+};
+
 export type TNoteInput = {
-	noteInput: {
-		color: string;
-		lastModified: number;
-		note: string;
-		title: string;
-	};
+	noteInput: Partial<TCommonNoteProps>;
 	ID: string;
 };
 
@@ -618,23 +540,21 @@ export enum EUserRole {
 	USER = "USER",
 };
 
-export type TUser = {
+type TCommonUserProps = {
 	color: string;
-	email: string;
-	googleId: string;
-	ID: string;
 	profileDesc: string;
 	profileImg: string;
-	role: EUserRole;
 	username: string;
 };
 
+export type TUser = TCommonUserProps & {
+	email: string;
+	googleId: string;
+	ID: string;
+	role: EUserRole;
+};
+
 export type TUserInput = {
-	userInput: {
-		color: string;
-		profileDesc: string;
-		profileImg: string;
-		username: string;
-	};
+	userInput: Partial<TCommonUserProps>;
 	ID: string;
 };
