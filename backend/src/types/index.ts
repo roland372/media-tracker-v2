@@ -500,6 +500,7 @@ export type TCommonMusicProps = {
 	category: EMusicCategory;
 	favourites: boolean;
 	imageURL: string;
+	lastModified: number;
 	link: string;
 	title: string;
 };
