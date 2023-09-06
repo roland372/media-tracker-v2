@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
-import { TMusic, EMusicCategory } from '../../types';
+import { TMusic } from '../../types';
+import { EMusicCategory } from '@common/types';
 import { v4 as uuidv4 } from 'uuid';
 
 const MusicSchema: Schema = new Schema<TMusic>(

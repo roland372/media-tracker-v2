@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
-import { TMovie, EMovieStatus, EMovieType } from '../../types';
+import { TMovie } from '../../types';
+import { EMovieStatus, EMovieType } from '@common/types';
 import { v4 as uuidv4 } from 'uuid';
 
 const MovieSchema: Schema = new Schema<TMovie>(
