@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { defineProps, Ref } from "vue";
 import CardComponent from "@/components/media/CardComponent.vue";
-import { EMediaType } from "@/types";
+import { EMediaType } from "../../../../common/types";
 
 interface IStatsComponentProps {
   meanScore?: number;

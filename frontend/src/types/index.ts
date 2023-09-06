@@ -1,30 +1,27 @@
-//? <----- MEDIA ----->
-export enum EMediaType {
-  ANIME = "Anime",
-  MANGA = "Manga",
-  GAME = "Game",
-  CHARACTER = "Character",
-  MOVIE = "Movie",
-  BOOK = "Book",
-}
+import {
+  EAnimeStatus,
+  EAnimeType,
+  EBookStatus,
+  ECharacterGender,
+  ECharacterSource,
+  EGameStatus,
+  EGameType,
+  // EGenshinImpactElement,
+  // EGenshinImpactRegion,
+  // EGenshinImpactTalentBook,
+  // EGenshinImpactWeapon,
+  // EHonkaiStarRailFaction,
+  // EHonkaiStarRailPath,
+  // EHonkaiStarRailType,
+  EMangaStatus,
+  EMangaType,
+  EMovieStatus,
+  EMovieType,
+  EMusicCategory,
+  EUserRole,
+} from "@common/types";
 
 //? <----- ANIME ----->
-export enum EAnimeStatus {
-  WATCHING = "Watching",
-  COMPLETED = "Completed",
-  ON_HOLD = "On-Hold",
-  DROPPED = "Dropped",
-  PLAN_TO_WATCH = "Plan to Watch",
-}
-
-export enum EAnimeType {
-  MOVIE = "Movie",
-  ONA = "ONA",
-  OVA = "OVA",
-  SPECIAL = "Special",
-  TV_SHOW = "TV-Show",
-}
-
 export type TAnime = {
   episodesMax: number;
   episodesMin: number;
@@ -64,14 +61,6 @@ export type TAnimeInput = {
 };
 
 //? <----- BOOKS ----->
-export enum EBookStatus {
-  READING = "Reading",
-  COMPLETED = "Completed",
-  ON_HOLD = "On-Hold",
-  DROPPED = "Dropped",
-  PLAN_TO_READ = "Plan to Read",
-}
-
 export type TBook = {
   author: string;
   favourites: boolean;
@@ -109,18 +98,6 @@ export type TBookInput = {
 };
 
 //? <----- CHARACTERS ----->
-export enum ECharacterSource {
-  ANIME = "Anime",
-  GAME = "Game",
-  MANGA = "Manga",
-}
-
-export enum ECharacterGender {
-  FEMALE = "Female",
-  MALE = "Male",
-  OTHER = "Other",
-}
-
 export type TCharacter = {
   favourites: boolean;
   gender: ECharacterGender;
@@ -171,19 +148,6 @@ export type TEmoteInput = {
 };
 
 //? <----- GAMES ----->
-export enum EGameStatus {
-  PLAYING = "Playing",
-  COMPLETED = "Completed",
-  ON_HOLD = "On-Hold",
-  DROPPED = "Dropped",
-  PLAN_TO_PLAY = "Plan to Play",
-}
-
-export enum EGameType {
-  GAME = "Game",
-  VISUAL_NOVEL = "Visual Novel",
-}
-
 export type TGame = {
   favourites: boolean;
   id: string;
@@ -219,24 +183,6 @@ export type TGameInput = {
 };
 
 //? <----- MANGA ----->
-export enum EMangaStatus {
-  READING = "Reading",
-  COMPLETED = "Completed",
-  ON_HOLD = "On-Hold",
-  DROPPED = "Dropped",
-  PLAN_TO_READ = "Plan to Read",
-}
-
-export enum EMangaType {
-  DOUJINSHI = "Doujinshi",
-  LIGHT_NOVEL = "Light Novel",
-  MANGA = "Manga",
-  MANHUA = "Manhua",
-  NOVEL = "Novel",
-  ONE_SHOT = "One-shot",
-  WEBTOON = "Webtoon",
-}
-
 export type TManga = {
   chaptersMax: number;
   chaptersMin: number;
@@ -280,19 +226,6 @@ export type TMangaInput = {
 };
 
 //? <----- MOVIES ----->
-export enum EMovieStatus {
-  WATCHING = "Watching",
-  COMPLETED = "Completed",
-  ON_HOLD = "On-Hold",
-  DROPPED = "Dropped",
-  PLAN_TO_WATCH = "Plan to Watch",
-}
-
-export enum EMovieType {
-  MOVIE = "Movie",
-  TV_SHOW = "TV-Show",
-}
-
 export type TMovie = {
   episodesMax: number;
   episodesMin: number;
@@ -334,14 +267,6 @@ export type TMovieInput = {
 };
 
 //? <----- MUSIC ----->
-export enum EMusicCategory {
-  ANIME = "Anime",
-  GAME = "Game",
-  JAPANESE = "Japanese",
-  OTHER = "Other",
-  TOUHOU = "Touhou",
-}
-
 export type TMusic = {
   artist: string;
   category: EMusicCategory;
@@ -408,12 +333,6 @@ export type TNoteInput = {
 };
 
 //? <----- USER ----->
-export enum EUserRole {
-  ADMIN = "ADMIN",
-  PROTECTED = "PROTECTED",
-  USER = "USER",
-}
-
 export type TUser = {
   _id: string;
   color: string;

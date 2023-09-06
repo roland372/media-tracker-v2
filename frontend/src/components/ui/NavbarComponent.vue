@@ -88,7 +88,7 @@ import { useDisplay } from "vuetify";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { navLinks } from "@/utils/links";
-import { EUserRole } from "@/types";
+import { EUserRole } from "../../../../common/types";
 
 const mediaStore = useMediaStore();
 const { userFromDB } = storeToRefs(mediaStore);

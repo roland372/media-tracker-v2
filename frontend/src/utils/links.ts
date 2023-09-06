@@ -1,4 +1,5 @@
-import { TNavLinks, EUserRole } from "@/types";
+import { TNavLinks } from "@/types";
+import { EUserRole } from "../../../common/types";
 
 export const navLinks: TNavLinks[] = [
   {

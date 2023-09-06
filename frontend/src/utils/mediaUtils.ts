@@ -13,7 +13,7 @@ import {
   EMovieStatus,
   EMovieType,
   EMusicCategory,
-} from "@/types";
+} from "../../../common/types";
 
 export const calculatePercentage = (numerator: number, denominator: number) =>
   (numerator / denominator) * 100;

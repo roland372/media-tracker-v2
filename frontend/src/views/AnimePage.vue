@@ -135,13 +135,8 @@ import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { Anime } from "@tutkli/jikan-ts";
-import {
-  EAnimeStatus,
-  EAnimeType,
-  EMediaType,
-  TAnimeInput,
-  TSortingOptions,
-} from "@/types";
+import { TAnimeInput, TSortingOptions } from "@/types";
+import { EAnimeStatus, EAnimeType, EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
 const { submitAddAnime, userFromDB } = mediaStore;

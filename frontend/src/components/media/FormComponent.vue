@@ -721,6 +721,14 @@ import {
 import ButtonIcon from "../ui/ButtonIcon.vue";
 import ButtonText from "../ui/ButtonText.vue";
 import {
+  TAnimeInput,
+  TBookInput,
+  TCharacterInput,
+  TGameInput,
+  TMangaInput,
+  TMovieInput,
+} from "@/types";
+import {
   EAnimeStatus,
   EAnimeType,
   EBookStatus,
@@ -733,13 +741,7 @@ import {
   EMediaType,
   EMovieStatus,
   EMovieType,
-  TAnimeInput,
-  TBookInput,
-  TCharacterInput,
-  TGameInput,
-  TMangaInput,
-  TMovieInput,
-} from "@/types";
+} from "../../../../common/types";
 
 interface IFormComponentProps {
   mediaType: EMediaType | string;

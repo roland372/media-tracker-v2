@@ -150,15 +150,8 @@
 import { defineProps } from "vue";
 import { placeholderImg } from "@/utils/mediaUtils";
 import ButtonText from "@/components/ui/ButtonText.vue";
-import {
-  EMediaType,
-  TAnime,
-  TBook,
-  TCharacter,
-  TGame,
-  TManga,
-  TMovie,
-} from "@/types";
+import { TAnime, TBook, TCharacter, TGame, TManga, TMovie } from "@/types";
+import { EMediaType } from "../../../../common/types";
 
 interface IMediaModalProps {
   media: TAnime | TManga | TGame | TCharacter | TBook | TMovie;

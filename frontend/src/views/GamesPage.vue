@@ -99,7 +99,8 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
-import { EGameStatus, EMediaType, TSortingOptions } from "@/types";
+import { TSortingOptions } from "@/types";
+import { EGameStatus, EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
 const { games } = storeToRefs(mediaStore);

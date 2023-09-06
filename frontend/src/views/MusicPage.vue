@@ -542,13 +542,8 @@ import {
 import ButtonText from "@/components/ui/ButtonText.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
-import {
-  EMusicCategory,
-  TMusic,
-  TMusicInput,
-  TYouTubeVideo,
-  TThumbnailUrls,
-} from "@/types";
+import { TMusic, TMusicInput, TYouTubeVideo, TThumbnailUrls } from "@/types";
+import { EMusicCategory } from "../../../common/types";
 
 const mediaStore = useMediaStore();
 const { submitAddMusic, submitEditMusic, submitDeleteMusic, userFromDB } =

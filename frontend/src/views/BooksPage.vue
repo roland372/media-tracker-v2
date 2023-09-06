@@ -99,7 +99,8 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
-import { EBookStatus, EMediaType, TSortingOptions } from "@/types";
+import { TSortingOptions } from "@/types";
+import { EBookStatus, EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
 const { books } = storeToRefs(mediaStore);

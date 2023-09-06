@@ -151,6 +151,7 @@
 import { defineEmits, defineProps, ref } from "vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
+import { TSortingOptions } from "@/types";
 import {
   EAnimeStatus,
   EBookStatus,
@@ -159,8 +160,7 @@ import {
   EMangaStatus,
   EMediaType,
   EMovieStatus,
-  TSortingOptions,
-} from "@/types";
+} from "../../../../common/types";
 
 interface IDisplayFilterSearchPanelProps {
   displayFlag: string;

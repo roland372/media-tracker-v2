@@ -136,13 +136,8 @@ import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { Manga } from "@tutkli/jikan-ts";
-import {
-  EMangaStatus,
-  EMangaType,
-  EMediaType,
-  TMangaInput,
-  TSortingOptions,
-} from "@/types";
+import { TMangaInput, TSortingOptions } from "@/types";
+import { EMangaStatus, EMangaType, EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
 const { submitAddManga, userFromDB } = mediaStore;

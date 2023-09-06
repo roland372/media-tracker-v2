@@ -98,7 +98,7 @@ import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import LinksComponent from "@/components/media/LinksComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
-import { EMediaType } from "@/types";
+import { EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
 const { anime, characters, games, manga, books, movies } =

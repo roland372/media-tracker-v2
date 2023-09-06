@@ -97,6 +97,7 @@ import ChipComponent from "../ui/ChipComponent.vue";
 import EditFormComponent from "./EditFormComponent.vue";
 import MediaModal from "@/components/media/MediaModal.vue";
 import SnackbarComponent from "../ui/SnackbarComponent.vue";
+import { TAnime, TBook, TCharacter, TGame, TManga, TMovie } from "@/types";
 import {
   EAnimeStatus,
   EBookStatus,
@@ -105,13 +106,7 @@ import {
   EMangaStatus,
   EMediaType,
   EMovieStatus,
-  TAnime,
-  TBook,
-  TCharacter,
-  TGame,
-  TManga,
-  TMovie,
-} from "@/types";
+} from "../../../../common/types";
 
 const mediaStore = useMediaStore();
 const {

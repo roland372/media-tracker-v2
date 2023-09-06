@@ -18,7 +18,7 @@ import {
   EMovieStatus,
   EMovieType,
   EMusicCategory,
-  EUserRole
+  EUserRole,
 } from '@common/types';
 
 //? <----- UTILS ----->

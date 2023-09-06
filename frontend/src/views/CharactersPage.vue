@@ -135,13 +135,12 @@ import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { CommonCharacterData } from "@tutkli/jikan-ts";
+import { TCharacterInput, TSortingOptions } from "@/types";
 import {
   ECharacterGender,
   ECharacterSource,
   EMediaType,
-  TCharacterInput,
-  TSortingOptions,
-} from "@/types";
+} from "../../../common/types";
 
 interface CommonCharacterDataWithAbout extends CommonCharacterData {
   about?: string;
