@@ -1,5 +1,5 @@
 import Game from '../../db/models/Game';
-import { TGameInput, TGame, TContext } from '@common/types';
+import { TGameInput, TGame, TContext } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const gameResolvers = {

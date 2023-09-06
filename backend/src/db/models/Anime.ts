@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { TAnime, EAnimeStatus, EAnimeType } from '@common/types';
+import { TAnime, EAnimeStatus, EAnimeType } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 const AnimeSchema: Schema = new Schema<TAnime>(

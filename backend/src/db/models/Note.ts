@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { TNote } from '@common/types';
+import { TNote } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 const NoteSchema: Schema = new Schema<TNote>(

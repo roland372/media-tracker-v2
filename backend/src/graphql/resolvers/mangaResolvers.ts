@@ -1,5 +1,5 @@
 import Manga from '../../db/models/Manga';
-import { TMangaInput, TManga, TContext } from '@common/types';
+import { TMangaInput, TManga, TContext } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const mangaResolvers = {

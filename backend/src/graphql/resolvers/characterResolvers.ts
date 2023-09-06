@@ -1,5 +1,5 @@
 import Character from '../../db/models/Character';
-import { TCharacterInput, TCharacter, TContext } from '@common/types';
+import { TCharacterInput, TCharacter, TContext } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const characterResolvers = {

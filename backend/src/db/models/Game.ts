@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { TGame, EGameStatus, EGameType } from '@common/types';
+import { TGame, EGameStatus, EGameType } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 const GameSchema: Schema = new Schema<TGame>(

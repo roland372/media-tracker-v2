@@ -1,5 +1,5 @@
 import Music from '../../db/models/Music';
-import { TMusicInput, TMusic, TContext } from '@common/types';
+import { TMusicInput, TMusic, TContext } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const musicResolvers = {

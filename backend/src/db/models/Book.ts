@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { TBook, EBookStatus } from '@common/types';
+import { TBook, EBookStatus } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 const BookSchema: Schema = new Schema<TBook>(

@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { TCharacter, ECharacterGender, ECharacterSource } from '@common/types';
+import { TCharacter, ECharacterGender, ECharacterSource } from '../../types';
 import { v4 as uuidv4 } from 'uuid';
 
 const CharacterSchema: Schema = new Schema<TCharacter>(

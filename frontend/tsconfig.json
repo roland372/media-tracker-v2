@@ -1,7 +1,4 @@
 {
-  "ts-node": {
-    "require": ["tsconfig-paths/register"]
-  },
   "compilerOptions": {
     "target": "es6",
     "module": "esnext",
@@ -27,8 +24,7 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "@common/*": ["../common/*"],
+      ]
     },
     "lib": [
       "esnext",
