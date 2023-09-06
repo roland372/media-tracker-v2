@@ -1,5 +1,5 @@
 import User from '../../db/models/User';
-import { TUserInput, TUser } from '../../types';
+import { TUserInput, TUser } from '@common/types';
 
 export const userResolvers = {
 	Query: {

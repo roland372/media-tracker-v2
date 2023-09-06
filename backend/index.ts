@@ -27,11 +27,8 @@ dotenv.config();
 console.log(colors.blue.bold(process.env.NODE_ENV!.trim()));
 
 const PORT = process.env.PORT || 5000;
-
 const CLIENT_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_CLIENT_URL_DEVELOPMENT : process.env.NODE_CLIENT_URL;
-
 const SERVER_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_SERVER_URL_DEVELOPMENT : process.env.NODE_SERVER_URL;
-
 const MONGODB_URI = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_MONGODB_URI_DEVELOPMENT : process.env.NODE_MONGODB_URI;
 
 const app = express();
@@ -40,7 +37,7 @@ const schema = applyMiddleware(makeExecutableSchema({
 	typeDefs,
 	resolvers,
 }),
-	shield)
+	shield);
 const server = new ApolloServer({
 	schema,
 	plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],

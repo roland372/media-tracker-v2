@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { TEmote } from '../../types';
+import { TEmote } from '@common/types';
 import { v4 as uuidv4 } from 'uuid';
 
 const EmoteSchema: Schema = new Schema<TEmote>(

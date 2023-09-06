@@ -1,5 +1,5 @@
 import Book from '../../db/models/Book';
-import { TBookInput, TBook, TContext } from '../../types';
+import { TBookInput, TBook, TContext } from '@common/types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const bookResolvers = {

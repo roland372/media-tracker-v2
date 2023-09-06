@@ -1,5 +1,5 @@
 import Anime from '../../db/models/Anime';
-import { TAnimeInput, TAnime, TContext } from '../../types';
+import { TAnimeInput, TAnime, TContext } from '@common/types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const animeResolvers = {

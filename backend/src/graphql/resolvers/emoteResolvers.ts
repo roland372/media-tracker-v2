@@ -1,5 +1,5 @@
 import Emote from '../../db/models/Emote';
-import { TEmoteInput, TEmote } from '../../types';
+import { TEmoteInput, TEmote } from '@common/types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const emoteResolvers = {

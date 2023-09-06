@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { EUserRole, TUser } from '../../types';
+import { EUserRole, TUser } from '@common/types';
 
 const UserSchema: Schema = new Schema<TUser>(
 	{
