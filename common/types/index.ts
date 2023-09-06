@@ -25,6 +25,23 @@ export enum EAnimeType {
   TV_SHOW = 'TV-Show',
 };
 
+export type TCommonAnimeProps = {
+  episodesMax: number;
+  episodesMin: number;
+  favourites: boolean;
+  imageURL: string;
+  lastModified: number;
+  link1: string;
+  link1Name: string;
+  link2: string;
+  link2Name: string;
+  mal_id: number;
+  rating: number;
+  status: EAnimeStatus;
+  title: string;
+  type: EAnimeType;
+};
+
 //? <----- BOOKS ----->
 export enum EBookStatus {
   READING = 'Reading',
@@ -32,6 +49,22 @@ export enum EBookStatus {
   ON_HOLD = 'On-Hold',
   DROPPED = 'Dropped',
   PLAN_TO_READ = 'Plan to Read',
+};
+
+export type TCommonBookProps = {
+  author: string;
+  favourites: boolean;
+  genre: string;
+  imageURL: string;
+  lastModified: number;
+  link1: string;
+  link1Name: string;
+  link2: string;
+  link2Name: string;
+  pages: number;
+  rating: number;
+  status: EBookStatus;
+  title: string;
 };
 
 //? <----- CHARACTERS ----->
@@ -47,6 +80,28 @@ export enum ECharacterGender {
   OTHER = 'Other',
 };
 
+export type TCommonCharacterProps = {
+  favourites: boolean;
+  gender: ECharacterGender;
+  hairColor: string;
+  imageURL: string;
+  lastModified: number;
+  link1: string;
+  link1Name: string;
+  mal_id: number;
+  name: string;
+  series: string;
+  source: ECharacterSource;
+};
+
+//? <----- EMOTES ----->
+export type TCommonEmoteProps = {
+  favourites: boolean;
+  lastModified: number;
+  name: string;
+  url: string;
+};
+
 //? <----- GAMES ----->
 export enum EGameStatus {
   PLAYING = 'Playing',
@@ -59,6 +114,21 @@ export enum EGameStatus {
 export enum EGameType {
   GAME = 'Game',
   VISUAL_NOVEL = 'Visual Novel',
+};
+
+export type TCommonGameProps = {
+  favourites: boolean;
+  imageURL: string;
+  lastModified: number;
+  link1: string;
+  link1Name: string;
+  link2: string;
+  link2Name: string;
+  playtime: number;
+  rating: number;
+  status: EGameStatus;
+  title: string;
+  type: EGameType;
 };
 
 //? <----- GENSHIN IMPACT ----->
@@ -109,6 +179,54 @@ export enum EGenshinImpactWeapon {
   SWORD = "Sword",
 };
 
+export type TStatusValue<T> = {
+  status: boolean;
+  value: T;
+};
+
+export type TCommonGenshinImpactCharacterProps = {
+  avatar: string;
+  element: EGenshinImpactElement;
+  gender: ECharacterGender;
+  lastModified: Date;
+  name: string;
+  rarity: 4 | 5;
+  region: EGenshinImpactRegion;
+  talentBook: EGenshinImpactTalentBook;
+  version: string;
+  weapon: EGenshinImpactWeapon;
+};
+
+export type TGenshinImpactBuildObj = {
+  artifacts: string;
+  artifactStats: {
+    sands: string;
+    goblet: string;
+    circlet: string;
+  };
+  desiredStats: TStatusValue<string>;
+  imageURL: string;
+  role: string;
+  weapon: TStatusValue<string>;
+};
+
+export type TCommonGenshinImpactCharacterBuildProps = {
+  characterId: string;
+  constellation: TStatusValue<number>;
+  favourites: boolean;
+  imageURL: string;
+  lastModified: Date;
+  level: TStatusValue<string>;
+  note: string;
+  status: boolean;
+  talents: {
+    normalAttack: TStatusValue<number>;
+    elementalSkill: TStatusValue<number>;
+    elementalBurst: TStatusValue<number>;
+  };
+  builds: TGenshinImpactBuildObj[];
+};
+
 //? <----- HONKAI STAR RAIL ----->
 export enum EHonkaiStarRailFaction {
   ASTRAL_EXPRESS = "Astral Express",
@@ -138,6 +256,53 @@ export enum EHonkaiStarRailType {
   IMAGINARY = "Imaginary",
 };
 
+export type TCommonHonkaiStarRailCharacterProps = {
+  avatar: string;
+  faction: EHonkaiStarRailFaction;
+  gender: ECharacterGender;
+  lastModified: Date;
+  name: string;
+  path: EHonkaiStarRailPath;
+  rarity: 4 | 5;
+  type: EHonkaiStarRailType;
+  version: string;
+};
+
+export type THonkaiStarRailBuildObj = {
+  desiredStats: TStatusValue<string>;
+  imageURL: string;
+  lightCone: TStatusValue<string>;
+  planarOrnaments: string;
+  planarOrnamentsStats: {
+    linkRope: string;
+    planarSphere: string;
+  };
+  relics: string;
+  relicsStats: {
+    body: string;
+    feet: string;
+  };
+  role: string;
+};
+
+export type TCommonHonkaiStarRailCharacterBuildProps = {
+  abilities: {
+    basicATK: TStatusValue<number>;
+    skill: TStatusValue<number>;
+    ultimate: TStatusValue<number>;
+    talent: TStatusValue<number>;
+  };
+  builds: THonkaiStarRailBuildObj[];
+  characterId: string;
+  eidolon: TStatusValue<number>;
+  favourites: boolean;
+  imageURL: string;
+  lastModified: Date;
+  level: TStatusValue<string>;
+  note: string;
+  status: boolean;
+};
+
 //? <----- MANGA ----->
 export enum EMangaStatus {
   READING = 'Reading',
@@ -157,6 +322,25 @@ export enum EMangaType {
   WEBTOON = 'Webtoon',
 };
 
+export type TCommonMangaProps = {
+  chaptersMax: number;
+  chaptersMin: number;
+  favourites: boolean;
+  imageURL: string;
+  lastModified: number;
+  link1: string;
+  link1Name: string;
+  link2: string;
+  link2Name: string;
+  mal_id?: number;
+  rating: number;
+  status: EMangaStatus;
+  title: string;
+  type: EMangaType;
+  volumesMax: number;
+  volumesMin: number;
+};
+
 //? <----- MOVIES ----->
 export enum EMovieStatus {
   WATCHING = 'Watching',
@@ -171,6 +355,24 @@ export enum EMovieType {
   TV_SHOW = 'TV-Show',
 };
 
+export type TCommonMovieProps = {
+  episodesMax: number;
+  episodesMin: number;
+  favourites: boolean;
+  imageURL: string;
+  lastModified: number;
+  link1: string;
+  link1Name: string;
+  link2: string;
+  link2Name: string;
+  rating: number;
+  seasonsMax: number;
+  seasonsMin: number;
+  status: EMovieStatus;
+  title: string;
+  type: EMovieType;
+};
+
 //? <----- MUSIC ----->
 export enum EMusicCategory {
   ANIME = 'Anime',
@@ -180,9 +382,34 @@ export enum EMusicCategory {
   TOUHOU = 'Touhou'
 };
 
+export type TCommonMusicProps = {
+  artist: string;
+  category: EMusicCategory;
+  favourites: boolean;
+  imageURL: string;
+  lastModified: number;
+  link: string;
+  title: string;
+};
+
+//? <----- NOTES ----->
+export type TCommonNoteProps = {
+  color: string;
+  lastModified: number;
+  note: string;
+  title: string;
+};
+
 //? <----- USER ----->
 export enum EUserRole {
   ADMIN = "ADMIN",
   PROTECTED = "PROTECTED",
   USER = "USER",
+};
+
+export type TCommonUserProps = {
+  color: string;
+  profileDesc: string;
+  profileImg: string;
+  username: string;
 };
