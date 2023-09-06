@@ -38,7 +38,7 @@
           <td>{{ anime.episodesMin }} / {{ anime.episodesMax }}</td>
           <td>
             {{
-              new Date(anime.lastModified).toLocaleDateString("en-GB", {
+              new Date(anime.lastModified ?? "").toLocaleDateString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
               })
@@ -85,7 +85,7 @@
           <td>{{ book.rating }}</td>
           <td>
             {{
-              new Date(book.lastModified).toLocaleDateString("en-GB", {
+              new Date(book.lastModified ?? "").toLocaleDateString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
               })
@@ -135,10 +135,13 @@
           <td>{{ character.hairColor }}</td>
           <td>
             {{
-              new Date(character.lastModified).toLocaleDateString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
+              new Date(character.lastModified ?? "").toLocaleDateString(
+                "en-GB",
+                {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }
+              )
             }}
           </td>
         </tr>
@@ -178,7 +181,7 @@
           <td>{{ game.playtime }}</td>
           <td>
             {{
-              new Date(game.lastModified).toLocaleDateString("en-GB", {
+              new Date(game.lastModified ?? "").toLocaleDateString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
               })
@@ -225,7 +228,7 @@
           <td>{{ manga.volumesMin }} / {{ manga.volumesMax }}</td>
           <td>
             {{
-              new Date(manga.lastModified).toLocaleDateString("en-GB", {
+              new Date(manga.lastModified ?? "").toLocaleDateString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
               })
@@ -272,7 +275,7 @@
           <td>{{ movie.seasonsMin }} / {{ movie.seasonsMax }}</td>
           <td>
             {{
-              new Date(movie.lastModified).toLocaleDateString("en-GB", {
+              new Date(movie.lastModified ?? "").toLocaleDateString("en-GB", {
                 hour: "2-digit",
                 minute: "2-digit",
               })

@@ -1,11 +1,4 @@
 import {
-  EAnimeStatus,
-  EAnimeType,
-  EBookStatus,
-  ECharacterGender,
-  ECharacterSource,
-  EGameStatus,
-  EGameType,
   // EGenshinImpactElement,
   // EGenshinImpactRegion,
   // EGenshinImpactTalentBook,
@@ -13,283 +6,89 @@ import {
   // EHonkaiStarRailFaction,
   // EHonkaiStarRailPath,
   // EHonkaiStarRailType,
-  EMangaStatus,
-  EMangaType,
-  EMovieStatus,
-  EMovieType,
-  EMusicCategory,
   EUserRole,
+  TCommonAnimeProps,
+  TCommonBookProps,
+  TCommonCharacterProps,
+  TCommonEmoteProps,
+  TCommonGameProps,
+  TCommonMangaProps,
+  TCommonMovieProps,
+  TCommonMusicProps,
+  TCommonNoteProps,
+  TCommonUserProps,
 } from "@common/types";
 
 //? <----- ANIME ----->
-export type TAnime = {
-  episodesMax: number;
-  episodesMin: number;
-  favourites: boolean;
-  id: string;
+export type TAnime = TCommonAnimeProps & {
   _id: string;
-  imageURL: string;
-  lastModified: number;
-  link1: string;
-  link1Name: string;
-  link2: string;
-  link2Name: string;
-  mal_id: number;
+  ID: string;
   owner: string;
-  rating: number;
-  status: EAnimeStatus;
-  title: string;
-  type: EAnimeType;
 };
 
-export type TAnimeInput = {
-  episodesMax?: number;
-  episodesMin?: number;
-  favourites?: boolean;
-  imageURL?: string;
-  lastModified?: number;
-  link1?: string;
-  link1Name?: string;
-  link2?: string;
-  link2Name?: string;
-  mal_id?: number;
-  owner: string;
-  rating?: number;
-  status?: EAnimeStatus;
-  title: string;
-  type?: EAnimeType;
-};
+export type TAnimeInput = TCommonAnimeProps;
 
 //? <----- BOOKS ----->
-export type TBook = {
-  author: string;
-  favourites: boolean;
-  genre: string;
-  id: string;
+export type TBook = TCommonBookProps & {
   _id: string;
-  imageURL: string;
-  lastModified: number;
-  link1: string;
-  link1Name: string;
-  link2: string;
-  link2Name: string;
+  ID: string;
   owner: string;
-  pages: number;
-  rating: number;
-  status: EBookStatus;
-  title: string;
 };
 
-export type TBookInput = {
-  author: string;
-  favourites?: boolean;
-  genre?: string;
-  imageURL?: string;
-  lastModified?: number;
-  link1?: string;
-  link1Name?: string;
-  link2?: string;
-  link2Name?: string;
-  owner: string;
-  pages?: number;
-  rating?: number;
-  status?: EBookStatus;
-  title: string;
-};
+export type TBookInput = TCommonBookProps;
 
 //? <----- CHARACTERS ----->
-export type TCharacter = {
-  favourites: boolean;
-  gender: ECharacterGender;
-  hairColor: string;
-  id: string;
+export type TCharacter = TCommonCharacterProps & {
   _id: string;
-  imageURL: string;
-  lastModified: number;
-  link1: string;
-  link1Name: string;
-  mal_id: number;
-  name: string;
+  ID: string;
   owner: string;
-  series: string;
-  source: ECharacterSource;
 };
 
-export type TCharacterInput = {
-  favourites?: boolean;
-  gender?: ECharacterGender;
-  hairColor?: string;
-  imageURL?: string;
-  lastModified?: number;
-  link1?: string;
-  link1Name?: string;
-  mal_id?: number;
-  name: string;
-  owner: string;
-  series?: string;
-  source?: ECharacterSource;
-};
+export type TCharacterInput = TCommonCharacterProps;
 
 //? <----- EMOTES ----->
-export type TEmote = {
-  favourites: boolean;
-  id: string;
+export type TEmote = TCommonEmoteProps & {
   _id: string;
-  lastModified: number;
-  name: string;
-  url: string;
+  id: string;
 };
 
-export type TEmoteInput = {
-  favourites?: boolean;
-  lastModified?: number;
-  name: string;
-  url: string;
-};
+export type TEmoteInput = TCommonEmoteProps;
 
 //? <----- GAMES ----->
-export type TGame = {
-  favourites: boolean;
-  id: string;
+export type TGame = TCommonGameProps & {
   _id: string;
-  imageURL: string;
-  lastModified: number;
-  link1: string;
-  link1Name: string;
-  link2: string;
-  link2Name: string;
+  ID: string;
   owner: string;
-  playtime: number;
-  rating: number;
-  status: EGameStatus;
-  title: string;
-  type: EGameType;
 };
 
-export type TGameInput = {
-  favourites?: boolean;
-  imageURL?: string;
-  lastModified?: number;
-  link1?: string;
-  link1Name?: string;
-  link2?: string;
-  link2Name?: string;
-  owner: string;
-  playtime?: number;
-  rating?: number;
-  status?: EGameStatus;
-  title: string;
-  type?: EGameType;
-};
+export type TGameInput = TCommonGameProps;
 
 //? <----- MANGA ----->
-export type TManga = {
-  chaptersMax: number;
-  chaptersMin: number;
-  favourites: boolean;
-  id: string;
+export type TManga = TCommonMangaProps & {
   _id: string;
-  imageURL: string;
-  lastModified: number;
-  link1: string;
-  link1Name: string;
-  link2: string;
-  link2Name: string;
-  mal_id: number;
+  ID: string;
   owner: string;
-  rating: number;
-  status: EMangaStatus;
-  title: string;
-  type: EMangaType;
-  volumesMax: number;
-  volumesMin: number;
 };
 
-export type TMangaInput = {
-  chaptersMax?: number;
-  chaptersMin?: number;
-  favourites?: boolean;
-  imageURL?: string;
-  lastModified?: number;
-  link1?: string;
-  link1Name?: string;
-  link2?: string;
-  link2Name?: string;
-  mal_id?: number;
-  owner: string;
-  rating?: number;
-  status?: EMangaStatus;
-  title: string;
-  type?: EMangaType;
-  volumesMax?: number;
-  volumesMin?: number;
-};
+export type TMangaInput = TCommonMangaProps;
 
 //? <----- MOVIES ----->
-export type TMovie = {
-  episodesMax: number;
-  episodesMin: number;
-  favourites: boolean;
-  id: string;
+export type TMovie = TCommonMovieProps & {
   _id: string;
-  imageURL: string;
-  lastModified: number;
-  link1: string;
-  link1Name: string;
-  link2: string;
-  link2Name: string;
+  ID: string;
   owner: string;
-  rating: number;
-  seasonsMax: number;
-  seasonsMin: number;
-  status: EMovieStatus;
-  title: string;
-  type: EMovieType;
 };
 
-export type TMovieInput = {
-  episodesMax?: number;
-  episodesMin?: number;
-  favourites?: boolean;
-  imageURL?: string;
-  lastModified?: number;
-  link1?: string;
-  link1Name?: string;
-  link2?: string;
-  link2Name?: string;
-  owner: string;
-  rating?: number;
-  seasonsMax?: number;
-  seasonsMin?: number;
-  status?: EMovieStatus;
-  title: string;
-  type?: EMovieType;
-};
+export type TMovieInput = TCommonMovieProps;
 
 //? <----- MUSIC ----->
-export type TMusic = {
-  artist: string;
-  category: EMusicCategory;
-  favourites: boolean;
-  id: string;
+export type TMusic = TCommonMusicProps & {
   _id: string;
-  imageURL: string;
-  lastModified: number;
-  link: string;
+  id: string;
   owner: string;
-  title: string;
 };
 
-export type TMusicInput = {
-  artist: string;
-  category?: EMusicCategory;
-  favourites?: boolean;
-  imageURL?: string;
-  lastModified?: number;
-  link?: string;
-  owner: string;
-  title: string;
-};
+export type TMusicInput = TCommonMusicProps;
 
 export type TYouTubeVideo = {
   id: {
@@ -314,34 +113,20 @@ export type TThumbnailUrls = {
 };
 
 //? <----- NOTES ----->
-export type TNote = {
-  color: string;
-  id: string;
+export type TNote = TCommonNoteProps & {
   _id: string;
-  lastModified: number;
-  note: string;
+  ID: string;
   owner: string;
-  title: string;
 };
 
-export type TNoteInput = {
-  color: string;
-  lastModified: number;
-  note?: string;
-  owner: string;
-  title: string;
-};
+export type TNoteInput = TCommonNoteProps;
 
 //? <----- USER ----->
-export type TUser = {
+export type TUser = TCommonUserProps & {
   _id: string;
-  color: string;
   email: string;
   googleId: string;
-  profileDesc: string;
-  profileImg: string;
   role: EUserRole;
-  username: string;
 };
 
 export type TUserInput = {
