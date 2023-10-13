@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const AnimeSchema: Schema = new Schema<TAnime>(
 	{
-		episodesMax: { type: Number, default: 0, min: 0 },
+		episodesMax: { type: Number, default: 0, min: 0 }, 
 		episodesMin: { type: Number, default: 0, min: 0 },
 		favourites: { type: Boolean, default: false },
 		id: { type: String, default: uuidv4() },
