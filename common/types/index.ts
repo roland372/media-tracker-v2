@@ -31,8 +31,8 @@ export type TCommonAnimeProps = {
   favourites: boolean;
   imageURL: string;
   lastModified?: number;
-  link1: string;
-  link1Name: string;
+  link: string;
+  linkName: string;
   mal_id?: number;
   rating: number;
   status: EAnimeStatus;
@@ -55,8 +55,8 @@ export type TCommonBookProps = {
   genre: string;
   imageURL: string;
   lastModified?: number;
-  link1: string;
-  link1Name: string;
+  link: string;
+  linkName: string;
   pages: number;
   rating: number;
   status: EBookStatus;
@@ -82,8 +82,8 @@ export type TCommonCharacterProps = {
   hairColor: string;
   imageURL: string;
   lastModified?: number;
-  link1: string;
-  link1Name: string;
+  link: string;
+  linkName: string;
   mal_id?: number;
   name: string;
   series: string;
@@ -116,8 +116,8 @@ export type TCommonGameProps = {
   favourites: boolean;
   imageURL: string;
   lastModified?: number;
-  link1: string;
-  link1Name: string;
+  link: string;
+  linkName: string;
   playtime: number;
   rating: number;
   status: EGameStatus;
@@ -326,8 +326,8 @@ export type TCommonMangaProps = {
   favourites: boolean;
   imageURL: string;
   lastModified?: number;
-  link1: string;
-  link1Name: string;
+  link: string;
+  linkName: string;
   mal_id?: number;
   rating: number;
   status: EMangaStatus;
@@ -357,8 +357,8 @@ export type TCommonMovieProps = {
   favourites: boolean;
   imageURL: string;
   lastModified?: number;
-  link1: string;
-  link1Name: string;
+  link: string;
+  linkName: string;
   rating: number;
   seasonsMax: number;
   seasonsMin: number;

@@ -8,8 +8,8 @@ export const typeGame = gql`
 		_id: String
 		imageURL: String
 		lastModified: Date
-		link1: String
-		link1Name: String
+		link: String
+		linkName: String
 		owner: String
     playtime: Int
 		rating: Int
@@ -22,8 +22,8 @@ export const typeGame = gql`
 		favourites: Boolean
 		imageURL: String
 		lastModified: Date
-		link1: String
-		link1Name: String
+		link: String
+		linkName: String
 		owner: String!
     playtime: Int
 		rating: Int

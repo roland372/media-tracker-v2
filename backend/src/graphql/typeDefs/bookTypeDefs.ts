@@ -10,8 +10,8 @@ export const typeBook = gql`
 		_id: String
 		imageURL: String
 		lastModified: Date
-		link1: String
-		link1Name: String
+		link: String
+		linkName: String
 		owner: String
     pages: Int
 		rating: Int
@@ -25,8 +25,8 @@ export const typeBook = gql`
     genre: String
 		imageURL: String
 		lastModified: Date
-		link1: String
-		link1Name: String
+		link: String
+		linkName: String
 		owner: String!
     pages: Int
 		rating: Int

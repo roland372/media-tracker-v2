@@ -14,8 +14,8 @@ export const addGame = async (
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           owner
           playtime
           rating

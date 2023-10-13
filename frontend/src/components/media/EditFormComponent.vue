@@ -37,7 +37,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="animeRef.link1Name"
+                v-model="animeRef.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -45,7 +45,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="animeRef.link1"
+                v-model="animeRef.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -131,7 +131,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="mangaRef.link1Name"
+                v-model="mangaRef.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -139,7 +139,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="mangaRef.link1"
+                v-model="mangaRef.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -249,7 +249,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="gameRef.link1Name"
+                v-model="gameRef.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -257,7 +257,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="gameRef.link1"
+                v-model="gameRef.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -362,7 +362,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="characterRef.link1Name"
+                v-model="characterRef.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -370,7 +370,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="characterRef.link1"
+                v-model="characterRef.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -424,7 +424,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="bookRef.link1Name"
+                v-model="bookRef.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -432,7 +432,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="bookRef.link1"
+                v-model="bookRef.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -504,7 +504,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="movieRef.link1Name"
+                v-model="movieRef.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -512,7 +512,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="movieRef.link1"
+                v-model="movieRef.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -693,8 +693,8 @@ const handleSubmitEditAnime = async () => {
     favourites: animeRef.value.favourites,
     imageURL: animeRef.value.imageURL,
     lastModified: Date.now(),
-    link1: animeRef.value.link1,
-    link1Name: animeRef.value.link1Name,
+    link: animeRef.value.link,
+    linkName: animeRef.value.linkName,
     owner: userFromDB?.email as string,
     rating: animeRef.value.rating,
     status: animeRef.value.status,
@@ -706,7 +706,7 @@ const handleSubmitEditAnime = async () => {
     updatedAnime.title &&
     digitRegex.test(String(updatedAnime.episodesMax)) &&
     digitRegex.test(String(updatedAnime.episodesMin)) &&
-    (!updatedAnime.link1 || URLRegex.test(String(updatedAnime.link1))) &&
+    (!updatedAnime.link || URLRegex.test(String(updatedAnime.link))) &&
     (!updatedAnime.imageURL || URLRegex.test(String(updatedAnime.imageURL)))
   ) {
     await submitEditAnime(animeRef.value._id, updatedAnime);
@@ -721,8 +721,8 @@ const handleSubmitEditBook = async () => {
     genre: bookRef.value.genre,
     imageURL: bookRef.value.imageURL,
     lastModified: Date.now(),
-    link1: bookRef.value.link1,
-    link1Name: bookRef.value.link1Name,
+    link: bookRef.value.link,
+    linkName: bookRef.value.linkName,
     owner: userFromDB?.email as string,
     pages: bookRef.value.pages,
     rating: bookRef.value.rating,
@@ -734,7 +734,7 @@ const handleSubmitEditBook = async () => {
     updatedBook.title &&
     updatedBook.author &&
     digitRegex.test(String(updatedBook.pages)) &&
-    (!updatedBook.link1 || URLRegex.test(String(updatedBook.link1))) &&
+    (!updatedBook.link || URLRegex.test(String(updatedBook.link))) &&
     (!updatedBook.imageURL || URLRegex.test(String(updatedBook.imageURL)))
   ) {
     await submitEditBook(bookRef.value._id, updatedBook);
@@ -749,8 +749,8 @@ const handleSubmitEditCharacter = async () => {
     hairColor: characterRef.value.hairColor,
     imageURL: characterRef.value.imageURL,
     lastModified: Date.now(),
-    link1: characterRef.value.link1,
-    link1Name: characterRef.value.link1Name,
+    link: characterRef.value.link,
+    linkName: characterRef.value.linkName,
     name: characterRef.value.name,
     owner: userFromDB?.email as string,
     series: characterRef.value.series,
@@ -759,8 +759,7 @@ const handleSubmitEditCharacter = async () => {
 
   if (
     updatedCharacter.name &&
-    (!updatedCharacter.link1 ||
-      URLRegex.test(String(updatedCharacter.link1))) &&
+    (!updatedCharacter.link || URLRegex.test(String(updatedCharacter.link))) &&
     (!updatedCharacter.imageURL ||
       URLRegex.test(String(updatedCharacter.imageURL)))
   ) {
@@ -774,8 +773,8 @@ const handleSubmitEditGame = async () => {
     favourites: gameRef.value.favourites,
     imageURL: gameRef.value.imageURL,
     lastModified: Date.now(),
-    link1: gameRef.value.link1,
-    link1Name: gameRef.value.link1Name,
+    link: gameRef.value.link,
+    linkName: gameRef.value.linkName,
     owner: userFromDB?.email as string,
     playtime: gameRef.value.playtime,
     rating: gameRef.value.rating,
@@ -787,7 +786,7 @@ const handleSubmitEditGame = async () => {
   if (
     updatedGame.title &&
     digitRegex.test(String(updatedGame.playtime)) &&
-    (!updatedGame.link1 || URLRegex.test(String(updatedGame.link1))) &&
+    (!updatedGame.link || URLRegex.test(String(updatedGame.link))) &&
     (!updatedGame.imageURL || URLRegex.test(String(updatedGame.imageURL)))
   ) {
     await submitEditGame(gameRef.value._id, updatedGame);
@@ -805,8 +804,8 @@ const handleSubmitEditManga = async () => {
     favourites: mangaRef.value.favourites,
     imageURL: mangaRef.value.imageURL,
     lastModified: Date.now(),
-    link1: mangaRef.value.link1,
-    link1Name: mangaRef.value.link1Name,
+    link: mangaRef.value.link,
+    linkName: mangaRef.value.linkName,
     owner: userFromDB?.email as string,
     rating: mangaRef.value.rating,
     status: mangaRef.value.status,
@@ -825,7 +824,7 @@ const handleSubmitEditManga = async () => {
     digitRegex.test(String(updatedManga.chaptersMin)) &&
     digitRegex.test(String(updatedManga.volumesMax)) &&
     digitRegex.test(String(updatedManga.volumesMin)) &&
-    (!updatedManga.link1 || URLRegex.test(String(updatedManga.link1))) &&
+    (!updatedManga.link || URLRegex.test(String(updatedManga.link))) &&
     (!updatedManga.imageURL || URLRegex.test(String(updatedManga.imageURL)))
   ) {
     await submitEditManga(mangaRef.value._id, updatedManga);
@@ -843,8 +842,8 @@ const handleSubmitEditMovie = async () => {
     favourites: movieRef.value.favourites,
     imageURL: movieRef.value.imageURL,
     lastModified: Date.now(),
-    link1: movieRef.value.link1,
-    link1Name: movieRef.value.link1Name,
+    link: movieRef.value.link,
+    linkName: movieRef.value.linkName,
     owner: userFromDB?.email as string,
     rating: movieRef.value.rating,
     seasonsMax: movieRef.value.seasonsMax,
@@ -863,7 +862,7 @@ const handleSubmitEditMovie = async () => {
     digitRegex.test(String(updatedMovie.episodesMin)) &&
     digitRegex.test(String(updatedMovie.seasonsMax)) &&
     digitRegex.test(String(updatedMovie.seasonsMin)) &&
-    (!updatedMovie.link1 || URLRegex.test(String(updatedMovie.link1))) &&
+    (!updatedMovie.link || URLRegex.test(String(updatedMovie.link))) &&
     (!updatedMovie.imageURL || URLRegex.test(String(updatedMovie.imageURL)))
   ) {
     await submitEditMovie(movieRef.value._id, updatedMovie);

@@ -12,8 +12,8 @@ export const getAllBooks = async (userId: string) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           owner
           pages
           rating
@@ -41,8 +41,8 @@ export const getSingleBook = async (variables: { id: string }) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           owner
           pages
           rating

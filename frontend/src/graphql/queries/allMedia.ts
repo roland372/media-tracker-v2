@@ -12,8 +12,8 @@ export const getAllMedia = async (userId: string) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           mal_id
           owner
           rating
@@ -28,8 +28,8 @@ export const getAllMedia = async (userId: string) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           owner
           pages
           rating
@@ -43,8 +43,8 @@ export const getAllMedia = async (userId: string) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           mal_id
           name
           owner
@@ -63,8 +63,8 @@ export const getAllMedia = async (userId: string) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           owner
           playtime
           rating
@@ -79,8 +79,8 @@ export const getAllMedia = async (userId: string) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           mal_id
           owner
           rating
@@ -97,8 +97,8 @@ export const getAllMedia = async (userId: string) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           owner
           rating
           seasonsMax

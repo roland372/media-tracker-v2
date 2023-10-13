@@ -19,8 +19,8 @@
               <div><b>Type:</b> {{ (media as TAnime).type }}</div>
               <div>
                 <b>Link: </b>
-                <a :href="(media as TAnime).link1" target="_blank">{{
-                  (media as TAnime).link1Name
+                <a :href="(media as TAnime).link" target="_blank">{{
+                  (media as TAnime).linkName
                 }}</a>
               </div>
               <div>
@@ -36,8 +36,8 @@
               <div><b>Author:</b> {{ (media as TBook).author }}</div>
               <div>
                 <b>Link: </b>
-                <a :href="(media as TBook).link1" target="_blank">{{
-                  (media as TBook).link1Name
+                <a :href="(media as TBook).link" target="_blank">{{
+                  (media as TBook).linkName
                 }}</a>
               </div>
               <div><b>Genre:</b> {{ (media as TBook).genre }}</div>
@@ -50,8 +50,8 @@
             <v-card-text v-if="mediaType === EMediaType.CHARACTER">
               <div>
                 <b>Link: </b>
-                <a :href="(media as TCharacter).link1" target="_blank">{{
-                  (media as TCharacter).link1Name
+                <a :href="(media as TCharacter).link" target="_blank">{{
+                  (media as TCharacter).linkName
                 }}</a>
               </div>
               <div><b>Source:</b> {{ (media as TCharacter).source }}</div>
@@ -67,8 +67,8 @@
               <div><b>Type:</b> {{ (media as TGame).type }}</div>
               <div>
                 <b>Link: </b>
-                <a :href="(media as TGame).link1" target="_blank">{{
-                  (media as TGame).link1Name
+                <a :href="(media as TGame).link" target="_blank">{{
+                  (media as TGame).linkName
                 }}</a>
               </div>
               <div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
@@ -81,8 +81,8 @@
               <div><b>Type:</b> {{ (media as TManga).type }}</div>
               <div>
                 <b>Link: </b>
-                <a :href="(media as TManga).link1" target="_blank">{{
-                  (media as TManga).link1Name
+                <a :href="(media as TManga).link" target="_blank">{{
+                  (media as TManga).linkName
                 }}</a>
               </div>
               <div>
@@ -102,8 +102,8 @@
               <div><b>Type:</b> {{ (media as TMovie).type }}</div>
               <div>
                 <b>Link: </b>
-                <a :href="(media as TMovie).link1" target="_blank">{{
-                  (media as TMovie).link1Name
+                <a :href="(media as TMovie).link" target="_blank">{{
+                  (media as TMovie).linkName
                 }}</a>
               </div>
               <div v-if="(media as TMovie).type === 'TV-Show'">

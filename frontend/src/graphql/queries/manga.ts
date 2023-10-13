@@ -12,8 +12,8 @@ export const getAllManga = async (userId: string) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           mal_id
           owner
           rating
@@ -44,8 +44,8 @@ export const getSingleManga = async (variables: { id: string }) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           mal_id
           owner
           rating

@@ -38,7 +38,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newAnime.link1Name"
+                v-model="newAnime.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -46,7 +46,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newAnime.link1"
+                v-model="newAnime.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -133,7 +133,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newManga.link1Name"
+                v-model="newManga.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -141,7 +141,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newManga.link1"
+                v-model="newManga.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -252,7 +252,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newGame.link1Name"
+                v-model="newGame.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -260,7 +260,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newGame.link1"
+                v-model="newGame.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -366,7 +366,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newCharacter.link1Name"
+                v-model="newCharacter.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -374,7 +374,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newCharacter.link1"
+                v-model="newCharacter.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -429,7 +429,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newBook.link1Name"
+                v-model="newBook.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -437,7 +437,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newBook.link1"
+                v-model="newBook.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -510,7 +510,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newMovie.link1Name"
+                v-model="newMovie.linkName"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -518,7 +518,7 @@
                 variant="outlined"
               />
               <v-text-field
-                v-model="newMovie.link1"
+                v-model="newMovie.link"
                 class="mb-2"
                 density="compact"
                 hide-details="auto"
@@ -687,8 +687,8 @@ const newAnime: TAnimeInput = reactive({
   episodesMin: 0,
   favourites: false,
   imageURL: "",
-  link1: "",
-  link1Name: "MAL",
+  link: "",
+  linkName: "MAL",
   owner: userFromDB?.email as string,
   rating: 0,
   status: EAnimeStatus.PLAN_TO_WATCH,
@@ -701,8 +701,8 @@ const newBook: TBookInput = reactive({
   favourites: false,
   genre: "",
   imageURL: "",
-  link1: "",
-  link1Name: "Link",
+  link: "",
+  linkName: "Link",
   owner: userFromDB?.email as string,
   pages: 0,
   rating: 0,
@@ -715,8 +715,8 @@ const newCharacter: TCharacterInput = reactive({
   gender: ECharacterGender.FEMALE,
   hairColor: "",
   imageURL: "",
-  link1: "",
-  link1Name: "Link",
+  link: "",
+  linkName: "Link",
   name: "",
   owner: userFromDB?.email as string,
   series: "",
@@ -726,8 +726,8 @@ const newCharacter: TCharacterInput = reactive({
 const newGame: TGameInput = reactive({
   favourites: false,
   imageURL: "",
-  link1: "",
-  link1Name: "Link",
+  link: "",
+  linkName: "Link",
   owner: userFromDB?.email as string,
   playtime: 0,
   rating: 0,
@@ -741,8 +741,8 @@ const newManga: TMangaInput = reactive({
   chaptersMin: 0,
   favourites: false,
   imageURL: "",
-  link1: "",
-  link1Name: "MAL",
+  link: "",
+  linkName: "MAL",
   owner: userFromDB?.email as string,
   rating: 0,
   status: EMangaStatus.PLAN_TO_READ,
@@ -757,8 +757,8 @@ const newMovie: TMovieInput = reactive({
   episodesMax: 0,
   favourites: false,
   imageURL: "",
-  link1: "",
-  link1Name: "Link",
+  link: "",
+  linkName: "Link",
   owner: userFromDB?.email as string,
   rating: 0,
   seasonsMin: 0,
@@ -773,7 +773,7 @@ const handleSubmitAddAnime = async () => {
     newAnime.title &&
     digitRegex.test(String(newAnime.episodesMax)) &&
     digitRegex.test(String(newAnime.episodesMin)) &&
-    (!newAnime.link1 || URLRegex.test(String(newAnime.link1))) &&
+    (!newAnime.link || URLRegex.test(String(newAnime.link))) &&
     (!newAnime.imageURL || URLRegex.test(String(newAnime.imageURL)))
   ) {
     await submitAddAnime(newAnime);
@@ -786,7 +786,7 @@ const handleSubmitAddBook = async () => {
     newBook.title &&
     newBook.author &&
     digitRegex.test(String(newBook.pages)) &&
-    (!newBook.link1 || URLRegex.test(String(newBook.link1))) &&
+    (!newBook.link || URLRegex.test(String(newBook.link))) &&
     (!newBook.imageURL || URLRegex.test(String(newBook.imageURL)))
   ) {
     await submitAddBook(newBook);
@@ -797,7 +797,7 @@ const handleSubmitAddBook = async () => {
 const handleSubmitAddCharacter = async () => {
   if (
     newCharacter.name &&
-    (!newCharacter.link1 || URLRegex.test(String(newCharacter.link1))) &&
+    (!newCharacter.link || URLRegex.test(String(newCharacter.link))) &&
     (!newCharacter.imageURL || URLRegex.test(String(newCharacter.imageURL)))
   ) {
     await submitAddCharacter(newCharacter);
@@ -809,7 +809,7 @@ const handleSubmitAddGame = async () => {
   if (
     newGame.title &&
     digitRegex.test(String(newGame.playtime)) &&
-    (!newGame.link1 || URLRegex.test(String(newGame.link1))) &&
+    (!newGame.link || URLRegex.test(String(newGame.link))) &&
     (!newGame.imageURL || URLRegex.test(String(newGame.imageURL)))
   ) {
     await submitAddGame(newGame);
@@ -824,7 +824,7 @@ const handleSubmitAddManga = async () => {
     digitRegex.test(String(newManga.chaptersMin)) &&
     digitRegex.test(String(newManga.volumesMax)) &&
     digitRegex.test(String(newManga.volumesMin)) &&
-    (!newManga.link1 || URLRegex.test(String(newManga.link1))) &&
+    (!newManga.link || URLRegex.test(String(newManga.link))) &&
     (!newManga.imageURL || URLRegex.test(String(newManga.imageURL)))
   ) {
     await submitAddManga(newManga);
@@ -839,7 +839,7 @@ const handleSubmitAddMovie = async () => {
     digitRegex.test(String(newMovie.episodesMin)) &&
     digitRegex.test(String(newMovie.seasonsMax)) &&
     digitRegex.test(String(newMovie.seasonsMin)) &&
-    (!newMovie.link1 || URLRegex.test(String(newMovie.link1))) &&
+    (!newMovie.link || URLRegex.test(String(newMovie.link))) &&
     (!newMovie.imageURL || URLRegex.test(String(newMovie.imageURL)))
   ) {
     await submitAddMovie(newMovie);

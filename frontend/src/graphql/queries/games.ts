@@ -10,8 +10,8 @@ export const getAllGames = async (userId: string) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           owner
           playtime
           rating
@@ -38,8 +38,8 @@ export const getSingleGame = async (variables: { id: string }) => {
           _id
           imageURL
           lastModified
-          link1
-          link1Name
+          link
+          linkName
           owner
           playtime
           rating
