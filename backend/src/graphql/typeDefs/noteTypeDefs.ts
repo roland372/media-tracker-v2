@@ -10,6 +10,8 @@ export const typeNote = gql`
 		note: String
 		owner: String
 		title: String
+		createdAt: Date
+		updatedAt: Date
 	}
 
 	input NoteInput {

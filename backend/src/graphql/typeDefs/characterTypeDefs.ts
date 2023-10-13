@@ -17,6 +17,8 @@ export const typeCharacter = gql`
 		owner: String
 		series: String
 		source: String
+		createdAt: Date
+		updatedAt: Date
 	}
 
 	input CharacterInput {

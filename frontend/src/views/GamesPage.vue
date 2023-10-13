@@ -71,7 +71,7 @@
     />
   </MediaComponent>
   <MediaComponent
-    :media="orderBy(games, ['lastModified'], ['desc']).slice(0, 20)"
+    :media="orderBy(games, ['updatedAt'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.GAME"
     title="Recent Games"
   />

@@ -71,7 +71,7 @@
     />
   </MediaComponent>
   <MediaComponent
-    :media="orderBy(movies, ['lastModified'], ['desc']).slice(0, 20)"
+    :media="orderBy(movies, ['updatedAt'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.MOVIE"
     title="Recent Movies"
   />

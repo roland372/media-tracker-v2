@@ -18,6 +18,8 @@ export const getAllGames = async (userId: string) => {
           status
           title
           type
+          createdAt
+          updatedAt
         }
       }
     `,
@@ -46,6 +48,8 @@ export const getSingleGame = async (variables: { id: string }) => {
           status
           title
           type
+          createdAt
+          updatedAt
         }
       }
     `,

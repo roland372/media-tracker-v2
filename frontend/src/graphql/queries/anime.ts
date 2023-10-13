@@ -20,6 +20,8 @@ export const getAllAnime = async (userId: string) => {
           status
           title
           type
+          createdAt
+          updatedAt
         }
       }
     `,
@@ -50,6 +52,8 @@ export const getSingleAnime = async (variables: { id: string }) => {
           status
           title
           type
+          createdAt
+          updatedAt
         }
       }
     `,

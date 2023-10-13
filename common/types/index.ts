@@ -38,6 +38,8 @@ export type TCommonAnimeProps = {
   status: EAnimeStatus;
   title: string;
   type: EAnimeType;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 //? <----- BOOKS ----->
@@ -61,6 +63,8 @@ export type TCommonBookProps = {
   rating: number;
   status: EBookStatus;
   title: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 //? <----- CHARACTERS ----->
@@ -88,6 +92,8 @@ export type TCommonCharacterProps = {
   name: string;
   series: string;
   source: ECharacterSource;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 //? <----- EMOTES ----->
@@ -96,6 +102,8 @@ export type TCommonEmoteProps = {
   lastModified?: number;
   name: string;
   url: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 //? <----- GAMES ----->
@@ -123,6 +131,8 @@ export type TCommonGameProps = {
   status: EGameStatus;
   title: string;
   type: EGameType;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 //? <----- GENSHIN IMPACT ----->
@@ -335,6 +345,8 @@ export type TCommonMangaProps = {
   type: EMangaType;
   volumesMax: number;
   volumesMin: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 //? <----- MOVIES ----->
@@ -365,6 +377,8 @@ export type TCommonMovieProps = {
   status: EMovieStatus;
   title: string;
   type: EMovieType;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 //? <----- MUSIC ----->
@@ -384,6 +398,8 @@ export type TCommonMusicProps = {
   lastModified?: number;
   link: string;
   title: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 //? <----- NOTES ----->
@@ -392,6 +408,8 @@ export type TCommonNoteProps = {
   lastModified: number;
   note: string;
   title: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 //? <----- USER ----->

@@ -9,6 +9,8 @@ export const typeEmote = gql`
 		lastModified: Date
 		name: String
 		url: String
+		createdAt: Date
+		updatedAt: Date
 	}
 
 	input EmoteInput {

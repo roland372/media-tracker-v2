@@ -71,7 +71,7 @@
     />
   </MediaComponent>
   <MediaComponent
-    :media="orderBy(books, ['lastModified'], ['desc']).slice(0, 20)"
+    :media="orderBy(books, ['updatedAt'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.BOOK"
     title="Recent Books"
   />

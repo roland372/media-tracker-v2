@@ -22,6 +22,8 @@ export const getAllManga = async (userId: string) => {
           type
           volumesMax
           volumesMin
+          createdAt
+          updatedAt
         }
       }
     `,
@@ -54,6 +56,8 @@ export const getSingleManga = async (variables: { id: string }) => {
           type
           volumesMax
           volumesMin
+          createdAt
+          updatedAt
         }
       }
     `,

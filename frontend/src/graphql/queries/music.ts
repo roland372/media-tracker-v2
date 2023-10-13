@@ -15,6 +15,8 @@ export const getAllMusic = async (userId: string) => {
           link
           owner
           title
+          createdAt
+          updatedAt
         }
       }
     `,
@@ -40,6 +42,8 @@ export const getSingleMusic = async (variables: { id: string }) => {
           link
           owner
           title
+          createdAt
+          updatedAt
         }
       }
     `,

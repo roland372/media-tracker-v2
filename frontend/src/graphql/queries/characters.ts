@@ -19,6 +19,8 @@ export const getAllCharacters = async (userId: string) => {
           owner
           series
           source
+          createdAt
+          updatedAt
         }
       }
     `,
@@ -48,6 +50,8 @@ export const getSingleCharacter = async (variables: { id: string }) => {
           owner
           series
           source
+          createdAt
+          updatedAt
         }
       }
     `,

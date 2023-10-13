@@ -18,6 +18,8 @@ export const typeAnime = gql`
 		status: String
 		title: String
 		type: String
+		createdAt: Date
+		updatedAt: Date
 	}
 
 	input AnimeInput {

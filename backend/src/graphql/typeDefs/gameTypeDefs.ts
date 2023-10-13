@@ -16,6 +16,8 @@ export const typeGame = gql`
 		status: String
 		title: String
 		type: String
+		createdAt: Date
+		updatedAt: Date
 	}
 
 	input GameInput {

@@ -42,6 +42,13 @@ export const filterMediaStatus = (media: Ref, status: string) =>
     (media) => media.status.toLowerCase() === status.toLowerCase()
   );
 
+export const formatDate = (date?: Date) => {
+  return new Date(date ?? "").toLocaleDateString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
 export const round = (value: number, precision: number) => {
   const multiplier = Math.pow(10, precision || 0);
   return Math.round(value * multiplier) / multiplier;

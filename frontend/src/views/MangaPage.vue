@@ -105,7 +105,7 @@
     />
   </MediaComponent>
   <MediaComponent
-    :media="orderBy(manga, ['lastModified'], ['desc']).slice(0, 20)"
+    :media="orderBy(manga, ['updatedAt'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.MANGA"
     title="Recent Manga"
   />

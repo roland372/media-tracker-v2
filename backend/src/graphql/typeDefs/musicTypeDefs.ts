@@ -13,6 +13,8 @@ export const typeMusic = gql`
 		link: String
 		owner: String
 		title: String
+		createdAt: Date
+		updatedAt: Date
 	}
 
 	input MusicInput {

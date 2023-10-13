@@ -12,7 +12,7 @@
     <h3 v-if="!notes.length" class="text-color">Not found any items.</h3>
     <section v-else class="v-row my-1">
       <div
-        v-for="note in orderBy(notes, ['lastModified'], ['desc'])"
+        v-for="note in orderBy(notes, ['updatedAt'], ['desc'])"
         :key="note.color"
         class="v-col-lg-4 v-col-sm-6 v-col-12 text-wrap"
         style="word-wrap: break-word"
@@ -51,12 +51,7 @@
           </section>
           <section class="d-flex align-center justify-space-between flex-wrap">
             <div class="text-grey">
-              {{
-                new Date(note.lastModified).toLocaleDateString("en-GB", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-              }}
+              {{ formatDate(note.updatedAt) }}
             </div>
             <div>
               <ButtonIcon
@@ -272,6 +267,7 @@ import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { orderBy } from "lodash";
 import { stringRules } from "@/utils/validations/formValidations";
+import { formatDate } from "@/utils/mediaUtils";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";

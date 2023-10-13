@@ -11,6 +11,8 @@ export const getAllNotes = async (userId: string) => {
           lastModified
           note
           title
+          createdAt
+          updatedAt
         }
       }
     `,
@@ -32,6 +34,8 @@ export const getSingleNote = async (variables: { id: string }) => {
           lastModified
           note
           title
+          createdAt
+          updatedAt
         }
       }
     `,

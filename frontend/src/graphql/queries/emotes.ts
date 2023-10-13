@@ -11,6 +11,8 @@ export const getAllEmotes = async (userId: string) => {
           lastModified
           name
           url
+          createdAt
+          updatedAt
         }
       }
     `,
@@ -32,6 +34,8 @@ export const getSingleEmote = async (variables: { id: string }) => {
           lastModified
           name
           url
+          createdAt
+          updatedAt
         }
       }
     `,

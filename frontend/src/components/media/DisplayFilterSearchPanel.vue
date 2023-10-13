@@ -67,65 +67,71 @@
           <v-radio-group v-model="sortingOptions.sortField" class="ms-n3">
             <!--? ANIME -->
             <div v-if="props.mediaType === EMediaType.ANIME">
-              <v-radio label="Last Modified" value="lastModified" />
               <v-radio label="Progress" value="episodesMin" />
               <v-radio label="Rating" value="rating" />
               <v-radio label="Status" value="status" />
               <v-radio label="Title" value="title" />
               <v-radio label="Type" value="type" />
+              <v-radio label="Created At" value="createdAt" />
+              <v-radio label="Updated At" value="updatedAt" />
             </div>
 
             <!--? BOOKS -->
             <div v-if="props.mediaType === EMediaType.BOOK">
               <v-radio label="Author" value="author" />
               <v-radio label="Genre" value="genre" />
-              <v-radio label="Last Modified" value="lastModified" />
               <v-radio label="Pages" value="pages" />
               <v-radio label="Rating" value="rating" />
               <v-radio label="Status" value="status" />
               <v-radio label="Title" value="title" />
+              <v-radio label="Created At" value="createdAt" />
+              <v-radio label="Updated At" value="updatedAt" />
             </div>
 
             <!--? CHARACTERS -->
             <div v-if="props.mediaType === EMediaType.CHARACTER">
               <v-radio label="Gender" value="gender" />
               <v-radio label="Hair Color" value="hairColor" />
-              <v-radio label="Last Modified" value="lastModified" />
               <v-radio label="Name" value="name" />
               <v-radio label="Series" value="series" />
               <v-radio label="Source" value="source" />
+              <v-radio label="Created At" value="createdAt" />
+              <v-radio label="Updated At" value="updatedAt" />
             </div>
 
             <!--? GAMES -->
             <div v-if="props.mediaType === EMediaType.GAME">
-              <v-radio label="Last Modified" value="lastModified" />
               <v-radio label="Playtime" value="playtime" />
               <v-radio label="Rating" value="rating" />
               <v-radio label="Status" value="status" />
               <v-radio label="Title" value="title" />
               <v-radio label="Type" value="type" />
+              <v-radio label="Created At" value="createdAt" />
+              <v-radio label="Updated At" value="updatedAt" />
             </div>
 
             <!--? MANGA -->
             <div v-if="props.mediaType === EMediaType.MANGA">
               <v-radio label="Chapters" value="chaptersMin" />
-              <v-radio label="Last Modified" value="lastModified" />
               <v-radio label="Rating" value="rating" />
               <v-radio label="Status" value="status" />
               <v-radio label="Title" value="title" />
               <v-radio label="Type" value="type" />
               <v-radio label="Volumes" value="volumesMin" />
+              <v-radio label="Created At" value="createdAt" />
+              <v-radio label="Updated At" value="updatedAt" />
             </div>
 
             <!--? MOVIES -->
             <div v-if="props.mediaType === EMediaType.MOVIE">
               <v-radio label="Episodes" value="episodesMin" />
-              <v-radio label="Last Modified" value="lastModified" />
               <v-radio label="Rating" value="rating" />
               <v-radio label="Seasons" value="seasonsMin" />
               <v-radio label="Status" value="status" />
               <v-radio label="Title" value="title" />
               <v-radio label="Type" value="type" />
+              <v-radio label="Created At" value="createdAt" />
+              <v-radio label="Updated At" value="updatedAt" />
             </div>
           </v-radio-group>
         </div>

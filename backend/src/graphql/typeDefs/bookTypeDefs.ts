@@ -17,6 +17,8 @@ export const typeBook = gql`
 		rating: Int
 		status: String
 		title: String
+		createdAt: Date
+		updatedAt: Date
 	}
 
 	input BookInput {

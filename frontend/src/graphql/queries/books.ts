@@ -19,6 +19,8 @@ export const getAllBooks = async (userId: string) => {
           rating
           status
           title
+          createdAt
+          updatedAt
         }
       }
     `,
@@ -48,6 +50,8 @@ export const getSingleBook = async (variables: { id: string }) => {
           rating
           status
           title
+          createdAt
+          updatedAt
         }
       }
     `,

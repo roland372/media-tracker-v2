@@ -104,7 +104,7 @@
     />
   </MediaComponent>
   <MediaComponent
-    :media="orderBy(anime, ['lastModified'], ['desc']).slice(0, 20)"
+    :media="orderBy(anime, ['updatedAt'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.ANIME"
     title="Recent Anime"
   />

@@ -20,6 +20,8 @@ export const getAllMedia = async (userId: string) => {
           status
           title
           type
+          createdAt
+          updatedAt
         }
         getAllBooks {
           author
@@ -35,6 +37,8 @@ export const getAllMedia = async (userId: string) => {
           rating
           status
           title
+          createdAt
+          updatedAt
         }
         getAllCharacters {
           favourites
@@ -50,6 +54,8 @@ export const getAllMedia = async (userId: string) => {
           owner
           series
           source
+          createdAt
+          updatedAt
         }
         getAllEmotes {
           favourites
@@ -57,6 +63,8 @@ export const getAllMedia = async (userId: string) => {
           lastModified
           name
           url
+          createdAt
+          updatedAt
         }
         getAllGames {
           favourites
@@ -71,6 +79,8 @@ export const getAllMedia = async (userId: string) => {
           status
           title
           type
+          createdAt
+          updatedAt
         }
         getAllManga {
           chaptersMax
@@ -89,6 +99,8 @@ export const getAllMedia = async (userId: string) => {
           type
           volumesMax
           volumesMin
+          createdAt
+          updatedAt
         }
         getAllMovies {
           episodesMax
@@ -106,6 +118,8 @@ export const getAllMedia = async (userId: string) => {
           status
           title
           type
+          createdAt
+          updatedAt
         }
         getAllMusic {
           artist
@@ -117,6 +131,8 @@ export const getAllMedia = async (userId: string) => {
           link
           owner
           title
+          createdAt
+          updatedAt
         }
         getAllNotes {
           color
@@ -124,6 +140,8 @@ export const getAllMedia = async (userId: string) => {
           lastModified
           note
           title
+          createdAt
+          updatedAt
         }
       }
     `,

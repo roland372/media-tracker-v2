@@ -20,6 +20,8 @@ export const typeManga = gql`
 		type: String
 		volumesMax: Int
 		volumesMin: Int
+		createdAt: Date
+		updatedAt: Date
 	}
 
 	input MangaInput {

@@ -103,7 +103,7 @@
     />
   </MediaComponent>
   <MediaComponent
-    :media="orderBy(characters, ['lastModified'], ['desc']).slice(0, 20)"
+    :media="orderBy(characters, ['updatedAt'], ['desc']).slice(0, 20)"
     :media-type="EMediaType.CHARACTER"
     title="Recent Characters"
   />

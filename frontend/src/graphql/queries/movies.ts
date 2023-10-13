@@ -21,6 +21,8 @@ export const getAllMovies = async (userId: string) => {
           status
           title
           type
+          createdAt
+          updatedAt
         }
       }
     `,
@@ -52,6 +54,8 @@ export const getSingleMovie = async (variables: { id: string }) => {
           status
           title
           type
+          createdAt
+          updatedAt
         }
       }
     `,

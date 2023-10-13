@@ -15,7 +15,8 @@
       density="compact"
       fixed-header
       height="500px"
-      ><thead class="text-left">
+    >
+      <thead class="text-left">
         <tr>
           <th>#</th>
           <th>Image</th>
@@ -23,7 +24,8 @@
           <th>Rating</th>
           <th>Type</th>
           <th>Progress</th>
-          <th>Last Modified</th>
+          <th>Created At</th>
+          <th>Updated At</th>
         </tr>
       </thead>
       <tbody class="text-left">
@@ -36,14 +38,8 @@
           <td>{{ anime.rating }}</td>
           <td>{{ anime.type }}</td>
           <td>{{ anime.episodesMin }} / {{ anime.episodesMax }}</td>
-          <td>
-            {{
-              new Date(anime.lastModified ?? "").toLocaleDateString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            }}
-          </td>
+          <td>{{ formatDate(anime.createdAt) }}</td>
+          <td>{{ formatDate(anime.updatedAt) }}</td>
         </tr>
       </tbody>
     </v-table>
@@ -60,7 +56,8 @@
       density="compact"
       fixed-header
       height="500px"
-      ><thead class="text-left">
+    >
+      <thead class="text-left">
         <tr>
           <th>#</th>
           <th>Image</th>
@@ -69,7 +66,8 @@
           <th>Genre</th>
           <th>Pages</th>
           <th>Rating</th>
-          <th>Last Modified</th>
+          <th>Created At</th>
+          <th>Updated At</th>
         </tr>
       </thead>
       <tbody class="text-left">
@@ -83,14 +81,8 @@
           <td>{{ book.genre }}</td>
           <td>{{ book.pages }}</td>
           <td>{{ book.rating }}</td>
-          <td>
-            {{
-              new Date(book.lastModified ?? "").toLocaleDateString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            }}
-          </td>
+          <td>{{ formatDate(book.createdAt) }}</td>
+          <td>{{ formatDate(book.updatedAt) }}</td>
         </tr>
       </tbody>
     </v-table>
@@ -107,7 +99,8 @@
       density="compact"
       fixed-header
       height="500px"
-      ><thead class="text-left">
+    >
+      <thead class="text-left">
         <tr>
           <th>#</th>
           <th>Image</th>
@@ -116,7 +109,8 @@
           <th>Gender</th>
           <th>Series</th>
           <th>Hair Color</th>
-          <th>Last Modified</th>
+          <th>Created At</th>
+          <th>Updated At</th>
         </tr>
       </thead>
       <tbody class="text-left">
@@ -133,17 +127,8 @@
           <td>{{ character.gender }}</td>
           <td>{{ character.series }}</td>
           <td>{{ character.hairColor }}</td>
-          <td>
-            {{
-              new Date(character.lastModified ?? "").toLocaleDateString(
-                "en-GB",
-                {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                }
-              )
-            }}
-          </td>
+          <td>{{ formatDate(character.createdAt) }}</td>
+          <td>{{ formatDate(character.updatedAt) }}</td>
         </tr>
       </tbody>
     </v-table>
@@ -160,14 +145,16 @@
       density="compact"
       fixed-header
       height="500px"
-      ><thead class="text-left">
+    >
+      <thead class="text-left">
         <tr>
           <th>#</th>
           <th>Image</th>
           <th width="15%">Title</th>
           <th>Type</th>
           <th>Playtime</th>
-          <th>Last Modified</th>
+          <th>Created At</th>
+          <th>Updated At</th>
         </tr>
       </thead>
       <tbody class="text-left">
@@ -179,14 +166,8 @@
           <td>{{ game.title }}</td>
           <td>{{ game.type }}</td>
           <td>{{ game.playtime }}</td>
-          <td>
-            {{
-              new Date(game.lastModified ?? "").toLocaleDateString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            }}
-          </td>
+          <td>{{ formatDate(game.createdAt) }}</td>
+          <td>{{ formatDate(game.updatedAt) }}</td>
         </tr>
       </tbody>
     </v-table>
@@ -203,7 +184,8 @@
       density="compact"
       fixed-header
       height="500px"
-      ><thead class="text-left">
+    >
+      <thead class="text-left">
         <tr>
           <th>#</th>
           <th>Image</th>
@@ -212,7 +194,8 @@
           <th>Type</th>
           <th>Chapters</th>
           <th>Volumes</th>
-          <th>Last Modified</th>
+          <th>Created At</th>
+          <th>Updated At</th>
         </tr>
       </thead>
       <tbody class="text-left">
@@ -226,14 +209,8 @@
           <td>{{ manga.type }}</td>
           <td>{{ manga.chaptersMin }} / {{ manga.chaptersMax }}</td>
           <td>{{ manga.volumesMin }} / {{ manga.volumesMax }}</td>
-          <td>
-            {{
-              new Date(manga.lastModified ?? "").toLocaleDateString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            }}
-          </td>
+          <td>{{ formatDate(manga.createdAt) }}</td>
+          <td>{{ formatDate(manga.updatedAt) }}</td>
         </tr>
       </tbody>
     </v-table>
@@ -250,7 +227,8 @@
       density="compact"
       fixed-header
       height="500px"
-      ><thead class="text-left">
+    >
+      <thead class="text-left">
         <tr>
           <th>#</th>
           <th>Image</th>
@@ -259,7 +237,8 @@
           <th>Type</th>
           <th>Episodes</th>
           <th>Seasons</th>
-          <th>Last Modified</th>
+          <th>Created At</th>
+          <th>Updated At</th>
         </tr>
       </thead>
       <tbody class="text-left">
@@ -273,14 +252,8 @@
           <td>{{ movie.type }}</td>
           <td>{{ movie.episodesMin }} / {{ movie.episodesMax }}</td>
           <td>{{ movie.seasonsMin }} / {{ movie.seasonsMax }}</td>
-          <td>
-            {{
-              new Date(movie.lastModified ?? "").toLocaleDateString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            }}
-          </td>
+          <td>{{ formatDate(movie.createdAt) }}</td>
+          <td>{{ formatDate(movie.updatedAt) }}</td>
         </tr>
       </tbody>
     </v-table>
@@ -288,7 +261,7 @@
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue";
-import { placeholderImg } from "@/utils/mediaUtils";
+import { placeholderImg, formatDate } from "@/utils/mediaUtils";
 import CardComponent from "@/components/media/CardComponent.vue";
 import { TAnime, TBook, TCharacter, TGame, TManga, TMovie } from "@/types";
 import { EMediaType } from "../../../../common/types";
