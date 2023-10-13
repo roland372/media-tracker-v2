@@ -1,20 +1,16 @@
 import mongoose, { Schema } from 'mongoose';
 import { TMovie } from '../../types';
 import { EMovieStatus, EMovieType } from '@common/types';
-import { v4 as uuidv4 } from 'uuid';
 
 const MovieSchema: Schema = new Schema<TMovie>(
   {
     episodesMax: { type: Number, default: 0, min: 0 },
     episodesMin: { type: Number, default: 0, min: 0 },
     favourites: { type: Boolean, default: false },
-    id: { type: String, default: uuidv4() },
     imageURL: { type: String, default: '' },
     lastModified: { type: Number, index: true },
     link1: { type: String, default: '' },
     link1Name: { type: String, default: '' },
-    link2: { type: String, default: '' },
-    link2Name: { type: String, default: '' },
     owner: { type: String, required: true, index: true },
     rating: { type: Number, default: 0, min: 0, max: 10 },
     seasonsMax: { type: Number, default: 0, min: 0 },
@@ -31,7 +27,7 @@ const MovieSchema: Schema = new Schema<TMovie>(
       default: EMovieType.MOVIE,
     },
   },
-  { versionKey: false, collection: 'movies' },
+  { versionKey: false, collection: 'movies', timestamps: true },
 );
 
 export default mongoose.model('Movies', MovieSchema);

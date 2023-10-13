@@ -11,8 +11,6 @@ export const typeGame = gql`
 		lastModified: Date
 		link1: String
 		link1Name: String
-		link2: String
-		link2Name: String
 		owner: String
     playtime: Int
 		rating: Int
@@ -27,8 +25,6 @@ export const typeGame = gql`
 		lastModified: Date
 		link1: String
 		link1Name: String
-		link2: String
-		link2Name: String
 		owner: String!
     playtime: Int
 		rating: Int

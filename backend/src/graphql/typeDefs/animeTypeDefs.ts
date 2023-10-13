@@ -13,8 +13,6 @@ export const typeAnime = gql`
 		lastModified: Date
 		link1: String
 		link1Name: String
-		link2: String
-		link2Name: String
 		mal_id: Int
 		owner: String
 		rating: Int
@@ -31,8 +29,6 @@ export const typeAnime = gql`
 		lastModified: Date
 		link1: String
 		link1Name: String
-		link2: String
-		link2Name: String
 		mal_id: Int
 		owner: String!
 		rating: Int

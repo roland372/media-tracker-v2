@@ -33,8 +33,6 @@ export type TCommonAnimeProps = {
   lastModified?: number;
   link1: string;
   link1Name: string;
-  link2: string;
-  link2Name: string;
   mal_id?: number;
   rating: number;
   status: EAnimeStatus;
@@ -59,8 +57,6 @@ export type TCommonBookProps = {
   lastModified?: number;
   link1: string;
   link1Name: string;
-  link2: string;
-  link2Name: string;
   pages: number;
   rating: number;
   status: EBookStatus;
@@ -122,8 +118,6 @@ export type TCommonGameProps = {
   lastModified?: number;
   link1: string;
   link1Name: string;
-  link2: string;
-  link2Name: string;
   playtime: number;
   rating: number;
   status: EGameStatus;
@@ -334,8 +328,6 @@ export type TCommonMangaProps = {
   lastModified?: number;
   link1: string;
   link1Name: string;
-  link2: string;
-  link2Name: string;
   mal_id?: number;
   rating: number;
   status: EMangaStatus;
@@ -367,8 +359,6 @@ export type TCommonMovieProps = {
   lastModified?: number;
   link1: string;
   link1Name: string;
-  link2: string;
-  link2Name: string;
   rating: number;
   seasonsMax: number;
   seasonsMin: number;

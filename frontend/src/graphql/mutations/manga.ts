@@ -19,8 +19,6 @@ export const addManga = async (
           lastModified
           link1
           link1Name
-          link2
-          link2Name
           mal_id
           owner
           rating

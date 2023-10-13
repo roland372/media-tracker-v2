@@ -19,8 +19,6 @@ export const addMovie = async (
           lastModified
           link1
           link1Name
-          link2
-          link2Name
           owner
           rating
           seasonsMax

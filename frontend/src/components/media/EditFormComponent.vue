@@ -53,22 +53,6 @@
                 :rules="emptyURLRules"
                 variant="outlined"
               />
-              <!-- <v-text-field
-                v-model="animeRef.link2Name"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 Name"
-                variant="outlined"
-              />
-              <v-text-field
-                v-model="animeRef.link2"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 URL"
-                variant="outlined"
-              /> -->
               <v-text-field
                 v-model="animeRef.imageURL"
                 class="mb-2"
@@ -163,22 +147,6 @@
                 :rules="emptyURLRules"
                 variant="outlined"
               />
-              <!-- <v-text-field
-                v-model="mangaRef.link2Name"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 Name"
-                variant="outlined"
-              />
-              <v-text-field
-                v-model="mangaRef.link2"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 URL"
-                variant="outlined"
-              /> -->
               <v-text-field
                 v-model="mangaRef.imageURL"
                 class="mb-2"
@@ -297,22 +265,6 @@
                 :rules="emptyURLRules"
                 variant="outlined"
               />
-              <!-- <v-text-field
-                v-model="gameRef.link2Name"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 Name"
-                variant="outlined"
-              />
-              <v-text-field
-                v-model="gameRef.link2"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 URL"
-                variant="outlined"
-              /> -->
               <v-text-field
                 v-model="gameRef.imageURL"
                 class="mb-2"
@@ -488,22 +440,6 @@
                 :rules="emptyURLRules"
                 variant="outlined"
               />
-              <!-- <v-text-field
-                v-model="bookRef.link2Name"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 Name"
-                variant="outlined"
-              />
-              <v-text-field
-                v-model="bookRef.link2"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 URL"
-                variant="outlined"
-              /> -->
               <v-text-field
                 v-model="bookRef.imageURL"
                 class="mb-2"
@@ -584,22 +520,6 @@
                 :rules="emptyURLRules"
                 variant="outlined"
               />
-              <!-- <v-text-field
-                v-model="movieRef.link2Name"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 Name"
-                variant="outlined"
-              />
-              <v-text-field
-                v-model="movieRef.link2"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 URL"
-                variant="outlined"
-              /> -->
               <v-text-field
                 v-model="movieRef.imageURL"
                 class="mb-2"
@@ -775,8 +695,6 @@ const handleSubmitEditAnime = async () => {
     lastModified: Date.now(),
     link1: animeRef.value.link1,
     link1Name: animeRef.value.link1Name,
-    link2: animeRef.value.link2,
-    link2Name: animeRef.value.link2Name,
     owner: userFromDB?.email as string,
     rating: animeRef.value.rating,
     status: animeRef.value.status,
@@ -805,8 +723,6 @@ const handleSubmitEditBook = async () => {
     lastModified: Date.now(),
     link1: bookRef.value.link1,
     link1Name: bookRef.value.link1Name,
-    link2: bookRef.value.link2,
-    link2Name: bookRef.value.link2Name,
     owner: userFromDB?.email as string,
     pages: bookRef.value.pages,
     rating: bookRef.value.rating,
@@ -860,8 +776,6 @@ const handleSubmitEditGame = async () => {
     lastModified: Date.now(),
     link1: gameRef.value.link1,
     link1Name: gameRef.value.link1Name,
-    link2: gameRef.value.link2,
-    link2Name: gameRef.value.link2Name,
     owner: userFromDB?.email as string,
     playtime: gameRef.value.playtime,
     rating: gameRef.value.rating,
@@ -893,8 +807,6 @@ const handleSubmitEditManga = async () => {
     lastModified: Date.now(),
     link1: mangaRef.value.link1,
     link1Name: mangaRef.value.link1Name,
-    link2: mangaRef.value.link2,
-    link2Name: mangaRef.value.link2Name,
     owner: userFromDB?.email as string,
     rating: mangaRef.value.rating,
     status: mangaRef.value.status,
@@ -933,8 +845,6 @@ const handleSubmitEditMovie = async () => {
     lastModified: Date.now(),
     link1: movieRef.value.link1,
     link1Name: movieRef.value.link1Name,
-    link2: movieRef.value.link2,
-    link2Name: movieRef.value.link2Name,
     owner: userFromDB?.email as string,
     rating: movieRef.value.rating,
     seasonsMax: movieRef.value.seasonsMax,

@@ -305,8 +305,6 @@ const handleFetchedAnimeSubmit = async () => {
     imageURL: fetchedSingleAnime.value?.images.jpg.image_url as string,
     link1: fetchedSingleAnime.value?.url as string,
     link1Name: "MAL",
-    link2: "",
-    link2Name: "",
     mal_id: fetchedSingleAnime.value?.mal_id as number,
     owner: userFromDB?.email as string,
     rating: 0,

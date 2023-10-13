@@ -54,22 +54,6 @@
                 :rules="emptyURLRules"
                 variant="outlined"
               />
-              <!-- <v-text-field
-                v-model="newAnime.link2Name"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 Name"
-                variant="outlined"
-              />
-              <v-text-field
-                v-model="newAnime.link2"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 URL"
-                variant="outlined"
-              /> -->
               <v-text-field
                 v-model="newAnime.imageURL"
                 class="mb-2"
@@ -165,22 +149,6 @@
                 :rules="emptyURLRules"
                 variant="outlined"
               />
-              <!-- <v-text-field
-                v-model="newManga.link2Name"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 Name"
-                variant="outlined"
-              />
-              <v-text-field
-                v-model="newManga.link2"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 URL"
-                variant="outlined"
-              /> -->
               <v-text-field
                 v-model="newManga.imageURL"
                 class="mb-2"
@@ -300,22 +268,6 @@
                 :rules="emptyURLRules"
                 variant="outlined"
               />
-              <!-- <v-text-field
-                v-model="newGame.link2Name"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 Name"
-                variant="outlined"
-              />
-              <v-text-field
-                v-model="newGame.link2"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 URL"
-                variant="outlined"
-              /> -->
               <v-text-field
                 v-model="newGame.imageURL"
                 class="mb-2"
@@ -493,22 +445,6 @@
                 :rules="emptyURLRules"
                 variant="outlined"
               />
-              <!-- <v-text-field
-                v-model="newBook.link2Name"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 Name"
-                variant="outlined"
-              />
-              <v-text-field
-                v-model="newBook.link2"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 URL"
-                variant="outlined"
-              /> -->
               <v-text-field
                 v-model="newBook.imageURL"
                 class="mb-2"
@@ -590,22 +526,6 @@
                 :rules="emptyURLRules"
                 variant="outlined"
               />
-              <!-- <v-text-field
-                v-model="newMovie.link2Name"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 Name"
-                variant="outlined"
-              />
-              <v-text-field
-                v-model="newMovie.link2"
-                class="mb-2"
-                density="compact"
-                hide-details="auto"
-                label="Link 2 URL"
-                variant="outlined"
-              /> -->
               <v-text-field
                 v-model="newMovie.imageURL"
                 class="mb-2"
@@ -769,8 +689,6 @@ const newAnime: TAnimeInput = reactive({
   imageURL: "",
   link1: "",
   link1Name: "MAL",
-  link2: "",
-  link2Name: "",
   owner: userFromDB?.email as string,
   rating: 0,
   status: EAnimeStatus.PLAN_TO_WATCH,
@@ -785,8 +703,6 @@ const newBook: TBookInput = reactive({
   imageURL: "",
   link1: "",
   link1Name: "Link",
-  link2: "",
-  link2Name: "",
   owner: userFromDB?.email as string,
   pages: 0,
   rating: 0,
@@ -812,8 +728,6 @@ const newGame: TGameInput = reactive({
   imageURL: "",
   link1: "",
   link1Name: "Link",
-  link2: "",
-  link2Name: "",
   owner: userFromDB?.email as string,
   playtime: 0,
   rating: 0,
@@ -829,8 +743,6 @@ const newManga: TMangaInput = reactive({
   imageURL: "",
   link1: "",
   link1Name: "MAL",
-  link2: "",
-  link2Name: "",
   owner: userFromDB?.email as string,
   rating: 0,
   status: EMangaStatus.PLAN_TO_READ,
@@ -847,8 +759,6 @@ const newMovie: TMovieInput = reactive({
   imageURL: "",
   link1: "",
   link1Name: "Link",
-  link2: "",
-  link2Name: "",
   owner: userFromDB?.email as string,
   rating: 0,
   seasonsMin: 0,

@@ -15,8 +15,6 @@ export const getAllMovies = async (userId: string) => {
           lastModified
           link1
           link1Name
-          link2
-          link2Name
           owner
           rating
           seasonsMax
@@ -49,8 +47,6 @@ export const getSingleMovie = async (variables: { id: string }) => {
           lastModified
           link1
           link1Name
-          link2
-          link2Name
           owner
           rating
           seasonsMax

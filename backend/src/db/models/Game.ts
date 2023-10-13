@@ -1,18 +1,14 @@
 import mongoose, { Schema } from 'mongoose';
-import { TGame  } from '../../types';
-import {  EGameStatus, EGameType } from '@common/types';
-import { v4 as uuidv4 } from 'uuid';
+import { TGame } from '../../types';
+import { EGameStatus, EGameType } from '@common/types';
 
 const GameSchema: Schema = new Schema<TGame>(
 	{
 		favourites: { type: Boolean, default: false },
-		id: { type: String, default: uuidv4() },
 		imageURL: { type: String, default: '' },
 		lastModified: { type: Number, index: true },
 		link1: { type: String, default: '' },
 		link1Name: { type: String, default: '' },
-		link2: { type: String, default: '' },
-		link2Name: { type: String, default: '' },
 		owner: { type: String, required: true, index: true },
 		playtime: { type: Number, default: 0 },
 		rating: { type: Number, default: 0, min: 0, max: 10 },
@@ -28,7 +24,7 @@ const GameSchema: Schema = new Schema<TGame>(
 			default: EGameType.GAME,
 		},
 	},
-	{ versionKey: false, collection: 'games' }
+	{ versionKey: false, collection: 'games', timestamps: true }
 );
 
 export default mongoose.model('Games', GameSchema);

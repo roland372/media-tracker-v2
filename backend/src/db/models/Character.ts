@@ -1,7 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { TCharacter } from '../../types';
 import { ECharacterGender, ECharacterSource } from '@common/types';
-import { v4 as uuidv4 } from 'uuid';
 
 const CharacterSchema: Schema = new Schema<TCharacter>(
 	{
@@ -12,7 +11,6 @@ const CharacterSchema: Schema = new Schema<TCharacter>(
 			default: ECharacterGender.FEMALE,
 		},
 		hairColor: { type: String, default: '' },
-		id: { type: String, default: uuidv4() },
 		imageURL: { type: String, default: '' },
 		lastModified: { type: Number, index: true },
 		link1: { type: String, default: '' },
@@ -27,7 +25,7 @@ const CharacterSchema: Schema = new Schema<TCharacter>(
 			default: ECharacterSource.ANIME,
 		},
 	},
-	{ versionKey: false, collection: 'characters' }
+	{ versionKey: false, collection: 'characters', timestamps: true }
 );
 
 export default mongoose.model('Characters', CharacterSchema);

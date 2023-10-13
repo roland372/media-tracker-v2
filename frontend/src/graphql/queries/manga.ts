@@ -15,8 +15,6 @@ export const getAllManga = async (userId: string) => {
           lastModified
           link1
           link1Name
-          link2
-          link2Name
           mal_id
           owner
           rating
@@ -50,8 +48,6 @@ export const getSingleManga = async (variables: { id: string }) => {
           lastModified
           link1
           link1Name
-          link2
-          link2Name
           mal_id
           owner
           rating

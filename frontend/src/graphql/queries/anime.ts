@@ -15,8 +15,6 @@ export const getAllAnime = async (userId: string) => {
           lastModified
           link1
           link1Name
-          link2
-          link2Name
           mal_id
           owner
           rating
@@ -48,8 +46,6 @@ export const getSingleAnime = async (variables: { id: string }) => {
           lastModified
           link1
           link1Name
-          link2
-          link2Name
           mal_id
           owner
           rating
