@@ -15,7 +15,6 @@ export const addManga = async (
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           mal_id

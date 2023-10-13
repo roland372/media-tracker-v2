@@ -43,7 +43,9 @@ export const filterMediaStatus = (media: Ref, status: string) =>
   );
 
 export const formatDate = (date?: Date) => {
-  return new Date(date ?? "").toLocaleDateString("en-GB", {
+  const createDate = date ? new Date(date) : new Date();
+
+  return createDate.toLocaleDateString("en-GB", {
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -53,12 +55,6 @@ export const round = (value: number, precision: number) => {
   const multiplier = Math.pow(10, precision || 0);
   return Math.round(value * multiplier) / multiplier;
 };
-
-export const sortMediaByDate = (media: Ref) =>
-  [...media.value].sort(
-    (a: { lastModified: number }, b: { lastModified: number }) =>
-      b.lastModified - a.lastModified
-  );
 
 export const animeStatus = [
   EAnimeStatus.WATCHING,

@@ -15,7 +15,6 @@ export const addMusic = async (
           favourites
           _id
           imageURL
-          lastModified
           link
           owner
           title

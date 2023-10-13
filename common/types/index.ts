@@ -30,7 +30,6 @@ export type TCommonAnimeProps = {
   episodesMin: number;
   favourites: boolean;
   imageURL: string;
-  lastModified?: number;
   link: string;
   linkName: string;
   mal_id?: number;
@@ -56,7 +55,6 @@ export type TCommonBookProps = {
   favourites: boolean;
   genre: string;
   imageURL: string;
-  lastModified?: number;
   link: string;
   linkName: string;
   pages: number;
@@ -85,7 +83,6 @@ export type TCommonCharacterProps = {
   gender: ECharacterGender;
   hairColor: string;
   imageURL: string;
-  lastModified?: number;
   link: string;
   linkName: string;
   mal_id?: number;
@@ -99,7 +96,6 @@ export type TCommonCharacterProps = {
 //? <----- EMOTES ----->
 export type TCommonEmoteProps = {
   favourites: boolean;
-  lastModified?: number;
   name: string;
   url: string;
   createdAt?: Date;
@@ -123,7 +119,6 @@ export enum EGameType {
 export type TCommonGameProps = {
   favourites: boolean;
   imageURL: string;
-  lastModified?: number;
   link: string;
   linkName: string;
   playtime: number;
@@ -197,7 +192,6 @@ export type TCommonGenshinImpactCharacterProps = {
     multiWish: string;
     namecard: string;
   },
-  lastModified?: Date;
   name: string;
   rarity: 4 | 5;
   region: EGenshinImpactRegion;
@@ -223,7 +217,6 @@ export type TCommonGenshinImpactCharacterBuildProps = {
   characterId: string;
   constellation: TStatusValue<number>;
   favourites: boolean;
-  lastModified?: Date;
   level: TStatusValue<string>;
   note: string;
   status: boolean;
@@ -268,7 +261,6 @@ export type TCommonHonkaiStarRailCharacterProps = {
   avatar: string;
   faction: EHonkaiStarRailFaction;
   gender: ECharacterGender;
-  lastModified?: Date;
   name: string;
   path: EHonkaiStarRailPath;
   rarity: 4 | 5;
@@ -305,7 +297,6 @@ export type TCommonHonkaiStarRailCharacterBuildProps = {
   eidolon: TStatusValue<number>;
   favourites: boolean;
   imageURL: string;
-  lastModified?: Date;
   level: TStatusValue<string>;
   note: string;
   status: boolean;
@@ -335,7 +326,6 @@ export type TCommonMangaProps = {
   chaptersMin: number;
   favourites: boolean;
   imageURL: string;
-  lastModified?: number;
   link: string;
   linkName: string;
   mal_id?: number;
@@ -368,7 +358,6 @@ export type TCommonMovieProps = {
   episodesMin: number;
   favourites: boolean;
   imageURL: string;
-  lastModified?: number;
   link: string;
   linkName: string;
   rating: number;
@@ -395,7 +384,6 @@ export type TCommonMusicProps = {
   category: EMusicCategory;
   favourites: boolean;
   imageURL: string;
-  lastModified?: number;
   link: string;
   title: string;
   createdAt?: Date;
@@ -405,7 +393,6 @@ export type TCommonMusicProps = {
 //? <----- NOTES ----->
 export type TCommonNoteProps = {
   color: string;
-  lastModified: number;
   note: string;
   title: string;
   createdAt?: Date;

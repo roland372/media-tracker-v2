@@ -11,7 +11,6 @@ export const getAllMovies = async (userId: string) => {
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           owner
@@ -44,7 +43,6 @@ export const getSingleMovie = async (variables: { id: string }) => {
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           owner

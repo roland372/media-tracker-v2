@@ -11,7 +11,6 @@ export const getAllMusic = async (userId: string) => {
           favourites
           _id
           imageURL
-          lastModified
           link
           owner
           title
@@ -38,7 +37,6 @@ export const getSingleMusic = async (variables: { id: string }) => {
           favourites
           _id
           imageURL
-          lastModified
           link
           owner
           title

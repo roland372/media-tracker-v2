@@ -15,7 +15,6 @@ export const addMovie = async (
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           owner

@@ -15,7 +15,6 @@ export const addAnime = async (
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           mal_id

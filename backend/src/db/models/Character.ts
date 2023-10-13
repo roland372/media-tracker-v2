@@ -12,7 +12,6 @@ const CharacterSchema: Schema = new Schema<TCharacter>(
 		},
 		hairColor: { type: String, default: '' },
 		imageURL: { type: String, default: '' },
-		lastModified: { type: Number, index: true },
 		link: { type: String, default: '' },
 		linkName: { type: String, default: '' },
 		mal_id: { type: Number, default: null },

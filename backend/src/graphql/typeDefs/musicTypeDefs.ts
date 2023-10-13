@@ -9,7 +9,6 @@ export const typeMusic = gql`
 		favourites: Boolean
 		_id: String
 		imageURL: String
-		lastModified: Date
 		link: String
 		owner: String
 		title: String
@@ -22,7 +21,6 @@ export const typeMusic = gql`
     category: String!
 		favourites: Boolean
 		imageURL: String
-		lastModified: Date
 		link: String
 		owner: String!
 		title: String!

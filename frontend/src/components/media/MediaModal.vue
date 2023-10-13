@@ -1,7 +1,7 @@
 <template>
   <v-dialog width="auto">
     <template v-slot:default>
-      <v-card max-width="350">
+      <v-card max-width="450">
         <div class="bg-primary-light text-color px-5 py-3 text-h6">
           {{ title }}
         </div>
@@ -19,9 +19,7 @@
               <div><b>Type:</b> {{ (media as TAnime).type }}</div>
               <div>
                 <b>Link: </b>
-                <a :href="(media as TAnime).link" target="_blank">{{
-                  (media as TAnime).linkName
-                }}</a>
+                <a :href="media.link" target="_blank">{{ media.linkName }}</a>
               </div>
               <div>
                 <b>Episodes:</b> {{ (media as TAnime).episodesMin }} /
@@ -29,6 +27,8 @@
               </div>
               <div><b>Rating:</b> {{ (media as TAnime).rating }}</div>
               <div><b>Status:</b> {{ (media as TAnime).status }}</div>
+              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
+              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
             </v-card-text>
 
             <!--? BOOKS -->
@@ -36,23 +36,21 @@
               <div><b>Author:</b> {{ (media as TBook).author }}</div>
               <div>
                 <b>Link: </b>
-                <a :href="(media as TBook).link" target="_blank">{{
-                  (media as TBook).linkName
-                }}</a>
+                <a :href="media.link" target="_blank">{{ media.linkName }}</a>
               </div>
               <div><b>Genre:</b> {{ (media as TBook).genre }}</div>
               <div><b>Pages:</b> {{ (media as TBook).pages }}</div>
               <div><b>Rating:</b> {{ (media as TBook).rating }}</div>
               <div><b>Status:</b> {{ (media as TBook).status }}</div>
+              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
+              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
             </v-card-text>
 
             <!--? CHARACTERS -->
             <v-card-text v-if="mediaType === EMediaType.CHARACTER">
               <div>
                 <b>Link: </b>
-                <a :href="(media as TCharacter).link" target="_blank">{{
-                  (media as TCharacter).linkName
-                }}</a>
+                <a :href="media.link" target="_blank">{{ media.linkName }}</a>
               </div>
               <div><b>Source:</b> {{ (media as TCharacter).source }}</div>
               <div><b>Gender:</b> {{ (media as TCharacter).gender }}</div>
@@ -60,6 +58,8 @@
               <div>
                 <b>Hair Color:</b> {{ (media as TCharacter).hairColor }}
               </div>
+              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
+              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
             </v-card-text>
 
             <!--? GAMES -->
@@ -67,13 +67,13 @@
               <div><b>Type:</b> {{ (media as TGame).type }}</div>
               <div>
                 <b>Link: </b>
-                <a :href="(media as TGame).link" target="_blank">{{
-                  (media as TGame).linkName
-                }}</a>
+                <a :href="media.link" target="_blank">{{ media.linkName }}</a>
               </div>
               <div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
               <div><b>Rating:</b> {{ (media as TGame).rating }}</div>
               <div><b>Status:</b> {{ (media as TGame).status }}</div>
+              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
+              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
             </v-card-text>
 
             <!--? MANGA -->
@@ -81,9 +81,7 @@
               <div><b>Type:</b> {{ (media as TManga).type }}</div>
               <div>
                 <b>Link: </b>
-                <a :href="(media as TManga).link" target="_blank">{{
-                  (media as TManga).linkName
-                }}</a>
+                <a :href="media.link" target="_blank">{{ media.linkName }}</a>
               </div>
               <div>
                 <b>Chapters:</b> {{ (media as TManga).chaptersMin }} /
@@ -95,6 +93,8 @@
               </div>
               <div><b>Rating:</b> {{ (media as TManga).rating }}</div>
               <div><b>Status:</b> {{ (media as TManga).status }}</div>
+              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
+              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
             </v-card-text>
 
             <!--? MOVIES -->
@@ -102,9 +102,7 @@
               <div><b>Type:</b> {{ (media as TMovie).type }}</div>
               <div>
                 <b>Link: </b>
-                <a :href="(media as TMovie).link" target="_blank">{{
-                  (media as TMovie).linkName
-                }}</a>
+                <a :href="media.link" target="_blank">{{ media.linkName }}</a>
               </div>
               <div v-if="(media as TMovie).type === 'TV-Show'">
                 <div>
@@ -118,6 +116,8 @@
               </div>
               <div><b>Rating:</b> {{ (media as TMovie).rating }}</div>
               <div><b>Status:</b> {{ (media as TMovie).status }}</div>
+              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
+              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
             </v-card-text>
           </v-card-text>
         </div>
@@ -148,7 +148,7 @@
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue";
-import { placeholderImg } from "@/utils/mediaUtils";
+import { placeholderImg, formatDate } from "@/utils/mediaUtils";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import { TAnime, TBook, TCharacter, TGame, TManga, TMovie } from "@/types";
 import { EMediaType } from "../../../../common/types";

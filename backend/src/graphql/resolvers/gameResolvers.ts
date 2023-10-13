@@ -14,7 +14,6 @@ export const gameResolvers = {
 		async addGame<T>(_: T, { gameInput }: TGameInput) {
 			const newGame = new Game({
 				...gameInput,
-				lastModified: Date.now(),
 			});
 
 			await newGame.save();

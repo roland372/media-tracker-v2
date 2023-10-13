@@ -7,7 +7,6 @@ export const typeGame = gql`
 		favourites: Boolean
 		_id: String
 		imageURL: String
-		lastModified: Date
 		link: String
 		linkName: String
 		owner: String
@@ -23,7 +22,6 @@ export const typeGame = gql`
 	input GameInput {
 		favourites: Boolean
 		imageURL: String
-		lastModified: Date
 		link: String
 		linkName: String
 		owner: String!

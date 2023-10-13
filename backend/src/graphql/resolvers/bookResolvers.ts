@@ -14,7 +14,6 @@ export const bookResolvers = {
     async addBook<T>(_: T, { bookInput }: TBookInput) {
       const newBook = new Book({
         ...bookInput,
-        lastModified: Date.now(),
       });
 
       await newBook.save();

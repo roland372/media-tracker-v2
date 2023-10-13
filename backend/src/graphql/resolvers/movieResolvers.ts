@@ -14,7 +14,6 @@ export const movieResolvers = {
 		async addMovie<T>(_: T, { movieInput }: TMovieInput) {
 			const newMovie = new Movie({
 				...movieInput,
-				lastModified: Date.now(),
 			});
 
 			await newMovie.save();

@@ -9,7 +9,6 @@ export const typeCharacter = gql`
 		hairColor: String
 		_id: String
 		imageURL: String
-		lastModified: Date
 		link: String
 		linkName: String
 		mal_id: Int
@@ -26,7 +25,6 @@ export const typeCharacter = gql`
 		gender: String
 		hairColor: String
 		imageURL: String
-		lastModified: Date
 		link: String
 		linkName: String
 		mal_id: Int

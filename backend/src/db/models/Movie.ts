@@ -8,7 +8,6 @@ const MovieSchema: Schema = new Schema<TMovie>(
     episodesMin: { type: Number, default: 0, min: 0 },
     favourites: { type: Boolean, default: false },
     imageURL: { type: String, default: '' },
-    lastModified: { type: Number, index: true },
     link: { type: String, default: '' },
     linkName: { type: String, default: '' },
     owner: { type: String, required: true, index: true },

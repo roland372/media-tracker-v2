@@ -11,7 +11,6 @@ export const getAllManga = async (userId: string) => {
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           mal_id
@@ -45,7 +44,6 @@ export const getSingleManga = async (variables: { id: string }) => {
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           mal_id

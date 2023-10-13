@@ -9,7 +9,6 @@ export const typeBook = gql`
     genre: String
 		_id: String
 		imageURL: String
-		lastModified: Date
 		link: String
 		linkName: String
 		owner: String
@@ -26,7 +25,6 @@ export const typeBook = gql`
 		favourites: Boolean
     genre: String
 		imageURL: String
-		lastModified: Date
 		link: String
 		linkName: String
 		owner: String!

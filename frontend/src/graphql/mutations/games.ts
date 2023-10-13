@@ -13,7 +13,6 @@ export const addGame = async (
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           owner

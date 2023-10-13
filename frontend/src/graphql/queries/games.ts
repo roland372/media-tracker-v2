@@ -9,7 +9,6 @@ export const getAllGames = async (userId: string) => {
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           owner
@@ -39,7 +38,6 @@ export const getSingleGame = async (variables: { id: string }) => {
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           owner

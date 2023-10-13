@@ -12,7 +12,6 @@ export const addEmote = async (
         addEmote(emoteInput: $emoteInput) {
           favourites
           _id
-          lastModified
           name
           url
         }

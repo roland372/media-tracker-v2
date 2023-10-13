@@ -8,7 +8,6 @@ const BookSchema: Schema = new Schema<TBook>(
     favourites: { type: Boolean, default: false },
     genre: { type: String, default: '' },
     imageURL: { type: String, default: '' },
-    lastModified: { type: Number, index: true },
     link: { type: String, default: '' },
     linkName: { type: String, default: '' },
     owner: { type: String, required: true, index: true },

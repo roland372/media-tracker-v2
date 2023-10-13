@@ -14,7 +14,6 @@ export const musicResolvers = {
 		async addMusic<T>(_: T, { musicInput }: TMusicInput) {
 			const newMusic = new Music({
 				...musicInput,
-				lastModified: Date.now(),
 			});
 
 			await newMusic.save();

@@ -6,7 +6,6 @@ export const typeEmote = gql`
 	type Emote {
 		favourites: Boolean
 		_id: String
-		lastModified: Date
 		name: String
 		url: String
 		createdAt: Date
@@ -15,7 +14,6 @@ export const typeEmote = gql`
 
 	input EmoteInput {
 		favourites: Boolean
-		lastModified: Date
 		name: String!
 		url: String!
 	}

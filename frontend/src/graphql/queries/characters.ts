@@ -11,7 +11,6 @@ export const getAllCharacters = async (userId: string) => {
           hairColor
           _id
           imageURL
-          lastModified
           link
           linkName
           mal_id
@@ -42,7 +41,6 @@ export const getSingleCharacter = async (variables: { id: string }) => {
           hairColor
           _id
           imageURL
-          lastModified
           link
           linkName
           mal_id

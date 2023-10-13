@@ -9,7 +9,6 @@ export const typeManga = gql`
 		favourites: Boolean
 		_id: String
 		imageURL: String
-		lastModified: Date
 		link: String
 		linkName: String
 		mal_id: Int
@@ -29,7 +28,6 @@ export const typeManga = gql`
 		chaptersMin: Int
 		favourites: Boolean
 		imageURL: String
-		lastModified: Date
 		link: String
 		linkName: String
 		mal_id: Int

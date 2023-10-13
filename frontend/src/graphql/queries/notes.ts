@@ -8,7 +8,6 @@ export const getAllNotes = async (userId: string) => {
         getAllNotes {
           color
           _id
-          lastModified
           note
           title
           createdAt
@@ -31,7 +30,6 @@ export const getSingleNote = async (variables: { id: string }) => {
         getSingleNote(ID: $id) {
           color
           _id
-          lastModified
           note
           title
           createdAt

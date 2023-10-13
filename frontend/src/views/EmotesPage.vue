@@ -260,7 +260,6 @@ const { emotes } = storeToRefs(mediaStore);
 
 const newEmote: TEmoteInput = reactive({
   favourites: false,
-  lastModified: Date.now(),
   name: "",
   url: "",
 });
@@ -334,7 +333,6 @@ const handleOpenEditEmoteModal = (id: string, emote: TEmote) => {
 
   const updatedEmote: TEmoteInput = reactive({
     favourites: emote.favourites,
-    lastModified: Date.now(),
     name: emote.name,
     url: emote.url,
   });

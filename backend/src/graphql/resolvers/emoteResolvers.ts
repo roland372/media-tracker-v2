@@ -14,7 +14,6 @@ export const emoteResolvers = {
 		async addEmote<T>(_: T, { emoteInput }: TEmoteInput) {
 			const newEmote = new Emote({
 				...emoteInput,
-				lastModified: Date.now(),
 			});
 
 			await newEmote.save();

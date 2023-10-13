@@ -14,7 +14,6 @@ export const animeResolvers = {
 		async addAnime<T>(_: T, { animeInput }: TAnimeInput) {
 			const newAnime = new Anime({
 				...animeInput,
-				lastModified: Date.now(),
 			});
 
 			await newAnime.save();

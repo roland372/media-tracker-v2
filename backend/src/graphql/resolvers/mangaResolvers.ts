@@ -14,7 +14,6 @@ export const mangaResolvers = {
 		async addManga<T>(_: T, { mangaInput }: TMangaInput) {
 			const newManga = new Manga({
 				...mangaInput,
-				lastModified: Date.now(),
 			});
 
 			await newManga.save();

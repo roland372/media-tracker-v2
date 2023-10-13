@@ -14,7 +14,6 @@ export const characterResolvers = {
 		async addCharacter<T>(_: T, { characterInput }: TCharacterInput) {
 			const newCharacter = new Character({
 				...characterInput,
-				lastModified: Date.now(),
 			});
 
 			await newCharacter.save();

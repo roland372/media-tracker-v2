@@ -11,7 +11,6 @@ export const getAllAnime = async (userId: string) => {
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           mal_id
@@ -43,7 +42,6 @@ export const getSingleAnime = async (variables: { id: string }) => {
           favourites
           _id
           imageURL
-          lastModified
           link
           linkName
           mal_id

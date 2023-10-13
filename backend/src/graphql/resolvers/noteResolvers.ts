@@ -4,7 +4,7 @@ import { TNote, TNoteInput, TContext } from '../../types';
 export const noteResolvers = {
 	Query: {
 		async getAllNotes<T>(_: T, __: T, context: TContext) {
-			return await Note.find({ owner: context.userFromContext[0].email }).sort({ lastModified: "desc" });
+			return await Note.find({ owner: context.userFromContext[0].email }).sort({ updatedAt: "desc" });
 		},
 		async getSingleNote<T>(_: T, { ID }: TNote) {
 			return await Note.findById(ID);
@@ -14,7 +14,6 @@ export const noteResolvers = {
 		async addNote<T>(_: T, { noteInput }: TNoteInput) {
 			const newNote = new Note({
 				...noteInput,
-				lastModified: Date.now(),
 			});
 
 			await newNote.save();

@@ -15,7 +15,6 @@ export const addBook = async (
           genre
           _id
           imageURL
-          lastModified
           link
           linkName
           owner

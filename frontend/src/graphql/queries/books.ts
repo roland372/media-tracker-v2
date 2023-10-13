@@ -11,7 +11,6 @@ export const getAllBooks = async (userId: string) => {
           genre
           _id
           imageURL
-          lastModified
           link
           linkName
           owner
@@ -42,7 +41,6 @@ export const getSingleBook = async (variables: { id: string }) => {
           genre
           _id
           imageURL
-          lastModified
           link
           linkName
           owner

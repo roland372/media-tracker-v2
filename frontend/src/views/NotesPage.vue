@@ -282,7 +282,6 @@ const { notes } = storeToRefs(mediaStore);
 
 const newNote: TNoteInput = reactive({
   color: "#FFFFFF",
-  lastModified: Date.now(),
   note: "",
   owner: userFromDB?.email as string,
   title: "New Note",
@@ -332,7 +331,6 @@ const handleOpenEditNoteModal = (id: string, note: TNote) => {
 
   const updatedNote: TNoteInput = reactive({
     color: note.color,
-    lastModified: Date.now(),
     note: note.note,
     owner: userFromDB?.email as string,
     title: note.title,
