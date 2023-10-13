@@ -185,9 +185,14 @@ export type TStatusValue<T> = {
 };
 
 export type TCommonGenshinImpactCharacterProps = {
-  avatar: string;
   element: EGenshinImpactElement;
   gender: ECharacterGender;
+  images: {
+    avatar: string;
+    card: string;
+    multiWish: string;
+    namecard: string;
+  },
   lastModified?: Date;
   name: string;
   rarity: 4 | 5;
@@ -205,7 +210,7 @@ export type TGenshinImpactBuildObj = {
     circlet: string;
   };
   desiredStats: TStatusValue<string>;
-  imageURL: string;
+  imageURL: string; // enka build image
   role: string;
   weapon: TStatusValue<string>;
 };
@@ -214,7 +219,6 @@ export type TCommonGenshinImpactCharacterBuildProps = {
   characterId: string;
   constellation: TStatusValue<number>;
   favourites: boolean;
-  imageURL: string;
   lastModified?: Date;
   level: TStatusValue<string>;
   note: string;
