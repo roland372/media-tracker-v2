@@ -1,6 +1,5 @@
 import Anime from '../../db/models/Anime';
 import { TAnimeInput, TAnime, TContext } from '../../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const animeResolvers = {
 	Query: {
@@ -15,7 +14,6 @@ export const animeResolvers = {
 		async addAnime<T>(_: T, { animeInput }: TAnimeInput) {
 			const newAnime = new Anime({
 				...animeInput,
-				id: uuidv4(),
 				lastModified: Date.now(),
 			});
 

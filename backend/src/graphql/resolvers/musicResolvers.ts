@@ -1,6 +1,5 @@
 import Music from '../../db/models/Music';
 import { TMusicInput, TMusic, TContext } from '../../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const musicResolvers = {
 	Query: {
@@ -15,7 +14,6 @@ export const musicResolvers = {
 		async addMusic<T>(_: T, { musicInput }: TMusicInput) {
 			const newMusic = new Music({
 				...musicInput,
-				id: uuidv4(),
 				lastModified: Date.now(),
 			});
 

@@ -8,7 +8,6 @@ export const typeCharacter = gql`
 		gender: String
 		hairColor: String
 		_id: String
-		id: String
 		imageURL: String
 		lastModified: Date
 		link1: String

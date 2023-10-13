@@ -1,6 +1,5 @@
 import Note from '../../db/models/Note';
 import { TNote, TNoteInput, TContext } from '../../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const noteResolvers = {
 	Query: {
@@ -15,7 +14,6 @@ export const noteResolvers = {
 		async addNote<T>(_: T, { noteInput }: TNoteInput) {
 			const newNote = new Note({
 				...noteInput,
-				id: uuidv4(),
 				lastModified: Date.now(),
 			});
 

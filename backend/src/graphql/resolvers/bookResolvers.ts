@@ -1,6 +1,5 @@
 import Book from '../../db/models/Book';
 import { TBookInput, TBook, TContext } from '../../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const bookResolvers = {
   Query: {
@@ -15,7 +14,6 @@ export const bookResolvers = {
     async addBook<T>(_: T, { bookInput }: TBookInput) {
       const newBook = new Book({
         ...bookInput,
-        id: uuidv4(),
         lastModified: Date.now(),
       });
 

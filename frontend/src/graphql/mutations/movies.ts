@@ -14,7 +14,6 @@ export const addMovie = async (
           episodesMin
           favourites
           _id
-          id
           imageURL
           lastModified
           link1

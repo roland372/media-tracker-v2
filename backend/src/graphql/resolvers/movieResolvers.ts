@@ -1,6 +1,5 @@
 import Movie from '../../db/models/Movie';
 import { TMovieInput, TMovie, TContext } from '../../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const movieResolvers = {
 	Query: {
@@ -15,7 +14,6 @@ export const movieResolvers = {
 		async addMovie<T>(_: T, { movieInput }: TMovieInput) {
 			const newMovie = new Movie({
 				...movieInput,
-				id: uuidv4(),
 				lastModified: Date.now(),
 			});
 

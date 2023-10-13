@@ -1,6 +1,5 @@
 import Character from '../../db/models/Character';
 import { TCharacterInput, TCharacter, TContext } from '../../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const characterResolvers = {
 	Query: {
@@ -15,7 +14,6 @@ export const characterResolvers = {
 		async addCharacter<T>(_: T, { characterInput }: TCharacterInput) {
 			const newCharacter = new Character({
 				...characterInput,
-				id: uuidv4(),
 				lastModified: Date.now(),
 			});
 

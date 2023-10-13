@@ -10,7 +10,6 @@ export const getAllBooks = async (userId: string) => {
           favourites
           genre
           _id
-          id
           imageURL
           lastModified
           link1
@@ -40,7 +39,6 @@ export const getSingleBook = async (variables: { id: string }) => {
           favourites
           genre
           _id
-          id
           imageURL
           lastModified
           link1

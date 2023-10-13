@@ -10,7 +10,6 @@ export const getAllMusic = async (userId: string) => {
           category
           favourites
           _id
-          id
           imageURL
           lastModified
           link
@@ -36,7 +35,6 @@ export const getSingleMusic = async (variables: { id: string }) => {
           category
           favourites
           _id
-          id
           imageURL
           lastModified
           link

@@ -12,7 +12,6 @@ export const addGame = async (
         addGame(gameInput: $gameInput) {
           favourites
           _id
-          id
           imageURL
           lastModified
           link1

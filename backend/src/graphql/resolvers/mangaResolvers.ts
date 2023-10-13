@@ -1,6 +1,5 @@
 import Manga from '../../db/models/Manga';
 import { TMangaInput, TManga, TContext } from '../../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const mangaResolvers = {
 	Query: {
@@ -15,7 +14,6 @@ export const mangaResolvers = {
 		async addManga<T>(_: T, { mangaInput }: TMangaInput) {
 			const newManga = new Manga({
 				...mangaInput,
-				id: uuidv4(),
 				lastModified: Date.now(),
 			});
 

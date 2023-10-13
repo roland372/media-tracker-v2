@@ -10,7 +10,6 @@ export const getAllMedia = async (userId: string) => {
           episodesMin
           favourites
           _id
-          id
           imageURL
           lastModified
           link1
@@ -27,7 +26,6 @@ export const getAllMedia = async (userId: string) => {
           favourites
           genre
           _id
-          id
           imageURL
           lastModified
           link1
@@ -43,7 +41,6 @@ export const getAllMedia = async (userId: string) => {
           gender
           hairColor
           _id
-          id
           imageURL
           lastModified
           link1
@@ -57,7 +54,6 @@ export const getAllMedia = async (userId: string) => {
         getAllEmotes {
           favourites
           _id
-          id
           lastModified
           name
           url
@@ -65,7 +61,6 @@ export const getAllMedia = async (userId: string) => {
         getAllGames {
           favourites
           _id
-          id
           imageURL
           lastModified
           link1
@@ -82,7 +77,6 @@ export const getAllMedia = async (userId: string) => {
           chaptersMin
           favourites
           _id
-          id
           imageURL
           lastModified
           link1
@@ -101,7 +95,6 @@ export const getAllMedia = async (userId: string) => {
           episodesMin
           favourites
           _id
-          id
           imageURL
           lastModified
           link1
@@ -119,7 +112,6 @@ export const getAllMedia = async (userId: string) => {
           category
           favourites
           _id
-          id
           imageURL
           lastModified
           link
@@ -129,7 +121,6 @@ export const getAllMedia = async (userId: string) => {
         getAllNotes {
           color
           _id
-          id
           lastModified
           note
           title

@@ -1,6 +1,5 @@
 import Game from '../../db/models/Game';
 import { TGameInput, TGame, TContext } from '../../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const gameResolvers = {
 	Query: {
@@ -15,7 +14,6 @@ export const gameResolvers = {
 		async addGame<T>(_: T, { gameInput }: TGameInput) {
 			const newGame = new Game({
 				...gameInput,
-				id: uuidv4(),
 				lastModified: Date.now(),
 			});
 

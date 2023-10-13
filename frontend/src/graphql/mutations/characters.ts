@@ -16,7 +16,6 @@ export const addCharacter = async (
           gender
           hairColor
           _id
-          id
           imageURL
           lastModified
           link1

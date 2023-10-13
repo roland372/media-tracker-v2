@@ -10,7 +10,6 @@ export const getAllCharacters = async (userId: string) => {
           gender
           hairColor
           _id
-          id
           imageURL
           lastModified
           link1
@@ -40,7 +39,6 @@ export const getSingleCharacter = async (variables: { id: string }) => {
           gender
           hairColor
           _id
-          id
           imageURL
           lastModified
           link1

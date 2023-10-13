@@ -23,7 +23,6 @@ export type TContext = {
 
 //? <----- ANIME ----->
 export type TAnime = TCommonAnimeProps & {
-  id: string;
   ID: string;
   owner: string;
 };
@@ -35,7 +34,6 @@ export type TAnimeInput = {
 
 //? <----- BOOKS ----->
 export type TBook = TCommonBookProps & {
-  id: string;
   ID: string;
   owner: string;
 };
@@ -47,7 +45,6 @@ export type TBookInput = {
 
 //? <----- CHARACTERS ----->
 export type TCharacter = TCommonCharacterProps & {
-  id: string;
   ID: string;
   owner: string;
 };
@@ -59,7 +56,6 @@ export type TCharacterInput = {
 
 //? <----- EMOTES ----->
 export type TEmote = TCommonEmoteProps & {
-  id: string;
   ID: string;
 };
 
@@ -70,7 +66,6 @@ export type TEmoteInput = {
 
 //? <----- GAMES ----->
 export type TGame = TCommonGameProps & {
-  id: string;
   ID: string;
   owner: string;
 };
@@ -126,7 +121,6 @@ export type THonkaiStarRailCharacterBuildInput = {
 
 //? <----- MANGA ----->
 export type TManga = TCommonMangaProps & {
-  id: string;
   ID: string;
   owner: string;
 };
@@ -138,7 +132,6 @@ export type TMangaInput = {
 
 //? <----- MOVIES ----->
 export type TMovie = TCommonMovieProps & {
-  id: string;
   ID: string;
   owner: string;
 };
@@ -150,7 +143,6 @@ export type TMovieInput = {
 
 //? <----- MUSIC ----->
 export type TMusic = TCommonMusicProps & {
-  id: string;
   ID: string;
   owner: string;
 };
@@ -162,7 +154,6 @@ export type TMusicInput = {
 
 //? <----- NOTES ----->
 export type TNote = TCommonNoteProps & {
-  id: string;
   ID: string;
   owner: string;
 };

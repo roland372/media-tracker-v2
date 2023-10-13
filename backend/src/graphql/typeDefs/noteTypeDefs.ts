@@ -6,7 +6,6 @@ export const typeNote = gql`
 	type Note {
 		color: String
 		_id: String
-		id: String
 		lastModified: Date
 		note: String
 		owner: String

@@ -8,7 +8,6 @@ export const getAllEmotes = async (userId: string) => {
         getAllEmotes {
           favourites
           _id
-          id
           lastModified
           name
           url
@@ -30,7 +29,6 @@ export const getSingleEmote = async (variables: { id: string }) => {
         getSingleEmote(ID: $id) {
           favourites
           _id
-          id
           lastModified
           name
           url

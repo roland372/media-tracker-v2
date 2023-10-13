@@ -8,7 +8,6 @@ export const typeMovie = gql`
 		episodesMin: Int
 		favourites: Boolean
 		_id: String
-		id: String
 		imageURL: String
 		lastModified: Date
 		link1: String

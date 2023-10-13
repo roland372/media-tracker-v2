@@ -8,7 +8,6 @@ export const typeBook = gql`
 		favourites: Boolean
     genre: String
 		_id: String
-		id: String
 		imageURL: String
 		lastModified: Date
 		link1: String

@@ -8,7 +8,6 @@ export const typeMusic = gql`
     category: String
 		favourites: Boolean
 		_id: String
-		id: String
 		imageURL: String
 		lastModified: Date
 		link: String

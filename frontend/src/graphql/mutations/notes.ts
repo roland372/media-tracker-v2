@@ -12,7 +12,6 @@ export const addNote = async (
         addNote(noteInput: $noteInput) {
           color
           _id
-          id
           lastModified
           note
           owner

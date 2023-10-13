@@ -14,7 +14,6 @@ export const addAnime = async (
           episodesMin
           favourites
           _id
-          id
           imageURL
           lastModified
           link1

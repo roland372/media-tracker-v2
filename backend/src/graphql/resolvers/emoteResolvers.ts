@@ -1,6 +1,5 @@
 import Emote from '../../db/models/Emote';
 import { TEmoteInput, TEmote } from '../../types';
-import { v4 as uuidv4 } from 'uuid';
 
 export const emoteResolvers = {
 	Query: {
@@ -15,7 +14,6 @@ export const emoteResolvers = {
 		async addEmote<T>(_: T, { emoteInput }: TEmoteInput) {
 			const newEmote = new Emote({
 				...emoteInput,
-				id: uuidv4(),
 				lastModified: Date.now(),
 			});
 

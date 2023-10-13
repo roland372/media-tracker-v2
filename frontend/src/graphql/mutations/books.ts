@@ -14,7 +14,6 @@ export const addBook = async (
           favourites
           genre
           _id
-          id
           imageURL
           lastModified
           link1

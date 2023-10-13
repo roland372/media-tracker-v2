@@ -6,7 +6,6 @@ export const typeEmote = gql`
 	type Emote {
 		favourites: Boolean
 		_id: String
-		id: String
 		lastModified: Date
 		name: String
 		url: String
