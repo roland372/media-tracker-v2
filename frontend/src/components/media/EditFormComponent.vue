@@ -645,6 +645,7 @@ import {
   TGameInput,
   TManga,
   TMangaInput,
+  TMedia,
   TMovie,
   TMovieInput,
 } from "@/types";
@@ -657,7 +658,7 @@ import {
 } from "../../../../common/types";
 
 interface IFormComponentProps {
-  media: TAnime | TBook | TCharacter | TGame | TManga | TMovie;
+  media: TMedia;
   mediaType: EMediaType;
   title: string;
 }

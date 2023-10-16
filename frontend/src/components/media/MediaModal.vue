@@ -27,8 +27,8 @@
               </div>
               <div><b>Rating:</b> {{ (media as TAnime).rating }}</div>
               <div><b>Status:</b> {{ (media as TAnime).status }}</div>
-              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
-              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
+              <!-- <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
+              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div> -->
             </v-card-text>
 
             <!--? BOOKS -->
@@ -150,11 +150,19 @@
 import { defineProps } from "vue";
 import { placeholderImg, formatDate } from "@/utils/mediaUtils";
 import ButtonText from "@/components/ui/ButtonText.vue";
-import { TAnime, TBook, TCharacter, TGame, TManga, TMovie } from "@/types";
+import {
+  TAnime,
+  TBook,
+  TCharacter,
+  TGame,
+  TManga,
+  TMedia,
+  TMovie,
+} from "@/types";
 import { EMediaType } from "../../../../common/types";
 
 interface IMediaModalProps {
-  media: TAnime | TManga | TGame | TCharacter | TBook | TMovie;
+  media: TMedia;
   mediaType: EMediaType;
   title: string;
   deleteClick: () => void;

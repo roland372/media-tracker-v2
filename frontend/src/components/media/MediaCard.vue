@@ -97,7 +97,15 @@ import ChipComponent from "../ui/ChipComponent.vue";
 import EditFormComponent from "./EditFormComponent.vue";
 import MediaModal from "@/components/media/MediaModal.vue";
 import SnackbarComponent from "../ui/SnackbarComponent.vue";
-import { TAnime, TBook, TCharacter, TGame, TManga, TMovie } from "@/types";
+import {
+  TAnime,
+  TBook,
+  TCharacter,
+  TGame,
+  TManga,
+  TMedia,
+  TMovie,
+} from "@/types";
 import {
   EAnimeStatus,
   EBookStatus,
@@ -119,7 +127,7 @@ const {
 } = mediaStore;
 
 interface IMediaCardProps {
-  media: TAnime | TBook | TCharacter | TGame | TManga | TMovie;
+  media: TMedia;
   mediaType: EMediaType;
 }
 
@@ -131,9 +139,7 @@ const formDialog = ref<boolean>(false);
 const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>("");
 
-const displayImageText = (
-  media: TAnime | TBook | TCharacter | TGame | TManga | TMovie
-) => {
+const displayImageText = (media: TMedia) => {
   let imageText = "";
   switch (props.mediaType) {
     case EMediaType.ANIME:
@@ -153,9 +159,7 @@ const displayImageText = (
   return imageText;
 };
 
-const statusColor = (
-  media: TAnime | TBook | TCharacter | TGame | TManga | TMovie
-) => {
+const statusColor = (media: TMedia) => {
   let color = "";
   if ((media as TCharacter).source) {
     switch ((media as TCharacter).source) {
