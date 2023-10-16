@@ -30,12 +30,12 @@
         "
       />
       <ButtonText
-        v-for="(status, index) in mediaStatus()"
-        @click="handleStatusClick(status.status)"
+        v-for="(status, index) in mediaStatus"
+        @click="handleStatusClick(status.name)"
         class="ma-1"
         :color="status.color"
         :key="index"
-        :text="status.status"
+        :text="status.name"
       />
     </div>
   </section>
@@ -91,24 +91,21 @@
   ></v-dialog>
 </template>
 <script setup lang="ts">
-import { defineEmits, defineProps, ref } from "vue";
+import { ComputedRef, defineEmits, defineProps, ref } from "vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import { TSortingOptions } from "@/types";
-import {
-  EAnimeStatus,
-  EBookStatus,
-  ECharacterSource,
-  EGameStatus,
-  EMangaStatus,
-  EMediaType,
-  EMovieStatus,
-} from "../../../../common/types";
+import { EMediaType, TMediaStatus } from "../../../../common/types";
 
 interface IDisplayFilterSearchPanelProps {
   displayFlag: string;
   mediaType: EMediaType;
   sortFields: Record<string, string>[];
+  mediaStatus: {
+    color: string;
+    name: TMediaStatus;
+    value: ComputedRef<number>;
+  }[];
 }
 
 const emit = defineEmits(["display", "search", "sort", "filter"]);
@@ -120,67 +117,6 @@ const sortingOptions = ref<TSortingOptions>({
   sortField: props.mediaType === EMediaType.CHARACTER ? "name" : "title",
   sortOrder: "asc",
 });
-
-const mediaStatus = () => {
-  let statusArr = [];
-
-  switch (props.mediaType) {
-    case EMediaType.ANIME:
-      statusArr = [
-        { status: EAnimeStatus.WATCHING, color: "green" },
-        { status: EAnimeStatus.COMPLETED, color: "blue" },
-        { status: EAnimeStatus.ON_HOLD, color: "yellow" },
-        { status: EAnimeStatus.DROPPED, color: "red" },
-        { status: EAnimeStatus.PLAN_TO_WATCH, color: "white" },
-      ];
-      break;
-    case EMediaType.BOOK:
-      statusArr = [
-        { status: EBookStatus.READING, color: "green" },
-        { status: EBookStatus.COMPLETED, color: "blue" },
-        { status: EBookStatus.ON_HOLD, color: "yellow" },
-        { status: EBookStatus.DROPPED, color: "red" },
-        { status: EBookStatus.PLAN_TO_READ, color: "white" },
-      ];
-      break;
-    case EMediaType.CHARACTER:
-      statusArr = [
-        { status: ECharacterSource.ANIME, color: "green" },
-        { status: ECharacterSource.GAME, color: "blue" },
-        { status: ECharacterSource.MANGA, color: "yellow" },
-      ];
-      break;
-    case EMediaType.GAME:
-      statusArr = [
-        { status: EGameStatus.PLAYING, color: "green" },
-        { status: EGameStatus.COMPLETED, color: "blue" },
-        { status: EGameStatus.ON_HOLD, color: "yellow" },
-        { status: EGameStatus.DROPPED, color: "red" },
-        { status: EGameStatus.PLAN_TO_PLAY, color: "white" },
-      ];
-      break;
-    case EMediaType.MANGA:
-      statusArr = [
-        { status: EMangaStatus.READING, color: "green" },
-        { status: EMangaStatus.COMPLETED, color: "blue" },
-        { status: EMangaStatus.ON_HOLD, color: "yellow" },
-        { status: EMangaStatus.DROPPED, color: "red" },
-        { status: EMangaStatus.PLAN_TO_READ, color: "white" },
-      ];
-      break;
-    case EMediaType.MOVIE:
-      statusArr = [
-        { status: EMovieStatus.WATCHING, color: "green" },
-        { status: EMovieStatus.COMPLETED, color: "blue" },
-        { status: EMovieStatus.ON_HOLD, color: "yellow" },
-        { status: EMovieStatus.DROPPED, color: "red" },
-        { status: EMovieStatus.PLAN_TO_WATCH, color: "white" },
-      ];
-      break;
-  }
-
-  return statusArr;
-};
 
 const handleDisplayClick = () => {
   emit("display");
@@ -200,13 +136,5 @@ const handleSortMedia = () => {
   // console.log("Sort Order:", sortingOptions.value.sortOrder);
   settingsModal.value = !settingsModal.value;
 };
-const handleStatusClick = (
-  status:
-    | EAnimeStatus
-    | EBookStatus
-    | ECharacterSource
-    | EGameStatus
-    | EMangaStatus
-    | EMovieStatus
-) => emit("filter", status);
+const handleStatusClick = (status: TMediaStatus) => emit("filter", status);
 </script>

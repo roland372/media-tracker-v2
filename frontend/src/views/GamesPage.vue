@@ -51,6 +51,7 @@
       @search="handleGameSearch"
       @sort="handleGameSort"
       :display-flag="displayFlag"
+      :media-status="status"
       :media-type="EMediaType.GAME"
       :sort-fields="sortFields"
     />
@@ -68,6 +69,7 @@
       @search="handleGameSearch"
       @sort="handleGameSort"
       :display-flag="displayFlag"
+      :media-status="status"
       :media-type="EMediaType.GAME"
       :sort-fields="sortFields"
     />

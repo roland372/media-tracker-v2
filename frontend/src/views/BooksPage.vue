@@ -51,6 +51,7 @@
       @search="handleBookSearch"
       @sort="handleBookSort"
       :display-flag="displayFlag"
+      :media-status="status"
       :media-type="EMediaType.BOOK"
       :sort-fields="sortFields"
     />
@@ -68,6 +69,7 @@
       @search="handleBookSearch"
       @sort="handleBookSort"
       :display-flag="displayFlag"
+      :media-status="status"
       :media-type="EMediaType.BOOK"
       :sort-fields="sortFields"
     />

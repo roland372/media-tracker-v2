@@ -84,6 +84,7 @@
       @search="handleAnimeSearch"
       @sort="handleAnimeSort"
       :display-flag="displayFlag"
+      :media-status="status"
       :media-type="EMediaType.ANIME"
       :sort-fields="sortFields"
     />
@@ -101,6 +102,7 @@
       @search="handleAnimeSearch"
       @sort="handleAnimeSort"
       :display-flag="displayFlag"
+      :media-status="status"
       :media-type="EMediaType.ANIME"
       :sort-fields="sortFields"
     />

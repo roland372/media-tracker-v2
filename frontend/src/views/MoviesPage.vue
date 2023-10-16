@@ -51,6 +51,7 @@
       @search="handleMovieSearch"
       @sort="handleMovieSort"
       :display-flag="displayFlag"
+      :media-status="status"
       :media-type="EMediaType.MOVIE"
       :sort-fields="sortFields"
     />
@@ -68,6 +69,7 @@
       @search="handleMovieSearch"
       @sort="handleMovieSort"
       :display-flag="displayFlag"
+      :media-status="status"
       :media-type="EMediaType.MOVIE"
       :sort-fields="sortFields"
     />

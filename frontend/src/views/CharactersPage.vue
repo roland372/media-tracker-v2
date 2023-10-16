@@ -83,6 +83,7 @@
       @search="handleCharacterSearch"
       @sort="handleCharacterSort"
       :display-flag="displayFlag"
+      :media-status="source"
       :media-type="EMediaType.CHARACTER"
       :sort-fields="sortFields"
     />
@@ -100,6 +101,7 @@
       @search="handleCharacterSearch"
       @sort="handleCharacterSort"
       :display-flag="displayFlag"
+      :media-status="source"
       :media-type="EMediaType.CHARACTER"
       :sort-fields="sortFields"
     />

@@ -85,6 +85,7 @@
       @search="handleMangaSearch"
       @sort="handleMangaSort"
       :display-flag="displayFlag"
+      :media-status="status"
       :media-type="EMediaType.MANGA"
       :sort-fields="sortFields"
     />
@@ -102,6 +103,7 @@
       @search="handleMangaSearch"
       @sort="handleMangaSort"
       :display-flag="displayFlag"
+      :media-status="status"
       :media-type="EMediaType.MANGA"
       :sort-fields="sortFields"
     />

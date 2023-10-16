@@ -1,4 +1,12 @@
 //? <----- MEDIA ----->
+export type TMediaStatus =
+  | EAnimeStatus
+  | EBookStatus
+  | ECharacterSource
+  | EGameStatus
+  | EMangaStatus
+  | EMovieStatus;
+
 export enum EMediaType {
   ANIME = "Anime",
   MANGA = "Manga",
