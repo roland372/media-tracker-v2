@@ -86,6 +86,7 @@
       @sort="handleMangaSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.MANGA"
+      :sort-fields="sortFields"
     />
   </MediaTable>
   <MediaComponent
@@ -102,6 +103,7 @@
       @sort="handleMangaSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.MANGA"
+      :sort-fields="sortFields"
     />
   </MediaComponent>
   <MediaComponent
@@ -157,6 +159,32 @@ const sortingOptions = ref<TSortingOptions>({
   sortField: "title",
   sortOrder: "asc",
 });
+const sortFields = [
+  {
+    label: "Chapters",
+    value: "chaptersMin",
+  },
+  {
+    label: "Rating",
+    value: "rating",
+  },
+  {
+    label: "Status",
+    value: "status",
+  },
+  {
+    label: "Title",
+    value: "title",
+  },
+  {
+    label: "Type",
+    value: "type",
+  },
+  {
+    label: "Volumes",
+    value: "volumesMin",
+  },
+];
 
 const favourites = computed(
   () => manga.value.filter((manga) => manga.favourites).length

@@ -84,6 +84,7 @@
       @sort="handleCharacterSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.CHARACTER"
+      :sort-fields="sortFields"
     />
   </MediaTable>
   <MediaComponent
@@ -100,6 +101,7 @@
       @sort="handleCharacterSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.CHARACTER"
+      :sort-fields="sortFields"
     />
   </MediaComponent>
   <MediaComponent
@@ -164,6 +166,28 @@ const sortingOptions = ref<TSortingOptions>({
   sortField: "name",
   sortOrder: "asc",
 });
+const sortFields = [
+  {
+    label: "Gender",
+    value: "gender",
+  },
+  {
+    label: "Hair Color",
+    value: "hairColor",
+  },
+  {
+    label: "Name",
+    value: "name",
+  },
+  {
+    label: "Series",
+    value: "series",
+  },
+  {
+    label: "Source",
+    value: "source",
+  },
+];
 
 const favourites = computed(
   () => characters.value.filter((characters) => characters.favourites).length

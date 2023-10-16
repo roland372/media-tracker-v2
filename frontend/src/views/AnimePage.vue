@@ -85,6 +85,7 @@
       @sort="handleAnimeSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.ANIME"
+      :sort-fields="sortFields"
     />
   </MediaTable>
   <MediaComponent
@@ -101,6 +102,7 @@
       @sort="handleAnimeSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.ANIME"
+      :sort-fields="sortFields"
     />
   </MediaComponent>
   <MediaComponent
@@ -156,6 +158,28 @@ const sortingOptions = ref<TSortingOptions>({
   sortField: "title",
   sortOrder: "asc",
 });
+const sortFields = [
+  {
+    label: "Progress",
+    value: "episodesMin",
+  },
+  {
+    label: "Rating",
+    value: "rating",
+  },
+  {
+    label: "Status",
+    value: "status",
+  },
+  {
+    label: "Title",
+    value: "title",
+  },
+  {
+    label: "Type",
+    value: "type",
+  },
+];
 
 const favourites = computed(
   () => anime.value.filter((anime) => anime.favourites).length

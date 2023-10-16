@@ -52,6 +52,7 @@
       @sort="handleGameSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.GAME"
+      :sort-fields="sortFields"
     />
   </MediaTable>
   <MediaComponent
@@ -68,6 +69,7 @@
       @sort="handleGameSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.GAME"
+      :sort-fields="sortFields"
     />
   </MediaComponent>
   <MediaComponent
@@ -116,6 +118,28 @@ const sortingOptions = ref<TSortingOptions>({
   sortField: "title",
   sortOrder: "asc",
 });
+const sortFields = [
+  {
+    label: "Playtime",
+    value: "playtime",
+  },
+  {
+    label: "Rating",
+    value: "rating",
+  },
+  {
+    label: "Status",
+    value: "status",
+  },
+  {
+    label: "Title",
+    value: "title",
+  },
+  {
+    label: "Type",
+    value: "type",
+  },
+];
 
 const favourites = computed(
   () => games.value.filter((games) => games.favourites).length

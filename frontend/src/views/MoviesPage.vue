@@ -52,6 +52,7 @@
       @sort="handleMovieSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.MOVIE"
+      :sort-fields="sortFields"
     />
   </MediaTable>
   <MediaComponent
@@ -68,6 +69,7 @@
       @sort="handleMovieSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.MOVIE"
+      :sort-fields="sortFields"
     />
   </MediaComponent>
   <MediaComponent
@@ -116,6 +118,32 @@ const sortingOptions = ref<TSortingOptions>({
   sortField: "title",
   sortOrder: "asc",
 });
+const sortFields = [
+  {
+    label: "Episodes",
+    value: "episodesMin",
+  },
+  {
+    label: "Rating",
+    value: "rating",
+  },
+  {
+    label: "Seasons",
+    value: "seasonsMin",
+  },
+  {
+    label: "Status",
+    value: "status",
+  },
+  {
+    label: "Title",
+    value: "title",
+  },
+  {
+    label: "Type",
+    value: "type",
+  },
+];
 
 const favourites = computed(
   () => movies.value.filter((movies) => movies.favourites).length

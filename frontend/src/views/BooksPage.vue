@@ -52,6 +52,7 @@
       @sort="handleBookSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.BOOK"
+      :sort-fields="sortFields"
     />
   </MediaTable>
   <MediaComponent
@@ -68,6 +69,7 @@
       @sort="handleBookSort"
       :display-flag="displayFlag"
       :media-type="EMediaType.BOOK"
+      :sort-fields="sortFields"
     />
   </MediaComponent>
   <MediaComponent
@@ -116,6 +118,32 @@ const sortingOptions = ref<TSortingOptions>({
   sortField: "title",
   sortOrder: "asc",
 });
+const sortFields = [
+  {
+    label: "Author",
+    value: "author",
+  },
+  {
+    label: "Genre",
+    value: "genre",
+  },
+  {
+    label: "Pages",
+    value: "pages",
+  },
+  {
+    label: "Rating",
+    value: "rating",
+  },
+  {
+    label: "Status",
+    value: "status",
+  },
+  {
+    label: "Title",
+    value: "title",
+  },
+];
 
 const favourites = computed(
   () => books.value.filter((books) => books.favourites).length
