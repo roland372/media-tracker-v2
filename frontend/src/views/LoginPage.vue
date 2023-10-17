@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent title="Login">
     <div class="page-container d-flex align-center justify-center">
-      <GoogleLogin :callback="login" prompt auto-login />
+      <GoogleLogin :callback="login" prompt />
     </div>
   </HeaderComponent>
 </template>
