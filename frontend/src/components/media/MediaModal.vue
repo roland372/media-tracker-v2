@@ -13,9 +13,9 @@
             min-width="150px"
             :src="media.imageURL || placeholderImg"
           />
-          <v-card-text class="ms-n3 my-n4 mb-n6">
+          <v-card-text>
             <!--? ANIME -->
-            <v-card-text v-if="mediaType === EMediaType.ANIME">
+            <section v-if="mediaType === EMediaType.ANIME">
               <div><b>Type:</b> {{ (media as TAnime).type }}</div>
               <div>
                 <b>Link: </b>
@@ -27,12 +27,10 @@
               </div>
               <div><b>Rating:</b> {{ (media as TAnime).rating }}</div>
               <div><b>Status:</b> {{ (media as TAnime).status }}</div>
-              <!-- <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
-              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div> -->
-            </v-card-text>
+            </section>
 
             <!--? BOOKS -->
-            <v-card-text v-if="mediaType === EMediaType.BOOK">
+            <section v-if="mediaType === EMediaType.BOOK">
               <div><b>Author:</b> {{ (media as TBook).author }}</div>
               <div>
                 <b>Link: </b>
@@ -42,12 +40,10 @@
               <div><b>Pages:</b> {{ (media as TBook).pages }}</div>
               <div><b>Rating:</b> {{ (media as TBook).rating }}</div>
               <div><b>Status:</b> {{ (media as TBook).status }}</div>
-              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
-              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
-            </v-card-text>
+            </section>
 
             <!--? CHARACTERS -->
-            <v-card-text v-if="mediaType === EMediaType.CHARACTER">
+            <section v-if="mediaType === EMediaType.CHARACTER">
               <div>
                 <b>Link: </b>
                 <a :href="media.link" target="_blank">{{ media.linkName }}</a>
@@ -58,12 +54,10 @@
               <div>
                 <b>Hair Color:</b> {{ (media as TCharacter).hairColor }}
               </div>
-              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
-              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
-            </v-card-text>
+            </section>
 
             <!--? GAMES -->
-            <v-card-text v-if="mediaType === EMediaType.GAME">
+            <section v-if="mediaType === EMediaType.GAME">
               <div><b>Type:</b> {{ (media as TGame).type }}</div>
               <div>
                 <b>Link: </b>
@@ -72,12 +66,10 @@
               <div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
               <div><b>Rating:</b> {{ (media as TGame).rating }}</div>
               <div><b>Status:</b> {{ (media as TGame).status }}</div>
-              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
-              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
-            </v-card-text>
+            </section>
 
             <!--? MANGA -->
-            <v-card-text v-if="mediaType === EMediaType.MANGA">
+            <section v-if="mediaType === EMediaType.MANGA">
               <div><b>Type:</b> {{ (media as TManga).type }}</div>
               <div>
                 <b>Link: </b>
@@ -93,12 +85,10 @@
               </div>
               <div><b>Rating:</b> {{ (media as TManga).rating }}</div>
               <div><b>Status:</b> {{ (media as TManga).status }}</div>
-              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
-              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
-            </v-card-text>
+            </section>
 
             <!--? MOVIES -->
-            <v-card-text v-if="mediaType === EMediaType.MOVIE">
+            <section v-if="mediaType === EMediaType.MOVIE">
               <div><b>Type:</b> {{ (media as TMovie).type }}</div>
               <div>
                 <b>Link: </b>
@@ -116,9 +106,12 @@
               </div>
               <div><b>Rating:</b> {{ (media as TMovie).rating }}</div>
               <div><b>Status:</b> {{ (media as TMovie).status }}</div>
+            </section>
+
+            <section>
               <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
               <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
-            </v-card-text>
+            </section>
           </v-card-text>
         </div>
 
