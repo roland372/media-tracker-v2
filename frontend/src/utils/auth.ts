@@ -22,7 +22,7 @@ export const login: CallbackTypes.CredentialCallback = async (cbRes) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      // "Access-Control-Allow-Credentials": true,
+      "Access-Control-Allow-Credentials": true,
       user: JSON.stringify(user),
     },
   });
@@ -56,7 +56,7 @@ export const getUserData = async () => {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          // "Access-Control-Allow-Credentials": true,
+          "Access-Control-Allow-Credentials": true,
           googleId,
         },
       });

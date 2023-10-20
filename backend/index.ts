@@ -51,9 +51,6 @@ const startServer = async (): Promise<void> => {
 
 	await server.start();
 
-	// console.log(CLIENT_URL);
-	// console.log(SERVER_URL);
-
 	app.use(session({
 		name: "qid",
 		secret: "mySession",
@@ -63,17 +60,18 @@ const startServer = async (): Promise<void> => {
 	}));
 	app.use(passport.initialize());
 	app.use(passport.session());
+
 	app.use(cors({
-		origin: [CLIENT_URL!, SERVER_URL!, "http://localhost:8080"],
+		origin: ["https://media-tracker.netlify.app", "http://localhost:8080"],
 		methods: "GET,POST,PUT,DELETE",
 		credentials: true,
-		allowedHeaders: "Content-Type, Authorization",
 	}));
-// 	app.use(cors({
-//     origin: ["https://media-tracker.netlify.app", "http://localhost:8080"],
-//     methods: "GET,POST,PUT,DELETE",
-//     credentials: true,
-// }));
+
+	// 	app.use(cors({
+	//     origin: ["https://media-tracker.netlify.app", "http://localhost:8080"],
+	//     methods: "GET,POST,PUT,DELETE",
+	//     credentials: true,
+	// }));
 	app.use("/", authRoute);
 	app.use(
 		'/',
