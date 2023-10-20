@@ -6,10 +6,10 @@ const authErrorCode = 403;
 
 const isAuthenticated = rule()(async (_, __, ctx) => {
   if (ctx.userFromContext.length) {
-    // console.log("permissions: authenticated");
+    console.log("permissions: authenticated");
     return ctx.userFromContext[0].email !== null;
   } else {
-    // console.log("permissions: not authenticated");
+    console.log("permissions: not authenticated");
     return new GraphQLError(authErrorMessage, {
       extensions: { code: authErrorCode },
     });
