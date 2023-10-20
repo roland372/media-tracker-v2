@@ -40,7 +40,7 @@ const schema = applyMiddleware(makeExecutableSchema({
 	typeDefs,
 	resolvers,
 }),
-	shield)
+	shield);
 const server = new ApolloServer({
 	schema,
 	plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
@@ -51,15 +51,6 @@ const startServer = async (): Promise<void> => {
 
 	await server.start();
 
-	app.use(session({
-		name: "qid",
-		secret: "mySession",
-		resave: false,
-		saveUninitialized: false,
-		store: MongoStore.create({ mongoUrl: MONGODB_URI! }),
-	}));
-	app.use(passport.initialize());
-	app.use(passport.session());
 	app.use(cors({
 		origin: [CLIENT_URL!, SERVER_URL!, "http://localhost:8080"],
 		methods: "GET,POST,PUT,DELETE",
@@ -77,6 +68,16 @@ const startServer = async (): Promise<void> => {
 			}
 		}),
 	);
+
+	app.use(session({
+		name: "qid",
+		secret: "mySession",
+		resave: false,
+		saveUninitialized: false,
+		store: MongoStore.create({ mongoUrl: MONGODB_URI! }),
+	}));
+	app.use(passport.initialize());
+	app.use(passport.session());
 
 	await new Promise<void>((resolve) => httpServer.listen({ port: PORT, host: "0.0.0.0" }, resolve));
 
