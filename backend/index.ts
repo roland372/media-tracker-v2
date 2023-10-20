@@ -51,11 +51,16 @@ const startServer = async (): Promise<void> => {
 
 	await server.start();
 
+	// app.use(cors({
+	// 	origin: [CLIENT_URL!, SERVER_URL!, "http://localhost:8080"],
+	// 	methods: "GET,POST,PUT,DELETE",
+	// 	credentials: true,
+	// }));
 	app.use(cors({
-		origin: [CLIENT_URL!, SERVER_URL!, "http://localhost:8080"],
-		methods: "GET,POST,PUT,DELETE",
-		credentials: true,
-	}));
+    origin: "https://media-tracker.netlify.app",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+}));
 	app.use("/", authRoute);
 	app.use(
 		'/',
