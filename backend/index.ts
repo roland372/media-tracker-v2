@@ -62,8 +62,7 @@ const startServer = async (): Promise<void> => {
 	app.use(passport.session());
 
 	app.use(cors({
-		origin: ["https://media-tracker.netlify.app", "http://localhost:8080"],
-		methods: "GET,POST,PUT,DELETE",
+		origin: "https://media-tracker.netlify.app",
 		credentials: true,
 	}));
 
