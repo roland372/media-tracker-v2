@@ -51,16 +51,29 @@ const startServer = async (): Promise<void> => {
 
 	await server.start();
 
-	// app.use(cors({
-	// 	origin: [CLIENT_URL!, SERVER_URL!, "http://localhost:8080"],
-	// 	methods: "GET,POST,PUT,DELETE",
-	// 	credentials: true,
-	// }));
+	// console.log(CLIENT_URL);
+	// console.log(SERVER_URL);
+
+	app.use(session({
+		name: "qid",
+		secret: "mySession",
+		resave: false,
+		saveUninitialized: false,
+		store: MongoStore.create({ mongoUrl: MONGODB_URI! }),
+	}));
+	app.use(passport.initialize());
+	app.use(passport.session());
 	app.use(cors({
-    origin: "https://media-tracker.netlify.app",
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
-}));
+		origin: [CLIENT_URL!, SERVER_URL!, "http://localhost:8080"],
+		methods: "GET,POST,PUT,DELETE",
+		credentials: true,
+		allowedHeaders: "Content-Type, Authorization",
+	}));
+// 	app.use(cors({
+//     origin: ["https://media-tracker.netlify.app", "http://localhost:8080"],
+//     methods: "GET,POST,PUT,DELETE",
+//     credentials: true,
+// }));
 	app.use("/", authRoute);
 	app.use(
 		'/',
@@ -74,19 +87,8 @@ const startServer = async (): Promise<void> => {
 		}),
 	);
 
-	app.use(session({
-		name: "qid",
-		secret: "mySession",
-		resave: false,
-		saveUninitialized: false,
-		store: MongoStore.create({ mongoUrl: MONGODB_URI! }),
-	}));
-	app.use(passport.initialize());
-	app.use(passport.session());
-
 	await new Promise<void>((resolve) => httpServer.listen({ port: PORT, host: "0.0.0.0" }, resolve));
 
 	console.log(colors.magenta.bold(`index.ts 🚀 GraphQL Server ready at port : ${PORT}`));
-
 };
 startServer();
