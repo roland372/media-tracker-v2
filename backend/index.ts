@@ -40,7 +40,7 @@ const schema = applyMiddleware(makeExecutableSchema({
 	typeDefs,
 	resolvers,
 }),
-	shield);
+	shield)
 const server = new ApolloServer({
 	schema,
 	plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
@@ -60,17 +60,11 @@ const startServer = async (): Promise<void> => {
 	}));
 	app.use(passport.initialize());
 	app.use(passport.session());
-
 	app.use(cors({
-		origin: "https://media-tracker.netlify.app",
+		origin: [CLIENT_URL!, SERVER_URL!, "http://localhost:8080"],
+		methods: "GET,POST,PUT,DELETE",
 		credentials: true,
 	}));
-
-	// 	app.use(cors({
-	//     origin: ["https://media-tracker.netlify.app", "http://localhost:8080"],
-	//     methods: "GET,POST,PUT,DELETE",
-	//     credentials: true,
-	// }));
 	app.use("/", authRoute);
 	app.use(
 		'/',
@@ -87,5 +81,6 @@ const startServer = async (): Promise<void> => {
 	await new Promise<void>((resolve) => httpServer.listen({ port: PORT, host: "0.0.0.0" }, resolve));
 
 	console.log(colors.magenta.bold(`index.ts 🚀 GraphQL Server ready at port : ${PORT}`));
+
 };
 startServer();
