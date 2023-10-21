@@ -3,6 +3,7 @@ import colors from 'colors';
 import dotenv from 'dotenv';
 import express from 'express';
 import http from 'http';
+import cors from 'cors';
 
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
@@ -40,6 +41,10 @@ const startServer = async (): Promise<void> => {
 	await server.start();
 	app.use(
 		'/',
+		cors({
+			origin: ['http://localhost:8080', 'http://192.168.1.32:8080'],
+			methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+		}),
 		json(),
 		expressMiddleware(server, {
 			context: async ({ req }) => {

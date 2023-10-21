@@ -753,6 +753,7 @@ export const useMediaStore = defineStore("media", () => {
     try {
       const { data } = await getSingleUser(email, { id });
       setUserFromDB(data.getSingleUser);
+      setGoogleUser(data.getSingleUser);
     } catch (err) {
       console.log(err);
     }
