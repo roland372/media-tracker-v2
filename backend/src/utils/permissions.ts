@@ -1,4 +1,4 @@
-import { rule, shield } from 'graphql-shield';
+import { allow, rule, shield } from 'graphql-shield';
 import { GraphQLError } from 'graphql/index';
 
 const authErrorMessage = 'You are not authorized to do this';
@@ -37,6 +37,7 @@ export default shield({
     getAllNotes: isAuthenticated,
     getSingleNote: isAuthenticated,
     getSingleUser: isAuthenticated,
+    getPlayground: allow,
   },
 
   Mutation: {
@@ -69,4 +70,6 @@ export default shield({
     editNote: isAuthenticated,
     editUser: isAuthenticated,
   },
+}, {
+  allowExternalErrors: true
 });

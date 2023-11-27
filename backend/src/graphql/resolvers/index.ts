@@ -8,6 +8,7 @@ import { movieResolvers } from './movieResolvers';
 import { musicResolvers } from './musicResolvers';
 import { noteResolvers } from './noteResolvers';
 import { userResolvers } from './userResolvers';
+import { playgroundResolvers } from './playgroundResolvers';
 
 export const resolvers = [
 	animeResolvers,
@@ -20,4 +21,5 @@ export const resolvers = [
 	musicResolvers,
 	noteResolvers,
 	userResolvers,
+	playgroundResolvers,
 ];

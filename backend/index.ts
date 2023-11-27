@@ -28,8 +28,7 @@ const httpServer = http.createServer(app);
 const schema = applyMiddleware(makeExecutableSchema({
 	typeDefs,
 	resolvers,
-}),
-	shield)
+}), shield);
 const server = new ApolloServer({
 	schema,
 	plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
@@ -42,7 +41,7 @@ const startServer = async (): Promise<void> => {
 	app.use(
 		'/',
 		cors({
-			origin: ['http://localhost:8080', 'http://192.168.1.32:8080'],
+			origin: ['http://localhost:8080', 'http://192.168.1.32:8080', 'http://192.168.1.11:8080'],
 			methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		}),
 		json(),

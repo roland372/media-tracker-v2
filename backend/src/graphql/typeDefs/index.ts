@@ -8,6 +8,7 @@ import { typeMovie } from './movieTypeDefs';
 import { typeMusic } from './musicTypeDefs';
 import { typeNote } from './noteTypeDefs';
 import { typeUser } from './userTypeDefs';
+import { typePlayground } from './playgroundTypeDefs';
 
 export const typeDefs = [
 	typeAnime,
@@ -20,4 +21,5 @@ export const typeDefs = [
 	typeMusic,
 	typeNote,
 	typeUser,
+	typePlayground,
 ];
