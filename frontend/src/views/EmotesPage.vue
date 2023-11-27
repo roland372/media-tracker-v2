@@ -15,6 +15,16 @@
     </section>
   </HeaderComponent>
   <HeaderComponent v-if="!isEditing" title="Favourite Emotes">
+    <v-text-field
+      v-model="favEmoteSearch"
+      @click:clear="() => (favEmoteSearch = '')"
+      clearable
+      class="mb-2 text-color"
+      density="compact"
+      hide-details="auto"
+      label="Search for an Emote"
+      variant="outlined"
+    />
     <h3 v-if="!favouriteEmotes.length" class="text-color">
       Not found any items.
     </h3>
@@ -271,6 +281,7 @@ const editEmoteModal = ref<boolean>(false);
 const emoteID = ref<string>("");
 const emoteRef = ref<TEmoteInput>(newEmote);
 const emoteSearch = ref<string>("");
+const favEmoteSearch = ref<string>("");
 const isEditing = ref<boolean>(false);
 const snackbar = ref({
   img: "",
@@ -287,7 +298,15 @@ const allEmotes = computed(() =>
 );
 
 const favouriteEmotes = computed(() =>
-  orderBy(filter(emotes.value, { favourites: true }), ["name"], ["asc"])
+  orderBy(
+    filter(emotes.value, { favourites: true }).filter((e) =>
+      e.name
+        .toLocaleLowerCase()
+        .includes(favEmoteSearch.value.toLocaleLowerCase())
+    ),
+    ["name"],
+    ["asc"]
+  )
 );
 
 const handleDeleteCancel = () => {
