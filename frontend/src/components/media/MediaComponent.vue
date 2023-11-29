@@ -63,7 +63,7 @@ const displayMedia = () => {
 }
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(12, auto);
+  grid-template-columns: repeat(16, auto);
   grid-gap: 10px;
 }
 .image-hover {
@@ -74,7 +74,15 @@ const displayMedia = () => {
     height: 275px;
   }
   .grid-container {
-    grid-template-columns: repeat(12, auto);
+    grid-template-columns: repeat(14, auto);
+  }
+}
+@media (max-width: 2800px) {
+  .media-img-card {
+    height: 320px;
+  }
+  .grid-container {
+    grid-template-columns: repeat(13, auto);
   }
 }
 @media (max-width: 2560px) {
@@ -82,7 +90,7 @@ const displayMedia = () => {
     height: 320px;
   }
   .grid-container {
-    grid-template-columns: repeat(10, auto);
+    grid-template-columns: repeat(12, auto);
   }
 }
 @media (max-width: 2550px) {
@@ -90,7 +98,7 @@ const displayMedia = () => {
     height: 250px;
   }
   .grid-container {
-    grid-template-columns: repeat(10, auto);
+    grid-template-columns: repeat(12, auto);
   }
 }
 @media (max-width: 1920px) {
@@ -98,7 +106,15 @@ const displayMedia = () => {
     height: 200px;
   }
   .grid-container {
-    grid-template-columns: repeat(8, auto);
+    grid-template-columns: repeat(11, auto);
+  }
+}
+@media (max-width: 1700px) {
+  .media-img-card {
+    height: 200px;
+  }
+  .grid-container {
+    grid-template-columns: repeat(10, auto);
   }
 }
 @media (max-width: 1440px) {
@@ -106,7 +122,7 @@ const displayMedia = () => {
     height: 200px;
   }
   .grid-container {
-    grid-template-columns: repeat(8, auto);
+    grid-template-columns: repeat(9, auto);
   }
 }
 @media (max-width: 1280px) {
@@ -114,7 +130,7 @@ const displayMedia = () => {
     height: 165px;
   }
   .grid-container {
-    grid-template-columns: repeat(7, auto);
+    grid-template-columns: repeat(8, auto);
   }
 }
 @media (max-width: 1024px) {
@@ -122,7 +138,7 @@ const displayMedia = () => {
     height: 165px;
   }
   .grid-container {
-    grid-template-columns: repeat(7, auto);
+    grid-template-columns: repeat(8, auto);
   }
 }
 @media (max-width: 960px) {

@@ -63,7 +63,7 @@
           <v-list-item
             v-for="(link, index) in filteredLinks"
             :key="index"
-            active-class="active-sidebar-link-color"
+            :color="link.color"
             class="sidebar-bg-color"
             :to="link.url"
           >

@@ -34,9 +34,7 @@
         :to="link.url"
       >
         <div class="d-flex align-center">
-          <v-list-item-icon>
-            <v-icon class="pe-1" :color="link.color">{{ link.icon }}</v-icon>
-          </v-list-item-icon>
+          <v-icon class="pe-1" :color="link.color">{{ link.icon }}</v-icon>
           <div class="ps-5">
             {{ link.text }}
           </div>
