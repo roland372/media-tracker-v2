@@ -101,6 +101,19 @@ body {
   color: var(--link-color);
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: var(--bg-primary-light);
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--bg-primary-medium);
+}
+
 @media (max-width: 480px) {
   html {
     font-size: 0.75rem !important;

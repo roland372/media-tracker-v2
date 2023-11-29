@@ -1,9 +1,9 @@
 <template>
   <v-navigation-drawer
+    class="nd-bg-color text-color mt- rounded"
     expand-on-hover
-    rail
     permanent
-    class="nd-bg-color text-color"
+    rail
   >
     <v-list-item
       class="pa-2"
