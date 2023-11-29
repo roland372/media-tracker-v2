@@ -4,12 +4,20 @@
     <v-app-bar app class="nav-bg-color">
       <v-btn :active="false" :ripple="false" size="x-large" to="/">
         <v-app-bar-title class="mx-n3 text-color">
-          Media-Tracker
+          <div class="d-flex align-center">
+            <v-img
+              class="me-1"
+              :src="require('@/../public/img/icons/mstile-150x150.png')"
+              style="width: 32px"
+            >
+            </v-img>
+            <div>Media-Tracker</div>
+          </div>
         </v-app-bar-title>
       </v-btn>
 
       <template v-slot:append>
-        <section v-if="!mdAndUp" class="d-flex align-center justify-center">
+        <section class="d-flex align-center justify-center">
           <router-link to="/profile">
             <img
               alt="Avatar"
@@ -27,29 +35,6 @@
           />
         </section>
       </template>
-      <v-list
-        class="d-flex justify-start align-center bg-secondary-medium"
-        v-if="mdAndUp"
-      >
-        <v-list-item
-          v-for="(link, index) in filteredLinks"
-          :key="index"
-          active-class="active-nav-link-color"
-          class="text-color"
-          :to="link.url"
-        >
-          {{ link.text }}
-        </v-list-item>
-      </v-list>
-      <v-spacer></v-spacer>
-      <router-link v-if="mdAndUp" to="/profile">
-        <img
-          alt="Avatar"
-          class="rounded-circle ms-2 mt-2"
-          :src="userFromDB?.profileImg"
-          style="width: 48px"
-        />
-      </router-link>
     </v-app-bar>
 
     <!--? SIDEBAR -->
@@ -61,7 +46,17 @@
       temporary
     >
       <v-list-item :active="false" class="sidebar-header-bg-color" to="/">
-        <v-list-item-title class="text-h6 py-3">Home</v-list-item-title>
+        <v-list-item-title class="text-h6 py-3">
+          <div class="d-flex align-center">
+            <v-icon
+              class="me-2"
+              :color="navLinks[0].color"
+              :icon="navLinks[0].icon"
+              size="large"
+            />
+            {{ navLinks[0].text }}
+          </div>
+        </v-list-item-title>
       </v-list-item>
       <div class="sidebar-item-bg-color">
         <v-list color="blue" dense nav>
@@ -73,7 +68,15 @@
             :to="link.url"
           >
             <v-list-item-title>
-              {{ link.text }}
+              <div class="d-flex align-center">
+                <v-icon
+                  class="me-2"
+                  :color="link.color"
+                  :icon="link.icon"
+                  size="x-large"
+                />
+                {{ link.text }}
+              </div>
             </v-list-item-title>
           </v-list-item>
         </v-list>
@@ -84,7 +87,6 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useDisplay } from "vuetify";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { navLinks } from "@/utils/links";
@@ -105,10 +107,6 @@ const filteredLinks = computed(() =>
     .slice(1)
 );
 
-const {
-  mdAndUp,
-  // lgAndUp,
-} = useDisplay();
 const drawer = ref<boolean>(false);
 </script>
 <style scoped>

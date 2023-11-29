@@ -139,6 +139,8 @@ export type TUserInput = {
 //? <----- UTILS ----->
 export type TMedia = TAnime | TBook | TCharacter | TGame | TManga | TMovie;
 export type TNavLinks = {
+  color: string;
+  icon: string;
   name: string;
   route: EUserRole;
   url: string;
