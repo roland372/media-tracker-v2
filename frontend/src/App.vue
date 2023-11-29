@@ -111,7 +111,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: var(--bg-primary-medium);
+  background-color: var(--bg-primary-dark);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--bg-secondary-light);
 }
 
 @media (max-width: 480px) {
