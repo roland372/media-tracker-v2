@@ -24,6 +24,7 @@ const SERVER_URL =
 
 const httpLink = createHttpLink({
   uri: SERVER_URL,
+  credentials: "same-origin",
 });
 
 const cache = new InMemoryCache();
