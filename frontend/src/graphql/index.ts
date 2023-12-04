@@ -24,6 +24,7 @@ const SERVER_URL =
 
 const httpLink = createHttpLink({
   uri: SERVER_URL,
+  credentials: "include",
 });
 
 const cache = new InMemoryCache();
@@ -31,6 +32,7 @@ const cache = new InMemoryCache();
 export const apolloClient = new ApolloClient({
   link: errorLink.concat(httpLink),
   cache,
+  credentials: "include",
 });
 
 export * from "./queries/allMedia";

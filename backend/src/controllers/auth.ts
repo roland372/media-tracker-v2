@@ -41,6 +41,9 @@ const authSuccess = async (req: Request, res: Response) => {
       });
     };
 
+    res.header('Access-Control-Allow-Origin', 'https://media-tracker.netlify.app');
+    res.header('Access-Control-Allow-Credentials', 'true');
+
     res.status(200).json({
       cookies: req.cookies,
       message: 'SUCCESS',
@@ -48,6 +51,7 @@ const authSuccess = async (req: Request, res: Response) => {
       success: true,
       user: user,
     });
+
   }
   //? user already exists in db
   else if (req.headers.googleid) {
@@ -60,6 +64,10 @@ const authSuccess = async (req: Request, res: Response) => {
         success: false,
       });
     }
+
+    res.header('Access-Control-Allow-Origin', 'https://media-tracker.netlify.app');
+    res.header('Access-Control-Allow-Credentials', 'true');
+
     res.status(200).json({
       cookies: req.cookies,
       message: 'SUCCESS',
@@ -69,6 +77,9 @@ const authSuccess = async (req: Request, res: Response) => {
     });
   }
   else {
+    res.header('Access-Control-Allow-Origin', 'https://media-tracker.netlify.app');
+    res.header('Access-Control-Allow-Credentials', 'true');
+
     res.status(401).json({
       message: 'FAILURE',
       success: false,
