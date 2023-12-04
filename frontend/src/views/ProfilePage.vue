@@ -124,6 +124,13 @@
                 size="small"
                 text="Edit Profile"
               />
+              <ButtonText
+                @click="handleLogout"
+                class="me-2 mt-2"
+                color="indigo"
+                size="small"
+                text="Log Out"
+              />
             </div>
           </section>
         </aside>
@@ -233,6 +240,7 @@
 import { ref, reactive } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
+import { logout } from "@/utils/auth";
 import { beigeTheme, blueTheme, grayTheme, setAppTheme } from "@/utils/themes";
 import {
   stringRules,
@@ -432,6 +440,12 @@ const handleDownloadMedia = (
   link.download = `${fileName}.json`;
   link.href = url;
   link.click();
+};
+
+const handleLogout = async () => {
+  await logout();
+  snackbarText.value = "Logged out";
+  snackbar.value = true;
 };
 
 const handleOpenSettings = () => {
