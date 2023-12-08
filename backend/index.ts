@@ -7,6 +7,7 @@ import cors from 'cors';
 import session from 'express-session';
 import passport from "passport";
 import authRoute from "./src/routes/auth";
+import { getEnvVariable } from 'src/utils';
 require("./src/config/passportStrategy");
 
 import { expressMiddleware } from '@apollo/server/express4';
@@ -24,12 +25,12 @@ import User from "./src/db/models/User";
 
 dotenv.config();
 
-console.log(colors.blue.bold(process.env.NODE_ENV!.trim()));
+console.log(process.env.NODE_ENV && colors.blue.bold(process.env.NODE_ENV));
 
 const PORT = process.env.PORT || 5000;
-const CLIENT_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_CLIENT_URL_DEVELOPMENT : process.env.NODE_CLIENT_URL;
-const SERVER_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_SERVER_URL_DEVELOPMENT : process.env.NODE_SERVER_URL;
-const MONGODB_URI = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_MONGODB_URI_DEVELOPMENT : process.env.NODE_MONGODB_URI;
+const CLIENT_URL = getEnvVariable('NODE_CLIENT_URL_DEVELOPMENT', 'NODE_CLIENT_URL');
+const SERVER_URL = getEnvVariable('NODE_SERVER_URL_DEVELOPMENT', 'NODE_SERVER_URL');
+const MONGODB_URI = getEnvVariable('NODE_MONGODB_URI_DEVELOPMENT', 'NODE_MONGODB_URI');
 
 const app = express();
 const httpServer = http.createServer(app);

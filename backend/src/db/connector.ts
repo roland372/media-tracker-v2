@@ -1,14 +1,18 @@
 import colors from 'colors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import { getEnvVariable } from 'src/utils';
 
 dotenv.config();
 mongoose.set('strictQuery', false);
 
 export const databaseConnector = async (): Promise<void> => {
-	const MONGODB_URI = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_MONGODB_URI_DEVELOPMENT : process.env.NODE_MONGODB_URI;
+	const MONGODB_URI = getEnvVariable('NODE_MONGODB_URI_DEVELOPMENT', 'NODE_MONGODB_URI');
 
-	const MONGO_DB = process.env.NODE_ENV!.trim() === 'development' ? 'development' : 'production'
+	const MONGO_DB = process.env.NODE_ENV &&
+		process.env.NODE_ENV!.trim() === 'development'
+		? 'development'
+		: 'production';
 
 	return mongoose
 		.connect(MONGODB_URI!)

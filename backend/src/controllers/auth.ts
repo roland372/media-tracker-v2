@@ -3,11 +3,12 @@ import { Request, Response } from "express";
 import { CallbackError } from "mongoose";
 import User from "../db/models/User";
 import passport, { Profile } from "passport";
+import { getEnvVariable } from 'src/utils';
 
 dotenv.config();
 
 const authUser = passport.authenticate('google', { scope: ['email', 'profile'] });
-const CLIENT_URL = process.env.NODE_ENV!.trim() === 'development' ? process.env.NODE_CLIENT_URL_DEVELOPMENT : process.env.NODE_CLIENT_URL;
+const CLIENT_URL = getEnvVariable('NODE_CLIENT_URL_DEVELOPMENT', 'NODE_CLIENT_URL');
 
 const googleCallback = passport.authenticate('google', {
   failureRedirect: '/login/failure',
