@@ -42,7 +42,7 @@
               <section
                 v-for="media in mediaType.filter((el) => !el.isAdmin)"
                 :key="media.media"
-                class="pb-1 v-col-6 v-col-sm-4 mx-n5"
+                class="pb-1 v-col-6 v-col-sm-4"
               >
                 <b class="text-decoration-underline">{{ media.media }}</b>
                 <div>
