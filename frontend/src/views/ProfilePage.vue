@@ -37,39 +37,17 @@
             <h3>Database</h3>
             <hr />
             <section
-              class="d-flex align-center justify-space-evenly pa-3 text-no-wrap"
+              class="v-row wrap align-center justify-space-evenly pa-3 text-no-wrap"
             >
-              <section>
-                <div
-                  v-for="media in mediaType.slice(0, 3)"
-                  :key="media.media"
-                  class="pb-1"
-                >
-                  <b class="text-decoration-underline">{{ media.media }}</b>
-                  <div>{{ media.total }} {{ media.media }}</div>
-                </div>
-              </section>
-              <section>
-                <div
-                  v-for="media in mediaType.slice(3, 6)"
-                  :key="media.media"
-                  class="pb-1"
-                >
-                  <b class="text-decoration-underline">{{ media.media }}</b>
-                  <div>{{ media.total }} {{ media.media }}</div>
-                </div>
-              </section>
-              <section>
-                <div
-                  v-for="media in mediaType.slice(6)"
-                  :key="media.media"
-                  class="pb-1"
-                >
-                  <b class="text-decoration-underline">{{ media.media }}</b>
-                  <div>
-                    {{ media.total }}
-                    {{ media.media === "Music" ? "Songs" : media.media }}
-                  </div>
+              <section
+                v-for="media in mediaType.filter((el) => !el.isAdmin)"
+                :key="media.media"
+                class="pb-1 v-col-6 v-col-sm-3 mx-n5"
+              >
+                <b class="text-decoration-underline">{{ media.media }}</b>
+                <div>
+                  {{ media.total }}
+                  {{ media.media === "Music" ? "Songs" : media.media }}
                 </div>
               </section>
             </section>
@@ -101,7 +79,7 @@
             <hr />
             <div class="d-flex align-center justify-start flex-wrap py-3">
               <ButtonText
-                v-for="button in backupButtons"
+                v-for="button in backupButtons.filter((el) => !el.isAdmin)"
                 :key="button.text"
                 @click="handleDownloadMedia(button.data, button.text)"
                 :class="button.class"
@@ -265,6 +243,7 @@ import {
   TUserInput,
   TTheme,
 } from "@/types/index";
+import { EUserRole } from "../../../common/types";
 
 const mediaStore = useMediaStore();
 const { setUserFromDB, submitEditUser } = mediaStore;
@@ -280,6 +259,8 @@ const {
   notes,
   userFromDB,
 } = storeToRefs(mediaStore);
+
+const isAdmin = userFromDB.value?.role === EUserRole.ADMIN;
 
 const userProfile = reactive({
   _id: userFromDB.value?._id,
@@ -326,6 +307,7 @@ const backupButtons = [
     data: emotes.value,
     size: "small",
     text: "Emotes",
+    isAdmin: !isAdmin,
   },
   {
     class: "me-2 mt-2",
@@ -392,7 +374,7 @@ const mediaType = [
   { media: "Anime", total: anime.value.length },
   { media: "Books", total: books.value.length },
   { media: "Characters", total: characters.value.length },
-  { media: "Emotes", total: emotes.value.length },
+  { media: "Emotes", total: emotes.value.length, isAdmin: !isAdmin },
   { media: "Games", total: games.value.length },
   { media: "Manga", total: manga.value.length },
   { media: "Movies", total: movies.value.length },

@@ -84,6 +84,7 @@ import {
   TUser,
   TUserInput,
 } from "@/types";
+import { EUserRole } from "../../../common/types";
 
 export const useMediaStore = defineStore("media", () => {
   //* <----- ALL MEDIA ----->
@@ -94,7 +95,8 @@ export const useMediaStore = defineStore("media", () => {
       setAnime(data.getAllAnime);
       setBooks(data.getAllBooks);
       setCharacters(data.getAllCharacters);
-      setEmotes(data.getAllEmotes);
+      userFromDB.value?.role === EUserRole.ADMIN &&
+        setEmotes(data.getAllEmotes);
       setGames(data.getAllGames);
       setManga(data.getAllManga);
       setMovies(data.getAllMovies);
