@@ -2,12 +2,16 @@
   <section class="bg-primary-dark page-container">
     <NavbarComponent v-if="googleUser && !mdAndUp" />
     <v-layout>
-      <NavigationDrawer v-if="mdAndUp" />
-      <v-container class="text-center rounded ms-md-14" fluid>
+      <NavigationDrawer v-if="googleUser && mdAndUp" />
+      <v-container
+        class="text-center rounded"
+        :class="{ 'ms-md-14': googleUser }"
+        fluid
+      >
         <router-view />
       </v-container>
     </v-layout>
-    <FooterComponent class="mt-10 ms-md-14" />
+    <FooterComponent class="mt-10" :class="{ 'ms-md-14': googleUser }" />
     <ScrollToTopButton />
   </section>
 </template>

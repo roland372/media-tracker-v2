@@ -58,7 +58,7 @@ const startServer = async (): Promise<void> => {
 	app.use(passport.initialize());
 	app.use(passport.session());
 	app.use(cors({
-		origin: [CLIENT_URL!, SERVER_URL!, "http://localhost:8080"],
+		origin: [CLIENT_URL!, SERVER_URL!],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: true,
 	}));

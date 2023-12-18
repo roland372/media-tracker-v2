@@ -42,7 +42,7 @@ const authSuccess = async (req: Request, res: Response) => {
       });
     };
 
-    res.header('Access-Control-Allow-Origin', 'https://media-tracker.netlify.app');
+    res.header('Access-Control-Allow-Origin', CLIENT_URL);
     res.header('Access-Control-Allow-Credentials', 'true');
 
     res.status(200).json({
@@ -66,7 +66,7 @@ const authSuccess = async (req: Request, res: Response) => {
       });
     }
 
-    res.header('Access-Control-Allow-Origin', 'https://media-tracker.netlify.app');
+    res.header('Access-Control-Allow-Origin', CLIENT_URL);
     res.header('Access-Control-Allow-Credentials', 'true');
 
     res.status(200).json({
@@ -78,7 +78,7 @@ const authSuccess = async (req: Request, res: Response) => {
     });
   }
   else {
-    res.header('Access-Control-Allow-Origin', 'https://media-tracker.netlify.app');
+    res.header('Access-Control-Allow-Origin', CLIENT_URL);
     res.header('Access-Control-Allow-Credentials', 'true');
 
     res.status(401).json({
