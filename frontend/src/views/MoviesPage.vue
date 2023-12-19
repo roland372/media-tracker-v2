@@ -48,9 +48,11 @@
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
       @filter="handleMovieFilter"
+      @filter-type="handleMovieFilterType"
       @search="handleMovieSearch"
       @sort="handleMovieSort"
       :display-flag="displayFlag"
+      :filter-type="movieType"
       :media-status="status"
       :media-type="EMediaType.MOVIE"
       :sort-fields="sortFields"
@@ -66,9 +68,11 @@
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
       @filter="handleMovieFilter"
+      @filter-type="handleMovieFilterType"
       @search="handleMovieSearch"
       @sort="handleMovieSort"
       :display-flag="displayFlag"
+      :filter-type="movieType"
       :media-status="status"
       :media-type="EMediaType.MOVIE"
       :sort-fields="sortFields"
@@ -104,7 +108,7 @@ import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { TSortingOptions } from "@/types";
-import { EMediaType, EMovieStatus } from "../../../common/types";
+import { EMediaType, EMovieStatus, EMovieType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
 const { movies } = storeToRefs(mediaStore);
@@ -116,6 +120,7 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.MOVIE + " Added");
 const movieFetchSearch = ref<string>("");
 const movieFilter = ref<string>("");
+const movieType = ref<string[]>([...Object.values(EMovieType)]);
 const sortingOptions = ref<TSortingOptions>({
   sortField: "title",
   sortOrder: "asc",
@@ -152,13 +157,19 @@ const favourites = computed(
 );
 
 const filteredMovies = computed(() => {
+  if (movieType.value.length === 0) {
+    return [];
+  }
+
   const filteredItems = movies.value.filter((el) => {
     const searchTermMatch = el.title
       .toLowerCase()
       .includes(searchTerm.value.toLowerCase());
     const statusMatch =
       movieFilter.value === "" || el.status === movieFilter.value;
-    return searchTermMatch && statusMatch;
+    const typeMatch =
+      movieType.value.length === 0 || movieType.value.includes(el.type);
+    return searchTermMatch && statusMatch && typeMatch;
   });
 
   const sortedMovies = orderBy(
@@ -268,6 +279,9 @@ const handleFetchMovieSearch = () => {
 
 const handleMovieFilter = (emittedValue: string) =>
   (movieFilter.value = emittedValue);
+
+const handleMovieFilterType = (emittedValue: string[]) =>
+  (movieType.value = emittedValue);
 
 const handleMovieSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);

@@ -80,9 +80,11 @@
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
       @filter="handleCharacterFilter"
+      @filter-type="handleCharacterFilterSource"
       @search="handleCharacterSearch"
       @sort="handleCharacterSort"
       :display-flag="displayFlag"
+      :filter-type="characterSource"
       :media-status="source"
       :media-type="EMediaType.CHARACTER"
       :sort-fields="sortFields"
@@ -98,9 +100,11 @@
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
       @filter="handleCharacterFilter"
+      @filter-type="handleCharacterFilterSource"
       @search="handleCharacterSearch"
       @sort="handleCharacterSort"
       :display-flag="displayFlag"
+      :filter-type="characterSource"
       :media-status="source"
       :media-type="EMediaType.CHARACTER"
       :sort-fields="sortFields"
@@ -164,6 +168,7 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.CHARACTER + " Added");
 const characterFetchSearch = ref<string>("");
 const characterFilter = ref<string>("");
+const characterSource = ref<string[]>([...Object.values(ECharacterSource)]);
 const sortingOptions = ref<TSortingOptions>({
   sortField: "name",
   sortOrder: "asc",
@@ -196,13 +201,22 @@ const favourites = computed(
 );
 
 const filteredCharacters = computed(() => {
+  if (characterSource.value.length === 0) {
+    return [];
+  }
+
   const filteredItems = characters.value.filter((el) => {
     const searchTermMatch =
       el.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
       el.series.toLowerCase().includes(searchTerm.value.toLowerCase());
     const sourceMatch =
       characterFilter.value === "" || el.source === characterFilter.value;
-    return searchTermMatch && sourceMatch;
+
+    const sourceFilterMatch =
+      characterSource.value.length === 0 ||
+      characterSource.value.includes(el.source);
+
+    return searchTermMatch && sourceMatch && sourceFilterMatch;
   });
 
   const sortedCharacters = orderBy(
@@ -254,6 +268,9 @@ const handleChangeDisplayFlag = () => {
 
 const handleCharacterFilter = (emittedValue: string) =>
   (characterFilter.value = emittedValue);
+
+const handleCharacterFilterSource = (emittedValue: string[]) =>
+  (characterSource.value = emittedValue);
 
 const handleCharacterSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);

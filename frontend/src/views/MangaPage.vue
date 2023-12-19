@@ -82,9 +82,11 @@
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
       @filter="handleMangaFilter"
+      @filter-type="handleMangaFilterType"
       @search="handleMangaSearch"
       @sort="handleMangaSort"
       :display-flag="displayFlag"
+      :filter-type="mangaType"
       :media-status="status"
       :media-type="EMediaType.MANGA"
       :sort-fields="sortFields"
@@ -100,9 +102,11 @@
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
       @filter="handleMangaFilter"
+      @filter-type="handleMangaFilterType"
       @search="handleMangaSearch"
       @sort="handleMangaSort"
       :display-flag="displayFlag"
+      :filter-type="mangaType"
       :media-status="status"
       :media-type="EMediaType.MANGA"
       :sort-fields="sortFields"
@@ -157,6 +161,7 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.MANGA + " Added");
 const mangaFetchSearch = ref<string>("");
 const mangaFilter = ref<string>("");
+const mangaType = ref<string[]>([...Object.values(EMangaType)]);
 const sortingOptions = ref<TSortingOptions>({
   sortField: "title",
   sortOrder: "asc",
@@ -193,13 +198,21 @@ const favourites = computed(
 );
 
 const filteredManga = computed(() => {
+  if (mangaType.value.length === 0) {
+    return [];
+  }
+
   const filteredItems = manga.value.filter((el) => {
     const searchTermMatch = el.title
       .toLowerCase()
       .includes(searchTerm.value.toLowerCase());
     const statusMatch =
       mangaFilter.value === "" || el.status === mangaFilter.value;
-    return searchTermMatch && statusMatch;
+
+    const typeMatch =
+      mangaType.value.length === 0 || mangaType.value.includes(el.type);
+
+    return searchTermMatch && statusMatch && typeMatch;
   });
 
   const sortedManga = orderBy(
@@ -402,6 +415,9 @@ const handleFetchedMangaViewMore = () => {
 
 const handleMangaFilter = (emittedValue: string) =>
   (mangaFilter.value = emittedValue);
+
+const handleMangaFilterType = (emittedValue: string[]) =>
+  (mangaType.value = emittedValue);
 
 const handleMangaSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);

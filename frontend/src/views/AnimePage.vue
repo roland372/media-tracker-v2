@@ -81,9 +81,11 @@
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
       @filter="handleAnimeFilter"
+      @filter-type="handleAnimeFilterType"
       @search="handleAnimeSearch"
       @sort="handleAnimeSort"
       :display-flag="displayFlag"
+      :filter-type="animeType"
       :media-status="status"
       :media-type="EMediaType.ANIME"
       :sort-fields="sortFields"
@@ -99,9 +101,11 @@
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
       @filter="handleAnimeFilter"
+      @filter-type="handleAnimeFilterType"
       @search="handleAnimeSearch"
       @sort="handleAnimeSort"
       :display-flag="displayFlag"
+      :filter-type="animeType"
       :media-status="status"
       :media-type="EMediaType.ANIME"
       :sort-fields="sortFields"
@@ -156,6 +160,7 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.ANIME + " Added");
 const animeFetchSearch = ref<string>("");
 const animeFilter = ref<string>("");
+const animeType = ref<string[]>([...Object.values(EAnimeType)]);
 const sortingOptions = ref<TSortingOptions>({
   sortField: "title",
   sortOrder: "asc",
@@ -188,13 +193,20 @@ const favourites = computed(
 );
 
 const filteredAnime = computed(() => {
+  if (animeType.value.length === 0) {
+    return [];
+  }
+
   const filteredItems = anime.value.filter((el) => {
     const searchTermMatch = el.title
       .toLowerCase()
       .includes(searchTerm.value.toLowerCase());
     const statusMatch =
       animeFilter.value === "" || el.status === animeFilter.value;
-    return searchTermMatch && statusMatch;
+    const typeMatch =
+      animeType.value.length === 0 || animeType.value.includes(el.type);
+
+    return searchTermMatch && statusMatch && typeMatch;
   });
 
   const sortedAnime = orderBy(
@@ -285,6 +297,9 @@ const stats = computed(() => [
 
 const handleAnimeFilter = (emittedValue: string) =>
   (animeFilter.value = emittedValue);
+
+const handleAnimeFilterType = (emittedValue: string[]) =>
+  (animeType.value = emittedValue);
 
 const handleAnimeSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);

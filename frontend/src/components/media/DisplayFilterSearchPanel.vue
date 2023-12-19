@@ -56,7 +56,10 @@
       variant="outlined"
     />
   </section>
-  <v-dialog v-if="settingsModal" v-model="settingsModal" max-width="300"
+  <v-dialog
+    v-if="settingsModal"
+    v-model="settingsModal"
+    :max-width="mediaType !== EMediaType.BOOK ? 500 : 300"
     ><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         Select sorting options
@@ -79,6 +82,34 @@
             <v-radio label="Descending" value="desc" />
           </v-radio-group>
         </div>
+        <div v-if="mediaType !== EMediaType.BOOK" class="me-2">
+          <strong>Type</strong>
+          <div class="mx-n3">
+            <!-- <v-checkbox
+              v-model="mediaTypeFilter"
+              @input="handleFilterTypeClick"
+              class="mt-n2"
+              label="Game"
+              value="Game"
+            />
+            <v-checkbox
+              v-model="mediaTypeFilter"
+              @input="handleFilterTypeClick"
+              class="mt-n9"
+              label="Visual Novel"
+              value="Visual Novel"
+            /> -->
+            <v-checkbox
+              v-for="(type, index) in mediaTypeValues"
+              :key="type"
+              v-model="mediaTypeFilter"
+              @input="handleFilterTypeClick"
+              :class="{ 'mt-n2': index === 0, 'mt-n9': index !== 0 }"
+              :label="type"
+              :value="type"
+            />
+          </div>
+        </div>
       </v-card-text>
       <v-card-actions class="ms-2 mb-2 mt-n7">
         <ButtonText
@@ -99,6 +130,7 @@ import { EMediaType, TMediaStatus } from "../../../../common/types";
 
 interface IDisplayFilterSearchPanelProps {
   displayFlag: string;
+  filterType?: string[];
   mediaType: EMediaType;
   sortFields: Record<string, string>[];
   mediaStatus: {
@@ -108,7 +140,7 @@ interface IDisplayFilterSearchPanelProps {
   }[];
 }
 
-const emit = defineEmits(["display", "search", "sort", "filter"]);
+const emit = defineEmits(["display", "search", "sort", "filter", "filterType"]);
 const props = defineProps<IDisplayFilterSearchPanelProps>();
 
 const mediaSearch = ref<string | undefined>("");
@@ -117,6 +149,8 @@ const sortingOptions = ref<TSortingOptions>({
   sortField: props.mediaType === EMediaType.CHARACTER ? "name" : "title",
   sortOrder: "asc",
 });
+const mediaTypeFilter = ref<string[]>([...(props.filterType ?? [])]);
+const mediaTypeValues = [...(props.filterType ?? [])];
 
 const handleDisplayClick = () => {
   emit("display");
@@ -125,6 +159,7 @@ const handleDisplayClick = () => {
 };
 
 const handleFilterClear = () => emit("filter", "");
+const handleFilterTypeClick = () => emit("filterType", mediaTypeFilter.value);
 const handleMediaSearch = () => emit("search", mediaSearch.value);
 const handleOpenSettingsModal = () => {
   settingsModal.value = !settingsModal.value;
@@ -134,6 +169,7 @@ const handleSortMedia = () => {
   emit("sort", sortingOptions.value);
   // console.log("Sort By:", sortingOptions.value.sortField);
   // console.log("Sort Order:", sortingOptions.value.sortOrder);
+  emit("filterType", mediaTypeFilter.value);
   settingsModal.value = !settingsModal.value;
 };
 const handleStatusClick = (status: TMediaStatus) => emit("filter", status);

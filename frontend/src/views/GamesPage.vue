@@ -48,9 +48,11 @@
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
       @filter="handleGameFilter"
+      @filter-type="handleGameFilterType"
       @search="handleGameSearch"
       @sort="handleGameSort"
       :display-flag="displayFlag"
+      :filter-type="gameType"
       :media-status="status"
       :media-type="EMediaType.GAME"
       :sort-fields="sortFields"
@@ -66,9 +68,11 @@
     <DisplayFilterSearchPanel
       @display="handleChangeDisplayFlag"
       @filter="handleGameFilter"
+      @filter-type="handleGameFilterType"
       @search="handleGameSearch"
       @sort="handleGameSort"
       :display-flag="displayFlag"
+      :filter-type="gameType"
       :media-status="status"
       :media-type="EMediaType.GAME"
       :sort-fields="sortFields"
@@ -104,7 +108,7 @@ import MediaTable from "@/components/media/MediaTable.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { TSortingOptions } from "@/types";
-import { EGameStatus, EMediaType } from "../../../common/types";
+import { EGameStatus, EGameType, EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
 const { games } = storeToRefs(mediaStore);
@@ -116,6 +120,7 @@ const snackbar = ref<boolean>(false);
 const snackbarText = ref<string>(EMediaType.GAME + " Added");
 const gameFilter = ref<string>("");
 const gameFetchSearch = ref<string>("");
+const gameType = ref<string[]>([...Object.values(EGameType)]);
 const sortingOptions = ref<TSortingOptions>({
   sortField: "title",
   sortOrder: "asc",
@@ -148,13 +153,20 @@ const favourites = computed(
 );
 
 const filteredGames = computed(() => {
+  if (gameType.value.length === 0) {
+    return [];
+  }
+
   const filteredItems = games.value.filter((el) => {
     const searchTermMatch = el.title
       .toLowerCase()
       .includes(searchTerm.value.toLowerCase());
     const statusMatch =
       gameFilter.value === "" || el.status === gameFilter.value;
-    return searchTermMatch && statusMatch;
+    const typeMatch =
+      gameType.value.length === 0 || gameType.value.includes(el.type);
+
+    return searchTermMatch && statusMatch && typeMatch;
   });
 
   const sortedGames = orderBy(
@@ -247,6 +259,9 @@ const handleFetchGameSearch = () => {
 
 const handleGameFilter = (emittedValue: string) =>
   (gameFilter.value = emittedValue);
+
+const handleGameFilterType = (emittedValue: string[]) =>
+  (gameType.value = emittedValue);
 
 const handleGameSearch = (emittedValue: string) =>
   (searchTerm.value = emittedValue);
