@@ -1,6 +1,7 @@
 <template>
   <v-navigation-drawer
-    class="nd-bg-color text-color mt- rounded"
+    absolute
+    class="nd-bg-color text-color rounded"
     expand-on-hover
     permanent
     rail
@@ -26,11 +27,13 @@
 
     <v-divider></v-divider>
 
-    <v-list density="compact" nav>
+    <v-list density="compact">
       <v-list-item
         v-for="(link, index) in filteredLinks"
         :key="index"
         :color="link.color"
+        height="20"
+        min-height="35"
         :to="link.url"
       >
         <div class="d-flex align-center">
