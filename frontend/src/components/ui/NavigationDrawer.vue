@@ -1,6 +1,5 @@
 <template>
   <v-navigation-drawer
-    absolute
     class="nd-bg-color text-color rounded"
     expand-on-hover
     permanent
