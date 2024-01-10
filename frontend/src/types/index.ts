@@ -12,6 +12,10 @@ import {
   TCommonCharacterProps,
   TCommonEmoteProps,
   TCommonGameProps,
+  TCommonGenshinImpactCharacterBuildProps,
+  TCommonGenshinImpactCharacterProps,
+  TCommonHonkaiStarRailCharacterBuildProps,
+  TCommonHonkaiStarRailCharacterProps,
   TCommonMangaProps,
   TCommonMovieProps,
   TCommonMusicProps,
@@ -62,6 +66,42 @@ export type TGame = TCommonGameProps & {
 };
 
 export type TGameInput = TCommonGameProps;
+
+//? <----- GENSHIN IMPACT ----->
+export type TGenshinImpactCharacter = TCommonGenshinImpactCharacterProps & {
+  _id: string;
+  ID: string;
+};
+
+export type TGenshinImpactCharacterInput = TCommonGenshinImpactCharacterProps;
+
+export type TGenshinImpactCharacterBuild =
+  TCommonGenshinImpactCharacterBuildProps & {
+    _id: string;
+    ID: string;
+    owner: string;
+  };
+
+export type TGenshinImpactCharacterBuildInput =
+  TCommonGenshinImpactCharacterBuildProps;
+
+//? <----- HONKAI STAR RAIL ----->
+export type THonkaiStarRailCharacter = TCommonHonkaiStarRailCharacterProps & {
+  _id: string;
+  ID: string;
+};
+
+export type THonkaiStarRailCharacterInput = TCommonHonkaiStarRailCharacterProps;
+
+export type THonkaiStarRailCharacterBuild =
+  TCommonHonkaiStarRailCharacterBuildProps & {
+    _id: string;
+    ID: string;
+    owner: string;
+  };
+
+export type THonkaiStarRailCharacterBuildInput =
+  TCommonHonkaiStarRailCharacterBuildProps;
 
 //? <----- MANGA ----->
 export type TManga = TCommonMangaProps & {
