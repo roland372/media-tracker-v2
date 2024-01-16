@@ -16,6 +16,10 @@ const { fetchAllMedia, fetchUser, setLoading, setGoogleUser } = mediaStore;
 const { isLoading, googleUser } = storeToRefs(mediaStore);
 
 onMounted(async () => {
+  // Set the ngrok-skip-browser-warning header before making any requests
+  const headers = new Headers();
+  headers.append("ngrok-skip-browser-warning", "true");
+
   // console.log("APP MOUNTED");
   setDefaultTheme();
   try {
