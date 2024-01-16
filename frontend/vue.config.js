@@ -16,6 +16,7 @@ module.exports = defineConfig({
     themeColor: "#12232e",
     workboxOptions: {
       skipWaiting: true,
+      exclude: [/_redirects/],
     },
   },
 });

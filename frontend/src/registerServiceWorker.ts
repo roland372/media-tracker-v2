@@ -37,6 +37,7 @@
 import { register } from "register-service-worker";
 import { precacheAndRoute } from "workbox-precaching";
 import { setDefaultHandler } from "workbox-routing";
+import { NetworkOnly } from "workbox-strategies";
 
 if (process.env.NODE_ENV === "production") {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -56,6 +57,7 @@ if (process.env.NODE_ENV === "production") {
           url: "https://media-tracker.netlify.app/service-worker.js",
           revision: "abcde",
         },
+        // Add revision info for other resources...
       ];
 
       // Remove the problematic resource from the precache list
@@ -93,13 +95,5 @@ if (process.env.NODE_ENV === "production") {
   });
 
   // Handle 404 responses gracefully
-  setDefaultHandler(({ event }) => {
-    // If a precached resource is not found, return a custom response or handle it as needed.
-    return fetch(event.request).catch(() => {
-      return new Response("Resource not found", {
-        status: 404,
-        statusText: "Not Found",
-      });
-    });
-  });
+  setDefaultHandler(new NetworkOnly());
 }
