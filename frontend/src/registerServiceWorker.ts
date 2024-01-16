@@ -34,8 +34,6 @@
 // }
 /* eslint-disable no-console */
 
-/* eslint-disable no-console */
-
 import { register } from "register-service-worker";
 import { precacheAndRoute } from "workbox-precaching";
 import { setDefaultHandler } from "workbox-routing";
@@ -49,18 +47,22 @@ if (process.env.NODE_ENV === "production") {
           "For more details, visit https://goo.gl/AFskqB"
       );
     },
-    async registered(registration) {
+    async registered() {
       console.log("Service worker has been registered.");
 
-      // Get the precache entries
-      const precacheEntries = registration.installing
-        ? [registration.installing.scriptURL]
-        : [];
+      // Specify revision information for precached resources
+      const precacheEntries = [
+        { url: "/", revision: "12345" },
+        {
+          url: "https://media-tracker.netlify.app/service-worker.js",
+          revision: "abcde",
+        },
+        // Add revision info for other resources...
+      ];
 
       // Remove the problematic resource from the precache list
       const filteredPrecacheEntries = precacheEntries.filter(
-        (url) =>
-          typeof url === "string" && url !== `${process.env.BASE_URL}_redirects`
+        (entry) => entry.url !== `${process.env.BASE_URL}_redirects`
       );
 
       // Update the precache with the filtered entries
