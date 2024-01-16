@@ -8,6 +8,7 @@ import session from 'express-session';
 import passport from "passport";
 import authRoute from "./src/routes/auth";
 import { getEnvVariable } from 'src/utils';
+import { ngrokSkipBrowserWarning } from 'src/middlewares/ngrokSkipBrowserWarning';
 require("./src/config/passportStrategy");
 
 import { expressMiddleware } from '@apollo/server/express4';
@@ -57,6 +58,10 @@ const startServer = async (): Promise<void> => {
 	}));
 	app.use(passport.initialize());
 	app.use(passport.session());
+
+	// Use the custom header middleware before other routes
+  app.use(ngrokSkipBrowserWarning);
+
 	app.use(cors({
 		origin: [CLIENT_URL!, SERVER_URL!],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
