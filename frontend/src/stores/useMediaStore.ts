@@ -751,26 +751,20 @@ export const useMediaStore = defineStore("media", () => {
   const setUserFromDB = (payload: TUser) => {
     userFromDB.value = payload;
   };
-  const fetchUser = async (email: string, id: string) => {
+  const fetchUser = async (email: string) => {
     try {
-      const { data } = await getSingleUser(email, { id });
+      const { data } = await getSingleUser(email);
       setUserFromDB(data.getSingleUser);
       setGoogleUser(data.getSingleUser);
     } catch (err) {
       console.log(err);
     }
   };
-  const submitEditUser = async (
-    id: string | undefined,
-    userInput: TUserInput
-  ) => {
+  const submitEditUser = async (userInput: TUserInput) => {
     try {
-      const { data } = await editUser(googleUser.value?.email, {
-        id,
-        userInput,
-      });
+      const { data } = await editUser(googleUser.value?.email, userInput);
 
-      console.log({ data });
+      console.log(data);
     } catch (err) {
       console.log(err);
     }

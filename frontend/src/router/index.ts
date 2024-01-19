@@ -3,12 +3,13 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { navLinks } from "@/utils/links";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const routes: Array<RouteRecordRaw> = [
   ...navLinks.map((link) => {
     return {
       component: () => import(`@/views/${link.name}.vue`),
-      meta: { title: link.title + " | Media-Tracker" },
+      meta: { title: link.title + " | Media-Tracker", requiresAuth: true },
       name: link.name,
       path: link.url,
     };
@@ -21,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     component: () => import("@/views/ProfilePage.vue"),
-    meta: { title: "Profile" + " | Media-Tracker" },
+    meta: { title: "Profile" + " | Media-Tracker", requiresAuth: true },
     name: "ProfilePage",
     path: "/profile",
   },
@@ -45,6 +46,9 @@ router.beforeEach((to, _, next) => {
   const mediaStore = useMediaStore();
   const { googleUser } = storeToRefs(mediaStore);
 
+  const pageTitle = to.meta.title as string;
+  document.title = pageTitle;
+
   watch(
     () => googleUser.value,
     () => {
@@ -54,9 +58,18 @@ router.beforeEach((to, _, next) => {
     }
   );
 
-  const pageTitle = to.meta.title as string;
-  document.title = pageTitle;
-  next();
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        next();
+      } else {
+        next("/login");
+      }
+    });
+  } else {
+    next();
+  }
 });
 
 export default router;

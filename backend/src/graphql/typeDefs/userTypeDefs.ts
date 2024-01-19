@@ -19,10 +19,10 @@ export const typeUser = gql`
 	}
 
 	type Query {
-		getSingleUser(ID: ID!): User!
+		getSingleUser(email: String!): User
 	}
 
 	type Mutation {
-		editUser(ID: ID!, userInput: UserInput): Boolean
+		editUser(email: String!, userInput: UserInput): Boolean
 	}
 `;

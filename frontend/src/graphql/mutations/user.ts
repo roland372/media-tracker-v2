@@ -4,15 +4,12 @@ import { TUserInput } from "@/types";
 
 export const editUser = async (
   userId: string | undefined,
-  variables: {
-    id: string | undefined;
-    userInput: TUserInput;
-  }
+  userInput: TUserInput
 ) => {
   return apolloClient.mutate({
     mutation: gql`
-      mutation EditUser($id: ID!, $userInput: UserInput) {
-        editUser(ID: $id, userInput: $userInput)
+      mutation EditUser($userId: String!, $userInput: UserInput) {
+        editUser(email: $userId, userInput: $userInput)
       }
     `,
     context: {
@@ -20,6 +17,9 @@ export const editUser = async (
         userId,
       },
     },
-    variables,
+    variables: {
+      userId,
+      userInput,
+    },
   });
 };
