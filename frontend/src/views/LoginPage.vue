@@ -13,9 +13,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 const signInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
-
-  const res = await signInWithPopup(auth, provider);
-  console.log("login res", res.user);
+  await signInWithPopup(auth, provider);
   router.push("/");
 };
 </script>

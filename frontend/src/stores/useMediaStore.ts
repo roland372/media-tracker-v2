@@ -139,7 +139,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitAddAnime = async (animeInput: TAnimeInput) => {
     try {
-      const { data } = await addAnime(googleUser.value?.email, { animeInput });
+      const { data } = await addAnime(userFromDB.value?.email, { animeInput });
       const arrCopy = [...anime.value];
       const index = sortedIndexBy(
         arrCopy,
@@ -156,7 +156,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitDeleteAnime = async (id: string) => {
     try {
-      const { data } = await deleteAnime(googleUser.value?.email, { id });
+      const { data } = await deleteAnime(userFromDB.value?.email, { id });
       setAnime(anime.value.filter((el) => el._id !== id));
 
       console.log(data);
@@ -166,7 +166,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitEditAnime = async (id: string, animeInput: TAnimeInput) => {
     try {
-      const { data } = await editAnime(googleUser.value?.email, {
+      const { data } = await editAnime(userFromDB.value?.email, {
         id,
         animeInput,
       });
@@ -209,7 +209,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitAddBook = async (bookInput: TBookInput) => {
     try {
-      const { data } = await addBook(googleUser.value?.email, { bookInput });
+      const { data } = await addBook(userFromDB.value?.email, { bookInput });
       const arrCopy = [...books.value];
       const index = sortedIndexBy(arrCopy, data.addBook, (obj) => obj["title"]);
       arrCopy.splice(index, 0, data.addBook);
@@ -222,7 +222,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitDeleteBook = async (id: string) => {
     try {
-      const { data } = await deleteBook(googleUser.value?.email, { id });
+      const { data } = await deleteBook(userFromDB.value?.email, { id });
       setBooks(books.value.filter((book) => book._id !== id));
 
       console.log(data);
@@ -232,7 +232,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitEditBook = async (id: string, bookInput: TBookInput) => {
     try {
-      const { data } = await editBook(googleUser.value?.email, {
+      const { data } = await editBook(userFromDB.value?.email, {
         id,
         bookInput,
       });
@@ -277,7 +277,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitAddCharacter = async (characterInput: TCharacterInput) => {
     try {
-      const { data } = await addCharacter(googleUser.value?.email, {
+      const { data } = await addCharacter(userFromDB.value?.email, {
         characterInput,
       });
       const arrCopy = [...characters.value];
@@ -296,7 +296,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitDeleteCharacter = async (id: string) => {
     try {
-      const { data } = await deleteCharacter(googleUser.value?.email, { id });
+      const { data } = await deleteCharacter(userFromDB.value?.email, { id });
       setCharacters(
         characters.value.filter((character) => character._id !== id)
       );
@@ -311,7 +311,7 @@ export const useMediaStore = defineStore("media", () => {
     characterInput: TCharacterInput
   ) => {
     try {
-      const { data } = await editCharacter(googleUser.value?.email, {
+      const { data } = await editCharacter(userFromDB.value?.email, {
         id,
         characterInput,
       });
@@ -356,7 +356,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitAddEmote = async (emoteInput: TEmoteInput) => {
     try {
-      const { data } = await addEmote(googleUser.value?.email, { emoteInput });
+      const { data } = await addEmote(userFromDB.value?.email, { emoteInput });
       const arrCopy = [...emotes.value];
       const index = sortedIndexBy(arrCopy, data.addEmote, (obj) => obj["name"]);
       arrCopy.splice(index, 0, data.addEmote);
@@ -369,7 +369,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitDeleteEmote = async (id: string) => {
     try {
-      const { data } = await deleteEmote(googleUser.value?.email, { id });
+      const { data } = await deleteEmote(userFromDB.value?.email, { id });
       setEmotes(emotes.value.filter((emote) => emote._id !== id));
 
       console.log(data);
@@ -379,7 +379,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitEditEmote = async (id: string, emoteInput: TEmoteInput) => {
     try {
-      const { data } = await editEmote(googleUser.value?.email, {
+      const { data } = await editEmote(userFromDB.value?.email, {
         id,
         emoteInput,
       });
@@ -424,7 +424,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitAddGame = async (gameInput: TGameInput) => {
     try {
-      const { data } = await addGame(googleUser.value?.email, { gameInput });
+      const { data } = await addGame(userFromDB.value?.email, { gameInput });
       const arrCopy = [...games.value];
       const index = sortedIndexBy(arrCopy, data.addGame, (obj) => obj["title"]);
       arrCopy.splice(index, 0, data.addGame);
@@ -437,7 +437,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitDeleteGame = async (id: string) => {
     try {
-      const { data } = await deleteGame(googleUser.value?.email, { id });
+      const { data } = await deleteGame(userFromDB.value?.email, { id });
       setGames(games.value.filter((game) => game._id !== id));
 
       console.log(data);
@@ -447,7 +447,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitEditGame = async (id: string, gameInput: TGameInput) => {
     try {
-      const { data } = await editGame(googleUser.value?.email, {
+      const { data } = await editGame(userFromDB.value?.email, {
         id,
         gameInput,
       });
@@ -492,7 +492,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitAddManga = async (mangaInput: TMangaInput) => {
     try {
-      const { data } = await addManga(googleUser.value?.email, { mangaInput });
+      const { data } = await addManga(userFromDB.value?.email, { mangaInput });
       const arrCopy = [...manga.value];
       const index = sortedIndexBy(
         arrCopy,
@@ -509,7 +509,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitDeleteManga = async (id: string) => {
     try {
-      const { data } = await deleteManga(googleUser.value?.email, { id });
+      const { data } = await deleteManga(userFromDB.value?.email, { id });
       setManga(manga.value.filter((el) => el._id !== id));
 
       console.log(data);
@@ -519,7 +519,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitEditManga = async (id: string, mangaInput: TMangaInput) => {
     try {
-      const { data } = await editManga(googleUser.value?.email, {
+      const { data } = await editManga(userFromDB.value?.email, {
         id,
         mangaInput,
       });
@@ -562,7 +562,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitAddMovie = async (movieInput: TMovieInput) => {
     try {
-      const { data } = await addMovie(googleUser.value?.email, { movieInput });
+      const { data } = await addMovie(userFromDB.value?.email, { movieInput });
       const arrCopy = [...movies.value];
       const index = sortedIndexBy(
         arrCopy,
@@ -579,7 +579,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitDeleteMovie = async (id: string) => {
     try {
-      const { data } = await deleteMovie(googleUser.value?.email, { id });
+      const { data } = await deleteMovie(userFromDB.value?.email, { id });
       setMovies(movies.value.filter((movie) => movie._id !== id));
 
       console.log(data);
@@ -589,7 +589,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitEditMovie = async (id: string, movieInput: TMovieInput) => {
     try {
-      const { data } = await editMovie(googleUser.value?.email, {
+      const { data } = await editMovie(userFromDB.value?.email, {
         id,
         movieInput,
       });
@@ -634,7 +634,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitAddMusic = async (musicInput: TMusicInput) => {
     try {
-      const { data } = await addMusic(googleUser.value?.email, { musicInput });
+      const { data } = await addMusic(userFromDB.value?.email, { musicInput });
       const arrCopy = [...music.value];
       const index = sortedIndexBy(
         arrCopy,
@@ -651,7 +651,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitDeleteMusic = async (id: string) => {
     try {
-      const { data } = await deleteMusic(googleUser.value?.email, { id });
+      const { data } = await deleteMusic(userFromDB.value?.email, { id });
       setMusic(music.value.filter((el) => el._id !== id));
 
       console.log(data);
@@ -661,7 +661,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitEditMusic = async (id: string, musicInput: TMusicInput) => {
     try {
-      const { data } = await editMusic(googleUser.value?.email, {
+      const { data } = await editMusic(userFromDB.value?.email, {
         id,
         musicInput,
       });
@@ -704,7 +704,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitAddNote = async (noteInput: TNoteInput) => {
     try {
-      const { data } = await addNote(googleUser.value?.email, { noteInput });
+      const { data } = await addNote(userFromDB.value?.email, { noteInput });
       const arrCopy = [...notes.value];
       arrCopy.splice(0, 0, data.addNote);
 
@@ -716,7 +716,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitDeleteNote = async (id: string) => {
     try {
-      const { data } = await deleteNote(googleUser.value?.email, { id });
+      const { data } = await deleteNote(userFromDB.value?.email, { id });
       setNotes(notes.value.filter((note) => note._id !== id));
 
       console.log(data);
@@ -726,7 +726,7 @@ export const useMediaStore = defineStore("media", () => {
   };
   const submitEditNote = async (id: string, noteInput: TNoteInput) => {
     try {
-      const { data } = await editNote(googleUser.value?.email, {
+      const { data } = await editNote(userFromDB.value?.email, {
         id,
         noteInput,
       });
@@ -743,10 +743,6 @@ export const useMediaStore = defineStore("media", () => {
   };
 
   //* <----- USER ----->
-  const googleUser = ref<TUser>();
-  const setGoogleUser = (payload: TUser) => {
-    googleUser.value = payload;
-  };
   const userFromDB = ref<TUser>();
   const setUserFromDB = (payload: TUser) => {
     userFromDB.value = payload;
@@ -755,14 +751,13 @@ export const useMediaStore = defineStore("media", () => {
     try {
       const { data } = await getSingleUser(email);
       setUserFromDB(data.getSingleUser);
-      setGoogleUser(data.getSingleUser);
     } catch (err) {
       console.log(err);
     }
   };
   const submitEditUser = async (userInput: TUserInput) => {
     try {
-      const { data } = await editUser(googleUser.value?.email, userInput);
+      const { data } = await editUser(userFromDB.value?.email, userInput);
 
       console.log(data);
     } catch (err) {
@@ -868,8 +863,6 @@ export const useMediaStore = defineStore("media", () => {
     submitDeleteNote,
     submitEditNote,
     //* <----- USER ----->
-    googleUser,
-    setGoogleUser,
     userFromDB,
     setUserFromDB,
     fetchUser,

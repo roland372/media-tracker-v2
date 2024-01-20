@@ -13,7 +13,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const mediaStore = useMediaStore();
 const { fetchAllMedia, fetchUser, setLoading } = mediaStore;
-const { isLoading, userFromDB, googleUser } = storeToRefs(mediaStore);
+const { isLoading } = storeToRefs(mediaStore);
 
 onMounted(async () => {
   const headers = new Headers();

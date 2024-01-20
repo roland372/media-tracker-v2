@@ -218,7 +218,6 @@
 import { ref, reactive } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import router from "@/router";
 import { beigeTheme, blueTheme, grayTheme, setAppTheme } from "@/utils/themes";
 import {
   stringRules,
@@ -432,7 +431,7 @@ const handleLogout = async () => {
   snackbarText.value = "Logged out";
   snackbar.value = true;
 
-  router.push("/login");
+  window.open("/login", "_self");
 };
 
 const handleOpenSettings = () => {
@@ -451,7 +450,7 @@ const handleSubmitEditProfile = () => {
     updatedProfile.username &&
     URLRegex.test(String(updatedProfile.profileImg))
   ) {
-    submitEditUser(userRef.value?._id, updatedProfile);
+    submitEditUser(updatedProfile);
     setUserFromDB(userRef.value as TUser);
     settingsModal.value = false;
     snackbarText.value = "Profile updated";

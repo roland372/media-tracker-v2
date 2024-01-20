@@ -44,15 +44,15 @@ const router = createRouter({
 
 router.beforeEach((to, _, next) => {
   const mediaStore = useMediaStore();
-  const { googleUser } = storeToRefs(mediaStore);
+  const { userFromDB } = storeToRefs(mediaStore);
 
   const pageTitle = to.meta.title as string;
   document.title = pageTitle;
 
   watch(
-    () => googleUser.value,
+    () => userFromDB.value,
     () => {
-      if (to.name === "EmotesPage" && googleUser.value?.role !== "ADMIN") {
+      if (to.name === "EmotesPage" && userFromDB.value?.role !== "ADMIN") {
         router.push({ name: "NotFound" });
       }
     }
