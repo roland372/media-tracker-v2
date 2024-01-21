@@ -6,35 +6,35 @@
 import { onMounted } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { getUserData } from "@/utils/auth";
 import { setDefaultTheme } from "@/utils/themes";
 import LoaderComponent from "@/components/ui/LoaderComponent.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const mediaStore = useMediaStore();
-const { fetchAllMedia, fetchUser, setLoading, setGoogleUser } = mediaStore;
-const { isLoading, googleUser } = storeToRefs(mediaStore);
+const { fetchAllMedia, fetchUser, setLoading } = mediaStore;
+const { isLoading } = storeToRefs(mediaStore);
 
 onMounted(async () => {
-  // Set the ngrok-skip-browser-warning header before making any requests
   const headers = new Headers();
   headers.append("ngrok-skip-browser-warning", "true");
 
   // console.log("APP MOUNTED");
   setDefaultTheme();
-  try {
-    const googleId = localStorage.getItem("googleId");
 
-    if (!googleId) setLoading(false);
-    setGoogleUser(await getUserData());
+  try {
+    const auth = getAuth();
+    onAuthStateChanged(auth, async () => {
+      if (auth?.currentUser?.email) {
+        await fetchUser(auth.currentUser.email);
+        await fetchAllMedia(auth.currentUser.email);
+        setLoading(false);
+      }
+      setLoading(false);
+    });
   } catch (error) {
     console.error(error);
     setLoading(false);
-  }
-
-  if (googleUser.value) {
-    await fetchUser(googleUser.value.email, googleUser.value._id);
-    await fetchAllMedia(googleUser.value.email);
   }
 });
 </script>

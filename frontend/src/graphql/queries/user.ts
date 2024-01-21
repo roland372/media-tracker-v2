@@ -1,14 +1,11 @@
 import { apolloClient } from "@/graphql";
 import gql from "graphql-tag";
 
-export const getSingleUser = async (
-  userId: string,
-  variables: { id: string }
-) => {
+export const getSingleUser = async (userId: string) => {
   return await apolloClient.query({
     query: gql`
-      query GetSingleUser($id: ID!) {
-        getSingleUser(ID: $id) {
+      query GetSingleUser($userId: String!) {
+        getSingleUser(email: $userId) {
           _id
           color
           email
@@ -24,6 +21,8 @@ export const getSingleUser = async (
         userId,
       },
     },
-    variables,
+    variables: {
+      userId,
+    },
   });
 };

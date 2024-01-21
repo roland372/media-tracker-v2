@@ -4,12 +4,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
-import session from 'express-session';
-import passport from "passport";
-import authRoute from "./src/routes/auth";
 import { getEnvVariable } from 'src/utils';
-import { ngrokSkipBrowserWarning } from 'src/middlewares/ngrokSkipBrowserWarning';
-require("./src/config/passportStrategy");
 
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
@@ -20,7 +15,6 @@ import shield from "./src/utils/permissions";
 import { resolvers } from './src/graphql/resolvers';
 import { typeDefs } from './src/graphql/typeDefs';
 
-import MongoStore from 'connect-mongo';
 import { databaseConnector } from './src/db/connector';
 import User from "./src/db/models/User";
 
@@ -31,7 +25,6 @@ console.log(process.env.NODE_ENV && colors.blue.bold(process.env.NODE_ENV));
 const PORT = process.env.PORT || 5000;
 const CLIENT_URL = getEnvVariable('NODE_CLIENT_URL_DEVELOPMENT', 'NODE_CLIENT_URL');
 const SERVER_URL = getEnvVariable('NODE_SERVER_URL_DEVELOPMENT', 'NODE_SERVER_URL');
-const MONGODB_URI = getEnvVariable('NODE_MONGODB_URI_DEVELOPMENT', 'NODE_MONGODB_URI');
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -49,25 +42,11 @@ const startServer = async (): Promise<void> => {
 
 	await server.start();
 
-	app.use(session({
-		name: "qid",
-		secret: "mySession",
-		resave: false,
-		saveUninitialized: false,
-		store: MongoStore.create({ mongoUrl: MONGODB_URI! }),
-	}));
-	app.use(passport.initialize());
-	app.use(passport.session());
-
-	// Use the custom header middleware before other routes
-  app.use(ngrokSkipBrowserWarning);
-
 	app.use(cors({
-		origin: [CLIENT_URL!, SERVER_URL!],
+		origin: [CLIENT_URL!, SERVER_URL!, "http://localhost:8080"],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: true,
 	}));
-	app.use("/", authRoute);
 	app.use(
 		'/',
 		cors<cors.CorsRequest>(),

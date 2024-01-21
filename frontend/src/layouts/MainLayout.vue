@@ -1,17 +1,17 @@
 <template>
   <section class="bg-primary-dark page-container">
-    <NavbarComponent v-if="googleUser && !mdAndUp" />
+    <NavbarComponent v-if="userFromDB && !mdAndUp" />
     <v-layout>
-      <NavigationDrawer v-if="googleUser && mdAndUp" />
+      <NavigationDrawer v-if="userFromDB && mdAndUp" />
       <v-container
         class="text-center rounded"
-        :class="{ 'ms-md-14': googleUser }"
+        :class="{ 'ms-md-14': userFromDB }"
         fluid
       >
         <router-view />
       </v-container>
     </v-layout>
-    <FooterComponent class="mt-10" :class="{ 'ms-md-14': googleUser }" />
+    <FooterComponent class="mt-10" :class="{ 'ms-md-14': userFromDB }" />
     <ScrollToTopButton />
   </section>
 </template>
@@ -25,7 +25,7 @@ import NavigationDrawer from "@/components/ui/NavigationDrawer.vue";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton.vue";
 
 const mediaStore = useMediaStore();
-const { googleUser } = storeToRefs(mediaStore);
+const { userFromDB } = storeToRefs(mediaStore);
 
 const {
   mdAndUp,

@@ -218,7 +218,6 @@
 import { ref, reactive } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
-import { logout } from "@/utils/auth";
 import { beigeTheme, blueTheme, grayTheme, setAppTheme } from "@/utils/themes";
 import {
   stringRules,
@@ -244,6 +243,7 @@ import {
   TTheme,
 } from "@/types/index";
 import { EUserRole } from "../../../common/types";
+import { getAuth, signOut } from "firebase/auth";
 
 const mediaStore = useMediaStore();
 const { setUserFromDB, submitEditUser } = mediaStore;
@@ -425,9 +425,13 @@ const handleDownloadMedia = (
 };
 
 const handleLogout = async () => {
-  await logout();
+  const auth = getAuth();
+  await signOut(auth);
+
   snackbarText.value = "Logged out";
   snackbar.value = true;
+
+  window.open("/login", "_self");
 };
 
 const handleOpenSettings = () => {
@@ -446,7 +450,7 @@ const handleSubmitEditProfile = () => {
     updatedProfile.username &&
     URLRegex.test(String(updatedProfile.profileImg))
   ) {
-    submitEditUser(userRef.value?._id, updatedProfile);
+    submitEditUser(updatedProfile);
     setUserFromDB(userRef.value as TUser);
     settingsModal.value = false;
     snackbarText.value = "Profile updated";

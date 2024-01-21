@@ -9,6 +9,7 @@ import { musicResolvers } from './musicResolvers';
 import { noteResolvers } from './noteResolvers';
 import { userResolvers } from './userResolvers';
 import { playgroundResolvers } from './playgroundResolvers';
+import { healthCheckResolvers } from './healthCheckResolvers';
 
 export const resolvers = [
 	animeResolvers,
@@ -22,4 +23,5 @@ export const resolvers = [
 	noteResolvers,
 	userResolvers,
 	playgroundResolvers,
+	healthCheckResolvers,
 ];

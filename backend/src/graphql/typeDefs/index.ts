@@ -9,6 +9,7 @@ import { typeMusic } from './musicTypeDefs';
 import { typeNote } from './noteTypeDefs';
 import { typeUser } from './userTypeDefs';
 import { typePlayground } from './playgroundTypeDefs';
+import { typeHealthCheck } from './healthCheckTypeDefs';
 
 export const typeDefs = [
 	typeAnime,
@@ -22,4 +23,5 @@ export const typeDefs = [
 	typeNote,
 	typeUser,
 	typePlayground,
+	typeHealthCheck,
 ];

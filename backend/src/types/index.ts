@@ -173,5 +173,5 @@ export type TUser = TCommonUserProps & {
 
 export type TUserInput = {
   userInput: Partial<TCommonUserProps>;
-  ID: string;
+  email: string;
 };
