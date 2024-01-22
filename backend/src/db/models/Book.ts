@@ -23,4 +23,6 @@ const BookSchema: Schema = new Schema<TBook>(
   { versionKey: false, collection: 'books', timestamps: true }
 );
 
+BookSchema.index({ owner: 1, author: 1, title: 1 }, { unique: true });
+
 export default mongoose.model('Books', BookSchema);

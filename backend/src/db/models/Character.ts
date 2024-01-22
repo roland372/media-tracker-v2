@@ -27,4 +27,6 @@ const CharacterSchema: Schema = new Schema<TCharacter>(
 	{ versionKey: false, collection: 'characters', timestamps: true }
 );
 
+CharacterSchema.index({ owner: 1, name: 1, series: 1 }, { unique: true });
+
 export default mongoose.model('Characters', CharacterSchema);

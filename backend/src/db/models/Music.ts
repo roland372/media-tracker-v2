@@ -20,4 +20,6 @@ const MusicSchema: Schema = new Schema<TMusic>(
   { versionKey: false, collection: 'music', timestamps: true }
 );
 
+MusicSchema.index({ owner: 1, artist: 1, title: 1 }, { unique: true });
+
 export default mongoose.model('Music', MusicSchema);

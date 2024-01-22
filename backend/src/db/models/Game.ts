@@ -26,4 +26,6 @@ const GameSchema: Schema = new Schema<TGame>(
 	{ versionKey: false, collection: 'games', timestamps: true }
 );
 
+GameSchema.index({ owner: 1, title: 1 }, { unique: true });
+
 export default mongoose.model('Games', GameSchema);

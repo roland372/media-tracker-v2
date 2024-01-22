@@ -28,4 +28,6 @@ const AnimeSchema: Schema = new Schema<TAnime>(
 	{ versionKey: false, collection: 'anime', timestamps: true },
 );
 
+AnimeSchema.index({ owner: 1, type: 1, title: 1 }, { unique: true });
+
 export default mongoose.model('Anime', AnimeSchema);

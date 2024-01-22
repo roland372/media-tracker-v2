@@ -29,4 +29,6 @@ const MovieSchema: Schema = new Schema<TMovie>(
   { versionKey: false, collection: 'movies', timestamps: true },
 );
 
+MovieSchema.index({ owner: 1, title: 1 }, { unique: true });
+
 export default mongoose.model('Movies', MovieSchema);

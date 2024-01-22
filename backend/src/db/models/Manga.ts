@@ -30,4 +30,6 @@ const MangaSchema: Schema = new Schema<TManga>(
 	{ versionKey: false, collection: 'manga', timestamps: true }
 );
 
+MangaSchema.index({ owner: 1, title: 1, type: 1 }, { unique: true });
+
 export default mongoose.model('Manga', MangaSchema);
