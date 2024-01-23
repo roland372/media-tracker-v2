@@ -702,15 +702,19 @@ const handleSubmitEditAnime = async () => {
     type: animeRef.value.type,
   });
 
-  if (
-    updatedAnime.title &&
-    digitRegex.test(String(updatedAnime.episodesMax)) &&
-    digitRegex.test(String(updatedAnime.episodesMin)) &&
-    (!updatedAnime.link || URLRegex.test(String(updatedAnime.link))) &&
-    (!updatedAnime.imageURL || URLRegex.test(String(updatedAnime.imageURL)))
-  ) {
-    await submitEditAnime(animeRef.value._id, updatedAnime);
-    emit("edit");
+  try {
+    if (
+      updatedAnime.title &&
+      digitRegex.test(String(updatedAnime.episodesMax)) &&
+      digitRegex.test(String(updatedAnime.episodesMin)) &&
+      (!updatedAnime.link || URLRegex.test(String(updatedAnime.link))) &&
+      (!updatedAnime.imageURL || URLRegex.test(String(updatedAnime.imageURL)))
+    ) {
+      await submitEditAnime(animeRef.value._id, updatedAnime);
+      emit("edit");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -729,15 +733,19 @@ const handleSubmitEditBook = async () => {
     title: bookRef.value.title,
   });
 
-  if (
-    updatedBook.title &&
-    updatedBook.author &&
-    digitRegex.test(String(updatedBook.pages)) &&
-    (!updatedBook.link || URLRegex.test(String(updatedBook.link))) &&
-    (!updatedBook.imageURL || URLRegex.test(String(updatedBook.imageURL)))
-  ) {
-    await submitEditBook(bookRef.value._id, updatedBook);
-    emit("edit");
+  try {
+    if (
+      updatedBook.title &&
+      updatedBook.author &&
+      digitRegex.test(String(updatedBook.pages)) &&
+      (!updatedBook.link || URLRegex.test(String(updatedBook.link))) &&
+      (!updatedBook.imageURL || URLRegex.test(String(updatedBook.imageURL)))
+    ) {
+      await submitEditBook(bookRef.value._id, updatedBook);
+      emit("edit");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -755,14 +763,19 @@ const handleSubmitEditCharacter = async () => {
     source: characterRef.value.source,
   });
 
-  if (
-    updatedCharacter.name &&
-    (!updatedCharacter.link || URLRegex.test(String(updatedCharacter.link))) &&
-    (!updatedCharacter.imageURL ||
-      URLRegex.test(String(updatedCharacter.imageURL)))
-  ) {
-    await submitEditCharacter(characterRef.value._id, updatedCharacter);
-    emit("edit");
+  try {
+    if (
+      updatedCharacter.name &&
+      (!updatedCharacter.link ||
+        URLRegex.test(String(updatedCharacter.link))) &&
+      (!updatedCharacter.imageURL ||
+        URLRegex.test(String(updatedCharacter.imageURL)))
+    ) {
+      await submitEditCharacter(characterRef.value._id, updatedCharacter);
+      emit("edit");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -780,14 +793,18 @@ const handleSubmitEditGame = async () => {
     type: gameRef.value.type,
   });
 
-  if (
-    updatedGame.title &&
-    digitRegex.test(String(updatedGame.playtime)) &&
-    (!updatedGame.link || URLRegex.test(String(updatedGame.link))) &&
-    (!updatedGame.imageURL || URLRegex.test(String(updatedGame.imageURL)))
-  ) {
-    await submitEditGame(gameRef.value._id, updatedGame);
-    emit("edit");
+  try {
+    if (
+      updatedGame.title &&
+      digitRegex.test(String(updatedGame.playtime)) &&
+      (!updatedGame.link || URLRegex.test(String(updatedGame.link))) &&
+      (!updatedGame.imageURL || URLRegex.test(String(updatedGame.imageURL)))
+    ) {
+      await submitEditGame(gameRef.value._id, updatedGame);
+      emit("edit");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -814,17 +831,21 @@ const handleSubmitEditManga = async () => {
         : mangaRef.value.volumesMin,
   });
 
-  if (
-    updatedManga.title &&
-    digitRegex.test(String(updatedManga.chaptersMax)) &&
-    digitRegex.test(String(updatedManga.chaptersMin)) &&
-    digitRegex.test(String(updatedManga.volumesMax)) &&
-    digitRegex.test(String(updatedManga.volumesMin)) &&
-    (!updatedManga.link || URLRegex.test(String(updatedManga.link))) &&
-    (!updatedManga.imageURL || URLRegex.test(String(updatedManga.imageURL)))
-  ) {
-    await submitEditManga(mangaRef.value._id, updatedManga);
-    emit("edit");
+  try {
+    if (
+      updatedManga.title &&
+      digitRegex.test(String(updatedManga.chaptersMax)) &&
+      digitRegex.test(String(updatedManga.chaptersMin)) &&
+      digitRegex.test(String(updatedManga.volumesMax)) &&
+      digitRegex.test(String(updatedManga.volumesMin)) &&
+      (!updatedManga.link || URLRegex.test(String(updatedManga.link))) &&
+      (!updatedManga.imageURL || URLRegex.test(String(updatedManga.imageURL)))
+    ) {
+      await submitEditManga(mangaRef.value._id, updatedManga);
+      emit("edit");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -851,17 +872,21 @@ const handleSubmitEditMovie = async () => {
     type: movieRef.value.type,
   });
 
-  if (
-    updatedMovie.title &&
-    digitRegex.test(String(updatedMovie.episodesMax)) &&
-    digitRegex.test(String(updatedMovie.episodesMin)) &&
-    digitRegex.test(String(updatedMovie.seasonsMax)) &&
-    digitRegex.test(String(updatedMovie.seasonsMin)) &&
-    (!updatedMovie.link || URLRegex.test(String(updatedMovie.link))) &&
-    (!updatedMovie.imageURL || URLRegex.test(String(updatedMovie.imageURL)))
-  ) {
-    await submitEditMovie(movieRef.value._id, updatedMovie);
-    emit("edit");
+  try {
+    if (
+      updatedMovie.title &&
+      digitRegex.test(String(updatedMovie.episodesMax)) &&
+      digitRegex.test(String(updatedMovie.episodesMin)) &&
+      digitRegex.test(String(updatedMovie.seasonsMax)) &&
+      digitRegex.test(String(updatedMovie.seasonsMin)) &&
+      (!updatedMovie.link || URLRegex.test(String(updatedMovie.link))) &&
+      (!updatedMovie.imageURL || URLRegex.test(String(updatedMovie.imageURL)))
+    ) {
+      await submitEditMovie(movieRef.value._id, updatedMovie);
+      emit("edit");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 

@@ -85,7 +85,6 @@
       :media-type="mediaType"
       :title="`Edit ${mediaType}`"
     />
-    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
   </v-img>
 </template>
 <script setup lang="ts">
@@ -96,7 +95,6 @@ import ButtonText from "../ui/ButtonText.vue";
 import ChipComponent from "../ui/ChipComponent.vue";
 import EditFormComponent from "./EditFormComponent.vue";
 import MediaModal from "@/components/media/MediaModal.vue";
-import SnackbarComponent from "../ui/SnackbarComponent.vue";
 import {
   TAnime,
   TBook,
@@ -136,8 +134,6 @@ const props = defineProps<IMediaCardProps>();
 const dialog = ref<boolean>(false);
 const deleteDialog = ref<boolean>(false);
 const formDialog = ref<boolean>(false);
-const snackbar = ref<boolean>(false);
-const snackbarText = ref<string>("");
 
 const displayImageText = (media: TMedia) => {
   let imageText = "";
@@ -226,8 +222,6 @@ const handleDeleteClick = async () => {
 
 const handleCloseModal = () => {
   formDialog.value = !formDialog.value;
-  snackbarText.value = `${props.mediaType} Updated`;
-  snackbar.value = true;
 };
 
 const handleDeleteConfirm = async () => {
@@ -252,8 +246,6 @@ const handleDeleteConfirm = async () => {
       break;
   }
   deleteDialog.value = !deleteDialog.value;
-  snackbarText.value = props.mediaType + " Deleted";
-  snackbar.value = true;
 };
 
 const handleEditClick = () => {

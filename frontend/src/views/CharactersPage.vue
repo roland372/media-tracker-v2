@@ -8,7 +8,6 @@
       :media-type="EMediaType.CHARACTER"
       :title="`Add ${EMediaType.CHARACTER}`"
     />
-    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
     <section class="d-sm-flex align-center justify-center">
       <ButtonText
         @click="formDialog = !formDialog"
@@ -140,7 +139,6 @@ import FormComponent from "@/components/media/FormComponent.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { CommonCharacterData } from "@tutkli/jikan-ts";
 import { TCharacterInput, TSortingOptions } from "@/types";
@@ -164,8 +162,6 @@ const fetchedCharacters = ref<CommonCharacterDataWithAbout[]>();
 const fetchedSingleCharacter = ref<CommonCharacterDataWithAbout>();
 const fetchedCharacterModal = ref<boolean>(false);
 const searchTerm = ref<string>("");
-const snackbar = ref<boolean>(false);
-const snackbarText = ref<string>(EMediaType.CHARACTER + " Added");
 const characterFetchSearch = ref<string>("");
 const characterFilter = ref<string>("");
 const characterSource = ref<string[]>([...Object.values(ECharacterSource)]);
@@ -321,7 +317,6 @@ const handleFetchedCharacterSubmit = async () => {
 
   await submitAddCharacter(fetchedCharacter);
   fetchedCharacterModal.value = false;
-  snackbar.value = true;
 };
 
 const handleFetchedCharacterViewMore = () => {
@@ -335,6 +330,5 @@ const handleOpenFetchCharacterModal = (item: CommonCharacterDataWithAbout) => {
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
-  snackbar.value = true;
 };
 </script>

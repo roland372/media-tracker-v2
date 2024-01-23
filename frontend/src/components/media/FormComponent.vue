@@ -778,78 +778,96 @@ const handleSubmitAddAnime = async () => {
       (!newAnime.imageURL || URLRegex.test(String(newAnime.imageURL)))
     ) {
       await submitAddAnime(newAnime);
-
       emit("submit");
     }
-  } catch (error) {
-    console.log("submit");
-    // console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 
 const handleSubmitAddBook = async () => {
-  if (
-    newBook.title &&
-    newBook.author &&
-    digitRegex.test(String(newBook.pages)) &&
-    (!newBook.link || URLRegex.test(String(newBook.link))) &&
-    (!newBook.imageURL || URLRegex.test(String(newBook.imageURL)))
-  ) {
-    await submitAddBook(newBook);
-    emit("submit");
+  try {
+    if (
+      newBook.title &&
+      newBook.author &&
+      digitRegex.test(String(newBook.pages)) &&
+      (!newBook.link || URLRegex.test(String(newBook.link))) &&
+      (!newBook.imageURL || URLRegex.test(String(newBook.imageURL)))
+    ) {
+      await submitAddBook(newBook);
+      emit("submit");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
 const handleSubmitAddCharacter = async () => {
-  if (
-    newCharacter.name &&
-    (!newCharacter.link || URLRegex.test(String(newCharacter.link))) &&
-    (!newCharacter.imageURL || URLRegex.test(String(newCharacter.imageURL)))
-  ) {
-    await submitAddCharacter(newCharacter);
-    emit("submit");
+  try {
+    if (
+      newCharacter.name &&
+      (!newCharacter.link || URLRegex.test(String(newCharacter.link))) &&
+      (!newCharacter.imageURL || URLRegex.test(String(newCharacter.imageURL)))
+    ) {
+      await submitAddCharacter(newCharacter);
+      emit("submit");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
 const handleSubmitAddGame = async () => {
-  if (
-    newGame.title &&
-    digitRegex.test(String(newGame.playtime)) &&
-    (!newGame.link || URLRegex.test(String(newGame.link))) &&
-    (!newGame.imageURL || URLRegex.test(String(newGame.imageURL)))
-  ) {
-    await submitAddGame(newGame);
-    emit("submit");
+  try {
+    if (
+      newGame.title &&
+      digitRegex.test(String(newGame.playtime)) &&
+      (!newGame.link || URLRegex.test(String(newGame.link))) &&
+      (!newGame.imageURL || URLRegex.test(String(newGame.imageURL)))
+    ) {
+      await submitAddGame(newGame);
+      emit("submit");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
 const handleSubmitAddManga = async () => {
-  if (
-    newManga.title &&
-    digitRegex.test(String(newManga.chaptersMax)) &&
-    digitRegex.test(String(newManga.chaptersMin)) &&
-    digitRegex.test(String(newManga.volumesMax)) &&
-    digitRegex.test(String(newManga.volumesMin)) &&
-    (!newManga.link || URLRegex.test(String(newManga.link))) &&
-    (!newManga.imageURL || URLRegex.test(String(newManga.imageURL)))
-  ) {
-    await submitAddManga(newManga);
-    emit("submit");
+  try {
+    if (
+      newManga.title &&
+      digitRegex.test(String(newManga.chaptersMax)) &&
+      digitRegex.test(String(newManga.chaptersMin)) &&
+      digitRegex.test(String(newManga.volumesMax)) &&
+      digitRegex.test(String(newManga.volumesMin)) &&
+      (!newManga.link || URLRegex.test(String(newManga.link))) &&
+      (!newManga.imageURL || URLRegex.test(String(newManga.imageURL)))
+    ) {
+      await submitAddManga(newManga);
+      emit("submit");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
 const handleSubmitAddMovie = async () => {
-  if (
-    newMovie.title &&
-    digitRegex.test(String(newMovie.episodesMax)) &&
-    digitRegex.test(String(newMovie.episodesMin)) &&
-    digitRegex.test(String(newMovie.seasonsMax)) &&
-    digitRegex.test(String(newMovie.seasonsMin)) &&
-    (!newMovie.link || URLRegex.test(String(newMovie.link))) &&
-    (!newMovie.imageURL || URLRegex.test(String(newMovie.imageURL)))
-  ) {
-    await submitAddMovie(newMovie);
-    emit("submit");
+  try {
+    if (
+      newMovie.title &&
+      digitRegex.test(String(newMovie.episodesMax)) &&
+      digitRegex.test(String(newMovie.episodesMin)) &&
+      digitRegex.test(String(newMovie.seasonsMax)) &&
+      digitRegex.test(String(newMovie.seasonsMin)) &&
+      (!newMovie.link || URLRegex.test(String(newMovie.link))) &&
+      (!newMovie.imageURL || URLRegex.test(String(newMovie.imageURL)))
+    ) {
+      await submitAddMovie(newMovie);
+      emit("submit");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 

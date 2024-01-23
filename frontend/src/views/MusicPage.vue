@@ -521,7 +521,6 @@
         />
       </v-card-actions> </v-card
   ></v-dialog>
-  <SnackbarComponent v-model="snackbar.value" :text="snackbar.text" />
 </template>
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue";
@@ -541,7 +540,6 @@ import {
 } from "@/utils/mediaUtils";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import { TMusic, TMusicInput, TYouTubeVideo, TThumbnailUrls } from "@/types";
 import { EMusicCategory } from "../../../common/types";
 
@@ -573,11 +571,6 @@ const musicFetchSearch = ref<string>("");
 const musicSearch = ref<string>("");
 // const selectActive = ref<boolean>(false);
 const viewMusicModal = ref<boolean>(false);
-
-const snackbar = ref({
-  text: "",
-  value: false,
-});
 
 const allMusic = computed(() =>
   orderBy(music.value, ["artist", "title"], ["asc", "asc"])
@@ -613,7 +606,6 @@ const handleDeleteCancel = () => {
 
 const handleDeleteConfirm = async () => {
   await submitDeleteMusic(musicID.value);
-  snackbar.value = { text: "Song Deleted", value: true };
   musicID.value = "";
   deleteMusicModal.value = false;
 };
@@ -705,7 +697,6 @@ const handleSubmitAddMusic = async () => {
     (!newMusic.imageURL || URLRegex.test(String(newMusic.imageURL)))
   ) {
     await submitAddMusic(newMusic);
-    snackbar.value = { text: "Song Added", value: true };
     addMusicModal.value = false;
     addFetchedMusicModal.value = false;
 
@@ -726,7 +717,6 @@ const handleSubmitEditMusic = async () => {
     (!musicRef.value.imageURL || URLRegex.test(String(musicRef.value.imageURL)))
   ) {
     await submitEditMusic(musicID.value, musicRef.value);
-    snackbar.value = { text: "Song Updated", value: true };
     editMusicModal.value = false;
   }
 };

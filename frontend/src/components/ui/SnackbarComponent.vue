@@ -1,8 +1,18 @@
 <template>
-  <v-snackbar :color="color" location="top" timeout="2000" variant="flat">
+  <v-snackbar
+    :color="options.color"
+    location="top"
+    timeout="3000"
+    variant="flat"
+  >
     <div class="d-flex justify-start align-center">
-      <v-img v-if="img" class="me-3" max-width="32px" :src="img" />
-      {{ text }}
+      <v-img
+        v-if="options.img"
+        class="me-3"
+        max-width="32px"
+        :src="options.img"
+      />
+      {{ options.text }}
     </div>
   </v-snackbar>
 </template>
@@ -10,9 +20,11 @@
 import { defineProps } from "vue";
 
 interface ISnackbarComponentProps {
-  color?: string;
-  img?: string;
-  text: string;
+  options: {
+    color?: string;
+    img?: string;
+    text: string;
+  };
 }
 
 defineProps<ISnackbarComponentProps>();

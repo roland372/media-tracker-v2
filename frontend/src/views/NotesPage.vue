@@ -259,7 +259,6 @@
         </section>
       </v-card-text> </v-card
   ></v-dialog>
-  <SnackbarComponent v-model="snackbar.value" :text="snackbar.text" />
 </template>
 <script setup lang="ts">
 import { onMounted, onUpdated, ref, reactive } from "vue";
@@ -271,7 +270,6 @@ import { formatDate } from "@/utils/mediaUtils";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import TinyMCEEditor from "@/components/media/TinyMCEEditor.vue";
 import { TNote, TNoteInput } from "@/types";
 
@@ -293,10 +291,6 @@ const editNoteModal = ref<boolean>(false);
 const noteID = ref<string>("");
 const noteRef = ref<TNoteInput>(newNote);
 const viewNoteModal = ref<boolean>(false);
-const snackbar = ref({
-  text: "",
-  value: false,
-});
 const viewNoteText = '<ul style="margin-left: 1rem;">';
 
 const handleDeleteCancel = () => {
@@ -305,8 +299,6 @@ const handleDeleteCancel = () => {
 
 const handleDeleteConfirm = async () => {
   await submitDeleteNote(noteID.value);
-  snackbar.value.text = "Note Deleted";
-  snackbar.value.value = true;
   noteID.value = "";
   deleteNoteModal.value = false;
 };
@@ -349,8 +341,6 @@ const handleOpenViewNoteModal = (id: string, note: TNote) => {
 const handleSubmitAddNote = async () => {
   if (newNote.title) {
     await submitAddNote(newNote);
-    snackbar.value.text = "Note Added";
-    snackbar.value.value = true;
     addNoteModal.value = false;
 
     newNote.color = "#FFFFFF";
@@ -362,8 +352,6 @@ const handleSubmitAddNote = async () => {
 const handleSubmitEditNote = async () => {
   if (noteRef.value.title) {
     await submitEditNote(noteID.value, noteRef.value);
-    snackbar.value.text = "Note Updated";
-    snackbar.value.value = true;
     editNoteModal.value = false;
     noteRef.value.note = "";
   }

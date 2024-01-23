@@ -8,7 +8,6 @@
       :media-type="EMediaType.BOOK"
       :title="`Add ${EMediaType.BOOK}`"
     />
-    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
     <section class="d-sm-flex align-center justify-center">
       <ButtonText
         @click="formDialog = !formDialog"
@@ -101,7 +100,6 @@ import FormComponent from "@/components/media/FormComponent.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { TSortingOptions } from "@/types";
 import { EBookStatus, EMediaType } from "../../../common/types";
@@ -112,8 +110,6 @@ const { books } = storeToRefs(mediaStore);
 const displayFlag = ref<string>("grid");
 const formDialog = ref<boolean>(false);
 const searchTerm = ref<string>("");
-const snackbar = ref<boolean>(false);
-const snackbarText = ref<string>(EMediaType.BOOK + " Added");
 const bookFetchSearch = ref<string>("");
 const bookFilter = ref<string>("");
 const sortingOptions = ref<TSortingOptions>({
@@ -264,6 +260,5 @@ const handleFetchBookSearch = () => {
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
-  snackbar.value = true;
 };
 </script>

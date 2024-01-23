@@ -8,7 +8,6 @@
       :media-type="EMediaType.MANGA"
       :title="`Add ${EMediaType.MANGA}`"
     />
-    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
     <section class="d-sm-flex align-center justify-center">
       <ButtonText
         @click="formDialog = !formDialog"
@@ -141,7 +140,6 @@ import FormComponent from "@/components/media/FormComponent.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { Manga } from "@tutkli/jikan-ts";
 import { TMangaInput, TSortingOptions } from "@/types";
@@ -157,8 +155,6 @@ const fetchedManga = ref<Manga[]>();
 const fetchedSingleManga = ref<Manga>();
 const fetchedMangaModal = ref<boolean>(false);
 const searchTerm = ref<string>("");
-const snackbar = ref<boolean>(false);
-const snackbarText = ref<string>(EMediaType.MANGA + " Added");
 const mangaFetchSearch = ref<string>("");
 const mangaFilter = ref<string>("");
 const mangaType = ref<string[]>([...Object.values(EMangaType)]);
@@ -406,7 +402,6 @@ const handleFetchedMangaSubmit = async () => {
 
   await submitAddManga(fetchedManga);
   fetchedMangaModal.value = false;
-  snackbar.value = true;
 };
 
 const handleFetchedMangaViewMore = () => {
@@ -427,6 +422,5 @@ const handleMangaSort = (emittedValue: TSortingOptions) =>
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
-  snackbar.value = true;
 };
 </script>

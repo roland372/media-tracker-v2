@@ -241,11 +241,6 @@
         />
       </v-card-actions> </v-card
   ></v-dialog>
-  <SnackbarComponent
-    v-model="snackbar.value"
-    :img="snackbar.img"
-    :text="snackbar.text"
-  />
 </template>
 <script setup lang="ts">
 import { computed, ref, reactive } from "vue";
@@ -261,11 +256,11 @@ import {
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import { TEmote, TEmoteInput } from "@/types";
 
 const mediaStore = useMediaStore();
-const { submitAddEmote, submitDeleteEmote, submitEditEmote } = mediaStore;
+const { setSnackbar, submitAddEmote, submitDeleteEmote, submitEditEmote } =
+  mediaStore;
 const { emotes } = storeToRefs(mediaStore);
 
 const newEmote: TEmoteInput = reactive({
@@ -283,11 +278,6 @@ const emoteRef = ref<TEmoteInput>(newEmote);
 const emoteSearch = ref<string>("");
 const favEmoteSearch = ref<string>("");
 const isEditing = ref<boolean>(false);
-const snackbar = ref({
-  img: "",
-  text: "",
-  value: false,
-});
 
 const allEmotes = computed(() =>
   orderBy(emotes.value, ["name"], ["asc"])
@@ -315,7 +305,6 @@ const handleDeleteCancel = () => {
 
 const handleDeleteConfirm = async () => {
   await submitDeleteEmote(emoteID.value);
-  snackbar.value = { img: "", text: "Emote Deleted", value: true };
   emoteID.value = "";
   deleteEmoteModal.value = false;
 };
@@ -329,11 +318,19 @@ const displayEmotes = () => {
 const handleEmoteClick = (url: string): void => {
   copyImageToClipboard(url)
     .then(() => {
-      snackbar.value = { img: url, text: "Copied to Clipboard", value: true };
+      setSnackbar(true, {
+        color: "green",
+        img: url,
+        text: "Copied to Clipboard",
+      });
     })
     .catch(() => {
       navigator.clipboard.writeText(url);
-      snackbar.value = { img: url, text: "Copied to Clipboard", value: true };
+      setSnackbar(true, {
+        color: "green",
+        img: url,
+        text: "Copied to Clipboard",
+      });
     });
 };
 
@@ -362,7 +359,6 @@ const handleOpenEditEmoteModal = (id: string, emote: TEmote) => {
 const handleSubmitAddEmote = async () => {
   if (newEmote.name && URLRegex.test(newEmote.url)) {
     await submitAddEmote(newEmote);
-    snackbar.value = { img: "", text: "Emote Added", value: true };
     addEmoteModal.value = false;
 
     newEmote.favourites = false;
@@ -374,7 +370,6 @@ const handleSubmitAddEmote = async () => {
 const handleSubmitEditEmote = async () => {
   if (emoteRef.value.name && URLRegex.test(emoteRef.value.url)) {
     await submitEditEmote(emoteID.value, emoteRef.value);
-    snackbar.value = { img: "", text: "Emote Updated", value: true };
     editEmoteModal.value = false;
   }
 };

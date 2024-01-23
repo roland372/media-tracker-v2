@@ -8,7 +8,6 @@
       :media-type="EMediaType.ANIME"
       :title="`Add ${EMediaType.ANIME}`"
     />
-    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
     <section class="d-sm-flex align-center justify-center">
       <ButtonText
         @click="formDialog = !formDialog"
@@ -140,7 +139,6 @@ import FormComponent from "@/components/media/FormComponent.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { Anime } from "@tutkli/jikan-ts";
 import { TAnimeInput, TSortingOptions } from "@/types";
@@ -156,8 +154,6 @@ const fetchedAnime = ref<Anime[]>();
 const fetchedSingleAnime = ref<Anime>();
 const fetchedAnimeModal = ref<boolean>(false);
 const searchTerm = ref<string>("");
-const snackbar = ref<boolean>(false);
-const snackbarText = ref<string>(EMediaType.ANIME + " Added");
 const animeFetchSearch = ref<string>("");
 const animeFilter = ref<string>("");
 const animeType = ref<string[]>([...Object.values(EAnimeType)]);
@@ -356,7 +352,6 @@ const handleFetchedAnimeSubmit = async () => {
 
   await submitAddAnime(fetchedAnime);
   fetchedAnimeModal.value = false;
-  snackbar.value = true;
 };
 
 const handleFetchedAnimeViewMore = () => {
@@ -370,6 +365,5 @@ const handleOpenFetchAnimeModal = (item: Anime) => {
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
-  snackbar.value = true;
 };
 </script>

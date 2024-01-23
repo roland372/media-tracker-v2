@@ -25,7 +25,6 @@
     :media-type="mediaType"
     :title="`Add ${mediaType}`"
   />
-  <SnackbarComponent v-model="snackbar" :text="`${mediaType} Added`" />
   <HeaderComponent
     title="Welcome to Media-Tracker
 "
@@ -97,7 +96,6 @@ import FormComponent from "@/components/media/FormComponent.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import LinksComponent from "@/components/media/LinksComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import { EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
@@ -107,7 +105,6 @@ const { anime, characters, games, manga, books, movies } =
 const formDialog = ref<boolean>(false);
 const mediaType = ref<string>("");
 const selectDialog = ref<boolean>(false);
-const snackbar = ref<boolean>(false);
 
 const handleShowFormDialog = () => {
   selectDialog.value = !selectDialog.value;
@@ -116,12 +113,10 @@ const handleShowFormDialog = () => {
 
 const handleShowSelectDialog = () => {
   selectDialog.value = !selectDialog.value;
-  snackbar.value = false;
   mediaType.value = "";
 };
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
-  snackbar.value = true;
 };
 </script>

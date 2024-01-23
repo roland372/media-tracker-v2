@@ -8,7 +8,6 @@
       :media-type="EMediaType.MOVIE"
       :title="`Add ${EMediaType.MOVIE}`"
     />
-    <SnackbarComponent v-model="snackbar" :text="snackbarText" />
     <section class="d-sm-flex align-center justify-center">
       <ButtonText
         @click="formDialog = !formDialog"
@@ -105,7 +104,6 @@ import FormComponent from "@/components/media/FormComponent.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
-import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { TSortingOptions } from "@/types";
 import { EMediaType, EMovieStatus, EMovieType } from "../../../common/types";
@@ -116,8 +114,6 @@ const { movies } = storeToRefs(mediaStore);
 const displayFlag = ref<string>("grid");
 const formDialog = ref<boolean>(false);
 const searchTerm = ref<string>("");
-const snackbar = ref<boolean>(false);
-const snackbarText = ref<string>(EMediaType.MOVIE + " Added");
 const movieFetchSearch = ref<string>("");
 const movieFilter = ref<string>("");
 const movieType = ref<string[]>([...Object.values(EMovieType)]);
@@ -291,6 +287,5 @@ const handleMovieSort = (emittedValue: TSortingOptions) =>
 
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
-  snackbar.value = true;
 };
 </script>
