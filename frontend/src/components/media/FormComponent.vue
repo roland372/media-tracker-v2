@@ -769,15 +769,21 @@ const newMovie: TMovieInput = reactive({
 });
 
 const handleSubmitAddAnime = async () => {
-  if (
-    newAnime.title &&
-    digitRegex.test(String(newAnime.episodesMax)) &&
-    digitRegex.test(String(newAnime.episodesMin)) &&
-    (!newAnime.link || URLRegex.test(String(newAnime.link))) &&
-    (!newAnime.imageURL || URLRegex.test(String(newAnime.imageURL)))
-  ) {
-    await submitAddAnime(newAnime);
-    emit("submit");
+  try {
+    if (
+      newAnime.title &&
+      digitRegex.test(String(newAnime.episodesMax)) &&
+      digitRegex.test(String(newAnime.episodesMin)) &&
+      (!newAnime.link || URLRegex.test(String(newAnime.link))) &&
+      (!newAnime.imageURL || URLRegex.test(String(newAnime.imageURL)))
+    ) {
+      await submitAddAnime(newAnime);
+
+      emit("submit");
+    }
+  } catch (error) {
+    console.log("submit");
+    // console.log(error);
   }
 };
 

@@ -152,6 +152,7 @@ export const useMediaStore = defineStore("media", () => {
       console.log(data);
     } catch (err) {
       console.log(err);
+      throw err;
     }
   };
   const submitDeleteAnime = async (id: string) => {
@@ -769,6 +770,31 @@ export const useMediaStore = defineStore("media", () => {
   const isLoading = ref<boolean>(true);
   const setLoading = (payload: boolean): boolean => (isLoading.value = payload);
 
+  type TSnackbarOptions = {
+    color?: string;
+    img?: string;
+    text: string;
+  };
+
+  const snackbar = ref<boolean>(false);
+  const snackbarOptions = ref<TSnackbarOptions>({
+    color: "",
+    img: "",
+    text: "",
+  });
+
+  const setSnackbar = (
+    value: boolean,
+    options: TSnackbarOptions = {
+      text: "",
+      color: "",
+      img: "",
+    }
+  ) => {
+    snackbar.value = value;
+    snackbarOptions.value = options;
+  };
+
   return {
     //* <----- ALL MEDIA ----->
     fetchAllMedia,
@@ -870,5 +896,8 @@ export const useMediaStore = defineStore("media", () => {
     //* <----- UTILS ----->
     isLoading,
     setLoading,
+    snackbar,
+    snackbarOptions,
+    setSnackbar,
   };
 });

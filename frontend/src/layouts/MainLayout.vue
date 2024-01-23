@@ -1,5 +1,6 @@
 <template>
   <section class="bg-primary-dark page-container">
+    <SnackbarComponent2 v-model="snackbar" :options="snackbarOptions" />
     <NavbarComponent v-if="userFromDB && !mdAndUp" />
     <v-layout>
       <NavigationDrawer v-if="userFromDB && mdAndUp" />
@@ -23,9 +24,10 @@ import FooterComponent from "@/components/ui/FooterComponent.vue";
 import NavbarComponent from "@/components/ui/NavbarComponent.vue";
 import NavigationDrawer from "@/components/ui/NavigationDrawer.vue";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton.vue";
+import SnackbarComponent2 from "@/components/ui/SnackbarComponent2.vue";
 
 const mediaStore = useMediaStore();
-const { userFromDB } = storeToRefs(mediaStore);
+const { userFromDB, snackbar, snackbarOptions } = storeToRefs(mediaStore);
 
 const {
   mdAndUp,
