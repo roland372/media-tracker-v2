@@ -17,8 +17,8 @@ const { fetchAllMedia, fetchUser, setLoading } = mediaStore;
 const { isLoading } = storeToRefs(mediaStore);
 
 onMounted(async () => {
-  const headers = new Headers();
-  headers.append("ngrok-skip-browser-warning", "true");
+  // const headers = new Headers();
+  // headers.append("ngrok-skip-browser-warning", "true");
 
   // console.log("APP MOUNTED");
   setDefaultTheme();
