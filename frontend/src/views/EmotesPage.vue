@@ -243,7 +243,7 @@
   ></v-dialog>
 </template>
 <script setup lang="ts">
-import { computed, ref, reactive } from "vue";
+import { computed, onMounted, ref, reactive } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
@@ -259,8 +259,13 @@ import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import { TEmote, TEmoteInput } from "@/types";
 
 const mediaStore = useMediaStore();
-const { setSnackbar, submitAddEmote, submitDeleteEmote, submitEditEmote } =
-  mediaStore;
+const {
+  fetchEmotes,
+  setSnackbar,
+  submitAddEmote,
+  submitDeleteEmote,
+  submitEditEmote,
+} = mediaStore;
 const { emotes } = storeToRefs(mediaStore);
 
 const newEmote: TEmoteInput = reactive({
@@ -377,6 +382,10 @@ const handleSubmitEditEmote = async () => {
 const handleToggleEditingMode = () => {
   isEditing.value = !isEditing.value;
 };
+
+onMounted(async () => {
+  await fetchEmotes();
+});
 </script>
 <style scoped>
 .image-overlay-icon {

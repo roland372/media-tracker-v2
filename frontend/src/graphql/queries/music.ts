@@ -1,11 +1,11 @@
 import { apolloClient } from "@/graphql";
 import gql from "graphql-tag";
 
-export const getAllMusic = async (userId: string) => {
+export const getAllMusic = async (userId: string, query: string) => {
   return await apolloClient.query({
     query: gql`
-      query GetAllMusic {
-        getAllMusic {
+      query GetAllMusic($query: EQueryParams) {
+        getAllMusic(query: $query) {
           artist
           category
           favourites
@@ -19,6 +19,9 @@ export const getAllMusic = async (userId: string) => {
         }
       }
     `,
+    variables: {
+      query,
+    },
     context: {
       headers: {
         userId,

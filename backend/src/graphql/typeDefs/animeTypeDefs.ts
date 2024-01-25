@@ -3,6 +3,13 @@ import gql from 'graphql-tag';
 export const typeAnime = gql`
 	scalar Date
 
+	enum EQueryParams {
+		ALL
+		LIMIT
+		FAVOURITES
+		COUNT
+	}
+
 	type Anime {
 		episodesMax: Int
 		episodesMin: Int
@@ -37,8 +44,9 @@ export const typeAnime = gql`
 	}
 
 	type Query {
-		getAllAnime: [Anime]
+		getAllAnime(query: EQueryParams): [Anime]
 		getSingleAnime(ID: ID!): Anime!
+		getAnimeCount: Int
 	}
 
 	type Mutation {

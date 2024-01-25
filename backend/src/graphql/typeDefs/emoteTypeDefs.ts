@@ -21,6 +21,7 @@ export const typeEmote = gql`
 	type Query {
 		getAllEmotes: [Emote]
 		getSingleEmote(ID: ID!): Emote!
+		getEmoteCount: Int
 	}
 
 	type Mutation {

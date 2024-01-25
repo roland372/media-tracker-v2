@@ -1,11 +1,11 @@
 import { apolloClient } from "@/graphql";
 import gql from "graphql-tag";
 
-export const getAllCharacters = async (userId: string) => {
+export const getAllCharacters = async (userId: string, query: string) => {
   return await apolloClient.query({
     query: gql`
-      query GetAllCharacters {
-        getAllCharacters {
+      query GetAllCharacters($query: EQueryParams) {
+        getAllCharacters(query: $query) {
           favourites
           gender
           hairColor
@@ -23,6 +23,9 @@ export const getAllCharacters = async (userId: string) => {
         }
       }
     `,
+    variables: {
+      query,
+    },
     context: {
       headers: {
         userId,

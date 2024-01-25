@@ -6,8 +6,15 @@ export const noteResolvers = {
 		async getAllNotes<T>(_: T, __: T, context: TContext) {
 			return await Note.find({ owner: context.userFromContext[0].email }).sort({ updatedAt: "desc" });
 		},
+
 		async getSingleNote<T>(_: T, { ID }: TNote) {
 			return await Note.findById(ID);
+		},
+
+		async getNoteCount<T>(_: T,
+			__: T,
+			context: TContext,) {
+			return await Note.find({ owner: context.userFromContext[0].email }).countDocuments();
 		},
 	},
 	Mutation: {

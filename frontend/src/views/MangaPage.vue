@@ -123,7 +123,7 @@
   />
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
@@ -146,7 +146,7 @@ import { TMangaInput, TSortingOptions } from "@/types";
 import { EMangaStatus, EMangaType, EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
-const { submitAddManga, userFromDB } = mediaStore;
+const { fetchManga, submitAddManga, userFromDB } = mediaStore;
 const { manga } = storeToRefs(mediaStore);
 
 const displayFlag = ref<string>("grid");
@@ -423,4 +423,8 @@ const handleMangaSort = (emittedValue: TSortingOptions) =>
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
 };
+
+onMounted(async () => {
+  await fetchManga();
+});
 </script>

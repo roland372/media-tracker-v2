@@ -3,6 +3,13 @@ import gql from 'graphql-tag';
 export const typeCharacter = gql`
 	scalar Date
 
+	enum EQueryParams {
+		ALL
+		LIMIT
+		FAVOURITES
+		COUNT
+	}
+
 	type Character {
 		favourites: Boolean
 		gender: String
@@ -35,8 +42,9 @@ export const typeCharacter = gql`
 	}
 
 	type Query {
-		getAllCharacters: [Character]
+		getAllCharacters(query: EQueryParams): [Character]
 		getSingleCharacter(ID: ID!): Character!
+		getCharacterCount: Int
 	}
 
 	type Mutation {

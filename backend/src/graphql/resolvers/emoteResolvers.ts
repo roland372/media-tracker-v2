@@ -6,8 +6,13 @@ export const emoteResolvers = {
 		async getAllEmotes() {
 			return await Emote.find().sort({ name: "asc" });
 		},
+
 		async getSingleEmote<T>(_: T, { ID }: TEmote) {
 			return await Emote.findById(ID);
+		},
+
+		async getEmoteCount() {
+			return await Emote.find().countDocuments();
 		},
 	},
 	Mutation: {

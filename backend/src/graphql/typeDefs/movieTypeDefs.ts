@@ -3,6 +3,13 @@ import gql from 'graphql-tag';
 export const typeMovie = gql`
 	scalar Date
 
+	enum EQueryParams {
+		ALL
+		LIMIT
+		FAVOURITES
+		COUNT
+	}
+
 	type Movie {
 		episodesMax: Int
 		episodesMin: Int
@@ -39,8 +46,9 @@ export const typeMovie = gql`
 	}
 
 	type Query {
-		getAllMovies: [Movie]
+		getAllMovies(query: EQueryParams): [Movie]
 		getSingleMovie(ID: ID!): Movie!
+		getMovieCount: Int
 	}
 
 	type Mutation {

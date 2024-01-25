@@ -3,6 +3,13 @@ import gql from 'graphql-tag';
 export const typeGame = gql`
 	scalar Date
 
+	enum EQueryParams {
+		ALL
+		LIMIT
+		FAVOURITES
+		COUNT
+	}
+
 	type Game {
 		favourites: Boolean
 		_id: String
@@ -33,8 +40,9 @@ export const typeGame = gql`
 	}
 
 	type Query {
-		getAllGames: [Game]
+		getAllGames(query: EQueryParams): [Game]
 		getSingleGame(ID: ID!): Game!
+		getGameCount: Int
 	}
 
 	type Mutation {

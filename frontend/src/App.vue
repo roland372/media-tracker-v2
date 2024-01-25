@@ -13,7 +13,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { healthCheck } from "./utils/index";
 
 const mediaStore = useMediaStore();
-const { fetchAllMedia, fetchUser, setLoading } = mediaStore;
+const { fetchUser, setLoading } = mediaStore;
 const { isLoading } = storeToRefs(mediaStore);
 
 onMounted(async () => {
@@ -24,18 +24,11 @@ onMounted(async () => {
   setDefaultTheme();
 
   try {
-    await healthCheck();
-
     const auth = getAuth();
     onAuthStateChanged(auth, async () => {
       if (auth?.currentUser?.email) {
-        // await fetchUser(auth.currentUser.email);
-        // await fetchAllMedia(auth.currentUser.email);
-
-        await Promise.all([
-          fetchUser(auth.currentUser.email),
-          fetchAllMedia(auth.currentUser.email),
-        ]);
+        await healthCheck();
+        await fetchUser(auth.currentUser.email);
 
         setLoading(false);
       }

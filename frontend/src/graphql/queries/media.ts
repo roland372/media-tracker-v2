@@ -1,11 +1,34 @@
 import { apolloClient } from "@/graphql";
 import gql from "graphql-tag";
 
-export const getAllMedia = async (userId: string) => {
+export const getMediaCount = async (userId: string) => {
   return await apolloClient.query({
     query: gql`
       query Query {
-        getAllAnime {
+        getAnimeCount
+        getBookCount
+        getCharacterCount
+        getEmoteCount
+        getGameCount
+        getMangaCount
+        getMovieCount
+        getMusicCount
+        getNoteCount
+      }
+    `,
+    context: {
+      headers: {
+        userId,
+      },
+    },
+  });
+};
+
+export const getRecentMedia = async (userId: string) => {
+  return await apolloClient.query({
+    query: gql`
+      query Query($query: EQueryParams) {
+        getAllAnime(query: $query) {
           episodesMax
           episodesMin
           favourites
@@ -22,7 +45,7 @@ export const getAllMedia = async (userId: string) => {
           createdAt
           updatedAt
         }
-        getAllBooks {
+        getAllBooks(query: $query) {
           author
           favourites
           genre
@@ -38,7 +61,7 @@ export const getAllMedia = async (userId: string) => {
           createdAt
           updatedAt
         }
-        getAllCharacters {
+        getAllCharacters(query: $query) {
           favourites
           gender
           hairColor
@@ -54,15 +77,7 @@ export const getAllMedia = async (userId: string) => {
           createdAt
           updatedAt
         }
-        getAllEmotes {
-          favourites
-          _id
-          name
-          url
-          createdAt
-          updatedAt
-        }
-        getAllGames {
+        getAllGames(query: $query) {
           favourites
           _id
           imageURL
@@ -77,7 +92,7 @@ export const getAllMedia = async (userId: string) => {
           createdAt
           updatedAt
         }
-        getAllManga {
+        getAllManga(query: $query) {
           chaptersMax
           chaptersMin
           favourites
@@ -96,7 +111,7 @@ export const getAllMedia = async (userId: string) => {
           createdAt
           updatedAt
         }
-        getAllMovies {
+        getAllMovies(query: $query) {
           episodesMax
           episodesMin
           favourites
@@ -114,28 +129,11 @@ export const getAllMedia = async (userId: string) => {
           createdAt
           updatedAt
         }
-        getAllMusic {
-          artist
-          category
-          favourites
-          _id
-          imageURL
-          link
-          owner
-          title
-          createdAt
-          updatedAt
-        }
-        getAllNotes {
-          color
-          _id
-          note
-          title
-          createdAt
-          updatedAt
-        }
       }
     `,
+    variables: {
+      query: "LIMIT",
+    },
     context: {
       headers: {
         userId,

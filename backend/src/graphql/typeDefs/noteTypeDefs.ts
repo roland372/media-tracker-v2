@@ -23,6 +23,7 @@ export const typeNote = gql`
 	type Query {
 		getAllNotes: [Note]
 		getSingleNote(ID: ID!): Note!
+		getNoteCount: Int
 	}
 
 	type Mutation {

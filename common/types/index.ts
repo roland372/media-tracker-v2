@@ -16,6 +16,25 @@ export enum EMediaType {
   BOOK = "Book",
 }
 
+export type TMediaCount = {
+  anime: string;
+  books: string;
+  characters: string;
+  emotes: string;
+  games: string;
+  manga: string;
+  movies: string;
+  music: string;
+  notes: string;
+};
+
+//? <----- QUERIES ----->
+export enum EQueryParams {
+  ALL = "ALL",
+  FAVOURITES = "FAVOURITES",
+  LIMIT = "LIMIT",
+}
+
 //? <----- ANIME ----->
 export enum EAnimeStatus {
   WATCHING = 'Watching',

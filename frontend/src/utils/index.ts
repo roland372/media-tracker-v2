@@ -1,5 +1,9 @@
 export const healthCheck = async () => {
-  const url = process.env.VUE_APP_SERVER_URL;
+  const url =
+    process.env.NODE_ENV?.trim() === "development"
+      ? process.env.VUE_APP_SERVER_URL_DEVELOPMENT
+      : process.env.VUE_APP_SERVER_URL;
+
   const healthCheckQuery = `
     query {
       healthCheck

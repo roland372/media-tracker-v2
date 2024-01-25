@@ -3,6 +3,13 @@ import gql from 'graphql-tag';
 export const typeBook = gql`
 	scalar Date
 
+	enum EQueryParams {
+		ALL
+		LIMIT
+		FAVOURITES
+		COUNT
+	}
+
 	type Book {
     author: String
 		favourites: Boolean
@@ -35,8 +42,9 @@ export const typeBook = gql`
 	}
 
 	type Query {
-		getAllBooks: [Book]
+		getAllBooks(query: EQueryParams): [Book]
 		getSingleBook(ID: ID!): Book!
+		getBookCount: Int
 	}
 
 	type Mutation {

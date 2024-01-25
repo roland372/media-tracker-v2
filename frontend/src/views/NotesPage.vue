@@ -274,8 +274,13 @@ import TinyMCEEditor from "@/components/media/TinyMCEEditor.vue";
 import { TNote, TNoteInput } from "@/types";
 
 const mediaStore = useMediaStore();
-const { submitAddNote, submitEditNote, submitDeleteNote, userFromDB } =
-  mediaStore;
+const {
+  fetchNotes,
+  submitAddNote,
+  submitEditNote,
+  submitDeleteNote,
+  userFromDB,
+} = mediaStore;
 const { notes } = storeToRefs(mediaStore);
 
 const newNote: TNoteInput = reactive({
@@ -366,7 +371,8 @@ const setStyle = () => {
     .forEach((el) => (el.style.marginLeft = "1rem"));
 };
 
-onMounted(() => {
+onMounted(async () => {
+  await fetchNotes();
   setStyle();
 });
 

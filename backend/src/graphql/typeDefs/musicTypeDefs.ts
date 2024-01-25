@@ -3,6 +3,13 @@ import gql from 'graphql-tag';
 export const typeMusic = gql`
 	scalar Date
 
+	enum EQueryParams {
+		ALL
+		LIMIT
+		FAVOURITES
+		COUNT
+	}
+
 	type Music {
 		artist: String
     category: String
@@ -27,8 +34,9 @@ export const typeMusic = gql`
 	}
 
 	type Query {
-		getAllMusic: [Music]
+		getAllMusic(query: EQueryParams): [Music]
 		getSingleMusic(ID: ID!): Music!
+		getMusicCount: Int
 	}
 
 	type Mutation {

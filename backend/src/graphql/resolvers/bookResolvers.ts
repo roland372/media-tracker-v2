@@ -1,14 +1,37 @@
 import Book from '../../db/models/Book';
 import { TBookInput, TBook, TContext } from '../../types';
+import { EQueryParams } from '@common/types';
 
 export const bookResolvers = {
   Query: {
-    async getAllBooks<T>(_: T, __: T, context: TContext) {
-      return await Book.find({ owner: context.userFromContext[0].email }).sort({ title: "asc" });
-    },
+    async getAllBooks<T>(
+			_: T,
+			{ query }: { query: EQueryParams },
+			context: TContext,
+		) {
+
+			let baseQuery = Book.find({ owner: context.userFromContext[0].email });
+
+			if (query === EQueryParams.ALL) {
+				return await baseQuery.sort({ title: "asc" });
+			}
+			if (query === EQueryParams.LIMIT) {
+				return await baseQuery.limit(20).sort({ updatedAt: "desc", title: "asc" });
+			}
+			if (query === EQueryParams.FAVOURITES) {
+				return baseQuery.where({ favourites: true }).sort({ title: "asc" });
+			}
+		},
+
     async getSingleBook<T>(_: T, { ID }: TBook) {
       return await Book.findById(ID);
     },
+
+    async getBookCount<T>(_: T,
+			__: T,
+			context: TContext,) {
+			return await Book.find({ owner: context.userFromContext[0].email }).countDocuments();
+		},
   },
   Mutation: {
     async addBook<T>(_: T, { bookInput }: TBookInput) {

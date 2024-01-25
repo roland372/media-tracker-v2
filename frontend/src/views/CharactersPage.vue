@@ -123,7 +123,7 @@
   />
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
@@ -153,7 +153,7 @@ interface CommonCharacterDataWithAbout extends CommonCharacterData {
 }
 
 const mediaStore = useMediaStore();
-const { submitAddCharacter, userFromDB } = mediaStore;
+const { fetchCharacters, submitAddCharacter, userFromDB } = mediaStore;
 const { characters } = storeToRefs(mediaStore);
 
 const displayFlag = ref<string>("grid");
@@ -331,4 +331,8 @@ const handleOpenFetchCharacterModal = (item: CommonCharacterDataWithAbout) => {
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
 };
+
+onMounted(async () => {
+  await fetchCharacters();
+});
 </script>

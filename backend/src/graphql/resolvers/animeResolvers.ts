@@ -1,13 +1,36 @@
 import Anime from '../../db/models/Anime';
 import { TAnimeInput, TAnime, TContext } from '../../types';
+import { EQueryParams } from '@common/types';
 
 export const animeResolvers = {
 	Query: {
-		async getAllAnime<T>(_: T, __: T, context: TContext) {
-			return await Anime.find({ owner: context.userFromContext[0].email }).sort({ title: "asc" });
+		async getAllAnime<T>(
+			_: T,
+			{ query }: { query: EQueryParams; },
+			context: TContext,
+		) {
+
+			let baseQuery = Anime.find({ owner: context.userFromContext[0].email });
+
+			if (query === EQueryParams.ALL) {
+				return await baseQuery.sort({ title: "asc" });
+			}
+			if (query === EQueryParams.LIMIT) {
+				return await baseQuery.limit(20).sort({ updatedAt: "desc", title: "asc" });
+			}
+			if (query === EQueryParams.FAVOURITES) {
+				return baseQuery.where({ favourites: true }).sort({ title: "asc" });
+			}
 		},
+
 		async getSingleAnime<T>(_: T, { ID }: TAnime) {
 			return await Anime.findById(ID);
+		},
+
+		async getAnimeCount<T>(_: T,
+			__: T,
+			context: TContext,) {
+			return await Anime.find({ owner: context.userFromContext[0].email }).countDocuments();
 		},
 	},
 	Mutation: {

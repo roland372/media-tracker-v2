@@ -3,6 +3,13 @@ import gql from 'graphql-tag';
 export const typeManga = gql`
 	scalar Date
 
+	enum EQueryParams {
+		ALL
+		LIMIT
+		FAVOURITES
+		COUNT
+	}
+
 	type Manga {
 		chaptersMax: Int
 		chaptersMin: Int
@@ -41,8 +48,9 @@ export const typeManga = gql`
 	}
 
 	type Query {
-		getAllManga: [Manga]
+		getAllManga(query: EQueryParams): [Manga]
 		getSingleManga(ID: ID!): Manga!
+		getMangaCount: Int
 	}
 
 	type Mutation {

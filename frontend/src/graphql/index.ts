@@ -34,7 +34,7 @@ export const apolloClient = new ApolloClient({
   cache,
 });
 
-export * from "./queries/allMedia";
+export * from "./queries/media";
 
 export * from "./queries/anime";
 export * from "./mutations/anime";

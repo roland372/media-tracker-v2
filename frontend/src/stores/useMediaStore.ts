@@ -2,8 +2,9 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { sortedIndexBy } from "lodash";
 import {
-  //* <----- ALL MEDIA ----->
-  getAllMedia,
+  //* <----- MEDIA ----->
+  getMediaCount,
+  getRecentMedia,
   //* <----- ANIME ----->
   addAnime,
   deleteAnime,
@@ -84,28 +85,56 @@ import {
   TUser,
   TUserInput,
 } from "@/types";
-import { EMediaType, EUserRole } from "../../../common/types";
+import { EMediaType, TMediaCount } from "../../../common/types";
 
 export const useMediaStore = defineStore("media", () => {
-  //* <----- ALL MEDIA ----->
-  const fetchAllMedia = async (email: string) => {
+  //* <----- MEDIA ----->
+  const mediaCount = ref<TMediaCount>();
+  const setMediaCount = (payload: TMediaCount) => {
+    mediaCount.value = payload;
+  };
+
+  const fetchMediaCount = async () => {
     try {
-      const { data, loading } = await getAllMedia(email);
+      const { data, loading } = await getMediaCount(
+        userFromDB.value?.email ?? ""
+      );
       isLoading.value = loading;
-      setAnime(data.getAllAnime);
-      setBooks(data.getAllBooks);
-      setCharacters(data.getAllCharacters);
-      userFromDB.value?.role === EUserRole.ADMIN &&
-        setEmotes(data.getAllEmotes);
-      setGames(data.getAllGames);
-      setManga(data.getAllManga);
-      setMovies(data.getAllMovies);
-      setMusic(data.getAllMusic);
-      setNotes(data.getAllNotes);
+
+      setMediaCount({
+        anime: data.getAnimeCount,
+        books: data.getBookCount,
+        characters: data.getCharacterCount,
+        emotes: data.getEmoteCount,
+        games: data.getGameCount,
+        manga: data.getMangaCount,
+        movies: data.getMovieCount,
+        music: data.getMusicCount,
+        notes: data.getNoteCount,
+      });
     } catch (err) {
       console.log(err);
     }
   };
+
+  const fetchRecentMedia = async () => {
+    try {
+      const { data, loading } = await getRecentMedia(
+        userFromDB.value?.email ?? ""
+      );
+      setAnime(data.getAllAnime);
+      setBooks(data.getAllBooks);
+      setCharacters(data.getAllCharacters);
+      setGames(data.getAllGames);
+      setManga(data.getAllManga);
+      setMovies(data.getAllMovies);
+
+      setLoading(loading);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   //* <----- ANIME ----->
   const anime = ref<TAnime[]>([]);
   const setAnime = (payload: TAnime[]) => {
@@ -115,13 +144,13 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleAnime = (payload: TAnime) => {
     singleAnime.value = payload;
   };
-  const fetchAnime = async (email: string) => {
+  const fetchAnime = async () => {
     try {
       const {
         data,
         loading,
         // error
-      } = await getAllAnime(email);
+      } = await getAllAnime(userFromDB.value?.email ?? "", "ALL");
       isLoading.value = loading;
       setAnime(data.getAllAnime);
     } catch (err) {
@@ -216,9 +245,12 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleBook = (payload: TBook) => {
     singleBook.value = payload;
   };
-  const fetchBooks = async (email: string) => {
+  const fetchBooks = async () => {
     try {
-      const { data, loading } = await getAllBooks(email);
+      const { data, loading } = await getAllBooks(
+        userFromDB.value?.email ?? "",
+        "ALL"
+      );
       isLoading.value = loading;
       setBooks(data.getAllBooks);
     } catch (err) {
@@ -311,9 +343,12 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleCharacter = (payload: TCharacter) => {
     singleCharacter.value = payload;
   };
-  const fetchCharacters = async (email: string) => {
+  const fetchCharacters = async () => {
     try {
-      const { data, loading } = await getAllCharacters(email);
+      const { data, loading } = await getAllCharacters(
+        userFromDB.value?.email ?? "",
+        "ALL"
+      );
       isLoading.value = loading;
       setCharacters(data.getAllCharacters);
     } catch (err) {
@@ -417,9 +452,11 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleEmote = (payload: TEmote) => {
     singleEmote.value = payload;
   };
-  const fetchEmotes = async (email: string) => {
+  const fetchEmotes = async () => {
     try {
-      const { data, loading } = await getAllEmotes(email);
+      const { data, loading } = await getAllEmotes(
+        userFromDB.value?.email ?? ""
+      );
       isLoading.value = loading;
       setEmotes(data.getAllEmotes);
     } catch (err) {
@@ -514,9 +551,12 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleGame = (payload: TGame) => {
     singleGame.value = payload;
   };
-  const fetchGames = async (email: string) => {
+  const fetchGames = async () => {
     try {
-      const { data, loading } = await getAllGames(email);
+      const { data, loading } = await getAllGames(
+        userFromDB.value?.email ?? "",
+        "ALL"
+      );
       isLoading.value = loading;
       setGames(data.getAllGames);
     } catch (err) {
@@ -609,9 +649,12 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleManga = (payload: TManga) => {
     singleManga.value = payload;
   };
-  const fetchManga = async (email: string) => {
+  const fetchManga = async () => {
     try {
-      const { data, loading } = await getAllManga(email);
+      const { data, loading } = await getAllManga(
+        userFromDB.value?.email ?? "",
+        "ALL"
+      );
       isLoading.value = loading;
       setManga(data.getAllManga);
     } catch (err) {
@@ -706,9 +749,12 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleMovie = (payload: TMovie) => {
     singleMovie.value = payload;
   };
-  const fetchMovies = async (email: string) => {
+  const fetchMovies = async () => {
     try {
-      const { data, loading } = await getAllMovies(email);
+      const { data, loading } = await getAllMovies(
+        userFromDB.value?.email ?? "",
+        "ALL"
+      );
       isLoading.value = loading;
       setMovies(data.getAllMovies);
     } catch (err) {
@@ -805,9 +851,12 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleMusic = (payload: TMusic) => {
     singleMusic.value = payload;
   };
-  const fetchMusic = async (email: string) => {
+  const fetchMusic = async () => {
     try {
-      const { data, loading } = await getAllMusic(email);
+      const { data, loading } = await getAllMusic(
+        userFromDB.value?.email ?? "",
+        "ALL"
+      );
       isLoading.value = loading;
       setMusic(data.getAllMusic);
     } catch (err) {
@@ -902,9 +951,11 @@ export const useMediaStore = defineStore("media", () => {
   const setSingleNote = (payload: TNote) => {
     singleNote.value = payload;
   };
-  const fetchNotes = async (email: string) => {
+  const fetchNotes = async () => {
     try {
-      const { data, loading } = await getAllNotes(email);
+      const { data, loading } = await getAllNotes(
+        userFromDB.value?.email ?? ""
+      );
       isLoading.value = loading;
       setNotes(data.getAllNotes);
     } catch (err) {
@@ -1049,8 +1100,11 @@ export const useMediaStore = defineStore("media", () => {
   };
 
   return {
-    //* <----- ALL MEDIA ----->
-    fetchAllMedia,
+    //* <----- MEDIA ----->
+    fetchMediaCount,
+    fetchRecentMedia,
+    mediaCount,
+    setMediaCount,
     //* <----- ANIME ----->
     anime,
     setAnime,
