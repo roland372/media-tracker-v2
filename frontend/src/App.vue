@@ -10,7 +10,7 @@ import { setDefaultTheme } from "@/utils/themes";
 import LoaderComponent from "@/components/ui/LoaderComponent.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { healthCheck } from "./utils/index";
+// import { healthCheck } from "./utils/index";
 
 const mediaStore = useMediaStore();
 const { fetchUser, setLoading } = mediaStore;
@@ -27,7 +27,7 @@ onMounted(async () => {
     const auth = getAuth();
     onAuthStateChanged(auth, async () => {
       if (auth?.currentUser?.email) {
-        await healthCheck();
+        // await healthCheck();
         await fetchUser(auth.currentUser.email);
 
         setLoading(false);
