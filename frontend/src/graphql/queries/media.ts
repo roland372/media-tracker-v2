@@ -137,7 +137,7 @@ export const getAllMedia = async (userId: string) => {
           createdAt
           updatedAt
         }
-        getAllMusic {
+        getAllMusic(query: $query) {
           artist
           category
           favourites

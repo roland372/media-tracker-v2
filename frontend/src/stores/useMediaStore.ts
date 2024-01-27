@@ -85,7 +85,7 @@ import {
   TUser,
   TUserInput,
 } from "@/types";
-import { EMediaType, TMediaCount } from "../../../common/types";
+import { EMediaType, EUserRole, TMediaCount } from "../../../common/types";
 
 export const useMediaStore = defineStore("media", () => {
   //* <----- MEDIA ----->
@@ -125,9 +125,13 @@ export const useMediaStore = defineStore("media", () => {
       setAnime(data.getAllAnime);
       setBooks(data.getAllBooks);
       setCharacters(data.getAllCharacters);
+      userFromDB.value?.role === EUserRole.ADMIN &&
+        setEmotes(data.getAllEmotes);
       setGames(data.getAllGames);
       setManga(data.getAllManga);
       setMovies(data.getAllMovies);
+      setMusic(data.getAllMusic);
+      setNotes(data.getAllNotes);
 
       setLoading(loading);
     } catch (err) {
