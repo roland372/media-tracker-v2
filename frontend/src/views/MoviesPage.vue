@@ -89,7 +89,7 @@
   />
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
@@ -109,7 +109,6 @@ import { TSortingOptions } from "@/types";
 import { EMediaType, EMovieStatus, EMovieType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
-const { fetchMovies } = mediaStore;
 const { movies } = storeToRefs(mediaStore);
 
 const displayFlag = ref<string>("grid");
@@ -289,8 +288,4 @@ const handleMovieSort = (emittedValue: TSortingOptions) =>
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
 };
-
-onMounted(async () => {
-  await fetchMovies();
-});
 </script>

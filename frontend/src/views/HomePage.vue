@@ -86,7 +86,7 @@
   <LinksComponent />
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { orderBy } from "lodash";
@@ -99,7 +99,6 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import { EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
-const { fetchRecentMedia } = mediaStore;
 const { anime, characters, games, manga, books, movies } =
   storeToRefs(mediaStore);
 
@@ -120,8 +119,4 @@ const handleShowSelectDialog = () => {
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
 };
-
-onMounted(async () => {
-  await fetchRecentMedia();
-});
 </script>

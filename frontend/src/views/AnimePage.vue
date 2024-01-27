@@ -122,7 +122,7 @@
   />
 </template>
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
@@ -145,7 +145,7 @@ import { TAnimeInput, TSortingOptions } from "@/types";
 import { EAnimeStatus, EAnimeType, EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
-const { fetchAnime, submitAddAnime, userFromDB } = mediaStore;
+const { submitAddAnime, userFromDB } = mediaStore;
 const { anime } = storeToRefs(mediaStore);
 
 const displayFlag = ref<string>("grid");
@@ -366,8 +366,4 @@ const handleOpenFetchAnimeModal = (item: Anime) => {
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
 };
-
-onMounted(async () => {
-  await fetchAnime();
-});
 </script>

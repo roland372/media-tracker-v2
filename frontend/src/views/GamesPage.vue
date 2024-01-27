@@ -89,7 +89,7 @@
   />
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
@@ -109,7 +109,6 @@ import { TSortingOptions } from "@/types";
 import { EGameStatus, EGameType, EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
-const { fetchGames } = mediaStore;
 const { games } = storeToRefs(mediaStore);
 
 const displayFlag = ref<string>("grid");
@@ -269,8 +268,4 @@ const handleGameSort = (emittedValue: TSortingOptions) =>
 const handleSubmit = () => {
   formDialog.value = !formDialog.value;
 };
-
-onMounted(async () => {
-  await fetchGames();
-});
 </script>

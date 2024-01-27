@@ -214,7 +214,7 @@
   </HeaderComponent>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref, reactive } from "vue";
+import { ref, reactive } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { beigeTheme, blueTheme, grayTheme, setAppTheme } from "@/utils/themes";
@@ -244,8 +244,7 @@ import { EUserRole } from "../../../common/types";
 import { getAuth, signOut } from "firebase/auth";
 
 const mediaStore = useMediaStore();
-const { fetchMediaCount, setSnackbar, setUserFromDB, submitEditUser } =
-  mediaStore;
+const { setSnackbar, setUserFromDB, submitEditUser } = mediaStore;
 const {
   anime,
   books,
@@ -257,7 +256,6 @@ const {
   music,
   notes,
   userFromDB,
-  mediaCount,
 } = storeToRefs(mediaStore);
 
 const isAdmin = userFromDB.value?.role === EUserRole.ADMIN;
@@ -368,17 +366,17 @@ const colorThemeButtons = [
   },
 ];
 
-const mediaType = computed(() => [
-  { media: "Anime", total: mediaCount.value?.anime },
-  { media: "Books", total: mediaCount.value?.books },
-  { media: "Characters", total: mediaCount.value?.characters },
-  { media: "Emotes", total: mediaCount.value?.emotes, isAdmin: !isAdmin },
-  { media: "Games", total: mediaCount.value?.games },
-  { media: "Manga", total: mediaCount.value?.manga },
-  { media: "Movies", total: mediaCount.value?.movies },
-  { media: "Music", total: mediaCount.value?.music },
-  { media: "Notes", total: mediaCount.value?.notes },
-]);
+const mediaType = [
+  { media: "Anime", total: anime.value.length },
+  { media: "Books", total: books.value.length },
+  { media: "Characters", total: characters.value.length },
+  { media: "Emotes", total: emotes.value.length, isAdmin: !isAdmin },
+  { media: "Games", total: games.value.length },
+  { media: "Manga", total: manga.value.length },
+  { media: "Movies", total: movies.value.length },
+  { media: "Music", total: music.value.length },
+  { media: "Notes", total: notes.value.length },
+];
 
 const generateAndSetRandomTheme = () => {
   const randomColor1 = "#" + Math.floor(Math.random() * 16777215).toString(16);
@@ -459,8 +457,4 @@ const handleSubmitEditProfile = () => {
 // const handleSubmitUploadAvatar = () => {
 //   console.log(avatarUpload);
 // };
-
-onMounted(async () => {
-  await fetchMediaCount();
-});
 </script>

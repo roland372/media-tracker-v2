@@ -13,7 +13,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 // import { healthCheck } from "./utils/index";
 
 const mediaStore = useMediaStore();
-const { fetchUser, setLoading } = mediaStore;
+const { fetchAllMedia, fetchUser, setLoading } = mediaStore;
 const { isLoading } = storeToRefs(mediaStore);
 
 onMounted(async () => {
@@ -29,6 +29,7 @@ onMounted(async () => {
       if (auth?.currentUser?.email) {
         // await healthCheck();
         await fetchUser(auth.currentUser.email);
+        await fetchAllMedia();
 
         setLoading(false);
       }

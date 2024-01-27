@@ -523,7 +523,7 @@
   ></v-dialog>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
@@ -544,13 +544,8 @@ import { TMusic, TMusicInput, TYouTubeVideo, TThumbnailUrls } from "@/types";
 import { EMusicCategory } from "../../../common/types";
 
 const mediaStore = useMediaStore();
-const {
-  fetchMusic,
-  submitAddMusic,
-  submitEditMusic,
-  submitDeleteMusic,
-  userFromDB,
-} = mediaStore;
+const { submitAddMusic, submitEditMusic, submitDeleteMusic, userFromDB } =
+  mediaStore;
 const { music } = storeToRefs(mediaStore);
 
 const newMusic: TMusicInput = reactive({
@@ -725,10 +720,6 @@ const handleSubmitEditMusic = async () => {
     editMusicModal.value = false;
   }
 };
-
-onMounted(async () => {
-  await fetchMusic();
-});
 </script>
 <style scoped>
 /* .v-select {

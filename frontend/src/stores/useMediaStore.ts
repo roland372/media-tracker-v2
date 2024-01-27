@@ -4,7 +4,6 @@ import { sortedIndexBy } from "lodash";
 import {
   //* <----- MEDIA ----->
   getMediaCount,
-  getRecentMedia,
   //* <----- ANIME ----->
   addAnime,
   deleteAnime,
@@ -62,6 +61,7 @@ import {
   //* <----- USER ----->
   getSingleUser,
   editUser,
+  getAllMedia,
 } from "@/graphql";
 import {
   TAnime,
@@ -117,9 +117,9 @@ export const useMediaStore = defineStore("media", () => {
     }
   };
 
-  const fetchRecentMedia = async () => {
+  const fetchAllMedia = async () => {
     try {
-      const { data, loading } = await getRecentMedia(
+      const { data, loading } = await getAllMedia(
         userFromDB.value?.email ?? ""
       );
       setAnime(data.getAllAnime);
@@ -1102,7 +1102,7 @@ export const useMediaStore = defineStore("media", () => {
   return {
     //* <----- MEDIA ----->
     fetchMediaCount,
-    fetchRecentMedia,
+    fetchAllMedia,
     mediaCount,
     setMediaCount,
     //* <----- ANIME ----->

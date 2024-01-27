@@ -24,7 +24,7 @@ export const getMediaCount = async (userId: string) => {
   });
 };
 
-export const getRecentMedia = async (userId: string) => {
+export const getAllMedia = async (userId: string) => {
   return await apolloClient.query({
     query: gql`
       query Query($query: EQueryParams) {
@@ -74,6 +74,14 @@ export const getRecentMedia = async (userId: string) => {
           owner
           series
           source
+          createdAt
+          updatedAt
+        }
+        getAllEmotes {
+          favourites
+          _id
+          name
+          url
           createdAt
           updatedAt
         }
@@ -129,10 +137,30 @@ export const getRecentMedia = async (userId: string) => {
           createdAt
           updatedAt
         }
+        getAllMusic {
+          artist
+          category
+          favourites
+          _id
+          imageURL
+          link
+          owner
+          title
+          createdAt
+          updatedAt
+        }
+        getAllNotes {
+          color
+          _id
+          note
+          title
+          createdAt
+          updatedAt
+        }
       }
     `,
     variables: {
-      query: "LIMIT",
+      query: "ALL",
     },
     context: {
       headers: {
