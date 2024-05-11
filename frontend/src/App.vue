@@ -10,16 +10,13 @@ import { setDefaultTheme } from "@/utils/themes";
 import LoaderComponent from "@/components/ui/LoaderComponent.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-// import { healthCheck } from "./utils/index";
+import axios from "axios";
 
 const mediaStore = useMediaStore();
 const { fetchAllMedia, fetchUser, setLoading } = mediaStore;
 const { isLoading } = storeToRefs(mediaStore);
 
 onMounted(async () => {
-  const headers = new Headers();
-  headers.append("ngrok-skip-browser-warning", "true");
-
   // console.log("APP MOUNTED");
   setDefaultTheme();
 
@@ -27,9 +24,25 @@ onMounted(async () => {
     const auth = getAuth();
     onAuthStateChanged(auth, async () => {
       if (auth?.currentUser?.email) {
-        // await healthCheck();
-        await fetchUser(auth.currentUser.email);
-        await fetchAllMedia();
+        const url = process.env.VUE_APP_SHEET_API || "";
+        const response = await axios.get(url);
+        const mediaData = response.data;
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const usersData = mediaData.users.slice(1).map((item: any) => ({
+          googleId: +item[0],
+          email: item[1],
+          username: item[2],
+          profileDesc: item[3],
+          profileImg: item[4],
+          color: item[5],
+          role: item[6],
+          createdAt: item[7],
+          updatedAt: item[8],
+        }));
+
+        await fetchUser(usersData[0]);
+        await fetchAllMedia(mediaData);
 
         setLoading(false);
       }

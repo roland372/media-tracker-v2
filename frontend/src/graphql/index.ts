@@ -33,35 +33,3 @@ export const apolloClient = new ApolloClient({
   link: errorLink.concat(httpLink),
   cache,
 });
-
-export * from "./queries/media";
-
-export * from "./queries/anime";
-export * from "./mutations/anime";
-
-export * from "./queries/books";
-export * from "./mutations/books";
-
-export * from "./queries/characters";
-export * from "./mutations/characters";
-
-export * from "./queries/emotes";
-export * from "./mutations/emotes";
-
-export * from "./queries/games";
-export * from "./mutations/games";
-
-export * from "./queries/manga";
-export * from "./mutations/manga";
-
-export * from "./queries/movies";
-export * from "./mutations/movies";
-
-export * from "./queries/music";
-export * from "./mutations/music";
-
-export * from "./queries/notes";
-export * from "./mutations/notes";
-
-export * from "./queries/user";
-export * from "./mutations/user";
