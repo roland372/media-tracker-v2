@@ -274,8 +274,7 @@ import TinyMCEEditor from "@/components/media/TinyMCEEditor.vue";
 import { TNote, TNoteInput } from "@/types";
 
 const mediaStore = useMediaStore();
-const { submitAddNote, submitEditNote, submitDeleteNote, userFromDB } =
-  mediaStore;
+const { userFromDB } = mediaStore;
 const { notes } = storeToRefs(mediaStore);
 
 const newNote: TNoteInput = reactive({
@@ -298,7 +297,6 @@ const handleDeleteCancel = () => {
 };
 
 const handleDeleteConfirm = async () => {
-  await submitDeleteNote(noteID.value);
   noteID.value = "";
   deleteNoteModal.value = false;
 };
@@ -340,7 +338,6 @@ const handleOpenViewNoteModal = (id: string, note: TNote) => {
 
 const handleSubmitAddNote = async () => {
   if (newNote.title) {
-    await submitAddNote(newNote);
     addNoteModal.value = false;
 
     newNote.color = "#FFFFFF";
@@ -351,7 +348,6 @@ const handleSubmitAddNote = async () => {
 
 const handleSubmitEditNote = async () => {
   if (noteRef.value.title) {
-    await submitEditNote(noteID.value, noteRef.value);
     editNoteModal.value = false;
     noteRef.value.note = "";
   }

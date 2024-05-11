@@ -544,8 +544,7 @@ import { TMusic, TMusicInput, TYouTubeVideo, TThumbnailUrls } from "@/types";
 import { EMusicCategory } from "../../../common/types";
 
 const mediaStore = useMediaStore();
-const { submitAddMusic, submitEditMusic, submitDeleteMusic, userFromDB } =
-  mediaStore;
+const { userFromDB } = mediaStore;
 const { music } = storeToRefs(mediaStore);
 
 const newMusic: TMusicInput = reactive({
@@ -605,7 +604,6 @@ const handleDeleteCancel = () => {
 };
 
 const handleDeleteConfirm = async () => {
-  await submitDeleteMusic(musicID.value);
   musicID.value = "";
   deleteMusicModal.value = false;
 };
@@ -696,7 +694,6 @@ const handleSubmitAddMusic = async () => {
     (!newMusic.link || URLRegex.test(String(newMusic.link))) &&
     (!newMusic.imageURL || URLRegex.test(String(newMusic.imageURL)))
   ) {
-    await submitAddMusic(newMusic);
     addMusicModal.value = false;
     addFetchedMusicModal.value = false;
 
@@ -716,7 +713,6 @@ const handleSubmitEditMusic = async () => {
     (!musicRef.value.link || URLRegex.test(String(musicRef.value.link))) &&
     (!musicRef.value.imageURL || URLRegex.test(String(musicRef.value.imageURL)))
   ) {
-    await submitEditMusic(musicID.value, musicRef.value);
     editMusicModal.value = false;
   }
 };

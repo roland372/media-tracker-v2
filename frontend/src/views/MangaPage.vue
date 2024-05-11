@@ -1,69 +1,4 @@
 <template>
-  <HeaderComponent title="Manga">
-    <FormComponent
-      v-if="formDialog"
-      v-model="formDialog"
-      @close="formDialog = !formDialog"
-      @submit="handleSubmit"
-      :media-type="EMediaType.MANGA"
-      :title="`Add ${EMediaType.MANGA}`"
-    />
-    <section class="d-sm-flex align-center justify-center">
-      <ButtonText
-        @click="formDialog = !formDialog"
-        color="indigo"
-        text="Add Manga"
-      />
-      <div class="px-3 text-color">
-        <p>or</p>
-      </div>
-      <v-text-field
-        v-model="mangaFetchSearch"
-        @click:append-inner="handleFetchMangaSearch"
-        @click:clear="handleClearMangaSearch"
-        @keydown.enter="handleFetchMangaSearch"
-        append-inner-icon="mdi-magnify"
-        class="text-color"
-        clearable
-        density="compact"
-        hide-details="auto"
-        label="Search for a Manga"
-        variant="outlined"
-      />
-    </section>
-    <section v-if="fetchedManga?.length" class="grid-container pt-3">
-      <section v-for="(item, index) in fetchedManga" :key="index">
-        <v-img
-          @click="handleOpenFetchMangaModal(item)"
-          class="rounded media-img-card image-hover"
-          cover
-          :src="item.images.jpg.image_url"
-        />
-      </section>
-    </section>
-  </HeaderComponent>
-  <FetchedMediaModal
-    v-if="fetchedMangaModal"
-    @close-modal="handleCloseFetchMangaModal"
-    :show-modal="fetchedMangaModal"
-    :title="fetchedSingleManga?.title as string"
-    :submit-click="handleFetchedMangaSubmit"
-    :view-more-click="handleFetchedMangaViewMore"
-  >
-    <section>
-      <div><b>Chapters: </b> {{ fetchedSingleManga?.chapters }}</div>
-      <div><b>Volumes: </b> {{ fetchedSingleManga?.volumes }}</div>
-      <div><b>Type: </b> {{ fetchedSingleManga?.type }}</div>
-      <div>
-        <b>Synopsis:</b>
-        {{
-          fetchedSingleManga && fetchedSingleManga?.synopsis?.length > 200
-            ? `${fetchedSingleManga?.synopsis?.slice(0, 200)}...`
-            : fetchedSingleManga?.synopsis
-        }}
-      </div>
-    </section>
-  </FetchedMediaModal>
   <StatsComponent
     :mean-score="meanScore"
     :media-type="EMediaType.MANGA"
@@ -123,39 +58,27 @@
   />
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
 import {
   calculatePercentage,
-  fetchMediaURL,
   filterMediaStatus,
   round,
 } from "@/utils/mediaUtils";
-import ButtonText from "@/components/ui/ButtonText.vue";
 import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
-import FetchedMediaModal from "@/components/media/FetchedMediaModal.vue";
-import FormComponent from "@/components/media/FormComponent.vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
-import { Manga } from "@tutkli/jikan-ts";
-import { TMangaInput, TSortingOptions } from "@/types";
+import { TSortingOptions } from "@/types";
 import { EMangaStatus, EMangaType, EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
-const { submitAddManga, userFromDB } = mediaStore;
 const { manga } = storeToRefs(mediaStore);
 
 const displayFlag = ref<string>("grid");
-const formDialog = ref<boolean>(false);
-const fetchedManga = ref<Manga[]>();
-const fetchedSingleManga = ref<Manga>();
-const fetchedMangaModal = ref<boolean>(false);
 const searchTerm = ref<string>("");
-const mangaFetchSearch = ref<string>("");
 const mangaFilter = ref<string>("");
 const mangaType = ref<string[]>([...Object.values(EMangaType)]);
 const sortingOptions = ref<TSortingOptions>({
@@ -352,62 +275,6 @@ const handleChangeDisplayFlag = () => {
   }
 };
 
-const handleClearMangaSearch = () => {
-  mangaFetchSearch.value = "";
-  fetchedManga.value = [];
-};
-
-const handleCloseFetchMangaModal = () => {
-  fetchedMangaModal.value = !fetchedMangaModal.value;
-};
-
-const handleOpenFetchMangaModal = (item: Manga) => {
-  fetchedSingleManga.value = item;
-  fetchedMangaModal.value = !fetchedMangaModal.value;
-};
-
-const handleFetchMangaSearch = async () => {
-  if (mangaFetchSearch.value.length) {
-    const fetchManga = await fetch(
-      fetchMediaURL("manga", mangaFetchSearch.value, "members", "desc")
-    ).then((res) => res.json());
-
-    fetchedManga.value = fetchManga.data;
-  } else {
-    console.log("empty search");
-  }
-};
-
-const handleFetchedMangaSubmit = async () => {
-  const fetchedManga: TMangaInput = reactive({
-    chaptersMax: fetchedSingleManga.value?.chapters
-      ? fetchedSingleManga.value?.chapters
-      : 0,
-    chaptersMin: 0,
-    favourites: false,
-    imageURL: fetchedSingleManga.value?.images.jpg.image_url as string,
-    link: fetchedSingleManga.value?.url as string,
-    linkName: "MAL",
-    mal_id: fetchedSingleManga.value?.mal_id,
-    owner: userFromDB?.email as string,
-    rating: 0,
-    status: EMangaStatus.PLAN_TO_READ,
-    title: fetchedSingleManga.value?.title as string,
-    type: EMangaType.MANGA,
-    volumesMax: fetchedSingleManga.value?.volumes
-      ? fetchedSingleManga.value?.volumes
-      : 0,
-    volumesMin: 0,
-  });
-
-  await submitAddManga(fetchedManga);
-  fetchedMangaModal.value = false;
-};
-
-const handleFetchedMangaViewMore = () => {
-  window.open(fetchedSingleManga.value?.url, "_blank");
-};
-
 const handleMangaFilter = (emittedValue: string) =>
   (mangaFilter.value = emittedValue);
 
@@ -419,8 +286,4 @@ const handleMangaSearch = (emittedValue: string) =>
 
 const handleMangaSort = (emittedValue: TSortingOptions) =>
   (sortingOptions.value = emittedValue);
-
-const handleSubmit = () => {
-  formDialog.value = !formDialog.value;
-};
 </script>

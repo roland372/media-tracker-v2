@@ -1,68 +1,4 @@
 <template>
-  <HeaderComponent title="Anime">
-    <FormComponent
-      v-if="formDialog"
-      v-model="formDialog"
-      @close="formDialog = !formDialog"
-      @submit="handleSubmit"
-      :media-type="EMediaType.ANIME"
-      :title="`Add ${EMediaType.ANIME}`"
-    />
-    <section class="d-sm-flex align-center justify-center">
-      <ButtonText
-        @click="formDialog = !formDialog"
-        color="indigo"
-        text="Add Anime"
-      />
-      <div class="px-3 text-color">
-        <p>or</p>
-      </div>
-      <v-text-field
-        v-model="animeFetchSearch"
-        @click:append-inner="handleFetchAnimeSearch"
-        @click:clear="handleClearAnimeSearch"
-        @keydown.enter="handleFetchAnimeSearch"
-        append-inner-icon="mdi-magnify"
-        class="text-color"
-        clearable
-        density="compact"
-        hide-details="auto"
-        label="Search for an Anime"
-        variant="outlined"
-      />
-    </section>
-    <section v-if="fetchedAnime?.length" class="grid-container pt-3">
-      <section v-for="(item, index) in fetchedAnime" :key="index">
-        <v-img
-          @click="handleOpenFetchAnimeModal(item)"
-          class="rounded media-img-card image-hover"
-          cover
-          :src="item.images.jpg.image_url"
-        />
-      </section>
-    </section>
-  </HeaderComponent>
-  <FetchedMediaModal
-    v-if="fetchedAnimeModal"
-    @close-modal="handleCloseFetchAnimeModal"
-    :show-modal="fetchedAnimeModal"
-    :submit-click="handleFetchedAnimeSubmit"
-    :title="fetchedSingleAnime?.title as string"
-    :view-more-click="handleFetchedAnimeViewMore"
-  >
-    <section>
-      <div><b>Episodes: </b> {{ fetchedSingleAnime?.episodes }}</div>
-      <div><b>Type: </b> {{ fetchedSingleAnime?.type }}</div>
-      <div>
-        <b>Synopsis:</b>
-        {{
-          fetchedSingleAnime && fetchedSingleAnime?.synopsis?.length > 200
-            ? `${fetchedSingleAnime?.synopsis?.slice(0, 200)}...`
-            : fetchedSingleAnime?.synopsis
-        }}
-      </div>
-    </section>
-  </FetchedMediaModal>
   <StatsComponent
     :mean-score="meanScore"
     :media-type="EMediaType.ANIME"
@@ -122,39 +58,27 @@
   />
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
 import {
   calculatePercentage,
-  fetchMediaURL,
   filterMediaStatus,
   round,
 } from "@/utils/mediaUtils";
-import ButtonText from "@/components/ui/ButtonText.vue";
 import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
-import FetchedMediaModal from "@/components/media/FetchedMediaModal.vue";
-import FormComponent from "@/components/media/FormComponent.vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
-import { Anime } from "@tutkli/jikan-ts";
-import { TAnimeInput, TSortingOptions } from "@/types";
+import { TSortingOptions } from "@/types";
 import { EAnimeStatus, EAnimeType, EMediaType } from "../../../common/types";
 
 const mediaStore = useMediaStore();
-const { submitAddAnime, userFromDB } = mediaStore;
 const { anime } = storeToRefs(mediaStore);
 
 const displayFlag = ref<string>("grid");
-const formDialog = ref<boolean>(false);
-const fetchedAnime = ref<Anime[]>();
-const fetchedSingleAnime = ref<Anime>();
-const fetchedAnimeModal = ref<boolean>(false);
 const searchTerm = ref<string>("");
-const animeFetchSearch = ref<string>("");
 const animeFilter = ref<string>("");
 const animeType = ref<string[]>([...Object.values(EAnimeType)]);
 const sortingOptions = ref<TSortingOptions>({
@@ -309,61 +233,5 @@ const handleChangeDisplayFlag = () => {
   } else if (displayFlag.value === "grid") {
     displayFlag.value = "table";
   }
-};
-
-const handleClearAnimeSearch = () => {
-  animeFetchSearch.value = "";
-  fetchedAnime.value = [];
-};
-
-const handleCloseFetchAnimeModal = () => {
-  fetchedAnimeModal.value = !fetchedAnimeModal.value;
-};
-
-const handleFetchAnimeSearch = async () => {
-  if (animeFetchSearch.value.length) {
-    const fetchAnime = await fetch(
-      fetchMediaURL("anime", animeFetchSearch.value, "members", "desc")
-    ).then((res) => res.json());
-
-    fetchedAnime.value = fetchAnime.data;
-  } else {
-    console.log("empty search");
-  }
-};
-
-const handleFetchedAnimeSubmit = async () => {
-  const fetchedAnime: TAnimeInput = reactive({
-    episodesMax: fetchedSingleAnime.value?.episodes
-      ? fetchedSingleAnime.value?.episodes
-      : 0,
-    episodesMin: 0,
-    favourites: false,
-    imageURL: fetchedSingleAnime.value?.images.jpg.image_url as string,
-    link: fetchedSingleAnime.value?.url as string,
-    linkName: "MAL",
-    mal_id: fetchedSingleAnime.value?.mal_id as number,
-    owner: userFromDB?.email as string,
-    rating: 0,
-    status: EAnimeStatus.PLAN_TO_WATCH,
-    title: fetchedSingleAnime.value?.title as string,
-    type: EAnimeType.TV_SHOW,
-  });
-
-  await submitAddAnime(fetchedAnime);
-  fetchedAnimeModal.value = false;
-};
-
-const handleFetchedAnimeViewMore = () => {
-  window.open(fetchedSingleAnime.value?.url, "_blank");
-};
-
-const handleOpenFetchAnimeModal = (item: Anime) => {
-  fetchedSingleAnime.value = item;
-  fetchedAnimeModal.value = !fetchedAnimeModal.value;
-};
-
-const handleSubmit = () => {
-  formDialog.value = !formDialog.value;
 };
 </script>

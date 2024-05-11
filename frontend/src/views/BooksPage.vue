@@ -1,35 +1,4 @@
 <template>
-  <HeaderComponent title="Books">
-    <FormComponent
-      v-if="formDialog"
-      v-model="formDialog"
-      @close="formDialog = !formDialog"
-      @submit="handleSubmit"
-      :media-type="EMediaType.BOOK"
-      :title="`Add ${EMediaType.BOOK}`"
-    />
-    <section class="d-sm-flex align-center justify-center">
-      <ButtonText
-        @click="formDialog = !formDialog"
-        color="indigo"
-        text="Add Book"
-      />
-      <div class="px-3 text-color">
-        <p>or</p>
-      </div>
-      <v-text-field
-        v-model="bookFetchSearch"
-        @click:append-inner="handleFetchBookSearch"
-        append-inner-icon="mdi-magnify"
-        class="text-color"
-        clearable
-        density="compact"
-        hide-details="auto"
-        label="Search for a Book"
-        variant="outlined"
-      />
-    </section>
-  </HeaderComponent>
   <StatsComponent
     :mean-score="meanScore"
     :media-type="EMediaType.BOOK"
@@ -94,10 +63,7 @@ import {
   filterMediaStatus,
   round,
 } from "@/utils/mediaUtils";
-import ButtonText from "@/components/ui/ButtonText.vue";
 import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
-import FormComponent from "@/components/media/FormComponent.vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
@@ -108,9 +74,7 @@ const mediaStore = useMediaStore();
 const { books } = storeToRefs(mediaStore);
 
 const displayFlag = ref<string>("grid");
-const formDialog = ref<boolean>(false);
 const searchTerm = ref<string>("");
-const bookFetchSearch = ref<string>("");
 const bookFilter = ref<string>("");
 const sortingOptions = ref<TSortingOptions>({
   sortField: "title",
@@ -252,13 +216,5 @@ const handleChangeDisplayFlag = () => {
   } else if (displayFlag.value === "grid") {
     displayFlag.value = "table";
   }
-};
-
-const handleFetchBookSearch = () => {
-  console.log(bookFetchSearch.value);
-};
-
-const handleSubmit = () => {
-  formDialog.value = !formDialog.value;
 };
 </script>

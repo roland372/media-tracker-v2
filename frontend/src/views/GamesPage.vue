@@ -1,35 +1,4 @@
 <template>
-  <HeaderComponent title="Games">
-    <FormComponent
-      v-if="formDialog"
-      v-model="formDialog"
-      @close="formDialog = !formDialog"
-      @submit="handleSubmit"
-      :media-type="EMediaType.GAME"
-      :title="`Add ${EMediaType.GAME}`"
-    />
-    <section class="d-sm-flex align-center justify-center">
-      <ButtonText
-        @click="formDialog = !formDialog"
-        color="indigo"
-        text="Add Game"
-      />
-      <div class="px-3 text-color">
-        <p>or</p>
-      </div>
-      <v-text-field
-        v-model="gameFetchSearch"
-        @click:append-inner="handleFetchGameSearch"
-        append-inner-icon="mdi-magnify"
-        class="text-color"
-        clearable
-        density="compact"
-        hide-details="auto"
-        label="Search for a Game"
-        variant="outlined"
-      />
-    </section>
-  </HeaderComponent>
   <StatsComponent
     :mean-score="meanScore"
     :media-type="EMediaType.GAME"
@@ -98,10 +67,7 @@ import {
   filterMediaStatus,
   round,
 } from "@/utils/mediaUtils";
-import ButtonText from "@/components/ui/ButtonText.vue";
 import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
-import FormComponent from "@/components/media/FormComponent.vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
@@ -112,10 +78,8 @@ const mediaStore = useMediaStore();
 const { games } = storeToRefs(mediaStore);
 
 const displayFlag = ref<string>("grid");
-const formDialog = ref<boolean>(false);
 const searchTerm = ref<string>("");
 const gameFilter = ref<string>("");
-const gameFetchSearch = ref<string>("");
 const gameType = ref<string[]>([...Object.values(EGameType)]);
 const sortingOptions = ref<TSortingOptions>({
   sortField: "title",
@@ -249,10 +213,6 @@ const handleChangeDisplayFlag = () => {
   }
 };
 
-const handleFetchGameSearch = () => {
-  console.log(gameFetchSearch.value);
-};
-
 const handleGameFilter = (emittedValue: string) =>
   (gameFilter.value = emittedValue);
 
@@ -264,8 +224,4 @@ const handleGameSearch = (emittedValue: string) =>
 
 const handleGameSort = (emittedValue: TSortingOptions) =>
   (sortingOptions.value = emittedValue);
-
-const handleSubmit = () => {
-  formDialog.value = !formDialog.value;
-};
 </script>

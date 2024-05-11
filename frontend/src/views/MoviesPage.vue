@@ -1,35 +1,4 @@
 <template>
-  <HeaderComponent title="Movies">
-    <FormComponent
-      v-if="formDialog"
-      v-model="formDialog"
-      @close="formDialog = !formDialog"
-      @submit="handleSubmit"
-      :media-type="EMediaType.MOVIE"
-      :title="`Add ${EMediaType.MOVIE}`"
-    />
-    <section class="d-sm-flex align-center justify-center">
-      <ButtonText
-        @click="formDialog = !formDialog"
-        color="indigo"
-        text="Add Movie"
-      />
-      <div class="px-3 text-color">
-        <p>or</p>
-      </div>
-      <v-text-field
-        v-model="movieFetchSearch"
-        @click:append-inner="handleFetchMovieSearch"
-        append-inner-icon="mdi-magnify"
-        class="text-color"
-        clearable
-        density="compact"
-        hide-details="auto"
-        label="Search for a Movie"
-        variant="outlined"
-      />
-    </section>
-  </HeaderComponent>
   <StatsComponent
     :mean-score="meanScore"
     :media-type="EMediaType.MOVIE"
@@ -98,10 +67,7 @@ import {
   filterMediaStatus,
   round,
 } from "@/utils/mediaUtils";
-import ButtonText from "@/components/ui/ButtonText.vue";
 import DisplayFilterSearchPanel from "@/components/media/DisplayFilterSearchPanel.vue";
-import FormComponent from "@/components/media/FormComponent.vue";
-import HeaderComponent from "@/components/media/HeaderComponent.vue";
 import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
@@ -112,9 +78,7 @@ const mediaStore = useMediaStore();
 const { movies } = storeToRefs(mediaStore);
 
 const displayFlag = ref<string>("grid");
-const formDialog = ref<boolean>(false);
 const searchTerm = ref<string>("");
-const movieFetchSearch = ref<string>("");
 const movieFilter = ref<string>("");
 const movieType = ref<string[]>([...Object.values(EMovieType)]);
 const sortingOptions = ref<TSortingOptions>({
@@ -269,10 +233,6 @@ const handleChangeDisplayFlag = () => {
   }
 };
 
-const handleFetchMovieSearch = () => {
-  console.log(movieFetchSearch.value);
-};
-
 const handleMovieFilter = (emittedValue: string) =>
   (movieFilter.value = emittedValue);
 
@@ -284,8 +244,4 @@ const handleMovieSearch = (emittedValue: string) =>
 
 const handleMovieSort = (emittedValue: TSortingOptions) =>
   (sortingOptions.value = emittedValue);
-
-const handleSubmit = () => {
-  formDialog.value = !formDialog.value;
-};
 </script>

@@ -34,66 +34,16 @@
     <MediaModal
       v-if="dialog"
       v-model="dialog"
-      :delete-click="handleDeleteClick"
-      :edit-click="handleEditClick"
       :media="media"
       :media-type="mediaType"
       :title="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TBook | TGame | TManga | TMovie).title"
-      :view-click="handleViewClick"
-    />
-    <v-dialog
-      v-if="deleteDialog"
-      v-model="deleteDialog"
-      class="delete-dialog-position"
-      width="auto"
-    >
-      <v-card max-width="250">
-        <div class="bg-primary-light text-color px-5 py-3 text-h6">
-          Deleting
-          {{
-            props.mediaType === EMediaType.CHARACTER
-              ? (props.media as TCharacter).name
-              : (props.media as TAnime | TBook | TManga | TGame | TMovie).title
-          }}
-        </div>
-        <v-card-text
-          >Are you sure you want to delete this
-          {{ props.mediaType }}?</v-card-text
-        >
-        <v-card-actions class="d-flex justify-space-around mb-2">
-          <ButtonText
-            @click="handleDeleteCancel"
-            color="yellow"
-            text="Cancel"
-            variant="flat"
-          />
-          <ButtonText
-            @click="handleDeleteConfirm"
-            color="red"
-            text="Delete"
-            variant="flat"
-          />
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <EditFormComponent
-      v-if="formDialog"
-      v-model="formDialog"
-      @close="formDialog = !formDialog"
-      @edit="handleCloseModal"
-      :media="media"
-      :media-type="mediaType"
-      :title="`Edit ${mediaType}`"
     />
   </v-img>
 </template>
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
-import { useMediaStore } from "@/stores/useMediaStore";
 import { placeholderImg } from "@/utils/mediaUtils";
-import ButtonText from "../ui/ButtonText.vue";
 import ChipComponent from "../ui/ChipComponent.vue";
-import EditFormComponent from "./EditFormComponent.vue";
 import MediaModal from "@/components/media/MediaModal.vue";
 import {
   TAnime,
@@ -114,16 +64,6 @@ import {
   EMovieStatus,
 } from "../../../../common/types";
 
-const mediaStore = useMediaStore();
-const {
-  submitDeleteAnime,
-  submitDeleteBook,
-  submitDeleteCharacter,
-  submitDeleteGame,
-  submitDeleteManga,
-  submitDeleteMovie,
-} = mediaStore;
-
 interface IMediaCardProps {
   media: TMedia;
   mediaType: EMediaType;
@@ -132,8 +72,6 @@ interface IMediaCardProps {
 const props = defineProps<IMediaCardProps>();
 
 const dialog = ref<boolean>(false);
-const deleteDialog = ref<boolean>(false);
-const formDialog = ref<boolean>(false);
 
 const displayImageText = (media: TMedia) => {
   let imageText = "";
@@ -209,52 +147,6 @@ const statusColor = (media: TMedia) => {
     }
   }
   return color;
-};
-
-const handleDeleteCancel = () => {
-  deleteDialog.value = !deleteDialog.value;
-};
-
-const handleDeleteClick = async () => {
-  dialog.value = !dialog.value;
-  deleteDialog.value = !deleteDialog.value;
-};
-
-const handleCloseModal = () => {
-  formDialog.value = !formDialog.value;
-};
-
-const handleDeleteConfirm = async () => {
-  switch (props.mediaType) {
-    case EMediaType.ANIME:
-      await submitDeleteAnime(props.media._id);
-      break;
-    case EMediaType.BOOK:
-      await submitDeleteBook(props.media._id);
-      break;
-    case EMediaType.CHARACTER:
-      await submitDeleteCharacter(props.media._id);
-      break;
-    case EMediaType.GAME:
-      await submitDeleteGame(props.media._id);
-      break;
-    case EMediaType.MANGA:
-      await submitDeleteManga(props.media._id);
-      break;
-    case EMediaType.MOVIE:
-      await submitDeleteMovie(props.media._id);
-      break;
-  }
-  deleteDialog.value = !deleteDialog.value;
-};
-
-const handleEditClick = () => {
-  dialog.value = !dialog.value;
-  formDialog.value = !formDialog.value;
-};
-
-const handleViewClick = () => {
-  dialog.value = !dialog.value;
 };
 </script>
 <style>

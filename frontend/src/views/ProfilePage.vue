@@ -96,13 +96,6 @@
               class="d-flex align-center justify-space-evenly flex-wrap py-3"
             >
               <ButtonText
-                @click="handleOpenSettings"
-                class="me-2 mt-2"
-                color="yellow"
-                size="small"
-                text="Edit Profile"
-              />
-              <ButtonText
                 @click="handleLogout"
                 class="me-2 mt-2"
                 color="indigo"
@@ -129,86 +122,6 @@
             variant="text"
           />
         </div>
-        <v-form @submit.prevent="handleSubmitEditProfile" validate-on="input">
-          <v-card-text>
-            <v-text-field
-              v-model="userRef.username"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Name"
-              :rules="stringRules('Name')"
-              variant="outlined"
-            />
-            <v-text-field
-              v-model="userRef.profileDesc"
-              class="mb-2"
-              density="compact"
-              hide-details="auto"
-              label="Description"
-              variant="outlined"
-            />
-            <div class="d-flex justify-space-around align-center">
-              <v-text-field
-                v-model="userRef.profileImg"
-                class="me-2"
-                density="compact"
-                hide-details="auto"
-                label="Avatar"
-                :rules="URLRules"
-                variant="outlined"
-              />
-              <img
-                alt="Avatar"
-                class="rounded-circle"
-                :src="userRef.profileImg"
-                style="width: 48px"
-              />
-            </div>
-            <!-- <div class="d-flex justify-space-around mb-n3">
-              <v-file-input
-                :v-model="avatarUpload"
-                density="compact"
-                label="Upload Avatar"
-                prepend-icon=""
-                show-size
-                variant="outlined"
-              />
-              <ButtonText
-                @click="handleSubmitUploadAvatar"
-                class="my-2 ms-2"
-                color="yellow"
-                size="small"
-                text="Upload"
-                variant="flat"
-              />
-            </div> -->
-            <div class="mt-n1">
-              <small class="ms-3">Select Color</small>
-              <div class="d-flex flex-wrap">
-                <v-color-picker
-                  v-model="userRef.color"
-                  hide-inputs
-                  width="200"
-                />
-                <div class="ms-2">
-                  <b>New color:</b>
-                  <div :style="{ backgroundColor: userRef.color }" class="pa-1">
-                    {{ userRef.color }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </v-card-text>
-          <v-card-actions class="d-flex justify-start ms-4 mb-2">
-            <ButtonText
-              color="yellow"
-              text="Save Changes"
-              type="submit"
-              variant="flat"
-            />
-          </v-card-actions>
-        </v-form>
       </v-card>
     </v-dialog>
   </HeaderComponent>
@@ -218,11 +131,6 @@ import { ref, reactive } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { beigeTheme, blueTheme, grayTheme, setAppTheme } from "@/utils/themes";
-import {
-  stringRules,
-  URLRegex,
-  URLRules,
-} from "@/utils/validations/formValidations";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
@@ -236,27 +144,15 @@ import {
   TMovie,
   TMusic,
   TNote,
-  TUser,
-  TUserInput,
   TTheme,
 } from "@/types/index";
 import { EUserRole } from "../../../common/types";
 import { getAuth, signOut } from "firebase/auth";
 
 const mediaStore = useMediaStore();
-const { setSnackbar, setUserFromDB, submitEditUser } = mediaStore;
-const {
-  anime,
-  books,
-  characters,
-  emotes,
-  games,
-  manga,
-  movies,
-  music,
-  notes,
-  userFromDB,
-} = storeToRefs(mediaStore);
+const { setSnackbar } = mediaStore;
+const { anime, books, characters, emotes, games, manga, movies, userFromDB } =
+  storeToRefs(mediaStore);
 
 const isAdmin = userFromDB.value?.role === EUserRole.ADMIN;
 
@@ -271,7 +167,6 @@ const userProfile = reactive({
   username: userFromDB.value?.username,
 });
 
-// const avatarUpload = ref();
 const settingsModal = ref<boolean>(false);
 const userRef = ref(userProfile);
 
@@ -326,20 +221,6 @@ const backupButtons = [
     size: "small",
     text: "Movies",
   },
-  {
-    class: "me-2 mt-2",
-    color: "deep-purple",
-    data: music.value,
-    size: "small",
-    text: "Music",
-  },
-  {
-    class: "mt-2",
-    color: "cyan",
-    data: notes.value,
-    size: "small",
-    text: "Notes",
-  },
 ];
 
 const colorThemeButtons = [
@@ -374,8 +255,6 @@ const mediaType = [
   { media: "Games", total: games.value.length },
   { media: "Manga", total: manga.value.length },
   { media: "Movies", total: movies.value.length },
-  { media: "Music", total: music.value.length },
-  { media: "Notes", total: notes.value.length },
 ];
 
 const generateAndSetRandomTheme = () => {
@@ -435,26 +314,4 @@ const handleLogout = async () => {
 const handleOpenSettings = () => {
   settingsModal.value = !settingsModal.value;
 };
-
-const handleSubmitEditProfile = () => {
-  const updatedProfile: TUserInput = reactive({
-    color: userRef.value.color,
-    profileDesc: userRef.value.profileDesc,
-    profileImg: userRef.value.profileImg,
-    username: userRef.value.username,
-  });
-
-  if (
-    updatedProfile.username &&
-    URLRegex.test(String(updatedProfile.profileImg))
-  ) {
-    submitEditUser(updatedProfile);
-    setUserFromDB(userRef.value as TUser);
-    settingsModal.value = false;
-  }
-};
-
-// const handleSubmitUploadAvatar = () => {
-//   console.log(avatarUpload);
-// };
 </script>

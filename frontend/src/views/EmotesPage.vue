@@ -1,20 +1,5 @@
 <template>
-  <HeaderComponent title="Discord Emotes">
-    <section class="d-flex align-center justify-start">
-      <ButtonText
-        @click="handleOpenAddEmoteModal"
-        class="me-2"
-        color="indigo"
-        text="Add Emote"
-      />
-      <ButtonText
-        @click="handleToggleEditingMode"
-        color="yellow"
-        :text="!isEditing ? 'Edit Emotes' : 'Stop Editing'"
-      />
-    </section>
-  </HeaderComponent>
-  <HeaderComponent v-if="!isEditing" title="Favourite Emotes">
+  <HeaderComponent title="Favourite Emotes">
     <v-text-field
       v-model="favEmoteSearch"
       @click:clear="() => (favEmoteSearch = '')"
@@ -92,22 +77,6 @@
                 icon="mdi-star"
               />
             </div>
-            <div v-if="isEditing">
-              <ButtonIcon
-                @click="handleOpenEditEmoteModal(emote._id, emote)"
-                icon="mdi-pencil-outline"
-                icon-color="green"
-                icon-size="small"
-                variant="text"
-              />
-              <ButtonIcon
-                @click="handleOpenDeleteEmoteModal(emote._id, emote)"
-                icon="mdi-trash-can-outline"
-                icon-color="red"
-                icon-size="small"
-                variant="text"
-              />
-            </div>
           </div>
         </div>
       </div>
@@ -123,161 +92,23 @@
       :text="displayEmotesFlag === 20 ? 'Display All' : 'Display Less'"
     />
   </HeaderComponent>
-  <v-dialog v-if="addEmoteModal" v-model="addEmoteModal" max-width="500"
-    ><v-card>
-      <div class="bg-primary-light text-color px-5 py-3 text-h6">Add Emote</div>
-      <v-form @submit.prevent="handleSubmitAddEmote" validate-on="input">
-        <v-card-text>
-          <v-text-field
-            v-model="newEmote.name"
-            autofocus
-            class="mb-2"
-            density="compact"
-            hide-details="auto"
-            label="Name"
-            :rules="stringRules('Name')"
-            variant="outlined"
-          />
-          <v-text-field
-            v-model="newEmote.url"
-            class="mb-2"
-            density="compact"
-            hide-details="auto"
-            label="URL"
-            :rules="URLRules"
-            variant="outlined"
-          />
-          <section class="d-flex align-center ms-1 mt-n4 mb-n6">
-            <div>Add to Favourites?</div>
-            <v-checkbox v-model="newEmote.favourites" hide-details />
-          </section>
-        </v-card-text>
-        <v-card-actions class="d-flex justify-start ms-2 mb-2">
-          <ButtonText
-            color="green"
-            text="Add Emote"
-            type="submit"
-            variant="flat"
-          />
-        </v-card-actions>
-      </v-form> </v-card
-  ></v-dialog>
-  <v-dialog v-if="editEmoteModal" v-model="editEmoteModal" max-width="500"
-    ><v-card>
-      <div class="bg-primary-light text-color px-5 py-3 text-h6">
-        Edit Emote
-      </div>
-      <v-form validate-on="input" @submit.prevent="handleSubmitEditEmote">
-        <v-card-text>
-          <img
-            :alt="emoteRef.name"
-            class="mt-n2 mb-2"
-            :src="emoteRef.url"
-            style="height: 64px"
-          />
-          <v-text-field
-            v-model="emoteRef.name"
-            class="mb-2"
-            density="compact"
-            hide-details="auto"
-            label="Name"
-            :rules="stringRules('Name')"
-            variant="outlined"
-          />
-          <v-text-field
-            v-model="emoteRef.url"
-            class="mb-2"
-            density="compact"
-            hide-details="auto"
-            label="URL"
-            :rules="URLRules"
-            variant="outlined"
-          />
-          <section class="d-flex align-center ms-1 mt-n4 mb-n6">
-            <div>Add to Favourites?</div>
-            <v-checkbox v-model="emoteRef.favourites" hide-details />
-          </section>
-        </v-card-text>
-        <v-card-actions class="d-flex justify-start ms-2 mb-2">
-          <ButtonText
-            color="yellow"
-            text="Update Emote"
-            type="submit"
-            variant="flat"
-          />
-        </v-card-actions>
-      </v-form> </v-card
-  ></v-dialog>
-  <v-dialog
-    v-if="deleteEmoteModal"
-    v-model="deleteEmoteModal"
-    class="delete-dialog-position"
-    max-width="300"
-    ><v-card>
-      <div class="bg-primary-light text-color px-5 py-3 text-h6">
-        Deleting Emote
-      </div>
-      <v-card-text>
-        <p>Are you sure you want to delete this emote?</p>
-        <img
-          :alt="emoteRef.name"
-          class="mt-1 mb-n2"
-          :src="emoteRef.url"
-          style="height: 64px"
-        />
-      </v-card-text>
-      <v-card-actions class="d-flex justify-start mb-2 ms-2">
-        <ButtonText
-          @click="handleDeleteCancel"
-          color="yellow"
-          text="Cancel"
-          variant="flat"
-        />
-        <ButtonText
-          @click="handleDeleteConfirm"
-          color="red"
-          text="Delete"
-          variant="flat"
-        />
-      </v-card-actions> </v-card
-  ></v-dialog>
 </template>
 <script setup lang="ts">
-import { computed, ref, reactive } from "vue";
+import { computed, ref } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { filter, orderBy } from "lodash";
 import { copyImageToClipboard } from "copy-image-clipboard";
-import {
-  stringRules,
-  URLRegex,
-  URLRules,
-} from "@/utils/validations/formValidations";
-import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import HeaderComponent from "@/components/media/HeaderComponent.vue";
-import { TEmote, TEmoteInput } from "@/types";
 
 const mediaStore = useMediaStore();
-const { setSnackbar, submitAddEmote, submitDeleteEmote, submitEditEmote } =
-  mediaStore;
+const { setSnackbar } = mediaStore;
 const { emotes } = storeToRefs(mediaStore);
 
-const newEmote: TEmoteInput = reactive({
-  favourites: false,
-  name: "",
-  url: "",
-});
-
-const addEmoteModal = ref<boolean>(false);
-const deleteEmoteModal = ref<boolean>(false);
 const displayEmotesFlag = ref<number>(20);
-const editEmoteModal = ref<boolean>(false);
-const emoteID = ref<string>("");
-const emoteRef = ref<TEmoteInput>(newEmote);
 const emoteSearch = ref<string>("");
 const favEmoteSearch = ref<string>("");
-const isEditing = ref<boolean>(false);
 
 const allEmotes = computed(() =>
   orderBy(emotes.value, ["name"], ["asc"])
@@ -298,16 +129,6 @@ const favouriteEmotes = computed(() =>
     ["asc"]
   )
 );
-
-const handleDeleteCancel = () => {
-  deleteEmoteModal.value = false;
-};
-
-const handleDeleteConfirm = async () => {
-  await submitDeleteEmote(emoteID.value);
-  emoteID.value = "";
-  deleteEmoteModal.value = false;
-};
 
 const displayEmotes = () => {
   displayEmotesFlag.value === 20
@@ -332,50 +153,6 @@ const handleEmoteClick = (url: string): void => {
         text: "Copied to Clipboard",
       });
     });
-};
-
-const handleOpenAddEmoteModal = () => {
-  addEmoteModal.value = !addEmoteModal.value;
-};
-const handleOpenDeleteEmoteModal = (id: string, emote: TEmote) => {
-  deleteEmoteModal.value = !deleteEmoteModal.value;
-
-  emoteID.value = id;
-  emoteRef.value = emote;
-};
-
-const handleOpenEditEmoteModal = (id: string, emote: TEmote) => {
-  editEmoteModal.value = !editEmoteModal.value;
-
-  const updatedEmote: TEmoteInput = reactive({
-    favourites: emote.favourites,
-    name: emote.name,
-    url: emote.url,
-  });
-  emoteRef.value = updatedEmote;
-  emoteID.value = id;
-};
-
-const handleSubmitAddEmote = async () => {
-  if (newEmote.name && URLRegex.test(newEmote.url)) {
-    await submitAddEmote(newEmote);
-    addEmoteModal.value = false;
-
-    newEmote.favourites = false;
-    newEmote.name = "";
-    newEmote.url = "";
-  }
-};
-
-const handleSubmitEditEmote = async () => {
-  if (emoteRef.value.name && URLRegex.test(emoteRef.value.url)) {
-    await submitEditEmote(emoteID.value, emoteRef.value);
-    editEmoteModal.value = false;
-  }
-};
-
-const handleToggleEditingMode = () => {
-  isEditing.value = !isEditing.value;
 };
 </script>
 <style scoped>

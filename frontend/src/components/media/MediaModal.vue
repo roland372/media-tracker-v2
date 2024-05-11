@@ -1,7 +1,7 @@
 <template>
   <v-dialog width="auto">
     <template v-slot:default>
-      <v-card max-width="450">
+      <v-card max-width="450" class="pb-2">
         <div class="bg-primary-light text-color px-5 py-3 text-h6">
           {{ title }}
         </div>
@@ -109,40 +109,18 @@
             </section>
 
             <section>
-              <div><b>Created At:</b> {{ formatDate(media.createdAt) }}</div>
-              <div><b>Updated At:</b> {{ formatDate(media.updatedAt) }}</div>
+              <div><b>Created At:</b> {{ media.createdAt }}</div>
+              <div><b>Updated At:</b> {{ media.updatedAt }}</div>
             </section>
           </v-card-text>
         </div>
-
-        <v-card-actions class="d-flex justify-start">
-          <!-- <ButtonText
-            @click="viewClick"
-            color="indigo"
-            text="View"
-            variant="flat"
-          /> -->
-          <ButtonText
-            @click="editClick"
-            color="green"
-            text="Edit"
-            variant="flat"
-          />
-          <ButtonText
-            @click="deleteClick"
-            color="red"
-            text="Delete"
-            variant="flat"
-          />
-        </v-card-actions>
       </v-card>
     </template>
   </v-dialog>
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue";
-import { placeholderImg, formatDate } from "@/utils/mediaUtils";
-import ButtonText from "@/components/ui/ButtonText.vue";
+import { placeholderImg } from "@/utils/mediaUtils";
 import {
   TAnime,
   TBook,
@@ -158,9 +136,6 @@ interface IMediaModalProps {
   media: TMedia;
   mediaType: EMediaType;
   title: string;
-  deleteClick: () => void;
-  editClick: () => void;
-  viewClick: () => void;
 }
 
 defineProps<IMediaModalProps>();
