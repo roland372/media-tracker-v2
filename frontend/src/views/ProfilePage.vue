@@ -194,7 +194,7 @@ const backupButtons = [
   },
   {
     class: "me-2 mt-2",
-    color: "white",
+    color: "cyan",
     data: emotes.value,
     size: "small",
     text: "Emotes",
