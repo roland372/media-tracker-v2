@@ -39,7 +39,7 @@ export const navLinks: TNavLinks[] = [
     title: "Characters",
   },
   {
-    color: "white",
+    color: "cyan",
     name: "EmotesPage",
     icon: "mdi-emoticon",
     route: EUserRole.ADMIN,
