@@ -117,7 +117,11 @@ const filteredCharacters = computed(() => {
   const filteredItems = characters.value.filter((el) => {
     const searchTermMatch =
       el.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-      el.series.toLowerCase().includes(searchTerm.value.toLowerCase());
+      el.series
+        .toString()
+        .toLowerCase()
+        .includes(searchTerm.value.toLowerCase());
+
     const sourceMatch =
       characterFilter.value === "" || el.source === characterFilter.value;
 
