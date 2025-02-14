@@ -1,0 +1,12 @@
+services:
+  vue-app:
+    image: vue-docker-app
+    build: ./frontend
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - ./common:/common
+    environment:
+      - NODE_ENV=development

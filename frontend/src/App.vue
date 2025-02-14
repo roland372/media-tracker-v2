@@ -24,25 +24,67 @@ onMounted(async () => {
     const auth = getAuth();
     onAuthStateChanged(auth, async () => {
       if (auth?.currentUser?.email) {
-        const url = process.env.VUE_APP_SHEET_API || "";
-        const response = await axios.get(url);
-        const mediaData = response.data;
+        const sheetId = process.env.VUE_APP_SHEET_ID;
+        const sheetNames = ["Users", "Anime", "Books", "Characters", "Emotes", "Games", "Manga", "Movies"];
+        const sheetData = {};
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const usersData = mediaData.users.slice(1).map((item: any) => ({
-          googleId: +item[0],
-          email: item[1],
-          username: item[2],
-          profileDesc: item[3],
-          profileImg: item[4],
-          color: item[5],
-          role: item[6],
-          createdAt: item[7],
-          updatedAt: item[8],
-        }));
+        const fetchSheet = async (sheetName) => {
+          const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
 
-        await fetchUser(usersData[0]);
-        await fetchAllMedia(mediaData);
+          try {
+            const response = await fetch(csvUrl);
+            const csvText = await response.text();
+            const data = csvToArray(csvText);
+            sheetData[sheetName.toLowerCase()] = data;
+          } catch (error) {
+            console.error(`Error fetching CSV for ${sheetName}:`, error);
+          }
+        };
+
+        const csvToArray = (csvText) => {
+          const rows = csvText
+            .split("\n")
+            .map((row) => row.trim())
+            .filter((row) => row !== "");
+
+          if (rows.length < 2) return [];
+
+          const headers = rows[0]
+            .split(",")
+            .map((header) => header.trim().replace(/^"|"$/g, ""));
+
+          const parseRow = (row) => {
+            const values = row.match(/(?:[^,""]|"(?:[^"]|"")*")+/g).map(value =>
+              value.replace(/^"|"$/g, "").replace(/""/g, '"')
+            );
+
+            return headers.reduce((obj, header, idx) => {
+              obj[header] = values[idx] || "";
+              return obj;
+            }, {});
+          };
+
+          return rows.slice(1).map(parseRow);
+        };
+
+        Promise.all(sheetNames.map(fetchSheet)).then(() => {
+          const usersData = sheetData["users"] || [];
+          const mediaData = {
+            anime: sheetData["anime"] || [],
+            books: sheetData["books"] || [],
+            characters: sheetData["characters"] || [],
+            emotes: sheetData["emotes"] || [],
+            games: sheetData["games"] || [],
+            manga: sheetData["manga"] || [],
+            movies: sheetData["movies"] || [],
+          };
+
+          if (usersData.length > 0) {
+            fetchUser(usersData[0]);
+          }
+          fetchAllMedia(mediaData);
+        });
+
 
         setLoading(false);
       }
@@ -103,20 +145,18 @@ body {
 }
 
 .bg-rainbow {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 0, 0, 1) 0%,
-    rgba(255, 154, 0, 1) 10%,
-    rgba(208, 222, 33, 1) 20%,
-    rgba(79, 220, 74, 1) 30%,
-    rgba(63, 218, 216, 1) 40%,
-    rgba(47, 201, 226, 1) 50%,
-    rgba(28, 127, 238, 1) 60%,
-    rgba(95, 21, 242, 1) 70%,
-    rgba(186, 12, 248, 1) 80%,
-    rgba(251, 7, 217, 1) 90%,
-    rgba(255, 0, 0, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 0, 0, 1) 0%,
+      rgba(255, 154, 0, 1) 10%,
+      rgba(208, 222, 33, 1) 20%,
+      rgba(79, 220, 74, 1) 30%,
+      rgba(63, 218, 216, 1) 40%,
+      rgba(47, 201, 226, 1) 50%,
+      rgba(28, 127, 238, 1) 60%,
+      rgba(95, 21, 242, 1) 70%,
+      rgba(186, 12, 248, 1) 80%,
+      rgba(251, 7, 217, 1) 90%,
+      rgba(255, 0, 0, 1) 100%);
 }
 
 .text-color {

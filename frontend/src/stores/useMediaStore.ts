@@ -19,104 +19,61 @@ export const useMediaStore = defineStore("media", () => {
   //* <----- MEDIA ----->
   const fetchAllMedia = async (mediaData: any) => {
     try {
-      const animeData = mediaData.anime.slice(1).map((item: any) => ({
-        title: item[0].toString(),
-        imageURL: item[1].toString(),
-        type: item[2],
-        link: item[3],
-        linkName: item[4],
-        rating: +item[5],
-        status: item[6],
-        episodesMax: +item[7],
-        episodesMin: +item[8],
-        favourites: item[9],
-        createdAt: item[10],
-        updatedAt: item[11],
+      const toNumber = (value: string | number): number => {
+        const num = +value;
+        return isNaN(num) ? 0 : num;
+      };
+
+      const animeData = mediaData.anime.map((item: any) => ({
+        ...item,
+        rating: toNumber(item.rating),
+        episodesMin: toNumber(item.episodesMin),
+        episodesMax: toNumber(item.episodesMax),
+        favourites: item.favourites === "TRUE"
       }));
 
-      const booksData = mediaData.books.slice(1).map((item: any) => ({
-        title: item[0].toString(),
-        author: item[1].toString(),
-        imageURL: item[2].toString(),
-        link: item[3],
-        linkName: item[4],
-        genre: item[5],
-        pages: +item[6],
-        rating: +item[7],
-        status: item[8],
-        favourites: item[9],
-        createdAt: item[10],
-        updatedAt: item[11],
+      const booksData = mediaData.books.map((item: any) => ({
+        ...item,
+        pages: toNumber(item.pages),
+        rating: toNumber(item.rating),
+        favourites: item.favourites === "TRUE"
       }));
 
-      const charactersData = mediaData.characters.slice(1).map((item: any) => ({
-        name: item[0].toString(),
-        imageURL: item[1].toString(),
-        link: item[2],
-        linkName: item[3],
-        source: item[4],
-        gender: item[5],
-        series: item[6],
-        hairColor: item[7],
-        favourites: item[8],
-        createdAt: item[9],
-        updatedAt: item[10],
+      const charactersData = mediaData.characters.map((item: any) => ({
+        ...item,
+        favourites: item.favourites === "TRUE"
       }));
 
-      const emotesData = mediaData.emotes.slice(1).map((item: any) => ({
-        name: item[0].toString(),
-        url: item[1].toString(),
-        favourites: item[2],
-        createdAt: item[3],
-        updatedAt: item[4],
+      const emotesData = mediaData.emotes.map((item: any) => ({
+        ...item,
+        favourites: item.favourites === "TRUE"
       }));
 
-      const gamesData = mediaData.games.slice(1).map((item: any) => ({
-        title: item[0].toString(),
-        imageURL: item[1].toString(),
-        type: item[2],
-        link: item[3],
-        linkName: item[4],
-        rating: +item[5],
-        playtime: +item[6],
-        status: item[7],
-        favourites: item[8],
-        createdAt: item[9],
-        updatedAt: item[10],
+      const gamesData = mediaData.games.map((item: any) => ({
+        ...item,
+        rating: toNumber(item.rating),
+        playtime: toNumber(item.playtime),
+        favourites: item.favourites === "TRUE"
       }));
 
-      const mangaData = mediaData.manga.slice(1).map((item: any) => ({
-        title: item[0].toString(),
-        imageURL: item[1].toString(),
-        type: item[2],
-        link: item[3],
-        linkName: item[4],
-        rating: +item[5],
-        status: item[6],
-        chaptersMax: +item[7],
-        chaptersMin: +item[8],
-        volumesMin: +item[9],
-        volumesMax: +item[10],
-        favourites: item[11],
-        createdAt: item[12],
-        updatedAt: item[13],
+      const mangaData = mediaData.manga.map((item: any) => ({
+        ...item,
+        rating: toNumber(item.rating),
+        chaptersMax: toNumber(item.chaptersMax),
+        chaptersMin: toNumber(item.chaptersMin),
+        volumesMin: toNumber(item.volumesMin),
+        volumesMax: toNumber(item.volumesMax),
+        favourites: item.favourites === "TRUE"
       }));
 
-      const moviesData = mediaData.movies.slice(1).map((item: any) => ({
-        title: item[0].toString(),
-        imageURL: item[1].toString(),
-        type: item[2],
-        link: item[3],
-        linkName: item[4],
-        rating: +item[5],
-        status: item[6],
-        episodesMin: +item[7],
-        episodesMax: +item[8],
-        seasonsMin: +item[9],
-        seasonsMax: +item[10],
-        favourites: item[11],
-        createdAt: item[12],
-        updatedAt: item[13],
+      const moviesData = mediaData.movies.map((item: any) => ({
+        ...item,
+        rating: toNumber(item.rating),
+        episodesMin: toNumber(item.episodesMin),
+        episodesMax: toNumber(item.episodesMax),
+        seasonsMin: toNumber(item.seasonsMin),
+        seasonsMax: toNumber(item.seasonsMax),
+        favourites: item.favourites === "TRUE"
       }));
 
       setAnime(animeData);
