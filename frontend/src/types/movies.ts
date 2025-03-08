@@ -11,13 +11,14 @@ export enum EMovieType {
   TV_SHOW = 'TV-Show',
 }
 
-export type TCommonMovieProps = {
+export type TMovie = {
   episodesMax: number;
   episodesMin: number;
   favourites: boolean;
   imageURL: string;
   link: string;
   linkName: string;
+  owner: string;
   rating: number;
   seasonsMax: number;
   seasonsMin: number;
@@ -27,11 +28,3 @@ export type TCommonMovieProps = {
   createdAt?: Date;
   updatedAt?: Date;
 };
-
-export type TMovie = TCommonMovieProps & {
-  _id: string;
-  ID: string;
-  owner: string;
-};
-
-export type TMovieInput = TCommonMovieProps;

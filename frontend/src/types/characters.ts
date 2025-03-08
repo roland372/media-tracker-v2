@@ -10,7 +10,7 @@ export enum ECharacterGender {
   OTHER = 'Other',
 }
 
-export type TCommonCharacterProps = {
+export type TCharacter = {
   favourites: boolean;
   gender: ECharacterGender;
   hairColor: string;
@@ -19,16 +19,9 @@ export type TCommonCharacterProps = {
   linkName: string;
   mal_id?: number;
   name: string;
+  owner: string;
   series: string;
   source: ECharacterSource;
   createdAt?: Date;
   updatedAt?: Date;
 };
-
-export type TCharacter = TCommonCharacterProps & {
-  _id: string;
-  ID: string;
-  owner: string;
-};
-
-export type TCharacterInput = TCommonCharacterProps;

@@ -11,11 +11,12 @@ export enum EGameType {
   VISUAL_NOVEL = 'Visual Novel',
 }
 
-export type TCommonGameProps = {
+export type TGame = {
   favourites: boolean;
   imageURL: string;
   link: string;
   linkName: string;
+  owner: string;
   playtime: number;
   rating: number;
   status: EGameStatus;
@@ -24,11 +25,3 @@ export type TCommonGameProps = {
   createdAt?: Date;
   updatedAt?: Date;
 };
-
-export type TGame = TCommonGameProps & {
-  _id: string;
-  ID: string;
-  owner: string;
-};
-
-export type TGameInput = TCommonGameProps;

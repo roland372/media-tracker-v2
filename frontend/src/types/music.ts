@@ -6,24 +6,17 @@ export enum EMusicCategory {
   TOUHOU = 'Touhou'
 }
 
-export type TCommonMusicProps = {
+export type TMusic = {
   artist: string;
   category: EMusicCategory;
   favourites: boolean;
   imageURL: string;
   link: string;
+  owner: string;
   title: string;
   createdAt?: Date;
   updatedAt?: Date;
 };
-
-export type TMusic = TCommonMusicProps & {
-  _id: string;
-  id: string;
-  owner: string;
-};
-
-export type TMusicInput = TCommonMusicProps;
 
 export type TYouTubeVideo = {
   id: {

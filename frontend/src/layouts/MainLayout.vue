@@ -4,11 +4,7 @@
     <NavbarComponent v-if="userFromDB && !mdAndUp" />
     <v-layout>
       <NavigationDrawer v-if="userFromDB && mdAndUp" />
-      <v-container
-        class="text-center rounded"
-        :class="{ 'ms-md-14': userFromDB }"
-        fluid
-      >
+      <v-container class="text-center rounded" :class="{ 'ms-md-14': userFromDB }" fluid>
         <router-view />
       </v-container>
     </v-layout>

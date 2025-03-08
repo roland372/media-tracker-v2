@@ -16,7 +16,7 @@ export enum EMangaType {
   WEBTOON = 'Webtoon',
 }
 
-export type TCommonMangaProps = {
+export type TManga = {
   chaptersMax: number;
   chaptersMin: number;
   favourites: boolean;
@@ -24,6 +24,7 @@ export type TCommonMangaProps = {
   link: string;
   linkName: string;
   mal_id?: number;
+  owner: string;
   rating: number;
   status: EMangaStatus;
   title: string;
@@ -33,11 +34,3 @@ export type TCommonMangaProps = {
   createdAt?: Date;
   updatedAt?: Date;
 };
-
-export type TManga = TCommonMangaProps & {
-  _id: string;
-  ID: string;
-  owner: string;
-};
-
-export type TMangaInput = TCommonMangaProps;

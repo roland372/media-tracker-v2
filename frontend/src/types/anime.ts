@@ -14,7 +14,7 @@ export enum EAnimeType {
   TV_SHOW = 'TV-Show',
 }
 
-export type TCommonAnimeProps = {
+export type TAnime = {
   episodesMax: number;
   episodesMin: number;
   favourites: boolean;
@@ -22,6 +22,7 @@ export type TCommonAnimeProps = {
   link: string;
   linkName: string;
   mal_id?: number;
+  owner: string;
   rating: number;
   status: EAnimeStatus;
   title: string;
@@ -29,11 +30,3 @@ export type TCommonAnimeProps = {
   createdAt?: Date;
   updatedAt?: Date;
 };
-
-export type TAnime = TCommonAnimeProps & {
-  _id: string;
-  ID: string;
-  owner: string;
-};
-
-export type TAnimeInput = TCommonAnimeProps;
