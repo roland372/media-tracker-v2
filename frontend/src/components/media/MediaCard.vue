@@ -1,43 +1,22 @@
 <template>
-  <v-img
-    @click="dialog = !dialog"
-    class="rounded image-hover"
-    cover
-    :src="media.imageURL || placeholderImg"
-    :style="{
-      borderBottom: `5px ${statusColor(media)} solid`,
-      borderRight: `5px ${statusColor(media)} solid`,
-    }"
-  >
+  <v-img @click="dialog = !dialog" class="rounded image-hover" cover :src="media.imageURL || placeholderImg" :style="{
+    borderBottom: `5px ${statusColor(media)} solid`,
+    borderRight: `5px ${statusColor(media)} solid`,
+  }">
     <div class="image-overlay-icon">
       <v-icon v-if="media.favourites" color="yellow-accent-4" icon="mdi-star" />
     </div>
-    <ChipComponent
-      v-if="
-        mediaType !== EMediaType.CHARACTER &&
-        mediaType !== EMediaType.MANGA &&
-        mediaType !== EMediaType.MOVIE
-      "
-      class="bg-black image-text-overlay"
-      color="white"
-      size="x-small"
-      text-color="white"
-      :text="displayImageText(media)"
-    />
-    <ChipComponent
-      class="bg-black image-title-overlay"
-      color="white"
-      size="x-small"
+    <ChipComponent v-if="
+      mediaType !== EMediaType.CHARACTER &&
+      mediaType !== EMediaType.MANGA &&
+      mediaType !== EMediaType.MOVIE
+    " class="bg-black image-text-overlay" color="white" size="x-small" text-color="white"
+      :text="displayImageText(media)" />
+    <ChipComponent class="bg-black image-title-overlay" color="white" size="x-small"
       :text="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TBook | TGame | TManga | TMovie).title"
-      text-color="white"
-    />
-    <MediaModal
-      v-if="dialog"
-      v-model="dialog"
-      :media="media"
-      :media-type="mediaType"
-      :title="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TBook | TGame | TManga | TMovie).title"
-    />
+      text-color="white" />
+    <MediaModal v-if="dialog" v-model="dialog" :media="media" :media-type="mediaType"
+      :title="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TBook | TGame | TManga | TMovie).title" />
   </v-img>
 </template>
 <script setup lang="ts">
@@ -62,7 +41,7 @@ import {
   EMangaStatus,
   EMediaType,
   EMovieStatus,
-} from "../../../../common/types";
+} from "@/types";
 
 interface IMediaCardProps {
   media: TMedia;
@@ -77,9 +56,8 @@ const displayImageText = (media: TMedia) => {
   let imageText = "";
   switch (props.mediaType) {
     case EMediaType.ANIME:
-      imageText = `Ep ${(media as TAnime).episodesMin} / ${
-        (media as TAnime).episodesMax
-      }`;
+      imageText = `Ep ${(media as TAnime).episodesMin} / ${(media as TAnime).episodesMax
+        }`;
       break;
     case EMediaType.BOOK:
       imageText = `${(media as TBook).author}`;

@@ -13,13 +13,13 @@ import {
   EMovieStatus,
   EMovieType,
   EMusicCategory,
-} from "../../../common/types";
+} from "@/types";
 
 export const calculatePercentage = (numerator: number, denominator: number) =>
   (numerator / denominator) * 100;
 
 export const favouriteMedia = (media: Ref) =>
-  media.value.filter((el: { favourites: boolean }) => el.favourites);
+  media.value.filter((el: { favourites: boolean; }) => el.favourites);
 
 export const fetchMediaURL = (
   mediaType: string,

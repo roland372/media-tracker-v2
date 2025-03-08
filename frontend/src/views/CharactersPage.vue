@@ -1,62 +1,24 @@
 <template>
-  <StatsComponent
-    :media="EMediaType.CHARACTER"
-    :media-type="EMediaType.CHARACTER"
-    :progress="progress"
-    :status="source"
-    :stats="stats"
-  />
-  <MediaTable
-    v-if="displayFlag === 'table'"
-    :media="filteredCharacters"
-    :media-type="EMediaType.CHARACTER"
-    title="All Characters"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleCharacterFilter"
-      @filter-type="handleCharacterFilterSource"
-      @search="handleCharacterSearch"
-      @sort="handleCharacterSort"
-      :display-flag="displayFlag"
-      :filter-type="characterSource"
-      :media-status="source"
-      :media-type="EMediaType.CHARACTER"
-      :sort-fields="sortFields"
-    />
+  <StatsComponent :media="EMediaType.CHARACTER" :media-type="EMediaType.CHARACTER" :progress="progress" :status="source"
+    :stats="stats" />
+  <MediaTable v-if="displayFlag === 'table'" :media="filteredCharacters" :media-type="EMediaType.CHARACTER"
+    title="All Characters">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleCharacterFilter"
+      @filter-type="handleCharacterFilterSource" @search="handleCharacterSearch" @sort="handleCharacterSort"
+      :display-flag="displayFlag" :filter-type="characterSource" :media-status="source"
+      :media-type="EMediaType.CHARACTER" :sort-fields="sortFields" />
   </MediaTable>
-  <MediaComponent
-    v-if="displayFlag === 'grid'"
-    all-media
-    :media="filteredCharacters"
-    :media-type="EMediaType.CHARACTER"
-    title="All Characters"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleCharacterFilter"
-      @filter-type="handleCharacterFilterSource"
-      @search="handleCharacterSearch"
-      @sort="handleCharacterSort"
-      :display-flag="displayFlag"
-      :filter-type="characterSource"
-      :media-status="source"
-      :media-type="EMediaType.CHARACTER"
-      :sort-fields="sortFields"
-    />
+  <MediaComponent v-if="displayFlag === 'grid'" all-media :media="filteredCharacters" :media-type="EMediaType.CHARACTER"
+    title="All Characters">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleCharacterFilter"
+      @filter-type="handleCharacterFilterSource" @search="handleCharacterSearch" @sort="handleCharacterSort"
+      :display-flag="displayFlag" :filter-type="characterSource" :media-status="source"
+      :media-type="EMediaType.CHARACTER" :sort-fields="sortFields" />
   </MediaComponent>
-  <MediaComponent
-    :media="orderBy(characters, ['updatedAt'], ['desc']).slice(0, 20)"
-    :media-type="EMediaType.CHARACTER"
-    title="Recent Characters"
-  />
-  <MediaComponent
-    :media-type="EMediaType.CHARACTER"
-    :media="
-      orderBy(filter(characters, { favourites: true }), ['name'], ['asc'])
-    "
-    title="Favourite Characters"
-  />
+  <MediaComponent :media="orderBy(characters, ['updatedAt'], ['desc']).slice(0, 20)" :media-type="EMediaType.CHARACTER"
+    title="Recent Characters" />
+  <MediaComponent :media-type="EMediaType.CHARACTER" :media="orderBy(filter(characters, { favourites: true }), ['name'], ['asc'])
+    " title="Favourite Characters" />
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
@@ -69,7 +31,7 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { TSortingOptions } from "@/types";
-import { ECharacterSource, EMediaType } from "../../../common/types";
+import { ECharacterSource, EMediaType } from "@/types";
 
 const mediaStore = useMediaStore();
 const { characters } = storeToRefs(mediaStore);

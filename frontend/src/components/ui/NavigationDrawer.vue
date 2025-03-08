@@ -1,40 +1,20 @@
 <template>
-  <v-navigation-drawer
-    class="nd-bg-color text-color rounded"
-    expand-on-hover
-    permanent
-    rail
-  >
-    <v-list-item
-      class="pa-2"
-      :prepend-avatar="require('@/../public/img/icons/mstile-150x150.png')"
-      title="Media-Tracker"
-      to="/"
-    >
+  <v-navigation-drawer class="nd-bg-color text-color rounded" expand-on-hover permanent rail>
+    <v-list-item class="pa-2" :prepend-avatar="require('@/../public/img/icons/mstile-150x150.png')"
+      title="Media-Tracker" to="/">
     </v-list-item>
 
     <v-divider></v-divider>
 
-    <v-list-item
-      class="pa-2"
-      :prepend-avatar="userFromDB?.profileImg"
-      :subtitle="userFromDB?.email"
-      :title="userFromDB?.username"
-      to="/profile"
-    >
+    <v-list-item class="pa-2" :prepend-avatar="userFromDB?.profileImg" :subtitle="userFromDB?.email"
+      :title="userFromDB?.username" to="/profile">
     </v-list-item>
 
     <v-divider></v-divider>
 
     <v-list density="compact">
-      <v-list-item
-        v-for="(link, index) in filteredLinks"
-        :key="index"
-        :color="link.color"
-        height="20"
-        min-height="35"
-        :to="link.url"
-      >
+      <v-list-item v-for="(link, index) in filteredLinks" :key="index" :color="link.color" height="20" min-height="35"
+        :to="link.url">
         <div class="d-flex align-center">
           <v-icon class="pe-1" :color="link.color">{{ link.icon }}</v-icon>
           <div class="ps-5">
@@ -50,7 +30,7 @@ import { computed } from "vue";
 import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { navLinks } from "@/utils/links";
-import { EUserRole } from "../../../../common/types";
+import { EUserRole } from "@/types";
 const mediaStore = useMediaStore();
 const { userFromDB } = storeToRefs(mediaStore);
 

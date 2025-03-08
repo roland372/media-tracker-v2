@@ -1,61 +1,23 @@
 <template>
-  <StatsComponent
-    :mean-score="meanScore"
-    :media-type="EMediaType.MOVIE"
-    :progress="progress"
-    :status="status"
-    :stats="stats"
-    :total-days="totalDays"
-  />
-  <MediaTable
-    v-if="displayFlag === 'table'"
-    :media="filteredMovies"
-    :media-type="EMediaType.MOVIE"
-    title="All Movies"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleMovieFilter"
-      @filter-type="handleMovieFilterType"
-      @search="handleMovieSearch"
-      @sort="handleMovieSort"
-      :display-flag="displayFlag"
-      :filter-type="movieType"
-      :media-status="status"
-      :media-type="EMediaType.MOVIE"
-      :sort-fields="sortFields"
-    />
+  <StatsComponent :mean-score="meanScore" :media-type="EMediaType.MOVIE" :progress="progress" :status="status"
+    :stats="stats" :total-days="totalDays" />
+  <MediaTable v-if="displayFlag === 'table'" :media="filteredMovies" :media-type="EMediaType.MOVIE" title="All Movies">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleMovieFilter"
+      @filter-type="handleMovieFilterType" @search="handleMovieSearch" @sort="handleMovieSort"
+      :display-flag="displayFlag" :filter-type="movieType" :media-status="status" :media-type="EMediaType.MOVIE"
+      :sort-fields="sortFields" />
   </MediaTable>
-  <MediaComponent
-    v-if="displayFlag === 'grid'"
-    all-media
-    :media="filteredMovies"
-    :media-type="EMediaType.MOVIE"
-    title="All Movies"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleMovieFilter"
-      @filter-type="handleMovieFilterType"
-      @search="handleMovieSearch"
-      @sort="handleMovieSort"
-      :display-flag="displayFlag"
-      :filter-type="movieType"
-      :media-status="status"
-      :media-type="EMediaType.MOVIE"
-      :sort-fields="sortFields"
-    />
+  <MediaComponent v-if="displayFlag === 'grid'" all-media :media="filteredMovies" :media-type="EMediaType.MOVIE"
+    title="All Movies">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleMovieFilter"
+      @filter-type="handleMovieFilterType" @search="handleMovieSearch" @sort="handleMovieSort"
+      :display-flag="displayFlag" :filter-type="movieType" :media-status="status" :media-type="EMediaType.MOVIE"
+      :sort-fields="sortFields" />
   </MediaComponent>
-  <MediaComponent
-    :media="orderBy(movies, ['updatedAt'], ['desc']).slice(0, 20)"
-    :media-type="EMediaType.MOVIE"
-    title="Recent Movies"
-  />
-  <MediaComponent
-    :media-type="EMediaType.MOVIE"
-    :media="orderBy(filter(movies, { favourites: true }), ['title'], ['asc'])"
-    title="Favourite Movies"
-  />
+  <MediaComponent :media="orderBy(movies, ['updatedAt'], ['desc']).slice(0, 20)" :media-type="EMediaType.MOVIE"
+    title="Recent Movies" />
+  <MediaComponent :media-type="EMediaType.MOVIE"
+    :media="orderBy(filter(movies, { favourites: true }), ['title'], ['asc'])" title="Favourite Movies" />
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
@@ -72,7 +34,7 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { TSortingOptions } from "@/types";
-import { EMediaType, EMovieStatus, EMovieType } from "../../../common/types";
+import { EMediaType, EMovieStatus, EMovieType } from "@/types";
 
 const mediaStore = useMediaStore();
 const { movies } = storeToRefs(mediaStore);
@@ -164,7 +126,7 @@ const filteredTVShowsEpisodes = computed(() =>
 const totalDays = computed(() =>
   round(
     (filteredTotalMoviesAmount.value * 2) / 24 +
-      (filteredTVShowsEpisodes.value * 1) / 24,
+    (filteredTVShowsEpisodes.value * 1) / 24,
     1
   )
 );

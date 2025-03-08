@@ -1,61 +1,23 @@
 <template>
-  <StatsComponent
-    :mean-score="meanScore"
-    :media-type="EMediaType.MANGA"
-    :progress="progress"
-    :status="status"
-    :stats="stats"
-    :total-days="totalDays"
-  />
-  <MediaTable
-    v-if="displayFlag === 'table'"
-    :media="filteredManga"
-    :media-type="EMediaType.MANGA"
-    title="All Manga"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleMangaFilter"
-      @filter-type="handleMangaFilterType"
-      @search="handleMangaSearch"
-      @sort="handleMangaSort"
-      :display-flag="displayFlag"
-      :filter-type="mangaType"
-      :media-status="status"
-      :media-type="EMediaType.MANGA"
-      :sort-fields="sortFields"
-    />
+  <StatsComponent :mean-score="meanScore" :media-type="EMediaType.MANGA" :progress="progress" :status="status"
+    :stats="stats" :total-days="totalDays" />
+  <MediaTable v-if="displayFlag === 'table'" :media="filteredManga" :media-type="EMediaType.MANGA" title="All Manga">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleMangaFilter"
+      @filter-type="handleMangaFilterType" @search="handleMangaSearch" @sort="handleMangaSort"
+      :display-flag="displayFlag" :filter-type="mangaType" :media-status="status" :media-type="EMediaType.MANGA"
+      :sort-fields="sortFields" />
   </MediaTable>
-  <MediaComponent
-    v-if="displayFlag === 'grid'"
-    all-media
-    :media="filteredManga"
-    :media-type="EMediaType.MANGA"
-    title="All Manga"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleMangaFilter"
-      @filter-type="handleMangaFilterType"
-      @search="handleMangaSearch"
-      @sort="handleMangaSort"
-      :display-flag="displayFlag"
-      :filter-type="mangaType"
-      :media-status="status"
-      :media-type="EMediaType.MANGA"
-      :sort-fields="sortFields"
-    />
+  <MediaComponent v-if="displayFlag === 'grid'" all-media :media="filteredManga" :media-type="EMediaType.MANGA"
+    title="All Manga">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleMangaFilter"
+      @filter-type="handleMangaFilterType" @search="handleMangaSearch" @sort="handleMangaSort"
+      :display-flag="displayFlag" :filter-type="mangaType" :media-status="status" :media-type="EMediaType.MANGA"
+      :sort-fields="sortFields" />
   </MediaComponent>
-  <MediaComponent
-    :media="orderBy(manga, ['updatedAt'], ['desc']).slice(0, 20)"
-    :media-type="EMediaType.MANGA"
-    title="Recent Manga"
-  />
-  <MediaComponent
-    :media-type="EMediaType.MANGA"
-    :media="orderBy(filter(manga, { favourites: true }), ['title'], ['asc'])"
-    title="Favourite Manga"
-  />
+  <MediaComponent :media="orderBy(manga, ['updatedAt'], ['desc']).slice(0, 20)" :media-type="EMediaType.MANGA"
+    title="Recent Manga" />
+  <MediaComponent :media-type="EMediaType.MANGA"
+    :media="orderBy(filter(manga, { favourites: true }), ['title'], ['asc'])" title="Favourite Manga" />
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
@@ -72,7 +34,7 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { TSortingOptions } from "@/types";
-import { EMangaStatus, EMangaType, EMediaType } from "../../../common/types";
+import { EMangaStatus, EMangaType, EMediaType } from "@/types";
 
 const mediaStore = useMediaStore();
 const { manga } = storeToRefs(mediaStore);
@@ -195,8 +157,8 @@ const totalChaptersSum = computed(() =>
 const totalDays = computed(() =>
   round(
     (filteredMangaVolumes.value * 1) / 24 +
-      (filteredWebtoonChapters.value * (1 / 12)) / 24 +
-      (filteredLightNovelVolumes.value * 6) / 24,
+    (filteredWebtoonChapters.value * (1 / 12)) / 24 +
+    (filteredLightNovelVolumes.value * 6) / 24,
     1
   )
 );

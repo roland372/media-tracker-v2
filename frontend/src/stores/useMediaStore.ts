@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import {
+  EUserRole,
   TAnime,
   TBook,
   TCharacter,
@@ -10,10 +11,8 @@ import {
   TManga,
   TMovie,
   TMusic,
-  TNote,
   TUser,
 } from "@/types";
-import { EUserRole } from "../../../common/types";
 
 export const useMediaStore = defineStore("media", () => {
   //* <----- MEDIA ----->
@@ -136,12 +135,6 @@ export const useMediaStore = defineStore("media", () => {
     music.value = payload;
   };
 
-  //* <----- NOTES ----->
-  const notes = ref<TNote[]>([]);
-  const setNotes = (payload: TNote[]) => {
-    notes.value = payload;
-  };
-
   //* <----- USER ----->
   const userFromDB = ref<TUser>();
   const setUserFromDB = (payload: TUser) => {
@@ -211,9 +204,6 @@ export const useMediaStore = defineStore("media", () => {
     //* <----- MUSIC ----->
     music,
     setMusic,
-    //* <----- NOTES ----->
-    notes,
-    setNotes,
     //* <----- USER ----->
     userFromDB,
     setUserFromDB,

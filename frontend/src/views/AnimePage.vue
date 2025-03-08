@@ -1,61 +1,23 @@
 <template>
-  <StatsComponent
-    :mean-score="meanScore"
-    :media-type="EMediaType.ANIME"
-    :progress="progress"
-    :status="status"
-    :stats="stats"
-    :total-days="totalDays"
-  />
-  <MediaTable
-    v-if="displayFlag === 'table'"
-    :media="filteredAnime"
-    :media-type="EMediaType.ANIME"
-    title="All Anime"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleAnimeFilter"
-      @filter-type="handleAnimeFilterType"
-      @search="handleAnimeSearch"
-      @sort="handleAnimeSort"
-      :display-flag="displayFlag"
-      :filter-type="animeType"
-      :media-status="status"
-      :media-type="EMediaType.ANIME"
-      :sort-fields="sortFields"
-    />
+  <StatsComponent :mean-score="meanScore" :media-type="EMediaType.ANIME" :progress="progress" :status="status"
+    :stats="stats" :total-days="totalDays" />
+  <MediaTable v-if="displayFlag === 'table'" :media="filteredAnime" :media-type="EMediaType.ANIME" title="All Anime">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleAnimeFilter"
+      @filter-type="handleAnimeFilterType" @search="handleAnimeSearch" @sort="handleAnimeSort"
+      :display-flag="displayFlag" :filter-type="animeType" :media-status="status" :media-type="EMediaType.ANIME"
+      :sort-fields="sortFields" />
   </MediaTable>
-  <MediaComponent
-    v-if="displayFlag === 'grid'"
-    all-media
-    :media="filteredAnime"
-    :media-type="EMediaType.ANIME"
-    title="All Anime"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleAnimeFilter"
-      @filter-type="handleAnimeFilterType"
-      @search="handleAnimeSearch"
-      @sort="handleAnimeSort"
-      :display-flag="displayFlag"
-      :filter-type="animeType"
-      :media-status="status"
-      :media-type="EMediaType.ANIME"
-      :sort-fields="sortFields"
-    />
+  <MediaComponent v-if="displayFlag === 'grid'" all-media :media="filteredAnime" :media-type="EMediaType.ANIME"
+    title="All Anime">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleAnimeFilter"
+      @filter-type="handleAnimeFilterType" @search="handleAnimeSearch" @sort="handleAnimeSort"
+      :display-flag="displayFlag" :filter-type="animeType" :media-status="status" :media-type="EMediaType.ANIME"
+      :sort-fields="sortFields" />
   </MediaComponent>
-  <MediaComponent
-    :media="orderBy(anime, ['updatedAt'], ['desc']).slice(0, 20)"
-    :media-type="EMediaType.ANIME"
-    title="Recent Anime"
-  />
-  <MediaComponent
-    :media-type="EMediaType.ANIME"
-    :media="orderBy(filter(anime, { favourites: true }), ['title'], ['asc'])"
-    title="Favourite Anime"
-  />
+  <MediaComponent :media="orderBy(anime, ['updatedAt'], ['desc']).slice(0, 20)" :media-type="EMediaType.ANIME"
+    title="Recent Anime" />
+  <MediaComponent :media-type="EMediaType.ANIME"
+    :media="orderBy(filter(anime, { favourites: true }), ['title'], ['asc'])" title="Favourite Anime" />
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
@@ -72,7 +34,7 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { TSortingOptions } from "@/types";
-import { EAnimeStatus, EAnimeType, EMediaType } from "../../../common/types";
+import { EAnimeStatus, EAnimeType, EMediaType } from "@/types";
 
 const mediaStore = useMediaStore();
 const { anime } = storeToRefs(mediaStore);

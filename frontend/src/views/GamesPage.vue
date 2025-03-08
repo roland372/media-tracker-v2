@@ -1,61 +1,21 @@
 <template>
-  <StatsComponent
-    :mean-score="meanScore"
-    :media-type="EMediaType.GAME"
-    :progress="progress"
-    :status="status"
-    :stats="stats"
-    :total-days="totalDays"
-  />
-  <MediaTable
-    v-if="displayFlag === 'table'"
-    :media="filteredGames"
-    :media-type="EMediaType.GAME"
-    title="All Games"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleGameFilter"
-      @filter-type="handleGameFilterType"
-      @search="handleGameSearch"
-      @sort="handleGameSort"
-      :display-flag="displayFlag"
-      :filter-type="gameType"
-      :media-status="status"
-      :media-type="EMediaType.GAME"
-      :sort-fields="sortFields"
-    />
+  <StatsComponent :mean-score="meanScore" :media-type="EMediaType.GAME" :progress="progress" :status="status"
+    :stats="stats" :total-days="totalDays" />
+  <MediaTable v-if="displayFlag === 'table'" :media="filteredGames" :media-type="EMediaType.GAME" title="All Games">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleGameFilter"
+      @filter-type="handleGameFilterType" @search="handleGameSearch" @sort="handleGameSort" :display-flag="displayFlag"
+      :filter-type="gameType" :media-status="status" :media-type="EMediaType.GAME" :sort-fields="sortFields" />
   </MediaTable>
-  <MediaComponent
-    v-if="displayFlag === 'grid'"
-    all-media
-    :media="filteredGames"
-    :media-type="EMediaType.GAME"
-    title="All Games"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleGameFilter"
-      @filter-type="handleGameFilterType"
-      @search="handleGameSearch"
-      @sort="handleGameSort"
-      :display-flag="displayFlag"
-      :filter-type="gameType"
-      :media-status="status"
-      :media-type="EMediaType.GAME"
-      :sort-fields="sortFields"
-    />
+  <MediaComponent v-if="displayFlag === 'grid'" all-media :media="filteredGames" :media-type="EMediaType.GAME"
+    title="All Games">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleGameFilter"
+      @filter-type="handleGameFilterType" @search="handleGameSearch" @sort="handleGameSort" :display-flag="displayFlag"
+      :filter-type="gameType" :media-status="status" :media-type="EMediaType.GAME" :sort-fields="sortFields" />
   </MediaComponent>
-  <MediaComponent
-    :media="orderBy(games, ['updatedAt'], ['desc']).slice(0, 20)"
-    :media-type="EMediaType.GAME"
-    title="Recent Games"
-  />
-  <MediaComponent
-    :media-type="EMediaType.GAME"
-    :media="orderBy(filter(games, { favourites: true }), ['title'], ['asc'])"
-    title="Favourite Games"
-  />
+  <MediaComponent :media="orderBy(games, ['updatedAt'], ['desc']).slice(0, 20)" :media-type="EMediaType.GAME"
+    title="Recent Games" />
+  <MediaComponent :media-type="EMediaType.GAME"
+    :media="orderBy(filter(games, { favourites: true }), ['title'], ['asc'])" title="Favourite Games" />
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
@@ -72,7 +32,7 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { TSortingOptions } from "@/types";
-import { EGameStatus, EGameType, EMediaType } from "../../../common/types";
+import { EGameStatus, EGameType, EMediaType } from "@/types";
 
 const mediaStore = useMediaStore();
 const { games } = storeToRefs(mediaStore);

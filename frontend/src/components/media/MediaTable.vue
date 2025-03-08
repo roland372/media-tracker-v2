@@ -3,19 +3,11 @@
     <slot></slot>
 
     <!--? ANIME -->
-    <h3
-      v-if="!media.length && mediaType === EMediaType.ANIME"
-      class="text-color"
-    >
+    <h3 v-if="!media.length && mediaType === EMediaType.ANIME" class="text-color">
       Not found any items.
     </h3>
-    <v-table
-      v-else-if="media.length && mediaType === EMediaType.ANIME"
-      class="bg-blue"
-      density="compact"
-      fixed-header
-      height="500px"
-    >
+    <v-table v-else-if="media.length && mediaType === EMediaType.ANIME" class="bg-blue" density="compact" fixed-header
+      height="500px">
       <thead class="text-left">
         <tr>
           <th>#</th>
@@ -45,18 +37,10 @@
     </v-table>
 
     <!--? BOOKS -->
-    <h3
-      v-if="!media.length && mediaType === EMediaType.BOOK"
-      class="text-color"
-    >
+    <h3 v-if="!media.length && mediaType === EMediaType.BOOK" class="text-color">
       Not found any items.
     </h3>
-    <v-table
-      v-else-if="media.length && mediaType === EMediaType.BOOK"
-      density="compact"
-      fixed-header
-      height="500px"
-    >
+    <v-table v-else-if="media.length && mediaType === EMediaType.BOOK" density="compact" fixed-header height="500px">
       <thead class="text-left">
         <tr>
           <th>#</th>
@@ -88,18 +72,11 @@
     </v-table>
 
     <!--? CHARACTERS -->
-    <h3
-      v-if="!media.length && mediaType === EMediaType.CHARACTER"
-      class="text-color"
-    >
+    <h3 v-if="!media.length && mediaType === EMediaType.CHARACTER" class="text-color">
       Not found any items.
     </h3>
-    <v-table
-      v-else-if="media.length && mediaType === EMediaType.CHARACTER"
-      density="compact"
-      fixed-header
-      height="500px"
-    >
+    <v-table v-else-if="media.length && mediaType === EMediaType.CHARACTER" density="compact" fixed-header
+      height="500px">
       <thead class="text-left">
         <tr>
           <th>#</th>
@@ -117,10 +94,7 @@
         <tr v-for="(character, index) in (media as TCharacter[])" :key="index">
           <td>{{ index + 1 }}</td>
           <td>
-            <v-img
-              :src="character.imageURL || placeholderImg"
-              max-height="92px"
-            />
+            <v-img :src="character.imageURL || placeholderImg" max-height="92px" />
           </td>
           <td>{{ character.name }}</td>
           <td>{{ character.source }}</td>
@@ -134,18 +108,10 @@
     </v-table>
 
     <!--? GAMES -->
-    <h3
-      v-if="!media.length && mediaType === EMediaType.GAME"
-      class="text-color"
-    >
+    <h3 v-if="!media.length && mediaType === EMediaType.GAME" class="text-color">
       Not found any items.
     </h3>
-    <v-table
-      v-else-if="media.length && mediaType === EMediaType.GAME"
-      density="compact"
-      fixed-header
-      height="500px"
-    >
+    <v-table v-else-if="media.length && mediaType === EMediaType.GAME" density="compact" fixed-header height="500px">
       <thead class="text-left">
         <tr>
           <th>#</th>
@@ -173,18 +139,10 @@
     </v-table>
 
     <!--? MANGA -->
-    <h3
-      v-if="!media.length && mediaType === EMediaType.MANGA"
-      class="text-color"
-    >
+    <h3 v-if="!media.length && mediaType === EMediaType.MANGA" class="text-color">
       Not found any items.
     </h3>
-    <v-table
-      v-else-if="media.length && mediaType === EMediaType.MANGA"
-      density="compact"
-      fixed-header
-      height="500px"
-    >
+    <v-table v-else-if="media.length && mediaType === EMediaType.MANGA" density="compact" fixed-header height="500px">
       <thead class="text-left">
         <tr>
           <th>#</th>
@@ -216,18 +174,10 @@
     </v-table>
 
     <!--? MOVIES -->
-    <h3
-      v-if="!media.length && mediaType === EMediaType.MOVIE"
-      class="text-color"
-    >
+    <h3 v-if="!media.length && mediaType === EMediaType.MOVIE" class="text-color">
       Not found any items.
     </h3>
-    <v-table
-      v-else-if="media.length && mediaType === EMediaType.MOVIE"
-      density="compact"
-      fixed-header
-      height="500px"
-    >
+    <v-table v-else-if="media.length && mediaType === EMediaType.MOVIE" density="compact" fixed-header height="500px">
       <thead class="text-left">
         <tr>
           <th>#</th>
@@ -272,7 +222,7 @@ import {
   TMedia,
   TMovie,
 } from "@/types";
-import { EMediaType } from "../../../../common/types";
+import { EMediaType } from "@/types";
 
 interface IMediaTableProps {
   media: TMedia[];

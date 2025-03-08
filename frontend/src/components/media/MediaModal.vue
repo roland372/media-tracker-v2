@@ -6,13 +6,8 @@
           {{ title }}
         </div>
         <div class="d-sm-flex align-start">
-          <v-img
-            class="rounded ms-2 me-2 me-sm-0 mt-2"
-            cover
-            min-height="200px"
-            min-width="150px"
-            :src="media.imageURL || placeholderImg"
-          />
+          <v-img class="rounded ms-2 me-2 me-sm-0 mt-2" cover min-height="200px" min-width="150px"
+            :src="media.imageURL || placeholderImg" />
           <v-card-text>
             <!--? ANIME -->
             <section v-if="mediaType === EMediaType.ANIME">
@@ -130,7 +125,7 @@ import {
   TMedia,
   TMovie,
 } from "@/types";
-import { EMediaType } from "../../../../common/types";
+import { EMediaType } from "@/types";
 
 interface IMediaModalProps {
   media: TMedia;

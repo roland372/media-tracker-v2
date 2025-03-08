@@ -1,66 +1,30 @@
 <template>
   <section class="d-md-flex align-center justify-space-between mb-2">
     <div>
-      <ButtonIcon
-        @click="handleDisplayClick"
-        color="indigo"
-        :icon="displayFlag === 'table' ? 'mdi-view-grid' : 'mdi-table'"
-        icon-size="25"
-      />
-      <ButtonIcon
-        @click="handleOpenSettingsModal"
-        class="ms-2"
-        color="grey-darken-3"
-        icon="mdi-cog"
-        icon-size="25"
-      />
+      <ButtonIcon @click="handleDisplayClick" color="indigo"
+        :icon="displayFlag === 'table' ? 'mdi-view-grid' : 'mdi-table'" icon-size="25" />
+      <ButtonIcon @click="handleOpenSettingsModal" class="ms-2" color="grey-darken-3" icon="mdi-cog" icon-size="25" />
     </div>
     <div class="d-flex align-center flex-wrap">
-      <ButtonText
-        @click="handleFilterClear"
-        class="ma-1"
-        color="primary"
-        :text="
-          mediaType === EMediaType.BOOK ||
+      <ButtonText @click="handleFilterClear" class="ma-1" color="primary" :text="mediaType === EMediaType.BOOK ||
           mediaType === EMediaType.CHARACTER ||
           mediaType === EMediaType.GAME ||
           mediaType === EMediaType.MOVIE
-            ? `All ${mediaType}s`
-            : `All ${mediaType}`
-        "
-      />
-      <ButtonText
-        v-for="(status, index) in mediaStatus"
-        @click="handleStatusClick(status.name)"
-        class="ma-1"
-        :color="status.color"
-        :key="index"
-        :text="status.name"
-      />
+          ? `All ${mediaType}s`
+          : `All ${mediaType}`
+        " />
+      <ButtonText v-for="(status, index) in mediaStatus" @click="handleStatusClick(status.name)" class="ma-1"
+        :color="status.color" :key="index" :text="status.name" />
     </div>
   </section>
   <section class="mb-3">
-    <v-text-field
-      v-model="mediaSearch"
-      @click:clear="handleSearchClear"
-      @input="handleMediaSearch"
-      clearable
-      class="text-color"
-      density="compact"
-      hide-details="auto"
-      :label="`${
-        mediaType === EMediaType.ANIME
+    <v-text-field v-model="mediaSearch" @click:clear="handleSearchClear" @input="handleMediaSearch" clearable
+      class="text-color" density="compact" hide-details="auto" :label="`${mediaType === EMediaType.ANIME
           ? `Search for an ${mediaType}`
           : `Search for a ${mediaType}`
-      }`"
-      variant="outlined"
-    />
+        }`" variant="outlined" />
   </section>
-  <v-dialog
-    v-if="settingsModal"
-    v-model="settingsModal"
-    :max-width="mediaType !== EMediaType.BOOK ? 500 : 300"
-    ><v-card>
+  <v-dialog v-if="settingsModal" v-model="settingsModal" :max-width="mediaType !== EMediaType.BOOK ? 500 : 300"><v-card>
       <div class="bg-primary-light text-color px-5 py-3 text-h6">
         Select sorting options
       </div>
@@ -99,34 +63,23 @@
               label="Visual Novel"
               value="Visual Novel"
             /> -->
-            <v-checkbox
-              v-for="(type, index) in mediaTypeValues"
-              :key="type"
-              v-model="mediaTypeFilter"
-              @input="handleFilterTypeClick"
-              :class="{ 'mt-n2': index === 0, 'mt-n9': index !== 0 }"
-              :label="type"
-              :value="type"
-            />
+            <v-checkbox v-for="(type, index) in mediaTypeValues" :key="type" v-model="mediaTypeFilter"
+              @input="handleFilterTypeClick" :class="{ 'mt-n2': index === 0, 'mt-n9': index !== 0 }" :label="type"
+              :value="type" />
           </div>
         </div>
       </v-card-text>
       <v-card-actions class="ms-2 mb-2 mt-n7">
-        <ButtonText
-          @click="handleSortMedia"
-          color="green"
-          text="Confirm"
-          variant="flat"
-        />
-      </v-card-actions> </v-card
-  ></v-dialog>
+        <ButtonText @click="handleSortMedia" color="green" text="Confirm" variant="flat" />
+      </v-card-actions>
+    </v-card></v-dialog>
 </template>
 <script setup lang="ts">
 import { ComputedRef, defineEmits, defineProps, ref } from "vue";
 import ButtonIcon from "@/components/ui/ButtonIcon.vue";
 import ButtonText from "@/components/ui/ButtonText.vue";
 import { TSortingOptions } from "@/types";
-import { EMediaType, TMediaStatus } from "../../../../common/types";
+import { EMediaType, TMediaStatus } from "@/types";
 
 interface IDisplayFilterSearchPanelProps {
   displayFlag: string;

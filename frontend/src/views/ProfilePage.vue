@@ -94,10 +94,9 @@ import {
   TManga,
   TMovie,
   TMusic,
-  TNote,
   TTheme,
 } from "@/types/index";
-import { EUserRole } from "../../../common/types";
+import { EUserRole } from "@/types";
 import { getAuth, signOut } from "firebase/auth";
 
 const mediaStore = useMediaStore();
@@ -237,8 +236,7 @@ const handleDownloadMedia = (
     | TGame[]
     | TManga[]
     | TMovie[]
-    | TMusic[]
-    | TNote[],
+    | TMusic[],
   fileName: string
 ) => {
   const fileData = JSON.stringify(jsonData);

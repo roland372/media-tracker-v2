@@ -1,57 +1,21 @@
 <template>
-  <StatsComponent
-    :mean-score="meanScore"
-    :media-type="EMediaType.BOOK"
-    :progress="progress"
-    :status="status"
-    :stats="stats"
-    :total-days="totalDays"
-  />
-  <MediaTable
-    v-if="displayFlag === 'table'"
-    :media="filteredBooks"
-    :media-type="EMediaType.BOOK"
-    title="All Books"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleBookFilter"
-      @search="handleBookSearch"
-      @sort="handleBookSort"
-      :display-flag="displayFlag"
-      :media-status="status"
-      :media-type="EMediaType.BOOK"
-      :sort-fields="sortFields"
-    />
+  <StatsComponent :mean-score="meanScore" :media-type="EMediaType.BOOK" :progress="progress" :status="status"
+    :stats="stats" :total-days="totalDays" />
+  <MediaTable v-if="displayFlag === 'table'" :media="filteredBooks" :media-type="EMediaType.BOOK" title="All Books">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleBookFilter" @search="handleBookSearch"
+      @sort="handleBookSort" :display-flag="displayFlag" :media-status="status" :media-type="EMediaType.BOOK"
+      :sort-fields="sortFields" />
   </MediaTable>
-  <MediaComponent
-    v-if="displayFlag === 'grid'"
-    all-media
-    :media="filteredBooks"
-    :media-type="EMediaType.BOOK"
-    title="All Books"
-  >
-    <DisplayFilterSearchPanel
-      @display="handleChangeDisplayFlag"
-      @filter="handleBookFilter"
-      @search="handleBookSearch"
-      @sort="handleBookSort"
-      :display-flag="displayFlag"
-      :media-status="status"
-      :media-type="EMediaType.BOOK"
-      :sort-fields="sortFields"
-    />
+  <MediaComponent v-if="displayFlag === 'grid'" all-media :media="filteredBooks" :media-type="EMediaType.BOOK"
+    title="All Books">
+    <DisplayFilterSearchPanel @display="handleChangeDisplayFlag" @filter="handleBookFilter" @search="handleBookSearch"
+      @sort="handleBookSort" :display-flag="displayFlag" :media-status="status" :media-type="EMediaType.BOOK"
+      :sort-fields="sortFields" />
   </MediaComponent>
-  <MediaComponent
-    :media="orderBy(books, ['updatedAt'], ['desc']).slice(0, 20)"
-    :media-type="EMediaType.BOOK"
-    title="Recent Books"
-  />
-  <MediaComponent
-    :media-type="EMediaType.BOOK"
-    :media="orderBy(filter(books, { favourites: true }), ['title'], ['asc'])"
-    title="Favourite Books"
-  />
+  <MediaComponent :media="orderBy(books, ['updatedAt'], ['desc']).slice(0, 20)" :media-type="EMediaType.BOOK"
+    title="Recent Books" />
+  <MediaComponent :media-type="EMediaType.BOOK"
+    :media="orderBy(filter(books, { favourites: true }), ['title'], ['asc'])" title="Favourite Books" />
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
@@ -68,7 +32,7 @@ import MediaComponent from "@/components/media/MediaComponent.vue";
 import MediaTable from "@/components/media/MediaTable.vue";
 import StatsComponent from "@/components/media/StatsComponent.vue";
 import { TSortingOptions } from "@/types";
-import { EBookStatus, EMediaType } from "../../../common/types";
+import { EBookStatus, EMediaType } from "@/types";
 
 const mediaStore = useMediaStore();
 const { books } = storeToRefs(mediaStore);
