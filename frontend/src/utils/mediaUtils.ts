@@ -56,6 +56,11 @@ export const round = (value: number, precision: number) => {
   return Math.round(value * multiplier) / multiplier;
 };
 
+export const toNumber = (value: string | number): number => {
+  const num = +value;
+  return isNaN(num) ? 0 : num;
+};
+
 export const animeStatus = [
   EAnimeStatus.WATCHING,
   EAnimeStatus.COMPLETED,

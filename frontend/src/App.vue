@@ -3,14 +3,13 @@
   <MainLayout v-else />
 </template>
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { useMediaStore } from "@/stores/useMediaStore";
-import { storeToRefs } from "pinia";
-import { setDefaultTheme } from "@/utils/themes";
 import LoaderComponent from "@/components/ui/LoaderComponent.vue";
 import MainLayout from "@/layouts/MainLayout.vue";
+import { useMediaStore } from "@/stores/useMediaStore";
+import { setDefaultTheme } from "@/utils/themes";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import axios from "axios";
+import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 
 const mediaStore = useMediaStore();
 const { fetchAllMedia, fetchUser, setLoading } = mediaStore;

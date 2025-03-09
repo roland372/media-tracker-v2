@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ref } from "vue";
-import { defineStore } from "pinia";
 import {
   EUserRole,
   TAnime,
@@ -10,19 +8,16 @@ import {
   TGame,
   TManga,
   TMovie,
-  TMusic,
   TUser,
 } from "@/types";
+import { toNumber } from '@/utils/mediaUtils';
+import { defineStore } from "pinia";
+import { ref } from "vue";
 
 export const useMediaStore = defineStore("media", () => {
   //* <----- MEDIA ----->
   const fetchAllMedia = async (mediaData: any) => {
     try {
-      const toNumber = (value: string | number): number => {
-        const num = +value;
-        return isNaN(num) ? 0 : num;
-      };
-
       const animeData = mediaData.anime.map((item: any) => ({
         ...item,
         rating: toNumber(item.rating),
@@ -129,12 +124,6 @@ export const useMediaStore = defineStore("media", () => {
     movies.value = payload;
   };
 
-  //* <----- MUSIC ----->
-  const music = ref<TMusic[]>([]);
-  const setMusic = (payload: TMusic[]) => {
-    music.value = payload;
-  };
-
   //* <----- USER ----->
   const userFromDB = ref<TUser>();
   const setUserFromDB = (payload: TUser) => {
@@ -201,9 +190,6 @@ export const useMediaStore = defineStore("media", () => {
     //* <----- MOVIES ----->
     movies,
     setMovies,
-    //* <----- MUSIC ----->
-    music,
-    setMusic,
     //* <----- USER ----->
     userFromDB,
     setUserFromDB,
