@@ -9,10 +9,10 @@ export const useEmotesStore = defineStore("emotes", () => {
     emotes.value = payload;
   };
 
-  const fetchAllEmotes = async (mediaData: any) => {
-    return mediaData.emotes.map((item: any) => ({
+  const fetchAllEmotes = async (mediaData: { emotes: TEmote[]; }) => {
+    return mediaData.emotes.map((item) => ({
       ...item,
-      favourites: item.favourites === "TRUE"
+      favourites: (item.favourites as unknown as string) === "TRUE"
     }));
   };
 

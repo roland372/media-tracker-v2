@@ -9,13 +9,13 @@ export const useAnimeStore = defineStore("anime", () => {
     anime.value = payload;
   };
 
-  const fetchAllAnime = async (mediaData: any) => {
-    return mediaData.anime.map((item: any) => ({
+  const fetchAllAnime = async (mediaData: { anime: TAnime[]; }): Promise<TAnime[]> => {
+    return mediaData.anime.map((item) => ({
       ...item,
       rating: toNumber(item.rating),
       episodesMin: toNumber(item.episodesMin),
       episodesMax: toNumber(item.episodesMax),
-      favourites: item.favourites === "TRUE"
+      favourites: (item.favourites as unknown as string) === "TRUE"
     }));
   };
 

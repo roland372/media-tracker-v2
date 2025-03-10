@@ -1,15 +1,7 @@
+import { TAnime, TBook, TCharacter, TEmote, TGame, TManga, TMediaData, TMovie, TUser } from '@/types';
+
 type TCsvRow = {
   [key: string]: string;
-};
-
-type TMediaData = {
-  anime: TCsvRow[];
-  books: TCsvRow[];
-  characters: TCsvRow[];
-  emotes: TCsvRow[];
-  games: TCsvRow[];
-  manga: TCsvRow[];
-  movies: TCsvRow[];
 };
 
 const csvToArray = (csvText: string): TCsvRow[] => {
@@ -38,7 +30,7 @@ const csvToArray = (csvText: string): TCsvRow[] => {
   return rows.slice(1).map(parseRow);
 };
 
-const fetchSheet = async (sheetId: string, sheetName: string): Promise<TCsvRow[]> => {
+const fetchSheet = async (sheetId: string, sheetName: string) => {
   const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
 
   try {
@@ -52,7 +44,7 @@ const fetchSheet = async (sheetId: string, sheetName: string): Promise<TCsvRow[]
 };
 
 export const fetchAllSheetsData = async (): Promise<{
-  usersData: TCsvRow[];
+  usersData: TUser[];
   mediaData: TMediaData;
 }> => {
   const sheetId = process.env.VUE_APP_SHEET_ID;
@@ -74,15 +66,15 @@ export const fetchAllSheetsData = async (): Promise<{
 
   await Promise.all(fetchPromises);
 
-  const usersData = sheetData['users'] || [];
-  const mediaData = {
-    anime: sheetData['anime'] || [],
-    books: sheetData['books'] || [],
-    characters: sheetData['characters'] || [],
-    emotes: sheetData['emotes'] || [],
-    games: sheetData['games'] || [],
-    manga: sheetData['manga'] || [],
-    movies: sheetData['movies'] || [],
+  const usersData = sheetData['users'] as TUser[] || [];
+  const mediaData: TMediaData = {
+    anime: sheetData['anime'] as unknown as TAnime[] || [],
+    books: sheetData['books'] as unknown as TBook[] || [],
+    characters: sheetData['characters'] as unknown as TCharacter[] || [],
+    emotes: sheetData['emotes'] as unknown as TEmote[] || [],
+    games: sheetData['games'] as unknown as TGame[] || [],
+    manga: sheetData['manga'] as unknown as TManga[] || [],
+    movies: sheetData['movies'] as unknown as TMovie[] || [],
   };
 
   return { usersData, mediaData };

@@ -9,12 +9,12 @@ export const useBooksStore = defineStore("books", () => {
     books.value = payload;
   };
 
-  const fetchAllBooks = async (mediaData: any) => {
-    return mediaData.books.map((item: any) => ({
+  const fetchAllBooks = async (mediaData: { books: TBook[]; }) => {
+    return mediaData.books.map((item) => ({
       ...item,
       pages: toNumber(item.pages),
       rating: toNumber(item.rating),
-      favourites: item.favourites === "TRUE"
+      favourites: (item.favourites as unknown as string) === "TRUE"
     }));
   };
 

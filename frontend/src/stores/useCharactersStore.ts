@@ -8,10 +8,10 @@ export const useCharactersStore = defineStore("characters", () => {
   const setCharacters = (payload: TCharacter[]) => {
     characters.value = payload;
   };
-  const fetchAllCharacters = async (mediaData: any) => {
-    return mediaData.characters.map((item: any) => ({
+  const fetchAllCharacters = async (mediaData: { characters: TCharacter[]; }) => {
+    return mediaData.characters.map((item) => ({
       ...item,
-      favourites: item.favourites === "TRUE"
+      favourites: (item.favourites as unknown as string) === "TRUE"
     }));
   };
 

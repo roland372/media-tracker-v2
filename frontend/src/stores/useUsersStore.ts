@@ -8,7 +8,7 @@ export const useUsersStore = defineStore("users", () => {
     user.value = payload;
   };
 
-  const fetchUser = async (userData: any) => {
+  const fetchUser = async (userData: TUser) => {
     try {
       setUser(userData);
     } catch (err) {

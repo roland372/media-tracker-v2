@@ -9,15 +9,15 @@ export const useMoviesStore = defineStore("movies", () => {
     movies.value = payload;
   };
 
-  const fetchAllMovies = async (mediaData: any) => {
-    return mediaData.movies.map((item: any) => ({
+  const fetchAllMovies = async (mediaData: { movies: TMovie[]; }) => {
+    return mediaData.movies.map((item) => ({
       ...item,
       rating: toNumber(item.rating),
       episodesMin: toNumber(item.episodesMin),
       episodesMax: toNumber(item.episodesMax),
       seasonsMin: toNumber(item.seasonsMin),
       seasonsMax: toNumber(item.seasonsMax),
-      favourites: item.favourites === "TRUE"
+      favourites: (item.favourites as unknown as string) === "TRUE"
     }));
   };
 

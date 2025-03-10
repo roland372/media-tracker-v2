@@ -10,12 +10,12 @@ export const useGamesStore = defineStore("games", () => {
     games.value = payload;
   };
 
-  const fetchAllGames = async (mediaData: any) => {
-    return mediaData.games.map((item: any) => ({
+  const fetchAllGames = async (mediaData: { games: TGame[]; }) => {
+    return mediaData.games.map((item) => ({
       ...item,
       rating: toNumber(item.rating),
       playtime: toNumber(item.playtime),
-      favourites: item.favourites === "TRUE"
+      favourites: (item.favourites as unknown as string) === "TRUE"
     }));
   };
 

@@ -1,4 +1,4 @@
-import { EAnimeStatus, EBookStatus, ECharacterSource, EGameStatus, EMangaStatus, EMovieStatus, EUserRole, TAnime, TBook, TCharacter, TGame, TManga, TMovie } from '.';
+import { EAnimeStatus, EBookStatus, ECharacterSource, EGameStatus, EMangaStatus, EMovieStatus, EUserRole, TAnime, TBook, TCharacter, TEmote, TGame, TManga, TMovie } from '.';
 
 export type TMediaStatus =
   | EAnimeStatus
@@ -53,4 +53,14 @@ export type TTheme = {
   secondaryLight: string;
   secondaryMedium: string;
   textColor: string;
+};
+
+export type TMediaData = {
+  anime: TAnime[];
+  books: TBook[];
+  characters: TCharacter[];
+  emotes: TEmote[];
+  games: TGame[];
+  manga: TManga[];
+  movies: TMovie[];
 };

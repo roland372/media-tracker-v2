@@ -1,3 +1,4 @@
+import { TMediaData } from '@/types';
 import { defineStore } from "pinia";
 import { useAnimeStore } from './useAnimeStore';
 import { useBooksStore } from './useBooksStore';
@@ -8,7 +9,7 @@ import { useMangaStore } from './useMangaStore';
 import { useMoviesStore } from './useMoviesStore';
 
 export const useMediaStore = defineStore("media", () => {
-  const fetchAllMedia = async (mediaData: any) => {
+  const fetchAllMedia = async (mediaData: TMediaData) => {
     const animeStore = useAnimeStore();
     const booksStore = useBooksStore();
     const charactersStore = useCharactersStore();
