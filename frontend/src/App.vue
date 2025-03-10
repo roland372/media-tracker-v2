@@ -12,6 +12,7 @@ import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 import { useUsersStore } from './stores/useUsersStore';
 import { useUtilsStore } from './stores/useUtilsStore';
+import { fetchAllSheetsData } from './utils/sheetsUtils';
 
 const mediaStore = useMediaStore();
 const usersStore = useUsersStore();
@@ -29,77 +30,12 @@ onMounted(async () => {
 		const auth = getAuth();
 		onAuthStateChanged(auth, async () => {
 			if (auth?.currentUser?.email) {
-				const sheetId = process.env.VUE_APP_SHEET_ID;
-				const sheetNames = [
-					'Users',
-					'Anime',
-					'Books',
-					'Characters',
-					'Emotes',
-					'Games',
-					'Manga',
-					'Movies',
-				];
-				const sheetData = {};
+				const { usersData, mediaData } = await fetchAllSheetsData();
 
-				const fetchSheet = async sheetName => {
-					const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(
-						sheetName
-					)}`;
-
-					try {
-						const response = await fetch(csvUrl);
-						const csvText = await response.text();
-						const data = csvToArray(csvText);
-						sheetData[sheetName.toLowerCase()] = data;
-					} catch (error) {
-						console.error(`Error fetching CSV for ${sheetName}:`, error);
-					}
-				};
-
-				const csvToArray = csvText => {
-					const rows = csvText
-						.split('\n')
-						.map(row => row.trim())
-						.filter(row => row !== '');
-
-					if (rows.length < 2) return [];
-
-					const headers = rows[0]
-						.split(',')
-						.map(header => header.trim().replace(/^"|"$/g, ''));
-
-					const parseRow = row => {
-						const values = row
-							.match(/(?:[^,""]|"(?:[^"]|"")*")+/g)
-							.map(value => value.replace(/^"|"$/g, '').replace(/""/g, '"'));
-
-						return headers.reduce((obj, header, idx) => {
-							obj[header] = values[idx] || '';
-							return obj;
-						}, {});
-					};
-
-					return rows.slice(1).map(parseRow);
-				};
-
-				Promise.all(sheetNames.map(fetchSheet)).then(() => {
-					const usersData = sheetData['users'] || [];
-					const mediaData = {
-						anime: sheetData['anime'] || [],
-						books: sheetData['books'] || [],
-						characters: sheetData['characters'] || [],
-						emotes: sheetData['emotes'] || [],
-						games: sheetData['games'] || [],
-						manga: sheetData['manga'] || [],
-						movies: sheetData['movies'] || [],
-					};
-
-					if (usersData.length > 0) {
-						fetchUser(usersData[0]);
-					}
-					fetchAllMedia(mediaData);
-				});
+				if (usersData.length > 0) {
+					fetchUser(usersData[0]);
+				}
+				fetchAllMedia(mediaData);
 
 				setLoading(false);
 			}
