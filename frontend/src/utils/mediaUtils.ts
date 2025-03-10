@@ -61,6 +61,11 @@ export const toNumber = (value: string | number): number => {
   return isNaN(num) ? 0 : num;
 };
 
+export const sortBy = <T>(item: T, sortField: keyof T) => {
+  const value = item[sortField];
+  return typeof value === 'string' ? value.toLowerCase() : value;
+};
+
 export const animeStatus = [
   EAnimeStatus.WATCHING,
   EAnimeStatus.COMPLETED,

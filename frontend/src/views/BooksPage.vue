@@ -49,7 +49,13 @@
 	/>
 	<MediaComponent
 		:media-type="EMediaType.BOOK"
-		:media="orderBy(filter(books, { favourites: true }), ['title'], ['asc'])"
+		:media="
+			orderBy(
+				filter(books, { favourites: true }),
+				[book => book.title.toLowerCase()],
+				['asc']
+			)
+		"
 		title="Favourite Books"
 	/>
 </template>
@@ -59,11 +65,12 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useBooksStore } from '@/stores/useBooksStore';
-import { EBookStatus, EMediaType, TSortingOptions } from '@/types';
+import { EBookStatus, EMediaType, TBook, TSortingOptions } from '@/types';
 import {
 	calculatePercentage,
 	filterMediaStatus,
 	round,
+	sortBy,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -127,7 +134,7 @@ const filteredBooks = computed(() => {
 
 	const sortedBooks = orderBy(
 		filteredItems,
-		[sortingOptions.value.sortField],
+		[book => sortBy(book, sortingOptions.value.sortField as keyof TBook)],
 		[sortingOptions.value.sortOrder]
 	);
 

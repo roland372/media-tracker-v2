@@ -53,7 +53,13 @@
 	/>
 	<MediaComponent
 		:media-type="EMediaType.GAME"
-		:media="orderBy(filter(games, { favourites: true }), ['title'], ['asc'])"
+		:media="
+			orderBy(
+				filter(games, { favourites: true }),
+				[game => game.title.toLowerCase()],
+				['asc']
+			)
+		"
 		title="Favourite Games"
 	/>
 </template>
@@ -63,11 +69,18 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useGamesStore } from '@/stores/useGamesStore';
-import { EGameStatus, EGameType, EMediaType, TSortingOptions } from '@/types';
+import {
+	EGameStatus,
+	EGameType,
+	EMediaType,
+	TGame,
+	TSortingOptions,
+} from '@/types';
 import {
 	calculatePercentage,
 	filterMediaStatus,
 	round,
+	sortBy,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -130,7 +143,7 @@ const filteredGames = computed(() => {
 
 	const sortedGames = orderBy(
 		filteredItems,
-		[sortingOptions.value.sortField],
+		[game => sortBy(game, sortingOptions.value.sortField as keyof TGame)],
 		[sortingOptions.value.sortOrder]
 	);
 

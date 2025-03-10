@@ -53,7 +53,13 @@
 	/>
 	<MediaComponent
 		:media-type="EMediaType.MOVIE"
-		:media="orderBy(filter(movies, { favourites: true }), ['title'], ['asc'])"
+		:media="
+			orderBy(
+				filter(movies, { favourites: true }),
+				[movie => movie.title.toLowerCase()],
+				['asc']
+			)
+		"
 		title="Favourite Movies"
 	/>
 </template>
@@ -63,11 +69,18 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useMoviesStore } from '@/stores/useMoviesStore';
-import { EMediaType, EMovieStatus, EMovieType, TSortingOptions } from '@/types';
+import {
+	EMediaType,
+	EMovieStatus,
+	EMovieType,
+	TMovie,
+	TSortingOptions,
+} from '@/types';
 import {
 	calculatePercentage,
 	filterMediaStatus,
 	round,
+	sortBy,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -133,7 +146,7 @@ const filteredMovies = computed(() => {
 
 	const sortedMovies = orderBy(
 		filteredItems,
-		[sortingOptions.value.sortField],
+		[movie => sortBy(movie, sortingOptions.value.sortField as keyof TMovie)],
 		[sortingOptions.value.sortOrder]
 	);
 

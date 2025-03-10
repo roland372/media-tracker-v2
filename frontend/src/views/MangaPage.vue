@@ -53,7 +53,13 @@
 	/>
 	<MediaComponent
 		:media-type="EMediaType.MANGA"
-		:media="orderBy(filter(manga, { favourites: true }), ['title'], ['asc'])"
+		:media="
+			orderBy(
+				filter(manga, { favourites: true }),
+				[manga => manga.title.toLowerCase()],
+				['asc']
+			)
+		"
 		title="Favourite Manga"
 	/>
 </template>
@@ -63,11 +69,18 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useMangaStore } from '@/stores/useMangaStore';
-import { EMangaStatus, EMangaType, EMediaType, TSortingOptions } from '@/types';
+import {
+	EMangaStatus,
+	EMangaType,
+	EMediaType,
+	TManga,
+	TSortingOptions,
+} from '@/types';
 import {
 	calculatePercentage,
 	filterMediaStatus,
 	round,
+	sortBy,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -135,7 +148,7 @@ const filteredManga = computed(() => {
 
 	const sortedManga = orderBy(
 		filteredItems,
-		[sortingOptions.value.sortField],
+		[manga => sortBy(manga, sortingOptions.value.sortField as keyof TManga)],
 		[sortingOptions.value.sortOrder]
 	);
 

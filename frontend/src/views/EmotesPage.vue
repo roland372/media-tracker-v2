@@ -114,20 +114,16 @@ const favEmoteSearch = ref<string>('');
 
 const allEmotes = computed(() =>
 	orderBy(emotes.value, ['name'], ['asc'])
-		.filter(e =>
-			e.name.toLocaleLowerCase().includes(emoteSearch.value.toLocaleLowerCase())
-		)
+		.filter(e => e.name.toLowerCase().includes(emoteSearch.value.toLowerCase()))
 		.slice(0, displayEmotesFlag.value)
 );
 
 const favouriteEmotes = computed(() =>
 	orderBy(
 		filter(emotes.value, { favourites: true }).filter(e =>
-			e.name
-				.toLocaleLowerCase()
-				.includes(favEmoteSearch.value.toLocaleLowerCase())
+			e.name.toLowerCase().includes(favEmoteSearch.value.toLowerCase())
 		),
-		['name'],
+		[emote => emote.name.toLowerCase()],
 		['asc']
 	)
 );

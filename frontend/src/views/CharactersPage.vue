@@ -53,7 +53,11 @@
 	<MediaComponent
 		:media-type="EMediaType.CHARACTER"
 		:media="
-			orderBy(filter(characters, { favourites: true }), ['name'], ['asc'])
+			orderBy(
+				filter(characters, { favourites: true }),
+				[character => character.name.toLowerCase()],
+				['asc']
+			)
 		"
 		title="Favourite Characters"
 	/>
@@ -64,8 +68,17 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useCharactersStore } from '@/stores/useCharactersStore';
-import { ECharacterSource, EMediaType, TSortingOptions } from '@/types';
-import { calculatePercentage, filterGameSource } from '@/utils/mediaUtils';
+import {
+	ECharacterSource,
+	EMediaType,
+	TCharacter,
+	TSortingOptions,
+} from '@/types';
+import {
+	calculatePercentage,
+	filterGameSource,
+	sortBy,
+} from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
@@ -133,7 +146,10 @@ const filteredCharacters = computed(() => {
 
 	const sortedCharacters = orderBy(
 		filteredItems,
-		[sortingOptions.value.sortField],
+		[
+			character =>
+				sortBy(character, sortingOptions.value.sortField as keyof TCharacter),
+		],
 		[sortingOptions.value.sortOrder]
 	);
 
