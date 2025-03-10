@@ -46,11 +46,9 @@
 		text="All Movies"
 		to="/movies"
 	/>
-	<LinksComponent />
 </template>
 <script setup lang="ts">
 import HeaderComponent from '@/components/media/HeaderComponent.vue';
-import LinksComponent from '@/components/media/LinksComponent.vue';
 import MediaComponent from '@/components/media/MediaComponent.vue';
 import ButtonText from '@/components/ui/ButtonText.vue';
 import { useMediaRefs } from '@/stores/useMediaRefs';
