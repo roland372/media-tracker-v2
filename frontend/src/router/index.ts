@@ -1,9 +1,9 @@
-import { watch } from "vue";
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import { useMediaStore } from "@/stores/useMediaStore";
-import { storeToRefs } from "pinia";
+import { useUsersStore } from '@/stores/useUsersStore';
 import { navLinks } from "@/utils/links";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { storeToRefs } from "pinia";
+import { watch } from "vue";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
   ...navLinks.map((link) => {
@@ -43,16 +43,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _, next) => {
-  const mediaStore = useMediaStore();
-  const { userFromDB } = storeToRefs(mediaStore);
+  const usersStore = useUsersStore();
+  const { user } = storeToRefs(usersStore);
 
   const pageTitle = to.meta.title as string;
   document.title = pageTitle;
 
   watch(
-    () => userFromDB.value,
+    () => user.value,
     () => {
-      if (to.name === "EmotesPage" && userFromDB.value?.role !== "ADMIN") {
+      if (to.name === "EmotesPage" && user.value?.role !== "ADMIN") {
         router.push({ name: "NotFound" });
       }
     }

@@ -3,9 +3,9 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useUsersStore = defineStore("users", () => {
-  const users = ref<TUser>();
+  const user = ref<TUser>();
   const setUser = (payload: TUser) => {
-    users.value = payload;
+    user.value = payload;
   };
 
   const fetchUser = async (userData: any) => {
@@ -16,5 +16,5 @@ export const useUsersStore = defineStore("users", () => {
     }
   };
 
-  return { users, setUser, fetchUser };
+  return { user, setUser, fetchUser };
 });

@@ -1,19 +1,18 @@
 <template>
   <section class="bg-primary-dark page-container">
     <SnackbarComponent v-model="snackbar" :options="snackbarOptions" />
-    <NavbarComponent v-if="userFromDB && !mdAndUp" />
+    <NavbarComponent v-if="user && !mdAndUp" />
     <v-layout>
-      <NavigationDrawer v-if="userFromDB && mdAndUp" />
-      <v-container class="text-center rounded" :class="{ 'ms-md-14': userFromDB }" fluid>
+      <NavigationDrawer v-if="user && mdAndUp" />
+      <v-container class="text-center rounded" :class="{ 'ms-md-14': user }" fluid>
         <router-view />
       </v-container>
     </v-layout>
-    <FooterComponent class="mt-10" :class="{ 'ms-md-14': userFromDB }" />
+    <FooterComponent class="mt-10" :class="{ 'ms-md-14': user }" />
     <ScrollToTopButton />
   </section>
 </template>
 <script setup lang="ts">
-import { useMediaStore } from "@/stores/useMediaStore";
 import { storeToRefs } from "pinia";
 import { useDisplay } from "vuetify";
 import FooterComponent from "@/components/ui/FooterComponent.vue";
@@ -21,9 +20,13 @@ import NavbarComponent from "@/components/ui/NavbarComponent.vue";
 import NavigationDrawer from "@/components/ui/NavigationDrawer.vue";
 import ScrollToTopButton from "@/components/ui/ScrollToTopButton.vue";
 import SnackbarComponent from "@/components/ui/SnackbarComponent.vue";
+import { useUsersStore } from '@/stores/useUsersStore';
+import { useUtilsStore } from '@/stores/useUtilsStore';
 
-const mediaStore = useMediaStore();
-const { userFromDB, snackbar, snackbarOptions } = storeToRefs(mediaStore);
+const usersStore = useUsersStore();
+const utilsStore = useUtilsStore();
+const { snackbar, snackbarOptions } = storeToRefs(utilsStore);
+const { user } = storeToRefs(usersStore);
 
 const {
   mdAndUp,
