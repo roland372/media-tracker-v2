@@ -156,10 +156,8 @@ const { anime, characters, emotes, games, manga, books, movies, user } =
 const isAdmin = user.value?.role === EUserRole.ADMIN;
 
 const userProfile = computed(() => ({
-	_id: user.value?._id ?? '',
 	color: user.value?.color ?? '',
 	email: user.value?.email ?? '',
-	googleId: user.value?.googleId ?? '',
 	profileDesc: user.value?.profileDesc ?? '',
 	profileImg: user.value?.profileImg ?? '',
 	role: user.value?.role ?? '',

@@ -1,4 +1,3 @@
-import { Ref } from "vue";
 import {
   EAnimeStatus,
   EAnimeType,
@@ -14,6 +13,7 @@ import {
   EMovieType,
   EMusicCategory,
 } from "@/types";
+import { Ref } from "vue";
 
 export const calculatePercentage = (numerator: number, denominator: number) =>
   (numerator / denominator) * 100;

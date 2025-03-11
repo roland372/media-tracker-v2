@@ -46,11 +46,11 @@
 	</v-navigation-drawer>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
-import { storeToRefs } from 'pinia';
-import { navLinks } from '@/utils/links';
-import { EUserRole } from '@/types';
 import { useUsersStore } from '@/stores/useUsersStore';
+import { EUserRole } from '@/types';
+import { navLinks } from '@/utils/links';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 const usersStore = useUsersStore();
 const { user } = storeToRefs(usersStore);
 
