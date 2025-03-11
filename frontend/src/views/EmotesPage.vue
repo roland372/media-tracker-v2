@@ -1,8 +1,8 @@
 <template>
-	<HeaderComponent title="Favourite Emotes">
+	<HeaderComponent title="All Emotes">
 		<v-text-field
-			v-model="favEmoteSearch"
-			@click:clear="() => (favEmoteSearch = '')"
+			v-model="emoteSearch"
+			@click:clear="() => (emoteSearch = '')"
 			clearable
 			class="mb-2 text-color"
 			density="compact"
@@ -10,13 +10,11 @@
 			label="Search for an Emote"
 			variant="outlined"
 		/>
-		<h3 v-if="!favouriteEmotes.length" class="text-color">
-			Not found any items.
-		</h3>
+		<h3 v-if="!allEmotes.length" class="text-color">Not found any items.</h3>
 		<section v-else class="d-flex flex-wrap justify-space-between">
 			<div
-				v-for="emote in favouriteEmotes"
-				:key="emote.id"
+				v-for="emote in allEmotes"
+				:key="`${emote.name}-${emote.url}`"
 				class="d-flex flex-fill align-stretch pa-1"
 			>
 				<v-tooltip activator="parent" location="top">{{
@@ -37,59 +35,21 @@
 				</div>
 			</div>
 		</section>
-	</HeaderComponent>
-	<HeaderComponent title="All Emotes">
-		<v-text-field
-			v-model="emoteSearch"
-			@click:clear="() => (emoteSearch = '')"
-			clearable
-			class="mb-2 text-color"
-			density="compact"
-			hide-details="auto"
-			label="Search for an Emote"
-			variant="outlined"
-		/>
-		<h3 v-if="!allEmotes.length" class="text-color">Not found any items.</h3>
-		<section v-else class="d-flex flex-wrap justify-space-between">
-			<div
-				v-for="emote in allEmotes"
-				:key="emote.id"
-				class="d-flex flex-fill align-stretch pa-1"
-			>
-				<v-tooltip activator="parent" location="top">{{
-					emote.name
-				}}</v-tooltip>
-				<div
-					class="bg-primary-dark pa-1 d-flex align-center justify-center flex-grow-1 position-relative rounded"
-				>
-					<div>
-						<div @click="handleEmoteClick(emote.url)" style="cursor: pointer">
-							<img
-								:alt="emote.name"
-								class="mb-n1"
-								:src="emote.url"
-								style="height: 64px"
-							/>
-							<v-icon
-								v-if="emote.favourites"
-								class="image-overlay-icon"
-								color="yellow-accent-4"
-								icon="mdi-star"
-							/>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
 		<ButtonText
-			v-if="emotes.length > 20"
+			v-if="emotes.length > DEFAULT_EMOTE_DISPLAY_COUNT"
 			@click="displayEmotes"
 			:append-icon="
-				displayEmotesFlag === 20 ? 'mdi-arrow-down-bold' : 'mdi-arrow-up-bold'
+				displayEmotesFlag === DEFAULT_EMOTE_DISPLAY_COUNT
+					? 'mdi-arrow-down-bold'
+					: 'mdi-arrow-up-bold'
 			"
 			class="mt-3"
 			color="indigo"
-			:text="displayEmotesFlag === 20 ? 'Display All' : 'Display Less'"
+			:text="
+				displayEmotesFlag === DEFAULT_EMOTE_DISPLAY_COUNT
+					? 'Display All'
+					: 'Display Less'
+			"
 		/>
 	</HeaderComponent>
 </template>
@@ -99,7 +59,7 @@ import ButtonText from '@/components/ui/ButtonText.vue';
 import { useEmotesStore } from '@/stores/useEmotesStore';
 import { useUtilsStore } from '@/stores/useUtilsStore';
 import { copyImageToClipboard } from 'copy-image-clipboard';
-import { filter, orderBy } from 'lodash';
+import { orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 
@@ -108,30 +68,20 @@ const utilsStore = useUtilsStore();
 const { setSnackbar } = utilsStore;
 const { emotes } = storeToRefs(emotesStore);
 
-const displayEmotesFlag = ref<number>(20);
+const DEFAULT_EMOTE_DISPLAY_COUNT = 100;
+const displayEmotesFlag = ref<number>(DEFAULT_EMOTE_DISPLAY_COUNT);
 const emoteSearch = ref<string>('');
-const favEmoteSearch = ref<string>('');
 
 const allEmotes = computed(() =>
-	orderBy(emotes.value, ['name'], ['asc'])
+	orderBy(emotes.value, [emote => emote.name.toLowerCase()], ['asc'])
 		.filter(e => e.name.toLowerCase().includes(emoteSearch.value.toLowerCase()))
 		.slice(0, displayEmotesFlag.value)
 );
 
-const favouriteEmotes = computed(() =>
-	orderBy(
-		filter(emotes.value, { favourites: true }).filter(e =>
-			e.name.toLowerCase().includes(favEmoteSearch.value.toLowerCase())
-		),
-		[emote => emote.name.toLowerCase()],
-		['asc']
-	)
-);
-
 const displayEmotes = () => {
-	displayEmotesFlag.value === 20
+	displayEmotesFlag.value === DEFAULT_EMOTE_DISPLAY_COUNT
 		? (displayEmotesFlag.value = emotes.value.length)
-		: (displayEmotesFlag.value = 20);
+		: (displayEmotesFlag.value = DEFAULT_EMOTE_DISPLAY_COUNT);
 };
 
 const handleEmoteClick = (url: string): void => {
