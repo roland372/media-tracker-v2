@@ -127,6 +127,7 @@
 	</HeaderComponent>
 </template>
 <script setup lang="ts">
+import { supabase } from '@/auth/supabaseClient';
 import HeaderComponent from '@/components/media/HeaderComponent.vue';
 import ButtonIcon from '@/components/ui/ButtonIcon.vue';
 import ButtonText from '@/components/ui/ButtonText.vue';
@@ -145,7 +146,6 @@ import {
 	TTheme,
 } from '@/types/index';
 import { beigeTheme, blueTheme, grayTheme, setAppTheme } from '@/utils/themes';
-import { getAuth, signOut } from 'firebase/auth';
 import { computed, ref } from 'vue';
 
 const utilsStore = useUtilsStore();
@@ -296,15 +296,20 @@ const handleDownloadMedia = (
 };
 
 const handleLogout = async () => {
-	const auth = getAuth();
-	await signOut(auth);
+	try {
+		await supabase.auth.signOut();
 
-	setSnackbar(true, {
-		color: 'green',
-		text: `Logged out`,
-	});
+		setSnackbar(true, {
+			color: 'green',
+			text: 'Logged out',
+		});
 
-	window.open('/login', '_self');
+		localStorage.removeItem('snackbarShown');
+
+		window.open('/login', '_self');
+	} catch (error) {
+		console.error('Logout failed:', error);
+	}
 };
 
 const handleOpenSettings = () => {

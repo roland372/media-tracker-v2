@@ -6,25 +6,13 @@
 	</HeaderComponent>
 </template>
 <script setup lang="ts">
+import { supabase } from '@/auth/supabaseClient';
 import HeaderComponent from '@/components/media/HeaderComponent.vue';
-import router from '@/router';
-import { useUtilsStore } from '@/stores/useUtilsStore';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-
-const utilsStore = useUtilsStore();
-const { setSnackbar } = utilsStore;
 
 const signInWithGoogle = async () => {
-	const provider = new GoogleAuthProvider();
-	const auth = getAuth();
-	await signInWithPopup(auth, provider);
-
-	setSnackbar(true, {
-		color: 'green',
-		text: `Welcome ${auth.currentUser?.displayName}`,
+	await supabase.auth.signInWithOAuth({
+		provider: 'google',
 	});
-
-	router.push('/');
 };
 </script>
 <style scoped>

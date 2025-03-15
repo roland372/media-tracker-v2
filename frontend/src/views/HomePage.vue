@@ -54,6 +54,13 @@ import ButtonText from '@/components/ui/ButtonText.vue';
 import { useMediaRefs } from '@/stores/useMediaRefs';
 import { EMediaType } from '@/types';
 import { orderBy } from 'lodash';
+import { onMounted } from 'vue';
 
 const { anime, characters, games, manga, books, movies } = useMediaRefs();
+
+onMounted(() => {
+	if (window.location.hash.includes('access_token=')) {
+		window.history.replaceState({}, document.title, window.location.pathname);
+	}
+});
 </script>

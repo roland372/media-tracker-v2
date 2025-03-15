@@ -1,6 +1,6 @@
+import { supabase } from '@/auth/supabaseClient';
 import { useUsersStore } from '@/stores/useUsersStore';
 import { navLinks } from "@/utils/links";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { storeToRefs } from "pinia";
 import { watch } from "vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
@@ -42,7 +42,7 @@ const router = createRouter({
   },
 });
 
-router.beforeEach((to, _, next) => {
+router.beforeEach(async (to, _, next) => {
   const usersStore = useUsersStore();
   const { user } = storeToRefs(usersStore);
 
@@ -53,20 +53,19 @@ router.beforeEach((to, _, next) => {
     () => user.value,
     () => {
       if (to.name === "EmotesPage" && user.value?.role !== "ADMIN") {
-        router.push({ name: "NotFound" });
+        next({ name: "NotFound" });
       }
     }
   );
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        next();
-      } else {
-        next("/login");
-      }
-    });
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) {
+      next();
+    } else {
+      next("/login");
+    }
   } else {
     next();
   }

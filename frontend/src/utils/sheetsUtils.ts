@@ -47,7 +47,7 @@ export const fetchAllSheetsData = async (): Promise<{
   usersData: TUser[];
   mediaData: TMediaData;
 }> => {
-  const sheetId = process.env.VUE_APP_SHEET_ID;
+  const sheetId = process.env.VUE_APP_SHEET_ID || "";
   const sheetNames = [
     'Anime',
     'Books',

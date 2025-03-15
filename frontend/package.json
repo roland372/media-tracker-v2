@@ -9,11 +9,11 @@
     "dev": "vue-cli-service serve --mode development"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
     "@tinymce/tinymce-vue": "^4.0.7",
     "@tutkli/jikan-ts": "^0.6.61",
     "axios": "^1.6.8",
     "copy-image-clipboard": "^2.1.2",
-    "firebase": "^10.7.2",
     "he": "^1.2.0",
     "lodash": "^4.17.21",
     "pinia": "^2.0.33",

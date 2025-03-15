@@ -2,14 +2,15 @@
 	<LoaderComponent v-if="isLoading" />
 	<MainLayout v-else />
 </template>
+
 <script setup lang="ts">
 import LoaderComponent from '@/components/ui/LoaderComponent.vue';
 import MainLayout from '@/layouts/MainLayout.vue';
 import { useMediaStore } from '@/stores/useMediaStore';
 import { setDefaultTheme } from '@/utils/themes';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
+import { supabase } from './auth/supabaseClient';
 import { useUsersStore } from './stores/useUsersStore';
 import { useUtilsStore } from './stores/useUtilsStore';
 import { fetchAllSheetsData } from './utils/sheetsUtils';
@@ -22,29 +23,36 @@ const { setLoading } = utilsStore;
 const { fetchUser } = usersStore;
 const { isLoading } = storeToRefs(utilsStore);
 
-onMounted(async () => {
+onMounted(() => {
 	// console.log("APP MOUNTED");
 	setDefaultTheme();
 
-	try {
-		const auth = getAuth();
-		onAuthStateChanged(auth, async () => {
-			if (auth?.currentUser?.email) {
-				const { usersData, mediaData } = await fetchAllSheetsData();
+	const snackbarShown = localStorage.getItem('snackbarShown');
 
-				if (usersData.length > 0) {
-					fetchUser(usersData[0]);
-				}
-				fetchAllMedia(mediaData);
+	supabase.auth.onAuthStateChange(async (_event, session) => {
+		if (session?.user) {
+			const { usersData, mediaData } = await fetchAllSheetsData();
 
-				setLoading(false);
+			if (usersData.length > 0) {
+				fetchUser(usersData[0]);
 			}
+			fetchAllMedia(mediaData);
+
 			setLoading(false);
-		});
-	} catch (error) {
-		console.error(error);
-		setLoading(false);
-	}
+
+			if (!snackbarShown) {
+				utilsStore.setSnackbar(true, {
+					color: 'green',
+					text: `Welcome ${session.user.email}`,
+				});
+
+				localStorage.setItem('snackbarShown', 'true');
+			}
+		} else {
+			setLoading(false);
+			utilsStore.setSnackbar(false);
+		}
+	});
 });
 </script>
 <style>
