@@ -24,6 +24,7 @@
 			:media-status="source"
 			:media-type="EMediaType.CHARACTER"
 			:sort-fields="sortFields"
+			:selected-statuses="characterSources"
 		/>
 	</MediaTable>
 	<MediaComponent
@@ -45,6 +46,7 @@
 			:media-status="source"
 			:media-type="EMediaType.CHARACTER"
 			:sort-fields="sortFields"
+			:selected-statuses="characterSources"
 		/>
 	</MediaComponent>
 	<MediaComponent
@@ -75,6 +77,7 @@ import {
 	EMediaType,
 	TCharacter,
 	TSortingOptions,
+	TMediaStatus,
 } from '@/types';
 import {
 	calculatePercentage,
@@ -91,7 +94,7 @@ const { characters } = storeToRefs(charactersStore);
 
 const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
-const characterFilter = ref<string>('');
+const characterSources = ref<TMediaStatus[]>([]);
 const characterSource = ref<string[]>([...Object.values(ECharacterSource)]);
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'name',
@@ -146,7 +149,7 @@ const filteredCharacters = computed(() => {
 				.includes(searchTerm.value.toLowerCase());
 
 		const sourceMatch =
-			characterFilter.value === '' || el.source === characterFilter.value;
+			characterSources.value.length === 0 || !characterSources.value.includes(el.source as TMediaStatus);
 
 		const sourceFilterMatch =
 			characterSource.value.length === 0 ||
@@ -223,8 +226,8 @@ const handleChangeDisplayFlag = () => {
 	}
 };
 
-const handleCharacterFilter = (emittedValue: string) =>
-	(characterFilter.value = emittedValue);
+const handleCharacterFilter = (emittedValue: TMediaStatus[]) =>
+	(characterSources.value = emittedValue);
 
 const handleCharacterFilterSource = (emittedValue: string[]) =>
 	(characterSource.value = emittedValue);

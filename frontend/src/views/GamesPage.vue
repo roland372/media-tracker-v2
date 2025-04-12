@@ -25,6 +25,7 @@
 			:media-status="status"
 			:media-type="EMediaType.GAME"
 			:sort-fields="sortFields"
+			:selected-statuses="gameStatuses"
 		/>
 	</MediaTable>
 	<MediaComponent
@@ -46,6 +47,7 @@
 			:media-status="status"
 			:media-type="EMediaType.GAME"
 			:sort-fields="sortFields"
+			:selected-statuses="gameStatuses"
 		/>
 	</MediaComponent>
 	<MediaComponent
@@ -77,6 +79,7 @@ import {
 	EMediaType,
 	TGame,
 	TSortingOptions,
+	TMediaStatus,
 } from '@/types';
 import {
 	calculatePercentage,
@@ -94,7 +97,7 @@ const { games } = storeToRefs(gamesStore);
 
 const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
-const gameFilter = ref<string>('');
+const gameStatuses = ref<TMediaStatus[]>([]);
 const gameType = ref<string[]>([...Object.values(EGameType)]);
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'title',
@@ -145,7 +148,7 @@ const filteredGames = computed(() => {
 			.includes(searchTerm.value.toLowerCase());
 
 		const statusMatch =
-			gameFilter.value === '' || el.status === gameFilter.value;
+			gameStatuses.value.length === 0 || !gameStatuses.value.includes(el.status as TMediaStatus);
 
 		const typeMatch =
 			gameType.value.length === 0 || gameType.value.includes(el.type);
@@ -257,8 +260,8 @@ const handleChangeDisplayFlag = () => {
 	}
 };
 
-const handleGameFilter = (emittedValue: string) =>
-	(gameFilter.value = emittedValue);
+const handleGameFilter = (emittedValue: TMediaStatus[]) =>
+	(gameStatuses.value = emittedValue);
 
 const handleGameFilterType = (emittedValue: string[]) =>
 	(gameType.value = emittedValue);

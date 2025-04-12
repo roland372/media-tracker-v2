@@ -23,6 +23,7 @@
 			:media-status="status"
 			:media-type="EMediaType.BOOK"
 			:sort-fields="sortFields"
+			:selected-statuses="bookStatuses"
 		/>
 	</MediaTable>
 	<MediaComponent
@@ -42,6 +43,7 @@
 			:media-status="status"
 			:media-type="EMediaType.BOOK"
 			:sort-fields="sortFields"
+			:selected-statuses="bookStatuses"
 		/>
 	</MediaComponent>
 	<MediaComponent
@@ -67,7 +69,7 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useBooksStore } from '@/stores/useBooksStore';
-import { EBookStatus, EMediaType, TBook, TSortingOptions } from '@/types';
+import { EBookStatus, EMediaType, TBook, TSortingOptions, TMediaStatus } from '@/types';
 import {
 	calculatePercentage,
 	filterMediaStatus,
@@ -84,7 +86,7 @@ const { books } = storeToRefs(booksStore);
 
 const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
-const bookFilter = ref<string>('');
+const bookStatuses = ref<TMediaStatus[]>([]);
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'title',
 	sortOrder: 'asc',
@@ -138,7 +140,7 @@ const filteredBooks = computed(() => {
 			.includes(searchTerm.value.toLowerCase());
 
 		const statusMatch =
-			bookFilter.value === '' || el.status === bookFilter.value;
+			bookStatuses.value.length === 0 || !bookStatuses.value.includes(el.status as TMediaStatus);
 
 		const favouritesMatch =
 			favouritesFilter.value === 'favourites'
@@ -238,8 +240,8 @@ const stats = computed(() => [
 	{ name: 'Total Pages', value: totalPages.value },
 ]);
 
-const handleBookFilter = (emittedValue: string) =>
-	(bookFilter.value = emittedValue);
+const handleBookFilter = (emittedValue: TMediaStatus[]) =>
+	(bookStatuses.value = emittedValue);
 
 const handleBookSearch = (emittedValue: string) =>
 	(searchTerm.value = emittedValue);

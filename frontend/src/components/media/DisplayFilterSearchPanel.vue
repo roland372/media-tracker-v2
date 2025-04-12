@@ -19,6 +19,7 @@
 			<ButtonText
 				@click="handleFilterClear"
 				class="ma-1"
+				:variant="selectedStatuses.length === 0 ? 'flat' : 'outlined'"
 				color="primary"
 				:text="
 					mediaType === EMediaType.BOOK ||
@@ -36,6 +37,7 @@
 				:color="status.color"
 				:key="index"
 				:text="status.name"
+				:variant="isStatusSelected(status.name) ? 'outlined' : 'flat'"
 			/>
 		</div>
 	</section>
@@ -146,6 +148,7 @@ interface IDisplayFilterSearchPanelProps {
 		name: TMediaStatus;
 		value: ComputedRef<number>;
 	}[];
+	selectedStatuses?: TMediaStatus[];
 }
 
 const emit = defineEmits([
@@ -166,8 +169,14 @@ const sortingOptions = ref<TSortingOptions>({
 });
 const mediaTypeFilter = ref<string[]>([...(props.filterType ?? [])]);
 const mediaTypeValues = [...(props.filterType ?? [])];
+const selectedStatuses = ref<TMediaStatus[]>(props.selectedStatuses || []);
 
 const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
+
+// Check if a status is currently selected
+const isStatusSelected = (status: TMediaStatus): boolean => {
+	return selectedStatuses.value.includes(status);
+};
 
 const handleFavouriteFilter = () => {
 	emit('filterFavourites', favouritesFilter.value);
@@ -176,10 +185,22 @@ const handleFavouriteFilter = () => {
 const handleDisplayClick = () => {
 	emit('display');
 	emit('search', '');
-	emit('filter', '');
+	selectedStatuses.value = [];
+	emit('filter', selectedStatuses.value);
 };
 
-const handleFilterClear = () => emit('filter', '');
+const handleFilterClear = () => {
+	// If no filters are currently selected (All is active), select all statuses (exclude all)
+	if (selectedStatuses.value.length === 0) {
+		// Get all status names and select them all (which will exclude all items)
+		selectedStatuses.value = props.mediaStatus.map(status => status.name);
+	} else {
+		// Otherwise, clear all selected statuses (show all items)
+		selectedStatuses.value = [];
+	}
+	emit('filter', selectedStatuses.value);
+};
+
 const handleFilterTypeClick = () => emit('filterType', mediaTypeFilter.value);
 const handleMediaSearch = () => emit('search', mediaSearch.value);
 const handleOpenSettingsModal = () => {
@@ -188,10 +209,29 @@ const handleOpenSettingsModal = () => {
 const handleSearchClear = () => emit('search', '');
 const handleSortMedia = () => {
 	emit('sort', sortingOptions.value);
-	// console.log("Sort By:", sortingOptions.value.sortField);
-	// console.log("Sort Order:", sortingOptions.value.sortOrder);
 	emit('filterType', mediaTypeFilter.value);
 	settingsModal.value = !settingsModal.value;
 };
-const handleStatusClick = (status: TMediaStatus) => emit('filter', status);
+
+const handleStatusClick = (status: TMediaStatus) => {
+	// If nothing is selected (or "All" is active), clicking a status should exclude only that status
+	if (selectedStatuses.value.length === 0) {
+		// Add only the clicked status to the filter (exclude just this one)
+		selectedStatuses.value = [status];
+	} else {
+		const index = selectedStatuses.value.indexOf(status);
+		if (index === -1) {
+			// Add status to selection (adding this status to be excluded)
+			selectedStatuses.value.push(status);
+		} else {
+			// Remove status from selection (removing this status from exclusion)
+			selectedStatuses.value.splice(index, 1);
+			// If no statuses are now selected, clear the filter completely
+			if (selectedStatuses.value.length === 0) {
+				selectedStatuses.value = [];
+			}
+		}
+	}
+	emit('filter', selectedStatuses.value);
+};
 </script>

@@ -25,6 +25,7 @@
 			:media-status="status"
 			:media-type="EMediaType.ANIME"
 			:sort-fields="sortFields"
+			:selected-statuses="animeStatuses"
 		/>
 	</MediaTable>
 	<MediaComponent
@@ -46,6 +47,7 @@
 			:media-status="status"
 			:media-type="EMediaType.ANIME"
 			:sort-fields="sortFields"
+			:selected-statuses="animeStatuses"
 		/>
 	</MediaComponent>
 	<MediaComponent
@@ -77,6 +79,7 @@ import {
 	EMediaType,
 	TAnime,
 	TSortingOptions,
+	TMediaStatus,
 } from '@/types';
 import {
 	calculatePercentage,
@@ -94,7 +97,7 @@ const { anime } = storeToRefs(animeStore);
 
 const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
-const animeFilter = ref<string>('');
+const animeStatuses = ref<TMediaStatus[]>([]);
 const animeType = ref<string[]>([...Object.values(EAnimeType)]);
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'title',
@@ -145,7 +148,7 @@ const filteredAnime = computed(() => {
 			.includes(searchTerm.value.toLowerCase());
 
 		const statusMatch =
-			animeFilter.value === '' || el.status === animeFilter.value;
+			animeStatuses.value.length === 0 || !animeStatuses.value.includes(el.status as TMediaStatus);
 
 		const typeMatch =
 			animeType.value.length === 0 || animeType.value.includes(el.type);
@@ -259,8 +262,8 @@ const stats = computed(() => [
 	{ name: '', value: null },
 ]);
 
-const handleAnimeFilter = (emittedValue: string) =>
-	(animeFilter.value = emittedValue);
+const handleAnimeFilter = (emittedValue: TMediaStatus[]) =>
+	(animeStatuses.value = emittedValue);
 
 const handleAnimeFilterType = (emittedValue: string[]) =>
 	(animeType.value = emittedValue);

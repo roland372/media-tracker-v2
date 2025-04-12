@@ -25,6 +25,7 @@
 			:media-status="status"
 			:media-type="EMediaType.MANGA"
 			:sort-fields="sortFields"
+			:selected-statuses="mangaStatuses"
 		/>
 	</MediaTable>
 	<MediaComponent
@@ -46,6 +47,7 @@
 			:media-status="status"
 			:media-type="EMediaType.MANGA"
 			:sort-fields="sortFields"
+			:selected-statuses="mangaStatuses"
 		/>
 	</MediaComponent>
 	<MediaComponent
@@ -77,6 +79,7 @@ import {
 	EMediaType,
 	TManga,
 	TSortingOptions,
+	TMediaStatus,
 } from '@/types';
 import {
 	calculatePercentage,
@@ -94,7 +97,7 @@ const { manga } = storeToRefs(mangaStore);
 
 const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
-const mangaFilter = ref<string>('');
+const mangaStatuses = ref<TMediaStatus[]>([]);
 const mangaType = ref<string[]>([...Object.values(EMangaType)]);
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'title',
@@ -148,7 +151,7 @@ const filteredManga = computed(() => {
 			.toLowerCase()
 			.includes(searchTerm.value.toLowerCase());
 		const statusMatch =
-			mangaFilter.value === '' || el.status === mangaFilter.value;
+			mangaStatuses.value.length === 0 || !mangaStatuses.value.includes(el.status as TMediaStatus);
 
 		const typeMatch =
 			mangaType.value.length === 0 || mangaType.value.includes(el.type);
@@ -317,8 +320,8 @@ const handleChangeDisplayFlag = () => {
 	}
 };
 
-const handleMangaFilter = (emittedValue: string) =>
-	(mangaFilter.value = emittedValue);
+const handleMangaFilter = (emittedValue: TMediaStatus[]) =>
+	(mangaStatuses.value = emittedValue);
 
 const handleMangaFilterType = (emittedValue: string[]) =>
 	(mangaType.value = emittedValue);

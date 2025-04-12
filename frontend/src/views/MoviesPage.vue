@@ -25,6 +25,7 @@
 			:media-status="status"
 			:media-type="EMediaType.MOVIE"
 			:sort-fields="sortFields"
+			:selected-statuses="movieStatuses"
 		/>
 	</MediaTable>
 	<MediaComponent
@@ -46,6 +47,7 @@
 			:media-status="status"
 			:media-type="EMediaType.MOVIE"
 			:sort-fields="sortFields"
+			:selected-statuses="movieStatuses"
 		/>
 	</MediaComponent>
 	<MediaComponent
@@ -77,6 +79,7 @@ import {
 	EMovieType,
 	TMovie,
 	TSortingOptions,
+	TMediaStatus,
 } from '@/types';
 import {
 	calculatePercentage,
@@ -94,7 +97,7 @@ const { movies } = storeToRefs(moviesStore);
 
 const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
-const movieFilter = ref<string>('');
+const movieStatuses = ref<TMediaStatus[]>([]);
 const movieType = ref<string[]>([...Object.values(EMovieType)]);
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'title',
@@ -149,7 +152,7 @@ const filteredMovies = computed(() => {
 			.includes(searchTerm.value.toLowerCase());
 
 		const statusMatch =
-			movieFilter.value === '' || el.status === movieFilter.value;
+			movieStatuses.value.length === 0 || !movieStatuses.value.includes(el.status as TMediaStatus);
 
 		const typeMatch =
 			movieType.value.length === 0 || movieType.value.includes(el.type);
@@ -278,8 +281,8 @@ const handleChangeDisplayFlag = () => {
 	}
 };
 
-const handleMovieFilter = (emittedValue: string) =>
-	(movieFilter.value = emittedValue);
+const handleMovieFilter = (emittedValue: TMediaStatus[]) =>
+	(movieStatuses.value = emittedValue);
 
 const handleMovieFilterType = (emittedValue: string[]) =>
 	(movieType.value = emittedValue);
