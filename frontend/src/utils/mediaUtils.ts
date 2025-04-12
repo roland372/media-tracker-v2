@@ -161,3 +161,16 @@ export const musicCategory = [
 
 export const placeholderImg = "https://placehold.co/225x300?text=Image";
 export const placeholderMusicImg = "https://placehold.co/600x400";
+
+/**
+ * Returns progress items with percentages or zeroed values if total is 0
+ */
+export function getProgressItems(
+  total: number,
+  items: { color: string; value: number; }[]
+): { color: string; value: number; }[] {
+  if (total === 0) {
+    return items.map(item => ({ ...item, value: 0 }));
+  }
+  return items;
+}

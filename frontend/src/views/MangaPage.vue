@@ -79,6 +79,7 @@ import {
 import {
 	calculatePercentage,
 	filterMediaStatus,
+	getProgressItems,
 	round,
 	sortBy,
 } from '@/utils/mediaUtils';
@@ -125,7 +126,7 @@ const sortFields = [
 ];
 
 const favourites = computed(
-	() => manga.value.filter(manga => manga.favourites).length
+	() => filteredManga.value.filter(manga => manga.favourites).length
 );
 
 const filteredManga = computed(() => {
@@ -156,11 +157,11 @@ const filteredManga = computed(() => {
 });
 
 const filterZeroRating = computed(
-	() => manga.value.filter(manga => manga.rating !== 0).length
+	() => filteredManga.value.filter(manga => manga.rating !== 0).length
 );
 
 const filteredMangaVolumes = computed(() =>
-	manga.value
+	filteredManga.value
 		.filter(manga => manga.type === 'Manga')
 		.reduce((accumulator, object) => {
 			return accumulator + object.volumesMin;
@@ -168,7 +169,7 @@ const filteredMangaVolumes = computed(() =>
 );
 
 const filteredLightNovelVolumes = computed(() =>
-	manga.value
+	filteredManga.value
 		.filter(manga => manga.type === 'Light Novel')
 		.reduce((accumulator, object) => {
 			return accumulator + object.volumesMin;
@@ -176,7 +177,7 @@ const filteredLightNovelVolumes = computed(() =>
 );
 
 const filteredWebtoonChapters = computed(() =>
-	manga.value
+	filteredManga.value
 		.filter(manga => manga.type === 'Webtoon')
 		.reduce((accumulator, object) => {
 			return accumulator + object.chaptersMin;
@@ -184,21 +185,21 @@ const filteredWebtoonChapters = computed(() =>
 );
 
 const readChaptersSum = computed(() =>
-	manga.value.reduce(
+	filteredManga.value.reduce(
 		(accumulator, object) => accumulator + object.chaptersMin,
 		0
 	)
 );
 
 const readVolumesSum = computed(() =>
-	manga.value.reduce(
+	filteredManga.value.reduce(
 		(accumulator, object) => accumulator + object.volumesMin,
 		0
 	)
 );
 
 const totalChaptersSum = computed(() =>
-	manga.value.reduce(
+	filteredManga.value.reduce(
 		(accumulator, object) => accumulator + object.chaptersMax,
 		0
 	)
@@ -213,13 +214,16 @@ const totalDays = computed(() =>
 	)
 );
 
-const totalManga = computed(() => manga.value.length);
+const totalManga = computed(() => filteredManga.value.length);
 const totalRating = computed(() =>
-	manga.value.reduce((accumulator, object) => accumulator + object.rating, 0)
+	filteredManga.value.reduce(
+		(accumulator, object) => accumulator + object.rating,
+		0
+	)
 );
 
 const totalVolumesSum = computed(() =>
-	manga.value.reduce(
+	filteredManga.value.reduce(
 		(accumulator, object) => accumulator + object.volumesMax,
 		0
 	)
@@ -231,36 +235,46 @@ const meanScore = computed(() =>
 		: round(totalRating.value / filterZeroRating.value, 2)
 );
 
-const reading = computed(() => filterMediaStatus(manga, 'reading').length);
-const completed = computed(() => filterMediaStatus(manga, 'completed').length);
-const onHold = computed(() => filterMediaStatus(manga, 'on-hold').length);
-const dropped = computed(() => filterMediaStatus(manga, 'dropped').length);
+const reading = computed(
+	() => filterMediaStatus(filteredManga, 'reading').length
+);
+const completed = computed(
+	() => filterMediaStatus(filteredManga, 'completed').length
+);
+const onHold = computed(
+	() => filterMediaStatus(filteredManga, 'on-hold').length
+);
+const dropped = computed(
+	() => filterMediaStatus(filteredManga, 'dropped').length
+);
 const planToRead = computed(
-	() => filterMediaStatus(manga, 'Plan to Read').length
+	() => filterMediaStatus(filteredManga, 'Plan to Read').length
 );
 
-const progress = computed(() => [
-	{
-		color: 'green',
-		value: calculatePercentage(reading.value, totalManga.value),
-	},
-	{
-		color: 'blue',
-		value: calculatePercentage(completed.value, totalManga.value),
-	},
-	{
-		color: 'yellow',
-		value: calculatePercentage(onHold.value, totalManga.value),
-	},
-	{
-		color: 'red',
-		value: calculatePercentage(dropped.value, totalManga.value),
-	},
-	{
-		color: 'white',
-		value: calculatePercentage(planToRead.value, totalManga.value),
-	},
-]);
+const progress = computed(() =>
+	getProgressItems(totalManga.value, [
+		{
+			color: 'green',
+			value: calculatePercentage(reading.value, totalManga.value),
+		},
+		{
+			color: 'blue',
+			value: calculatePercentage(completed.value, totalManga.value),
+		},
+		{
+			color: 'yellow',
+			value: calculatePercentage(onHold.value, totalManga.value),
+		},
+		{
+			color: 'red',
+			value: calculatePercentage(dropped.value, totalManga.value),
+		},
+		{
+			color: 'white',
+			value: calculatePercentage(planToRead.value, totalManga.value),
+		},
+	])
+);
 
 const status = computed(() => [
 	{ color: 'green', name: EMangaStatus.READING, value: reading },

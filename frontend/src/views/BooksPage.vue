@@ -69,6 +69,7 @@ import { EBookStatus, EMediaType, TBook, TSortingOptions } from '@/types';
 import {
 	calculatePercentage,
 	filterMediaStatus,
+	getProgressItems,
 	round,
 	sortBy,
 } from '@/utils/mediaUtils';
@@ -114,7 +115,7 @@ const sortFields = [
 ];
 
 const favourites = computed(
-	() => books.value.filter(books => books.favourites).length
+	() => filteredBooks.value.filter(books => books.favourites).length
 );
 
 const filteredBooks = computed(() => {
@@ -142,19 +143,22 @@ const filteredBooks = computed(() => {
 });
 
 const filterZeroRating = computed(
-	() => books.value.filter(books => books.rating !== 0).length
+	() => filteredBooks.value.filter(books => books.rating !== 0).length
 );
 
-const totalBooks = computed(() => books.value.length);
+const totalBooks = computed(() => filteredBooks.value.length);
 const totalDays = computed(() => round((totalPages.value * 1.5) / 24 / 24, 1));
 const totalPages = computed(() =>
-	books.value.reduce((accumulator, object) => {
+	filteredBooks.value.reduce((accumulator, object) => {
 		return accumulator + object.pages;
 	}, 0)
 );
 
 const totalRating = computed(() =>
-	books.value.reduce((accumulator, object) => accumulator + object.rating, 0)
+	filteredBooks.value.reduce(
+		(accumulator, object) => accumulator + object.rating,
+		0
+	)
 );
 
 const meanScore = computed(() =>
@@ -163,36 +167,46 @@ const meanScore = computed(() =>
 		: round(totalRating.value / filterZeroRating.value, 2)
 );
 
-const reading = computed(() => filterMediaStatus(books, 'reading').length);
-const completed = computed(() => filterMediaStatus(books, 'completed').length);
-const onHold = computed(() => filterMediaStatus(books, 'on-hold').length);
-const dropped = computed(() => filterMediaStatus(books, 'dropped').length);
+const reading = computed(
+	() => filterMediaStatus(filteredBooks, 'reading').length
+);
+const completed = computed(
+	() => filterMediaStatus(filteredBooks, 'completed').length
+);
+const onHold = computed(
+	() => filterMediaStatus(filteredBooks, 'on-hold').length
+);
+const dropped = computed(
+	() => filterMediaStatus(filteredBooks, 'dropped').length
+);
 const planToRead = computed(
-	() => filterMediaStatus(books, 'Plan to Read').length
+	() => filterMediaStatus(filteredBooks, 'Plan to Read').length
 );
 
-const progress = computed(() => [
-	{
-		color: 'green',
-		value: calculatePercentage(reading.value, totalBooks.value),
-	},
-	{
-		color: 'blue',
-		value: calculatePercentage(completed.value, totalBooks.value),
-	},
-	{
-		color: 'yellow',
-		value: calculatePercentage(onHold.value, totalBooks.value),
-	},
-	{
-		color: 'red',
-		value: calculatePercentage(dropped.value, totalBooks.value),
-	},
-	{
-		color: 'white',
-		value: calculatePercentage(planToRead.value, totalBooks.value),
-	},
-]);
+const progress = computed(() =>
+	getProgressItems(totalBooks.value, [
+		{
+			color: 'green',
+			value: calculatePercentage(reading.value, totalBooks.value),
+		},
+		{
+			color: 'blue',
+			value: calculatePercentage(completed.value, totalBooks.value),
+		},
+		{
+			color: 'yellow',
+			value: calculatePercentage(onHold.value, totalBooks.value),
+		},
+		{
+			color: 'red',
+			value: calculatePercentage(dropped.value, totalBooks.value),
+		},
+		{
+			color: 'white',
+			value: calculatePercentage(planToRead.value, totalBooks.value),
+		},
+	])
+);
 
 const status = computed(() => [
 	{ color: 'green', name: EBookStatus.READING, value: reading },

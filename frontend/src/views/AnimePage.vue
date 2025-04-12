@@ -79,6 +79,7 @@ import {
 import {
 	calculatePercentage,
 	filterMediaStatus,
+	getProgressItems,
 	round,
 	sortBy,
 } from '@/utils/mediaUtils';
@@ -121,7 +122,7 @@ const sortFields = [
 ];
 
 const favourites = computed(
-	() => anime.value.filter(anime => anime.favourites).length
+	() => filteredAnime.value.filter(anime => anime.favourites).length
 );
 
 const filteredAnime = computed(() => {
@@ -151,27 +152,30 @@ const filteredAnime = computed(() => {
 });
 
 const filterZeroRating = computed(
-	() => anime.value.filter(anime => anime.rating !== 0).length
+	() => filteredAnime.value.filter(anime => anime.rating !== 0).length
 );
 
 const watchedEpisodesSum = computed(() =>
-	anime.value.reduce(
+	filteredAnime.value.reduce(
 		(accumulator, object) => accumulator + object.episodesMin,
 		0
 	)
 );
 
-const totalAnime = computed(() => anime.value.length);
+const totalAnime = computed(() => filteredAnime.value.length);
 const totalDays = computed(() => round(watchedEpisodesSum.value / 60, 1));
 const totalEpisodesSum = computed(() =>
-	anime.value.reduce(
+	filteredAnime.value.reduce(
 		(accumulator, object) => accumulator + object.episodesMax,
 		0
 	)
 );
 
 const totalRating = computed(() =>
-	anime.value.reduce((accumulator, object) => accumulator + object.rating, 0)
+	filteredAnime.value.reduce(
+		(accumulator, object) => accumulator + object.rating,
+		0
+	)
 );
 
 const meanScore = computed(() =>
@@ -180,36 +184,46 @@ const meanScore = computed(() =>
 		: round(totalRating.value / filterZeroRating.value, 2)
 );
 
-const watching = computed(() => filterMediaStatus(anime, 'watching').length);
-const completed = computed(() => filterMediaStatus(anime, 'completed').length);
-const onHold = computed(() => filterMediaStatus(anime, 'on-hold').length);
-const dropped = computed(() => filterMediaStatus(anime, 'dropped').length);
+const watching = computed(
+	() => filterMediaStatus(filteredAnime, 'watching').length
+);
+const completed = computed(
+	() => filterMediaStatus(filteredAnime, 'completed').length
+);
+const onHold = computed(
+	() => filterMediaStatus(filteredAnime, 'on-hold').length
+);
+const dropped = computed(
+	() => filterMediaStatus(filteredAnime, 'dropped').length
+);
 const planToWatch = computed(
-	() => filterMediaStatus(anime, 'Plan to Watch').length
+	() => filterMediaStatus(filteredAnime, 'Plan to Watch').length
 );
 
-const progress = computed(() => [
-	{
-		color: 'green',
-		value: calculatePercentage(watching.value, totalAnime.value),
-	},
-	{
-		color: 'blue',
-		value: calculatePercentage(completed.value, totalAnime.value),
-	},
-	{
-		color: 'yellow',
-		value: calculatePercentage(onHold.value, totalAnime.value),
-	},
-	{
-		color: 'red',
-		value: calculatePercentage(dropped.value, totalAnime.value),
-	},
-	{
-		color: 'white',
-		value: calculatePercentage(planToWatch.value, totalAnime.value),
-	},
-]);
+const progress = computed(() =>
+	getProgressItems(totalAnime.value, [
+		{
+			color: 'green',
+			value: calculatePercentage(watching.value, totalAnime.value),
+		},
+		{
+			color: 'blue',
+			value: calculatePercentage(completed.value, totalAnime.value),
+		},
+		{
+			color: 'yellow',
+			value: calculatePercentage(onHold.value, totalAnime.value),
+		},
+		{
+			color: 'red',
+			value: calculatePercentage(dropped.value, totalAnime.value),
+		},
+		{
+			color: 'white',
+			value: calculatePercentage(planToWatch.value, totalAnime.value),
+		},
+	])
+);
 
 const status = computed(() => [
 	{ color: 'green', name: EAnimeStatus.WATCHING, value: watching },

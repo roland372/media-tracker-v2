@@ -79,6 +79,7 @@ import {
 import {
 	calculatePercentage,
 	filterMediaStatus,
+	getProgressItems,
 	round,
 	sortBy,
 } from '@/utils/mediaUtils';
@@ -125,7 +126,7 @@ const sortFields = [
 ];
 
 const favourites = computed(
-	() => movies.value.filter(movies => movies.favourites).length
+	() => filteredMovies.value.filter(movies => movies.favourites).length
 );
 
 const filteredMovies = computed(() => {
@@ -154,19 +155,19 @@ const filteredMovies = computed(() => {
 });
 
 const filterZeroRating = computed(
-	() => movies.value.filter(movies => movies.rating !== 0).length
+	() => filteredMovies.value.filter(movies => movies.rating !== 0).length
 );
 
 const filteredTotalMoviesAmount = computed(
-	() => movies.value.filter(movie => movie.type === 'Movie').length
+	() => filteredMovies.value.filter(movie => movie.type === 'Movie').length
 );
 
 const filteredTotalTVShowsAmount = computed(
-	() => movies.value.filter(movie => movie.type === 'TV-Show').length
+	() => filteredMovies.value.filter(movie => movie.type === 'TV-Show').length
 );
 
 const filteredTVShowsEpisodes = computed(() =>
-	movies.value
+	filteredMovies.value
 		.filter(movie => movie.type === 'TV-Show')
 		.reduce((accumulator, object) => {
 			return accumulator + object.episodesMin;
@@ -181,9 +182,12 @@ const totalDays = computed(() =>
 	)
 );
 
-const totalMovies = computed(() => movies.value.length);
+const totalMovies = computed(() => filteredMovies.value.length);
 const totalRating = computed(() =>
-	movies.value.reduce((accumulator, object) => accumulator + object.rating, 0)
+	filteredMovies.value.reduce(
+		(accumulator, object) => accumulator + object.rating,
+		0
+	)
 );
 
 const meanScore = computed(() =>
@@ -192,36 +196,46 @@ const meanScore = computed(() =>
 		: round(totalRating.value / filterZeroRating.value, 2)
 );
 
-const watching = computed(() => filterMediaStatus(movies, 'watching').length);
-const completed = computed(() => filterMediaStatus(movies, 'completed').length);
-const onHold = computed(() => filterMediaStatus(movies, 'on-hold').length);
-const dropped = computed(() => filterMediaStatus(movies, 'dropped').length);
+const watching = computed(
+	() => filterMediaStatus(filteredMovies, 'watching').length
+);
+const completed = computed(
+	() => filterMediaStatus(filteredMovies, 'completed').length
+);
+const onHold = computed(
+	() => filterMediaStatus(filteredMovies, 'on-hold').length
+);
+const dropped = computed(
+	() => filterMediaStatus(filteredMovies, 'dropped').length
+);
 const planToWatch = computed(
-	() => filterMediaStatus(movies, 'Plan to Watch').length
+	() => filterMediaStatus(filteredMovies, 'Plan to Watch').length
 );
 
-const progress = computed(() => [
-	{
-		color: 'green',
-		value: calculatePercentage(watching.value, totalMovies.value),
-	},
-	{
-		color: 'blue',
-		value: calculatePercentage(completed.value, totalMovies.value),
-	},
-	{
-		color: 'yellow',
-		value: calculatePercentage(onHold.value, totalMovies.value),
-	},
-	{
-		color: 'red',
-		value: calculatePercentage(dropped.value, totalMovies.value),
-	},
-	{
-		color: 'white',
-		value: calculatePercentage(planToWatch.value, totalMovies.value),
-	},
-]);
+const progress = computed(() =>
+	getProgressItems(totalMovies.value, [
+		{
+			color: 'green',
+			value: calculatePercentage(watching.value, totalMovies.value),
+		},
+		{
+			color: 'blue',
+			value: calculatePercentage(completed.value, totalMovies.value),
+		},
+		{
+			color: 'yellow',
+			value: calculatePercentage(onHold.value, totalMovies.value),
+		},
+		{
+			color: 'red',
+			value: calculatePercentage(dropped.value, totalMovies.value),
+		},
+		{
+			color: 'white',
+			value: calculatePercentage(planToWatch.value, totalMovies.value),
+		},
+	])
+);
 
 const status = computed(() => [
 	{ color: 'green', name: EMovieStatus.WATCHING, value: watching },

@@ -77,6 +77,7 @@ import {
 import {
 	calculatePercentage,
 	filterGameSource,
+	getProgressItems,
 	sortBy,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
@@ -118,7 +119,8 @@ const sortFields = [
 ];
 
 const favourites = computed(
-	() => characters.value.filter(characters => characters.favourites).length
+	() =>
+		filteredCharacters.value.filter(characters => characters.favourites).length
 );
 
 const filteredCharacters = computed(() => {
@@ -156,24 +158,33 @@ const filteredCharacters = computed(() => {
 	return sortedCharacters;
 });
 
-const totalCharacters = computed(() => characters.value.length);
-const anime = computed(() => filterGameSource(characters, 'anime').length);
-const game = computed(() => filterGameSource(characters, 'game').length);
-const manga = computed(() => filterGameSource(characters, 'manga').length);
-const progress = computed(() => [
-	{
-		color: 'green',
-		value: calculatePercentage(anime.value, totalCharacters.value),
-	},
-	{
-		color: 'blue',
-		value: calculatePercentage(game.value, totalCharacters.value),
-	},
-	{
-		color: 'yellow',
-		value: calculatePercentage(manga.value, totalCharacters.value),
-	},
-]);
+const totalCharacters = computed(() => filteredCharacters.value.length);
+const anime = computed(
+	() => filterGameSource(filteredCharacters, 'anime').length
+);
+const game = computed(
+	() => filterGameSource(filteredCharacters, 'game').length
+);
+const manga = computed(
+	() => filterGameSource(filteredCharacters, 'manga').length
+);
+
+const progress = computed(() =>
+	getProgressItems(totalCharacters.value, [
+		{
+			color: 'green',
+			value: calculatePercentage(anime.value, totalCharacters.value),
+		},
+		{
+			color: 'blue',
+			value: calculatePercentage(game.value, totalCharacters.value),
+		},
+		{
+			color: 'yellow',
+			value: calculatePercentage(manga.value, totalCharacters.value),
+		},
+	])
+);
 
 const source = computed(() => [
 	{ color: 'green', name: ECharacterSource.ANIME, value: anime },

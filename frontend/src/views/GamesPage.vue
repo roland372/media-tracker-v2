@@ -79,6 +79,7 @@ import {
 import {
 	calculatePercentage,
 	filterMediaStatus,
+	getProgressItems,
 	round,
 	sortBy,
 } from '@/utils/mediaUtils';
@@ -121,7 +122,7 @@ const sortFields = [
 ];
 
 const favourites = computed(
-	() => games.value.filter(games => games.favourites).length
+	() => filteredGames.value.filter(games => games.favourites).length
 );
 
 const filteredGames = computed(() => {
@@ -151,19 +152,22 @@ const filteredGames = computed(() => {
 });
 
 const filterZeroRating = computed(
-	() => games.value.filter(games => games.rating !== 0).length
+	() => filteredGames.value.filter(games => games.rating !== 0).length
 );
 
 const totalDays = computed(() => round(totalPlaytime.value / 24, 1));
-const totalGames = computed(() => games.value.length);
+const totalGames = computed(() => filteredGames.value.length);
 const totalPlaytime = computed(() =>
-	games.value.reduce((accumulator, object) => {
+	filteredGames.value.reduce((accumulator, object) => {
 		return accumulator + object.playtime;
 	}, 0)
 );
 
 const totalRating = computed(() =>
-	games.value.reduce((accumulator, object) => accumulator + object.rating, 0)
+	filteredGames.value.reduce(
+		(accumulator, object) => accumulator + object.rating,
+		0
+	)
 );
 
 const meanScore = computed(() =>
@@ -172,36 +176,46 @@ const meanScore = computed(() =>
 		: round(totalRating.value / filterZeroRating.value, 2)
 );
 
-const playing = computed(() => filterMediaStatus(games, 'playing').length);
-const completed = computed(() => filterMediaStatus(games, 'completed').length);
-const onHold = computed(() => filterMediaStatus(games, 'on-hold').length);
-const dropped = computed(() => filterMediaStatus(games, 'dropped').length);
+const playing = computed(
+	() => filterMediaStatus(filteredGames, 'playing').length
+);
+const completed = computed(
+	() => filterMediaStatus(filteredGames, 'completed').length
+);
+const onHold = computed(
+	() => filterMediaStatus(filteredGames, 'on-hold').length
+);
+const dropped = computed(
+	() => filterMediaStatus(filteredGames, 'dropped').length
+);
 const planToPlay = computed(
-	() => filterMediaStatus(games, 'Plan to Play').length
+	() => filterMediaStatus(filteredGames, 'Plan to Play').length
 );
 
-const progress = computed(() => [
-	{
-		color: 'green',
-		value: calculatePercentage(playing.value, totalGames.value),
-	},
-	{
-		color: 'blue',
-		value: calculatePercentage(completed.value, totalGames.value),
-	},
-	{
-		color: 'yellow',
-		value: calculatePercentage(onHold.value, totalGames.value),
-	},
-	{
-		color: 'red',
-		value: calculatePercentage(dropped.value, totalGames.value),
-	},
-	{
-		color: 'white',
-		value: calculatePercentage(planToPlay.value, totalGames.value),
-	},
-]);
+const progress = computed(() =>
+	getProgressItems(totalGames.value, [
+		{
+			color: 'green',
+			value: calculatePercentage(playing.value, totalGames.value),
+		},
+		{
+			color: 'blue',
+			value: calculatePercentage(completed.value, totalGames.value),
+		},
+		{
+			color: 'yellow',
+			value: calculatePercentage(onHold.value, totalGames.value),
+		},
+		{
+			color: 'red',
+			value: calculatePercentage(dropped.value, totalGames.value),
+		},
+		{
+			color: 'white',
+			value: calculatePercentage(planToPlay.value, totalGames.value),
+		},
+	])
+);
 
 const status = computed(() => [
 	{ color: 'green', name: EGameStatus.PLAYING, value: playing },
