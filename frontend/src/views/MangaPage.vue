@@ -16,6 +16,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleMangaFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleMangaFilterType"
 			@search="handleMangaSearch"
 			@sort="handleMangaSort"
@@ -36,6 +37,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleMangaFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleMangaFilterType"
 			@search="handleMangaSearch"
 			@sort="handleMangaSort"
@@ -125,6 +127,13 @@ const sortFields = [
 	},
 ];
 
+const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
+const handleFavouritesFilter = (
+	filterValue: 'all' | 'favourites' | 'non-favourites'
+) => {
+	favouritesFilter.value = filterValue;
+};
+
 const favourites = computed(
 	() => filteredManga.value.filter(manga => manga.favourites).length
 );
@@ -144,7 +153,14 @@ const filteredManga = computed(() => {
 		const typeMatch =
 			mangaType.value.length === 0 || mangaType.value.includes(el.type);
 
-		return searchTermMatch && statusMatch && typeMatch;
+		const favouritesMatch =
+			favouritesFilter.value === 'favourites'
+				? el.favourites
+				: favouritesFilter.value === 'non-favourites'
+				? !el.favourites
+				: true;
+
+		return searchTermMatch && statusMatch && typeMatch && favouritesMatch;
 	});
 
 	const sortedManga = orderBy(

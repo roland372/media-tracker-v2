@@ -16,6 +16,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleMovieFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleMovieFilterType"
 			@search="handleMovieSearch"
 			@sort="handleMovieSort"
@@ -36,6 +37,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleMovieFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleMovieFilterType"
 			@search="handleMovieSearch"
 			@sort="handleMovieSort"
@@ -125,6 +127,13 @@ const sortFields = [
 	},
 ];
 
+const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
+const handleFavouritesFilter = (
+	filterValue: 'all' | 'favourites' | 'non-favourites'
+) => {
+	favouritesFilter.value = filterValue;
+};
+
 const favourites = computed(
 	() => filteredMovies.value.filter(movies => movies.favourites).length
 );
@@ -138,11 +147,21 @@ const filteredMovies = computed(() => {
 		const searchTermMatch = el.title
 			.toLowerCase()
 			.includes(searchTerm.value.toLowerCase());
+
 		const statusMatch =
 			movieFilter.value === '' || el.status === movieFilter.value;
+
 		const typeMatch =
 			movieType.value.length === 0 || movieType.value.includes(el.type);
-		return searchTermMatch && statusMatch && typeMatch;
+
+		const favouritesMatch =
+			favouritesFilter.value === 'favourites'
+				? el.favourites
+				: favouritesFilter.value === 'non-favourites'
+				? !el.favourites
+				: true;
+
+		return searchTermMatch && statusMatch && typeMatch && favouritesMatch;
 	});
 
 	const sortedMovies = orderBy(

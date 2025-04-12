@@ -16,6 +16,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleGameFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleGameFilterType"
 			@search="handleGameSearch"
 			@sort="handleGameSort"
@@ -36,6 +37,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleGameFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleGameFilterType"
 			@search="handleGameSearch"
 			@sort="handleGameSort"
@@ -121,6 +123,13 @@ const sortFields = [
 	},
 ];
 
+const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
+const handleFavouritesFilter = (
+	filterValue: 'all' | 'favourites' | 'non-favourites'
+) => {
+	favouritesFilter.value = filterValue;
+};
+
 const favourites = computed(
 	() => filteredGames.value.filter(games => games.favourites).length
 );
@@ -134,12 +143,21 @@ const filteredGames = computed(() => {
 		const searchTermMatch = el.title
 			.toLowerCase()
 			.includes(searchTerm.value.toLowerCase());
+
 		const statusMatch =
 			gameFilter.value === '' || el.status === gameFilter.value;
+
 		const typeMatch =
 			gameType.value.length === 0 || gameType.value.includes(el.type);
 
-		return searchTermMatch && statusMatch && typeMatch;
+		const favouritesMatch =
+			favouritesFilter.value === 'favourites'
+				? el.favourites
+				: favouritesFilter.value === 'non-favourites'
+				? !el.favourites
+				: true;
+
+		return searchTermMatch && statusMatch && typeMatch && favouritesMatch;
 	});
 
 	const sortedGames = orderBy(

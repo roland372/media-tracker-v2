@@ -16,6 +16,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleAnimeFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleAnimeFilterType"
 			@search="handleAnimeSearch"
 			@sort="handleAnimeSort"
@@ -36,6 +37,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleAnimeFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleAnimeFilterType"
 			@search="handleAnimeSearch"
 			@sort="handleAnimeSort"
@@ -121,6 +123,13 @@ const sortFields = [
 	},
 ];
 
+const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
+const handleFavouritesFilter = (
+	filterValue: 'all' | 'favourites' | 'non-favourites'
+) => {
+	favouritesFilter.value = filterValue;
+};
+
 const favourites = computed(
 	() => filteredAnime.value.filter(anime => anime.favourites).length
 );
@@ -134,12 +143,21 @@ const filteredAnime = computed(() => {
 		const searchTermMatch = el.title
 			.toLowerCase()
 			.includes(searchTerm.value.toLowerCase());
+
 		const statusMatch =
 			animeFilter.value === '' || el.status === animeFilter.value;
+
 		const typeMatch =
 			animeType.value.length === 0 || animeType.value.includes(el.type);
 
-		return searchTermMatch && statusMatch && typeMatch;
+		const favouritesMatch =
+			favouritesFilter.value === 'favourites'
+				? el.favourites
+				: favouritesFilter.value === 'non-favourites'
+				? !el.favourites
+				: true;
+
+		return searchTermMatch && statusMatch && typeMatch && favouritesMatch;
 	});
 
 	const sortedAnime = orderBy(

@@ -16,6 +16,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleBookFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@search="handleBookSearch"
 			@sort="handleBookSort"
 			:display-flag="displayFlag"
@@ -34,6 +35,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleBookFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@search="handleBookSearch"
 			@sort="handleBookSort"
 			:display-flag="displayFlag"
@@ -114,6 +116,13 @@ const sortFields = [
 	},
 ];
 
+const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
+const handleFavouritesFilter = (
+	filterValue: 'all' | 'favourites' | 'non-favourites'
+) => {
+	favouritesFilter.value = filterValue;
+};
+
 const favourites = computed(
 	() => filteredBooks.value.filter(books => books.favourites).length
 );
@@ -130,7 +139,15 @@ const filteredBooks = computed(() => {
 
 		const statusMatch =
 			bookFilter.value === '' || el.status === bookFilter.value;
-		return (authorMarch || titleMatch) && statusMatch;
+
+		const favouritesMatch =
+			favouritesFilter.value === 'favourites'
+				? el.favourites
+				: favouritesFilter.value === 'non-favourites'
+				? !el.favourites
+				: true;
+
+		return (authorMarch || titleMatch) && statusMatch && favouritesMatch;
 	});
 
 	const sortedBooks = orderBy(

@@ -15,6 +15,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleCharacterFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleCharacterFilterSource"
 			@search="handleCharacterSearch"
 			@sort="handleCharacterSort"
@@ -35,6 +36,7 @@
 		<DisplayFilterSearchPanel
 			@display="handleChangeDisplayFlag"
 			@filter="handleCharacterFilter"
+			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleCharacterFilterSource"
 			@search="handleCharacterSearch"
 			@sort="handleCharacterSort"
@@ -118,6 +120,13 @@ const sortFields = [
 	},
 ];
 
+const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
+const handleFavouritesFilter = (
+	filterValue: 'all' | 'favourites' | 'non-favourites'
+) => {
+	favouritesFilter.value = filterValue;
+};
+
 const favourites = computed(
 	() =>
 		filteredCharacters.value.filter(characters => characters.favourites).length
@@ -143,7 +152,16 @@ const filteredCharacters = computed(() => {
 			characterSource.value.length === 0 ||
 			characterSource.value.includes(el.source);
 
-		return searchTermMatch && sourceMatch && sourceFilterMatch;
+		const favouritesMatch =
+			favouritesFilter.value === 'favourites'
+				? el.favourites
+				: favouritesFilter.value === 'non-favourites'
+				? !el.favourites
+				: true;
+
+		return (
+			searchTermMatch && sourceMatch && sourceFilterMatch && favouritesMatch
+		);
 	});
 
 	const sortedCharacters = orderBy(

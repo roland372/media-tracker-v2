@@ -59,7 +59,7 @@
 	<v-dialog
 		v-if="settingsModal"
 		v-model="settingsModal"
-		:max-width="mediaType !== EMediaType.BOOK ? 500 : 300"
+		:max-width="mediaType !== EMediaType.BOOK ? 500 : 450"
 		><v-card>
 			<div class="bg-primary-light text-color px-5 py-3 text-h6">
 				Select sorting options
@@ -82,31 +82,40 @@
 						<v-radio label="Descending" value="desc" />
 					</v-radio-group>
 				</div>
-				<div v-if="mediaType !== EMediaType.BOOK" class="me-2">
+				<div class="me-2">
 					<strong>Type</strong>
 					<div class="mx-n3">
-						<!-- <v-checkbox
-              v-model="mediaTypeFilter"
-              @input="handleFilterTypeClick"
-              class="mt-n2"
-              label="Game"
-              value="Game"
-            />
-            <v-checkbox
-              v-model="mediaTypeFilter"
-              @input="handleFilterTypeClick"
-              class="mt-n9"
-              label="Visual Novel"
-              value="Visual Novel"
-            /> -->
-						<v-checkbox
-							v-for="(type, index) in mediaTypeValues"
-							:key="type"
-							v-model="mediaTypeFilter"
-							@input="handleFilterTypeClick"
-							:class="{ 'mt-n2': index === 0, 'mt-n9': index !== 0 }"
-							:label="type"
-							:value="type"
+						<!-- Only show type filters when it's not a book -->
+						<div v-if="mediaType !== EMediaType.BOOK">
+							<v-checkbox
+								v-for="(type, index) in mediaTypeValues"
+								:key="type"
+								v-model="mediaTypeFilter"
+								@input="handleFilterTypeClick"
+								:class="{ 'mt-n2': index === 0, 'mt-n9': index !== 0 }"
+								:label="type"
+								:value="type"
+							/>
+						</div>
+
+						<!-- Always show the Favourites Filter for all media types, including books -->
+						<v-select
+							v-model="favouritesFilter"
+							@update:modelValue="handleFavouriteFilter"
+							:class="{
+								'mt-n7 ml-3': mediaType !== EMediaType.BOOK,
+								'mt-2 ml-3': mediaType === EMediaType.BOOK,
+							}"
+							density="compact"
+							label="Favourites Filter"
+							:items="[
+								{ title: 'All', value: 'all' },
+								{ title: 'Favourites', value: 'favourites' },
+								{ title: 'Non-Favourites', value: 'non-favourites' },
+							]"
+							item-title="title"
+							item-value="value"
+							style="min-width: 140px"
 						/>
 					</div>
 				</div>
@@ -139,7 +148,14 @@ interface IDisplayFilterSearchPanelProps {
 	}[];
 }
 
-const emit = defineEmits(['display', 'search', 'sort', 'filter', 'filterType']);
+const emit = defineEmits([
+	'display',
+	'search',
+	'sort',
+	'filter',
+	'filterType',
+	'filterFavourites',
+]);
 const props = defineProps<IDisplayFilterSearchPanelProps>();
 
 const mediaSearch = ref<string | undefined>('');
@@ -150,6 +166,12 @@ const sortingOptions = ref<TSortingOptions>({
 });
 const mediaTypeFilter = ref<string[]>([...(props.filterType ?? [])]);
 const mediaTypeValues = [...(props.filterType ?? [])];
+
+const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
+
+const handleFavouriteFilter = () => {
+	emit('filterFavourites', favouritesFilter.value);
+};
 
 const handleDisplayClick = () => {
 	emit('display');
