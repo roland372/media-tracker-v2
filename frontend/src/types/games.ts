@@ -24,6 +24,10 @@ export type TGame = {
   status: EGameStatus;
   title: string;
   type: EGameType;
+  developer?: string;
+  developerLink?: string;
+  notes?: string;
+  youtubeLink?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };

@@ -52,7 +52,17 @@
 			hide-details="auto"
 			:label="`${
 				mediaType === EMediaType.ANIME
-					? `Search for an ${mediaType}`
+					? `Search for an ${mediaType} (title or studio)`
+					: mediaType === EMediaType.BOOK
+					? `Search for a ${mediaType} (title or author)`
+					: mediaType === EMediaType.CHARACTER
+					? `Search for a ${mediaType} (name or series)`
+					: mediaType === EMediaType.GAME
+					? `Search for a ${mediaType} (title or developer)`
+					: mediaType === EMediaType.MANGA
+					? `Search for a ${mediaType} (title or author)`
+					: mediaType === EMediaType.MOVIE
+					? `Search for a ${mediaType} (title)`
 					: `Search for a ${mediaType}`
 			}`"
 			variant="outlined"

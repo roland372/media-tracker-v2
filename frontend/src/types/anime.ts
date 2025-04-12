@@ -27,6 +27,8 @@ export type TAnime = {
   status: EAnimeStatus;
   title: string;
   type: EAnimeType;
+  studio?: string;
+  studioLink?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };

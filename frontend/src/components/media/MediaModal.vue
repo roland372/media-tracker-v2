@@ -25,6 +25,17 @@
 								<b>Link: </b>
 								<a :href="media.link" target="_blank">{{ media.linkName }}</a>
 							</div>
+							<div v-if="(media as TAnime).studio">
+								<b>Studio: </b>
+								<a 
+									v-if="(media as TAnime).studioLink" 
+									:href="(media as TAnime).studioLink" 
+									target="_blank"
+								>
+									{{ (media as TAnime).studio }}
+								</a>
+								<span v-else>{{ (media as TAnime).studio }}</span>
+							</div>
 							<div>
 								<b>Episodes:</b> {{ (media as TAnime).episodesMin }} /
 								{{ (media as TAnime).episodesMax }}
@@ -67,9 +78,30 @@
 								<b>Link: </b>
 								<a :href="media.link" target="_blank">{{ media.linkName }}</a>
 							</div>
+							<div v-if="(media as TGame).developer">
+								<b>Developer: </b>
+								<a 
+									v-if="(media as TGame).developerLink" 
+									:href="(media as TGame).developerLink" 
+									target="_blank"
+								>
+									{{ (media as TGame).developer }}
+								</a>
+								<span v-else>{{ (media as TGame).developer }}</span>
+							</div>
+							<div v-if="(media as TGame).youtubeLink">
+								<b>YouTube: </b>
+								<a :href="(media as TGame).youtubeLink" target="_blank">Watch</a>
+							</div>
 							<div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
 							<div><b>Rating:</b> {{ (media as TGame).rating }}</div>
 							<div><b>Status:</b> {{ (media as TGame).status }}</div>
+							<div v-if="(media as TGame).notes">
+								<b>Notes:</b>
+								<div v-for="(note, index) in formatNotes((media as TGame).notes)" :key="index" class="pl-3">
+									{{ note }}
+								</div>
+							</div>
 						</section>
 
 						<!--? MANGA -->
@@ -78,6 +110,17 @@
 							<div>
 								<b>Link: </b>
 								<a :href="media.link" target="_blank">{{ media.linkName }}</a>
+							</div>
+							<div v-if="(media as TManga).author">
+								<b>Author: </b>
+								<a 
+									v-if="(media as TManga).authorLink" 
+									:href="(media as TManga).authorLink" 
+									target="_blank"
+								>
+									{{ (media as TManga).author }}
+								</a>
+								<span v-else>{{ (media as TManga).author }}</span>
 							</div>
 							<div>
 								<b>Chapters:</b> {{ (media as TManga).chaptersMin }} /
@@ -145,6 +188,12 @@ interface IMediaModalProps {
 const cardClass = computed(() => {
 	return window.innerWidth <= 600 ? 'mobile-card' : 'desktop-card';
 });
+
+// Function to format notes with semicolons as separate lines
+const formatNotes = (notes?: string) => {
+	if (!notes) return [];
+	return notes.split(';').map(note => note.trim());
+};
 
 defineProps<IMediaModalProps>();
 </script>

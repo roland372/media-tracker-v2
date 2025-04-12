@@ -145,7 +145,8 @@ const filteredAnime = computed(() => {
 	const filteredItems = anime.value.filter(el => {
 		const searchTermMatch = el.title
 			.toLowerCase()
-			.includes(searchTerm.value.toLowerCase());
+			.includes(searchTerm.value.toLowerCase()) || 
+			(el.studio && el.studio.toLowerCase().includes(searchTerm.value.toLowerCase()));
 
 		const statusMatch =
 			animeStatuses.value.length === 0 || !animeStatuses.value.includes(el.status as TMediaStatus);

@@ -31,6 +31,8 @@ export type TManga = {
   type: EMangaType;
   volumesMax: number;
   volumesMin: number;
+  author?: string;
+  authorLink?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };

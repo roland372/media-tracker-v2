@@ -143,12 +143,14 @@ const filteredGames = computed(() => {
 	}
 
 	const filteredItems = games.value.filter(el => {
-		const searchTermMatch = el.title
-			.toLowerCase()
-			.includes(searchTerm.value.toLowerCase());
+		const searchTermMatch =
+			el.title.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+			(el.developer &&
+				el.developer.toLowerCase().includes(searchTerm.value.toLowerCase()));
 
 		const statusMatch =
-			gameStatuses.value.length === 0 || !gameStatuses.value.includes(el.status as TMediaStatus);
+			gameStatuses.value.length === 0 ||
+			gameStatuses.value.includes(el.status as TMediaStatus);
 
 		const typeMatch =
 			gameType.value.length === 0 || gameType.value.includes(el.type);

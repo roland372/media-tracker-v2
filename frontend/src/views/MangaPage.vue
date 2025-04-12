@@ -149,7 +149,9 @@ const filteredManga = computed(() => {
 	const filteredItems = manga.value.filter(el => {
 		const searchTermMatch = el.title
 			.toLowerCase()
-			.includes(searchTerm.value.toLowerCase());
+			.includes(searchTerm.value.toLowerCase()) || 
+			(el.author && el.author.toLowerCase().includes(searchTerm.value.toLowerCase()));
+
 		const statusMatch =
 			mangaStatuses.value.length === 0 || !mangaStatuses.value.includes(el.status as TMediaStatus);
 
