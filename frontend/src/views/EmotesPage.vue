@@ -36,7 +36,7 @@
 			</div>
 		</section>
 		<ButtonText
-			v-if="emotes.length > DEFAULT_EMOTE_DISPLAY_COUNT"
+			v-if="filteredEmotes.length > DEFAULT_EMOTE_DISPLAY_COUNT"
 			@click="displayEmotes"
 			:append-icon="
 				displayEmotesFlag === DEFAULT_EMOTE_DISPLAY_COUNT
@@ -76,6 +76,12 @@ const allEmotes = computed(() =>
 	orderBy(emotes.value, [emote => emote.name.toLowerCase()], ['asc'])
 		.filter(e => e.name.toLowerCase().includes(emoteSearch.value.toLowerCase()))
 		.slice(0, displayEmotesFlag.value)
+);
+
+const filteredEmotes = computed(() =>
+	orderBy(emotes.value, [emote => emote.name.toLowerCase()], ['asc']).filter(
+		e => e.name.toLowerCase().includes(emoteSearch.value.toLowerCase())
+	)
 );
 
 const displayEmotes = () => {
