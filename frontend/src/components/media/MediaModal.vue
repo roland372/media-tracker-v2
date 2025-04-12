@@ -1,8 +1,12 @@
 <template>
 	<v-dialog width="auto">
 		<template v-slot:default>
-			<v-card max-width="450" class="pb-2">
-				<div class="bg-primary-light text-color px-5 py-3 text-h6">
+			<!-- <v-card max-width="450" class="pb-2">
+				<div class="bg-primary-light text-color px-5 py-3 text-h6"></div> -->
+			<v-card :class="cardClass" class="pb-2">
+				<div
+					class="media-modal-title bg-primary-light text-color px-5 py-3 text-h6"
+				>
 					{{ title }}
 				</div>
 				<div class="d-sm-flex align-start">
@@ -130,7 +134,7 @@ import {
 	TMovie,
 } from '@/types';
 import { placeholderImg } from '@/utils/mediaUtils';
-import { defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
 
 interface IMediaModalProps {
 	media: TMedia;
@@ -138,5 +142,27 @@ interface IMediaModalProps {
 	title: string;
 }
 
+const cardClass = computed(() => {
+	return window.innerWidth <= 600 ? 'mobile-card' : 'desktop-card';
+});
+
 defineProps<IMediaModalProps>();
 </script>
+<style scoped>
+/* Default for larger screens */
+.desktop-card {
+	max-width: 450px; /* Max width for desktop */
+}
+
+/* Mobile-specific class */
+.mobile-card {
+	max-width: 200px; /* Max width for mobile */
+	width: 100%; /* Ensure it's not too narrow on mobile */
+	min-width: 200px; /* Ensure it stays at least 200px */
+}
+
+.media-modal-title {
+	word-wrap: break-word;
+	white-space: normal;
+}
+</style>
