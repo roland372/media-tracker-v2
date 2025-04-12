@@ -7,9 +7,10 @@ export enum EGameStatus {
 }
 
 export enum EGameType {
-  GACHA = 'Gacha',
   GAME = 'Game',
   VISUAL_NOVEL = 'Visual Novel',
+  GACHA = 'Gacha',
+  EXPANSION = 'Expansion',
 }
 
 export type TGame = {
