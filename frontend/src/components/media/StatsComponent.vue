@@ -19,7 +19,10 @@
 				</div>
 			</div>
 
-			<div class="d-flex flex-wrap mt-3 mb-n6" :class="{'mobile-margin-bottom': $vuetify.display.xs}">
+			<div
+				class="d-flex flex-wrap mt-3 mb-n6"
+				:class="{ 'mobile-margin-bottom': $vuetify.display.xs }"
+			>
 				<div
 					v-for="(item, index) in progress"
 					:key="`legend-${index}`"
@@ -30,21 +33,30 @@
 						class="legend-color me-1"
 						:style="{ backgroundColor: getColorValue(item.color) }"
 					></div>
-					<div>{{ getStatusNameForColor(item.color) }} ({{
-						Math.ceil(item.value)
-					}}%)</div>
+					<div>
+						{{ getStatusNameForColor(item.color) }} ({{
+							Math.ceil(item.value)
+						}}%)
+					</div>
 				</div>
 			</div>
 		</section>
 
-		<section v-if="mediaType !== EMediaType.CHARACTER" class="text-color mb-n3" :class="{'mobile-margin-top': $vuetify.display.xs}">
+		<section
+			v-if="mediaType !== EMediaType.CHARACTER"
+			class="text-color mb-n3"
+			:class="{ 'mobile-margin-top': $vuetify.display.xs }"
+		>
 			<br />
 			<section class="d-flex justify-space-between">
 				<div><b>Days:</b> {{ totalDays }}</div>
 			</section>
 		</section>
 		<br />
-		<section class="d-sm-flex justify-space-between text-color mb-n1" :class="{'mobile-margin-top': $vuetify.display.xs}">
+		<section
+			class="d-sm-flex justify-space-between text-color mb-n1"
+			:class="{ 'mobile-margin-top': $vuetify.display.xs }"
+		>
 			<section class="text-start mb-3 mb-xs-0">
 				<div
 					v-for="(item, index) in status"
@@ -154,12 +166,12 @@ const getStatusNameForColor = (color: string): string => {
 	.progress-label {
 		display: none;
 	}
-	
+
 	/* Add these classes for mobile-specific margin adjustments */
 	.mobile-margin-bottom {
 		margin-bottom: -20px !important;
 	}
-	
+
 	.mobile-margin-top {
 		margin-top: 2px !important;
 	}

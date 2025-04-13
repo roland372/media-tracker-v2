@@ -106,4 +106,13 @@ export const navLinks: TNavLinks[] = [
   //   text: "About",
   //   title: "About",
   // },
+  {
+    color: "blue",
+    name: "StatsPage",
+    icon: "mdi-chart-bar",
+    route: EUserRole.PROTECTED,
+    url: "/stats",
+    text: "Stats",
+    title: "Stats",
+  },
 ];

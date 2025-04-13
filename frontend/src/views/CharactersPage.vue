@@ -143,12 +143,13 @@ const filteredCharacters = computed(() => {
 
 	const flagConfigs: Array<{ field: keyof TCharacter; flag: string }> = [
 		{ field: 'name', flag: 'n:' },
-		{ field: 'series', flag: 's:' }
+		{ field: 'series', flag: 's:' },
 	];
 
 	const additionalFilters = (el: TCharacter) => {
 		const sourceMatch =
-			characterSources.value.length === 0 || !characterSources.value.includes(el.source as TMediaStatus);
+			characterSources.value.length === 0 ||
+			!characterSources.value.includes(el.source as TMediaStatus);
 
 		const sourceFilterMatch =
 			characterSource.value.length === 0 ||
@@ -165,7 +166,7 @@ const filteredCharacters = computed(() => {
 	};
 
 	const filteredItems = advancedSearch(
-		characters.value, 
+		characters.value,
 		searchTerm.value,
 		flagConfigs,
 		additionalFilters
