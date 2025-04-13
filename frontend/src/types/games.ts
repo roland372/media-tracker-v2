@@ -20,7 +20,6 @@ export type TGame = {
   linkName: string;
   owner: string;
   playtime: number;
-  rating: number;
   status: EGameStatus;
   title: string;
   type: EGameType;

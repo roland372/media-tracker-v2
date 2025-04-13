@@ -139,8 +139,6 @@ export const mediaList = [
   EMediaType.MOVIE,
 ];
 
-export const mediaRating = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
-
 export const movieStatus = [
   EMovieStatus.WATCHING,
   EMovieStatus.COMPLETED,
@@ -184,7 +182,7 @@ export function getProgressItems(
 export function extractFlagSearchTerm(searchTerm: string, flag: string): string {
   const flagIndex = searchTerm.indexOf(flag);
   if (flagIndex === -1) return '';
-  
+
   // Extract the search term
   let extractedTerm = '';
   // Get text after flag (e.g., 't:') until next flag or end of string
@@ -194,7 +192,7 @@ export function extractFlagSearchTerm(searchTerm: string, flag: string): string 
   } else {
     extractedTerm = searchTerm.substring(flagIndex + 2).trim();
   }
-  
+
   return extractedTerm;
 }
 
@@ -209,16 +207,16 @@ export function extractFlagSearchTerm(searchTerm: string, flag: string): string 
 export function fieldFlagMatch<T>(item: T, field: keyof T, searchTerm: string, flag: string): boolean {
   // If flag is not in the search term, return true (no constraint)
   if (!searchTerm.includes(flag)) return true;
-  
+
   // Extract the search term for this flag
   const flagSearchTerm = extractFlagSearchTerm(searchTerm, flag);
-  
+
   // Get the field value
   const fieldValue = item[field];
-  
+
   // If the field doesn't exist in the item, return false
   if (fieldValue === undefined || fieldValue === null) return false;
-  
+
   // Convert the field value to string and check if it includes the search term
   const fieldValueString = String(fieldValue);
   return fieldValueString.toLowerCase().includes(flagSearchTerm.toLowerCase());
@@ -235,7 +233,7 @@ export function fieldFlagMatch<T>(item: T, field: keyof T, searchTerm: string, f
 export function advancedSearch<T>(
   items: T[],
   searchTerm: string,
-  flagConfigs: Array<{ field: keyof T; flag: string }>,
+  flagConfigs: Array<{ field: keyof T; flag: string; }>,
   additionalFilters: (item: T) => boolean
 ): T[] {
   // If search term is empty, only apply additionalFilters
@@ -245,28 +243,28 @@ export function advancedSearch<T>(
 
   // Check if any configured flags are present in the search term
   const hasFlags = flagConfigs.some(config => searchTerm.includes(config.flag));
-  
+
   return items.filter(item => {
     // If using advanced search with flags
     if (hasFlags) {
       // Check all configured field flags
-      const flagsMatch = flagConfigs.every(config => 
+      const flagsMatch = flagConfigs.every(config =>
         fieldFlagMatch(item, config.field, searchTerm, config.flag)
       );
-      
+
       return flagsMatch && additionalFilters(item);
-    } 
+    }
     // Regular search without flags
     else {
       // Check if any field matches the search term
       const basicMatch = flagConfigs.some(config => {
         const fieldValue = item[config.field];
         if (fieldValue === undefined || fieldValue === null) return false;
-        
+
         const fieldValueString = String(fieldValue);
         return fieldValueString.toLowerCase().includes(searchTerm.toLowerCase());
       });
-      
+
       return basicMatch && additionalFilters(item);
     }
   });

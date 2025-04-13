@@ -23,7 +23,6 @@ export type TAnime = {
   linkName: string;
   mal_id?: number;
   owner: string;
-  rating: number;
   status: EAnimeStatus;
   title: string;
   type: EAnimeType;

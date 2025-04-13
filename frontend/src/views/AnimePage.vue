@@ -1,6 +1,5 @@
 <template>
 	<StatsComponent
-		:mean-score="meanScore"
 		:media-type="EMediaType.ANIME"
 		:progress="progress"
 		:status="status"
@@ -110,10 +109,6 @@ const sortFields = [
 		value: 'episodesMin',
 	},
 	{
-		label: 'Rating',
-		value: 'rating',
-	},
-	{
 		label: 'Status',
 		value: 'status',
 	},
@@ -181,10 +176,6 @@ const filteredAnime = computed(() => {
 	return sortedAnime;
 });
 
-const filterZeroRating = computed(
-	() => filteredAnime.value.filter(anime => anime.rating !== 0).length
-);
-
 const watchedEpisodesSum = computed(() =>
 	filteredAnime.value.reduce(
 		(accumulator, object) => accumulator + object.episodesMin,
@@ -199,19 +190,6 @@ const totalEpisodesSum = computed(() =>
 		(accumulator, object) => accumulator + object.episodesMax,
 		0
 	)
-);
-
-const totalRating = computed(() =>
-	filteredAnime.value.reduce(
-		(accumulator, object) => accumulator + object.rating,
-		0
-	)
-);
-
-const meanScore = computed(() =>
-	filterZeroRating.value === 0
-		? 0
-		: round(totalRating.value / filterZeroRating.value, 2)
 );
 
 const watching = computed(

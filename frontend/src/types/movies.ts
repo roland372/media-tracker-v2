@@ -19,7 +19,6 @@ export type TMovie = {
   link: string;
   linkName: string;
   owner: string;
-  rating: number;
   seasonsMax: number;
   seasonsMin: number;
   status: EMovieStatus;

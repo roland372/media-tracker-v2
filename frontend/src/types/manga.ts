@@ -25,7 +25,6 @@ export type TManga = {
   linkName: string;
   mal_id?: number;
   owner: string;
-  rating: number;
   status: EMangaStatus;
   title: string;
   type: EMangaType;

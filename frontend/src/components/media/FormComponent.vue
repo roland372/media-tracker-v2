@@ -64,14 +64,6 @@
 								variant="outlined"
 							/>
 							<v-select
-								v-model="newAnime.rating"
-								class="mb-n3"
-								density="compact"
-								:items="mediaRating"
-								label="Rating"
-								variant="outlined"
-							/>
-							<v-select
 								v-model="newAnime.status"
 								class="mb-n3"
 								density="compact"
@@ -156,14 +148,6 @@
 								hide-details="auto"
 								label="Image URL"
 								:rules="emptyURLRules"
-								variant="outlined"
-							/>
-							<v-select
-								v-model="newManga.rating"
-								class="mb-n3"
-								density="compact"
-								:items="mediaRating"
-								label="Rating"
 								variant="outlined"
 							/>
 							<v-select
@@ -275,14 +259,6 @@
 								hide-details="auto"
 								label="Image URL"
 								:rules="emptyURLRules"
-								variant="outlined"
-							/>
-							<v-select
-								v-model="newGame.rating"
-								class="mb-n3"
-								density="compact"
-								:items="mediaRating"
-								label="Rating"
 								variant="outlined"
 							/>
 							<v-select
@@ -455,14 +431,6 @@
 								variant="outlined"
 							/>
 							<v-select
-								v-model="newBook.rating"
-								class="mb-n3"
-								density="compact"
-								:items="mediaRating"
-								label="Rating"
-								variant="outlined"
-							/>
-							<v-select
 								v-model="newBook.status"
 								class="mb-n3"
 								density="compact"
@@ -533,14 +501,6 @@
 								hide-details="auto"
 								label="Image URL"
 								:rules="emptyURLRules"
-								variant="outlined"
-							/>
-							<v-select
-								v-model="newMovie.rating"
-								class="mb-n3"
-								density="compact"
-								:items="mediaRating"
-								label="Rating"
 								variant="outlined"
 							/>
 							<v-select
@@ -646,7 +606,6 @@ import {
 	gameType,
 	mangaStatus,
 	mangaType,
-	mediaRating,
 	movieStatus,
 	movieType,
 } from '@/utils/mediaUtils';
@@ -688,7 +647,6 @@ const newAnime: TAnimeInput = reactive({
 	link: '',
 	linkName: 'MAL',
 	owner: userFromDB?.email as string,
-	rating: 0,
 	status: EAnimeStatus.PLAN_TO_WATCH,
 	title: '',
 	type: EAnimeType.TV_SHOW,
@@ -703,7 +661,6 @@ const newBook: TBookInput = reactive({
 	linkName: 'Link',
 	owner: userFromDB?.email as string,
 	pages: 0,
-	rating: 0,
 	status: EBookStatus.PLAN_TO_READ,
 	title: '',
 });
@@ -728,7 +685,6 @@ const newGame: TGameInput = reactive({
 	linkName: 'Link',
 	owner: userFromDB?.email as string,
 	playtime: 0,
-	rating: 0,
 	status: EGameStatus.PLAN_TO_PLAY,
 	title: '',
 	type: EGameType.GAME,
@@ -742,7 +698,6 @@ const newManga: TMangaInput = reactive({
 	link: '',
 	linkName: 'MAL',
 	owner: userFromDB?.email as string,
-	rating: 0,
 	status: EMangaStatus.PLAN_TO_READ,
 	title: '',
 	type: EMangaType.MANGA,
@@ -758,7 +713,6 @@ const newMovie: TMovieInput = reactive({
 	link: '',
 	linkName: 'Link',
 	owner: userFromDB?.email as string,
-	rating: 0,
 	seasonsMin: 0,
 	seasonsMax: 0,
 	status: EMovieStatus.PLAN_TO_WATCH,

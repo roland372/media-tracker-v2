@@ -1,6 +1,5 @@
 <template>
 	<StatsComponent
-		:mean-score="meanScore"
 		:media-type="EMediaType.MOVIE"
 		:progress="progress"
 		:status="status"
@@ -110,10 +109,6 @@ const sortFields = [
 		value: 'episodesMin',
 	},
 	{
-		label: 'Rating',
-		value: 'rating',
-	},
-	{
 		label: 'Seasons',
 		value: 'seasonsMin',
 	},
@@ -184,10 +179,6 @@ const filteredMovies = computed(() => {
 	return sortedMovies;
 });
 
-const filterZeroRating = computed(
-	() => filteredMovies.value.filter(movies => movies.rating !== 0).length
-);
-
 const filteredTotalMoviesAmount = computed(
 	() => filteredMovies.value.filter(movie => movie.type === 'Movie').length
 );
@@ -213,18 +204,6 @@ const totalDays = computed(() =>
 );
 
 const totalMovies = computed(() => filteredMovies.value.length);
-const totalRating = computed(() =>
-	filteredMovies.value.reduce(
-		(accumulator, object) => accumulator + object.rating,
-		0
-	)
-);
-
-const meanScore = computed(() =>
-	filterZeroRating.value === 0
-		? 0
-		: round(totalRating.value / filterZeroRating.value, 2)
-);
 
 const watching = computed(
 	() => filterMediaStatus(filteredMovies, 'watching').length

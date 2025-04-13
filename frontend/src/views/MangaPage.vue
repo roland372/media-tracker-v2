@@ -1,6 +1,5 @@
 <template>
 	<StatsComponent
-		:mean-score="meanScore"
 		:media-type="EMediaType.MANGA"
 		:progress="progress"
 		:status="status"
@@ -110,10 +109,6 @@ const sortFields = [
 		value: 'chaptersMin',
 	},
 	{
-		label: 'Rating',
-		value: 'rating',
-	},
-	{
 		label: 'Status',
 		value: 'status',
 	},
@@ -185,10 +180,6 @@ const filteredManga = computed(() => {
 	return sortedManga;
 });
 
-const filterZeroRating = computed(
-	() => filteredManga.value.filter(manga => manga.rating !== 0).length
-);
-
 const filteredMangaVolumes = computed(() =>
 	filteredManga.value
 		.filter(manga => manga.type === 'Manga')
@@ -244,24 +235,12 @@ const totalDays = computed(() =>
 );
 
 const totalManga = computed(() => filteredManga.value.length);
-const totalRating = computed(() =>
-	filteredManga.value.reduce(
-		(accumulator, object) => accumulator + object.rating,
-		0
-	)
-);
 
 const totalVolumesSum = computed(() =>
 	filteredManga.value.reduce(
 		(accumulator, object) => accumulator + object.volumesMax,
 		0
 	)
-);
-
-const meanScore = computed(() =>
-	filterZeroRating.value === 0
-		? 0
-		: round(totalRating.value / filterZeroRating.value, 2)
 );
 
 const reading = computed(

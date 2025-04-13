@@ -12,7 +12,6 @@ export const useMangaStore = defineStore("manga", () => {
   const fetchAllManga = async (mediaData: { manga: TManga[]; }) => {
     return mediaData.manga.map((item) => ({
       ...item,
-      rating: toNumber(item.rating),
       chaptersMax: toNumber(item.chaptersMax),
       chaptersMin: toNumber(item.chaptersMin),
       volumesMin: toNumber(item.volumesMin),

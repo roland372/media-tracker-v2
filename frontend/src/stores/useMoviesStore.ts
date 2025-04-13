@@ -12,7 +12,6 @@ export const useMoviesStore = defineStore("movies", () => {
   const fetchAllMovies = async (mediaData: { movies: TMovie[]; }) => {
     return mediaData.movies.map((item) => ({
       ...item,
-      rating: toNumber(item.rating),
       episodesMin: toNumber(item.episodesMin),
       episodesMax: toNumber(item.episodesMax),
       seasonsMin: toNumber(item.seasonsMin),

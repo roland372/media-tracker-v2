@@ -40,7 +40,6 @@
 								<b>Episodes:</b> {{ (media as TAnime).episodesMin }} /
 								{{ (media as TAnime).episodesMax }}
 							</div>
-							<div><b>Rating:</b> {{ (media as TAnime).rating }}</div>
 							<div><b>Status:</b> {{ (media as TAnime).status }}</div>
 						</section>
 
@@ -53,7 +52,6 @@
 							</div>
 							<div><b>Genre:</b> {{ (media as TBook).genre }}</div>
 							<div><b>Pages:</b> {{ (media as TBook).pages }}</div>
-							<div><b>Rating:</b> {{ (media as TBook).rating }}</div>
 							<div><b>Status:</b> {{ (media as TBook).status }}</div>
 						</section>
 
@@ -94,7 +92,6 @@
 								<a :href="(media as TGame).youtubeLink" target="_blank">Watch</a>
 							</div>
 							<div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
-							<div><b>Rating:</b> {{ (media as TGame).rating }}</div>
 							<div><b>Status:</b> {{ (media as TGame).status }}</div>
 							<div v-if="(media as TGame).notes">
 								<b>Notes:</b>
@@ -130,7 +127,6 @@
 								<b>Volumes:</b> {{ (media as TManga).volumesMin }} /
 								{{ (media as TManga).volumesMax }}
 							</div>
-							<div><b>Rating:</b> {{ (media as TManga).rating }}</div>
 							<div><b>Status:</b> {{ (media as TManga).status }}</div>
 						</section>
 
@@ -151,7 +147,6 @@
 									{{ (media as TMovie).seasonsMax }}
 								</div>
 							</div>
-							<div><b>Rating:</b> {{ (media as TMovie).rating }}</div>
 							<div><b>Status:</b> {{ (media as TMovie).status }}</div>
 						</section>
 

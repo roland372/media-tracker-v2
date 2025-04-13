@@ -1,6 +1,5 @@
 <template>
 	<StatsComponent
-		:mean-score="meanScore"
 		:media-type="EMediaType.GAME"
 		:progress="progress"
 		:status="status"
@@ -110,10 +109,6 @@ const sortFields = [
 		value: 'playtime',
 	},
 	{
-		label: 'Rating',
-		value: 'rating',
-	},
-	{
 		label: 'Status',
 		value: 'status',
 	},
@@ -181,29 +176,12 @@ const filteredGames = computed(() => {
 	return sortedGames;
 });
 
-const filterZeroRating = computed(
-	() => filteredGames.value.filter(games => games.rating !== 0).length
-);
-
 const totalDays = computed(() => round(totalPlaytime.value / 24, 1));
 const totalGames = computed(() => filteredGames.value.length);
 const totalPlaytime = computed(() =>
 	filteredGames.value.reduce((accumulator, object) => {
 		return accumulator + object.playtime;
 	}, 0)
-);
-
-const totalRating = computed(() =>
-	filteredGames.value.reduce(
-		(accumulator, object) => accumulator + object.rating,
-		0
-	)
-);
-
-const meanScore = computed(() =>
-	filterZeroRating.value === 0
-		? 0
-		: round(totalRating.value / filterZeroRating.value, 2)
 );
 
 const playing = computed(

@@ -21,7 +21,6 @@
 					<th>#</th>
 					<th>Image</th>
 					<th width="15%">Title</th>
-					<th>Rating</th>
 					<th>Type</th>
 					<th>Progress</th>
 					<th>Created At</th>
@@ -35,7 +34,6 @@
 						<v-img :src="anime.imageURL || placeholderImg" max-height="92px" />
 					</td>
 					<td>{{ anime.title }}</td>
-					<td>{{ anime.rating }}</td>
 					<td>{{ anime.type }}</td>
 					<td>{{ anime.episodesMin }} / {{ anime.episodesMax }}</td>
 					<td>{{ formatDate(anime.createdAt) }}</td>
@@ -65,7 +63,6 @@
 					<th>Author</th>
 					<th>Genre</th>
 					<th>Pages</th>
-					<th>Rating</th>
 					<th>Created At</th>
 					<th>Updated At</th>
 				</tr>
@@ -80,7 +77,6 @@
 					<td>{{ book.author }}</td>
 					<td>{{ book.genre }}</td>
 					<td>{{ book.pages }}</td>
-					<td>{{ book.rating }}</td>
 					<td>{{ formatDate(book.createdAt) }}</td>
 					<td>{{ formatDate(book.updatedAt) }}</td>
 				</tr>
@@ -190,7 +186,6 @@
 					<th>#</th>
 					<th>Image</th>
 					<th width="15%">Title</th>
-					<th>Rating</th>
 					<th>Type</th>
 					<th>Chapters</th>
 					<th>Volumes</th>
@@ -205,7 +200,6 @@
 						<v-img :src="manga.imageURL || placeholderImg" max-height="92px" />
 					</td>
 					<td>{{ manga.title }}</td>
-					<td>{{ manga.rating }}</td>
 					<td>{{ manga.type }}</td>
 					<td>{{ manga.chaptersMin }} / {{ manga.chaptersMax }}</td>
 					<td>{{ manga.volumesMin }} / {{ manga.volumesMax }}</td>
@@ -233,7 +227,6 @@
 					<th>#</th>
 					<th>Image</th>
 					<th width="15%">Title</th>
-					<th>Rating</th>
 					<th>Type</th>
 					<th>Episodes</th>
 					<th>Seasons</th>
@@ -248,7 +241,6 @@
 						<v-img :src="movie.imageURL || placeholderImg" max-height="92px" />
 					</td>
 					<td>{{ movie.title }}</td>
-					<td>{{ movie.rating }}</td>
 					<td>{{ movie.type }}</td>
 					<td>{{ movie.episodesMin }} / {{ movie.episodesMax }}</td>
 					<td>{{ movie.seasonsMin }} / {{ movie.seasonsMax }}</td>

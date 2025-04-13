@@ -15,7 +15,6 @@ export type TBook = {
   linkName: string;
   owner: string;
   pages: number;
-  rating: number;
   status: EBookStatus;
   title: string;
   createdAt?: Date;

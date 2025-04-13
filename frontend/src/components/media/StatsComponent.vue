@@ -41,10 +41,6 @@
 			<br />
 			<section class="d-flex justify-space-between">
 				<div><b>Days:</b> {{ totalDays }}</div>
-				<div>
-					<b>Mean Score:</b>
-					{{ meanScore }}
-				</div>
 			</section>
 		</section>
 		<br />
@@ -86,7 +82,6 @@ import { EMediaType } from '@/types';
 import { defineProps, Ref } from 'vue';
 
 interface IStatsComponentProps {
-	meanScore?: number;
 	mediaType: EMediaType;
 	progress: { color: string; value: number }[];
 	status: { color: string; name: string; value: Ref<number> }[];

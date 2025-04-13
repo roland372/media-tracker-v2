@@ -1,6 +1,5 @@
 <template>
 	<StatsComponent
-		:mean-score="meanScore"
 		:media-type="EMediaType.BOOK"
 		:progress="progress"
 		:status="status"
@@ -106,10 +105,6 @@ const sortFields = [
 		value: 'pages',
 	},
 	{
-		label: 'Rating',
-		value: 'rating',
-	},
-	{
 		label: 'Status',
 		value: 'status',
 	},
@@ -166,29 +161,12 @@ const filteredBooks = computed(() => {
 	return sortedBooks;
 });
 
-const filterZeroRating = computed(
-	() => filteredBooks.value.filter(books => books.rating !== 0).length
-);
-
 const totalBooks = computed(() => filteredBooks.value.length);
 const totalDays = computed(() => round((totalPages.value * 1.5) / 24 / 24, 1));
 const totalPages = computed(() =>
 	filteredBooks.value.reduce((accumulator, object) => {
 		return accumulator + object.pages;
 	}, 0)
-);
-
-const totalRating = computed(() =>
-	filteredBooks.value.reduce(
-		(accumulator, object) => accumulator + object.rating,
-		0
-	)
-);
-
-const meanScore = computed(() =>
-	filterZeroRating.value === 0
-		? 0
-		: round(totalRating.value / filterZeroRating.value, 2)
 );
 
 const reading = computed(
