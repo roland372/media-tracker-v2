@@ -87,6 +87,7 @@ import {
 	getProgressItems,
 	round,
 	sortBy,
+	advancedSearch,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -146,12 +147,12 @@ const filteredManga = computed(() => {
 		return [];
 	}
 
-	const filteredItems = manga.value.filter(el => {
-		const searchTermMatch = el.title
-			.toLowerCase()
-			.includes(searchTerm.value.toLowerCase()) || 
-			(el.author && el.author.toLowerCase().includes(searchTerm.value.toLowerCase()));
+	const flagConfigs: Array<{ field: keyof TManga; flag: string }> = [
+		{ field: 'title', flag: 't:' },
+		{ field: 'author', flag: 'a:' }
+	];
 
+	const additionalFilters = (el: TManga) => {
 		const statusMatch =
 			mangaStatuses.value.length === 0 || !mangaStatuses.value.includes(el.status as TMediaStatus);
 
@@ -165,8 +166,15 @@ const filteredManga = computed(() => {
 				? !el.favourites
 				: true;
 
-		return searchTermMatch && statusMatch && typeMatch && favouritesMatch;
-	});
+		return statusMatch && typeMatch && favouritesMatch;
+	};
+
+	const filteredItems = advancedSearch(
+		manga.value, 
+		searchTerm.value,
+		flagConfigs,
+		additionalFilters
+	);
 
 	const sortedManga = orderBy(
 		filteredItems,

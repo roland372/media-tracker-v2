@@ -87,6 +87,7 @@ import {
 	getProgressItems,
 	round,
 	sortBy,
+	advancedSearch,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -142,12 +143,12 @@ const filteredAnime = computed(() => {
 		return [];
 	}
 
-	const filteredItems = anime.value.filter(el => {
-		const searchTermMatch = el.title
-			.toLowerCase()
-			.includes(searchTerm.value.toLowerCase()) || 
-			(el.studio && el.studio.toLowerCase().includes(searchTerm.value.toLowerCase()));
+	const flagConfigs: Array<{ field: keyof TAnime; flag: string }> = [
+		{ field: 'title', flag: 't:' },
+		{ field: 'studio', flag: 's:' }
+	];
 
+	const additionalFilters = (el: TAnime) => {
 		const statusMatch =
 			animeStatuses.value.length === 0 || !animeStatuses.value.includes(el.status as TMediaStatus);
 
@@ -161,8 +162,15 @@ const filteredAnime = computed(() => {
 				? !el.favourites
 				: true;
 
-		return searchTermMatch && statusMatch && typeMatch && favouritesMatch;
-	});
+		return statusMatch && typeMatch && favouritesMatch;
+	};
+
+	const filteredItems = advancedSearch(
+		anime.value, 
+		searchTerm.value,
+		flagConfigs,
+		additionalFilters
+	);
 
 	const sortedAnime = orderBy(
 		filteredItems,

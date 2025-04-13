@@ -174,3 +174,100 @@ export function getProgressItems(
   }
   return items;
 }
+
+/**
+ * Extracts search term from a flag-based search query
+ * @param searchTerm The full search query
+ * @param flag The flag to extract (e.g., 't:', 's:', 'a:', etc.)
+ * @returns The extracted search term for the specific flag
+ */
+export function extractFlagSearchTerm(searchTerm: string, flag: string): string {
+  const flagIndex = searchTerm.indexOf(flag);
+  if (flagIndex === -1) return '';
+  
+  // Extract the search term
+  let extractedTerm = '';
+  // Get text after flag (e.g., 't:') until next flag or end of string
+  const nextFlagIndex = searchTerm.indexOf(':', flagIndex + 2);
+  if (nextFlagIndex !== -1) {
+    extractedTerm = searchTerm.substring(flagIndex + 2, nextFlagIndex - 1).trim();
+  } else {
+    extractedTerm = searchTerm.substring(flagIndex + 2).trim();
+  }
+  
+  return extractedTerm;
+}
+
+/**
+ * Performs a field match based on the flag and extracted search term
+ * @param item The media item to check
+ * @param field The field name to check against
+ * @param searchTerm The full search query
+ * @param flag The flag to look for (e.g., 't:', 's:', 'a:', etc.)
+ * @returns True if the field matches the search term, or if the flag is not present
+ */
+export function fieldFlagMatch<T>(item: T, field: keyof T, searchTerm: string, flag: string): boolean {
+  // If flag is not in the search term, return true (no constraint)
+  if (!searchTerm.includes(flag)) return true;
+  
+  // Extract the search term for this flag
+  const flagSearchTerm = extractFlagSearchTerm(searchTerm, flag);
+  
+  // Get the field value
+  const fieldValue = item[field];
+  
+  // If the field doesn't exist in the item, return false
+  if (fieldValue === undefined || fieldValue === null) return false;
+  
+  // Convert the field value to string and check if it includes the search term
+  const fieldValueString = String(fieldValue);
+  return fieldValueString.toLowerCase().includes(flagSearchTerm.toLowerCase());
+}
+
+/**
+ * Performs advanced search with flags or regular search if no flags are present
+ * @param items Array of items to search through
+ * @param searchTerm The search term
+ * @param flagConfigs Array of flag configurations with field and flag
+ * @param additionalFilters Function to apply additional filters
+ * @returns Filtered array of items
+ */
+export function advancedSearch<T>(
+  items: T[],
+  searchTerm: string,
+  flagConfigs: Array<{ field: keyof T; flag: string }>,
+  additionalFilters: (item: T) => boolean
+): T[] {
+  // If search term is empty, only apply additionalFilters
+  if (!searchTerm) {
+    return items.filter(item => additionalFilters(item));
+  }
+
+  // Check if any configured flags are present in the search term
+  const hasFlags = flagConfigs.some(config => searchTerm.includes(config.flag));
+  
+  return items.filter(item => {
+    // If using advanced search with flags
+    if (hasFlags) {
+      // Check all configured field flags
+      const flagsMatch = flagConfigs.every(config => 
+        fieldFlagMatch(item, config.field, searchTerm, config.flag)
+      );
+      
+      return flagsMatch && additionalFilters(item);
+    } 
+    // Regular search without flags
+    else {
+      // Check if any field matches the search term
+      const basicMatch = flagConfigs.some(config => {
+        const fieldValue = item[config.field];
+        if (fieldValue === undefined || fieldValue === null) return false;
+        
+        const fieldValueString = String(fieldValue);
+        return fieldValueString.toLowerCase().includes(searchTerm.toLowerCase());
+      });
+      
+      return basicMatch && additionalFilters(item);
+    }
+  });
+}

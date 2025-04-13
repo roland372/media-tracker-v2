@@ -87,6 +87,7 @@ import {
 	getProgressItems,
 	round,
 	sortBy,
+	advancedSearch,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -146,11 +147,11 @@ const filteredMovies = computed(() => {
 		return [];
 	}
 
-	const filteredItems = movies.value.filter(el => {
-		const searchTermMatch = el.title
-			.toLowerCase()
-			.includes(searchTerm.value.toLowerCase());
+	const flagConfigs: Array<{ field: keyof TMovie; flag: string }> = [
+		{ field: 'title', flag: 't:' }
+	];
 
+	const additionalFilters = (el: TMovie) => {
 		const statusMatch =
 			movieStatuses.value.length === 0 || !movieStatuses.value.includes(el.status as TMediaStatus);
 
@@ -164,8 +165,15 @@ const filteredMovies = computed(() => {
 				? !el.favourites
 				: true;
 
-		return searchTermMatch && statusMatch && typeMatch && favouritesMatch;
-	});
+		return statusMatch && typeMatch && favouritesMatch;
+	};
+
+	const filteredItems = advancedSearch(
+		movies.value,
+		searchTerm.value,
+		flagConfigs,
+		additionalFilters
+	);
 
 	const sortedMovies = orderBy(
 		filteredItems,

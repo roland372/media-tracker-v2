@@ -87,6 +87,7 @@ import {
 	getProgressItems,
 	round,
 	sortBy,
+	advancedSearch,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -142,15 +143,14 @@ const filteredGames = computed(() => {
 		return [];
 	}
 
-	const filteredItems = games.value.filter(el => {
-		const searchTermMatch =
-			el.title.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-			(el.developer &&
-				el.developer.toLowerCase().includes(searchTerm.value.toLowerCase()));
+	const flagConfigs: Array<{ field: keyof TGame; flag: string }> = [
+		{ field: 'title', flag: 't:' },
+		{ field: 'developer', flag: 'd:' }
+	];
 
+	const additionalFilters = (el: TGame) => {
 		const statusMatch =
-			gameStatuses.value.length === 0 ||
-			gameStatuses.value.includes(el.status as TMediaStatus);
+			gameStatuses.value.length === 0 || !gameStatuses.value.includes(el.status as TMediaStatus);
 
 		const typeMatch =
 			gameType.value.length === 0 || gameType.value.includes(el.type);
@@ -162,8 +162,15 @@ const filteredGames = computed(() => {
 				? !el.favourites
 				: true;
 
-		return searchTermMatch && statusMatch && typeMatch && favouritesMatch;
-	});
+		return statusMatch && typeMatch && favouritesMatch;
+	};
+
+	const filteredItems = advancedSearch(
+		games.value,
+		searchTerm.value,
+		flagConfigs,
+		additionalFilters
+	);
 
 	const sortedGames = orderBy(
 		filteredItems,

@@ -84,6 +84,7 @@ import {
 	filterGameSource,
 	getProgressItems,
 	sortBy,
+	advancedSearch,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -140,14 +141,12 @@ const filteredCharacters = computed(() => {
 		return [];
 	}
 
-	const filteredItems = characters.value.filter(el => {
-		const searchTermMatch =
-			el.name.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-			el.series
-				.toString()
-				.toLowerCase()
-				.includes(searchTerm.value.toLowerCase());
+	const flagConfigs: Array<{ field: keyof TCharacter; flag: string }> = [
+		{ field: 'name', flag: 'n:' },
+		{ field: 'series', flag: 's:' }
+	];
 
+	const additionalFilters = (el: TCharacter) => {
 		const sourceMatch =
 			characterSources.value.length === 0 || !characterSources.value.includes(el.source as TMediaStatus);
 
@@ -162,10 +161,15 @@ const filteredCharacters = computed(() => {
 				? !el.favourites
 				: true;
 
-		return (
-			searchTermMatch && sourceMatch && sourceFilterMatch && favouritesMatch
-		);
-	});
+		return sourceMatch && sourceFilterMatch && favouritesMatch;
+	};
+
+	const filteredItems = advancedSearch(
+		characters.value, 
+		searchTerm.value,
+		flagConfigs,
+		additionalFilters
+	);
 
 	const sortedCharacters = orderBy(
 		filteredItems,

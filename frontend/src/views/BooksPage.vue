@@ -76,6 +76,7 @@ import {
 	getProgressItems,
 	round,
 	sortBy,
+	advancedSearch,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -130,15 +131,12 @@ const favourites = computed(
 );
 
 const filteredBooks = computed(() => {
-	const filteredItems = books.value.filter(el => {
-		const authorMarch = el.author
-			.toLowerCase()
-			.includes(searchTerm.value.toLowerCase());
+	const flagConfigs: Array<{ field: keyof TBook; flag: string }> = [
+		{ field: 'title', flag: 't:' },
+		{ field: 'author', flag: 'a:' }
+	];
 
-		const titleMatch = el.title
-			.toLowerCase()
-			.includes(searchTerm.value.toLowerCase());
-
+	const additionalFilters = (el: TBook) => {
 		const statusMatch =
 			bookStatuses.value.length === 0 || !bookStatuses.value.includes(el.status as TMediaStatus);
 
@@ -149,8 +147,15 @@ const filteredBooks = computed(() => {
 				? !el.favourites
 				: true;
 
-		return (authorMarch || titleMatch) && statusMatch && favouritesMatch;
-	});
+		return statusMatch && favouritesMatch;
+	};
+
+	const filteredItems = advancedSearch(
+		books.value, 
+		searchTerm.value,
+		flagConfigs,
+		additionalFilters
+	);
 
 	const sortedBooks = orderBy(
 		filteredItems,

@@ -52,17 +52,17 @@
 			hide-details="auto"
 			:label="`${
 				mediaType === EMediaType.ANIME
-					? `Search for an ${mediaType} (title or studio)`
+					? `Search for an ${mediaType} (t: title, s: studio)`
 					: mediaType === EMediaType.BOOK
-					? `Search for a ${mediaType} (title or author)`
+					? `Search for a ${mediaType} (t: title, a: author)`
 					: mediaType === EMediaType.CHARACTER
-					? `Search for a ${mediaType} (name or series)`
+					? `Search for a ${mediaType} (n: name, s: series)`
 					: mediaType === EMediaType.GAME
-					? `Search for a ${mediaType} (title or developer)`
+					? `Search for a ${mediaType} (t: title, d: developer)`
 					: mediaType === EMediaType.MANGA
-					? `Search for a ${mediaType} (title or author)`
+					? `Search for a ${mediaType} (t: title, a: author)`
 					: mediaType === EMediaType.MOVIE
-					? `Search for a ${mediaType} (title)`
+					? `Search for a ${mediaType} (t: title)`
 					: `Search for a ${mediaType}`
 			}`"
 			variant="outlined"
