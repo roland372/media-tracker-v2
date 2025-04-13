@@ -3,10 +3,15 @@
 		<v-row>
 			<v-col cols="12">
 				<CardComponent title="Media Overview">
-					<section class="d-flex flex-wrap justify-space-between mx-n0 mx-md-n2 mx-sm-n2">
-						<div v-for="(stat, index) in mediaOverview" :key="index" 
-							class="stat-card ma-2 pa-4 rounded-lg" 
-							:class="`bg-${stat.color}`">
+					<section
+						class="d-flex flex-wrap justify-space-between mx-n0 mx-md-n2 mx-sm-n2"
+					>
+						<div
+							v-for="(stat, index) in mediaOverview"
+							:key="index"
+							class="stat-card ma-2 pa-4 rounded-lg"
+							:class="`bg-${stat.color}`"
+						>
 							<h3 class="text-h5 mb-2 white--text">{{ stat.name }}</h3>
 							<div class="text-h4 white--text">{{ stat.count }}</div>
 						</div>
@@ -19,18 +24,26 @@
 			<v-col cols="12" md="6">
 				<CardComponent title="Completion Status">
 					<section class="d-flex flex-column text-color px-1">
-						<div v-for="(status, index) in statusBreakdown" :key="index" class="mb-2">
+						<div
+							v-for="(status, index) in statusBreakdown"
+							:key="index"
+							class="mb-2"
+						>
 							<div class="d-flex justify-space-between align-center mb-1">
 								<div class="d-flex align-center">
-									<v-icon :color="status.color" icon="mdi-circle" class="mr-2" />
+									<v-icon
+										:color="status.color"
+										icon="mdi-circle"
+										class="mr-2"
+									/>
 									<span>{{ status.name }}</span>
 								</div>
 								<span>{{ status.count }}</span>
 							</div>
-							<v-progress-linear 
-								:model-value="status.percentage" 
-								height="8" 
-								:color="status.color" 
+							<v-progress-linear
+								:model-value="status.percentage"
+								height="8"
+								:color="status.color"
 								rounded
 							></v-progress-linear>
 						</div>
@@ -41,15 +54,21 @@
 			<v-col cols="12" md="6" class="mt-n5 mt-md-0 mt-sm-n0">
 				<CardComponent title="Media Distribution">
 					<section class="d-flex flex-column text-color px-1">
-						<div v-for="(type, index) in mediaDistribution" :key="index" class="mb-2">
+						<div
+							v-for="(type, index) in mediaDistribution"
+							:key="index"
+							class="mb-2"
+						>
 							<div class="d-flex justify-space-between align-center mb-1">
 								<span>{{ type.name }}</span>
-								<span>{{ type.count }} ({{ Math.round(type.percentage) }}%)</span>
+								<span
+									>{{ type.count }} ({{ Math.round(type.percentage) }}%)</span
+								>
 							</div>
-							<v-progress-linear 
-								:model-value="type.percentage" 
-								height="8" 
-								:color="type.color" 
+							<v-progress-linear
+								:model-value="type.percentage"
+								height="8"
+								:color="type.color"
 								rounded
 							></v-progress-linear>
 						</div>
@@ -61,113 +80,154 @@
 		<v-row class="mt-n5">
 			<v-col cols="12">
 				<CardComponent title="Consumption Stats" class="text-color">
-					<section class="d-flex flex-wrap consumption-stats-container mb-n2 mt-2">
-						<div v-for="(item, index) in [
-							{ 
-								title: 'Total Media Time', 
-								value: totalConsumptionDays, 
-								subvalue: totalConsumptionHours, 
-								subtext: 'hours',
-								icon: 'mdi-clock-outline',
-								iconColor: 'white',
-								bgColor: 'primary-dark'
-							},
-							{ 
-								title: 'Anime Time', 
-								value: Math.round(animeHours / 24 * 10) / 10, 
-								subvalue: Math.round(animeHours), 
-								subtext: 'hours',
-								icon: 'mdi-cat',
-								iconColor: 'indigo',
-								bgColor: 'primary-dark'
-							},
-							{ 
-								title: 'Reading Time', 
-								value: Math.round((mangaHours + bookHours) / 24 * 10) / 10, 
-								subvalue: Math.round(mangaHours + bookHours), 
-								subtext: 'hours',
-								icon: 'mdi-book-open-variant',
-								iconColor: 'green',
-								bgColor: 'primary-dark'
-							},
-							{ 
-								title: 'Gaming Time', 
-								value: Math.round(totalPlaytime / 24 * 10) / 10, 
-								subvalue: totalPlaytime, 
-								subtext: 'hours',
-								icon: 'mdi-gamepad-square',
-								iconColor: 'amber',
-								bgColor: 'primary-dark'
-							}
-						]" :key="index" class="consumption-stat-item pa-1">
-							<div class="stat-card pa-3 rounded-lg bg-secondary-medium w-100" style="border: 1px solid rgba(255, 255, 255, 0.15);">
+					<section
+						class="d-flex flex-wrap consumption-stats-container mb-n2 mt-2"
+					>
+						<div
+							v-for="(item, index) in [
+								{
+									title: 'Total Media Time',
+									value: totalConsumptionDays,
+									subvalue: totalConsumptionHours,
+									subtext: 'hours',
+									icon: 'mdi-clock-outline',
+									iconColor: 'white',
+									bgColor: 'primary-dark',
+								},
+								{
+									title: 'Anime Time',
+									value: Math.round((animeHours / 24) * 10) / 10,
+									subvalue: Math.round(animeHours),
+									subtext: 'hours',
+									icon: 'mdi-cat',
+									iconColor: 'indigo',
+									bgColor: 'primary-dark',
+								},
+								{
+									title: 'Reading Time',
+									value: Math.round(((mangaHours + bookHours) / 24) * 10) / 10,
+									subvalue: Math.round(mangaHours + bookHours),
+									subtext: 'hours',
+									icon: 'mdi-book-open-variant',
+									iconColor: 'green',
+									bgColor: 'primary-dark',
+								},
+								{
+									title: 'Gaming Time',
+									value: Math.round((totalPlaytime / 24) * 10) / 10,
+									subvalue: totalPlaytime,
+									subtext: 'hours',
+									icon: 'mdi-gamepad-square',
+									iconColor: 'amber',
+									bgColor: 'primary-dark',
+								},
+							]"
+							:key="index"
+							class="consumption-stat-item pa-1"
+						>
+							<div
+								class="stat-card pa-3 rounded-lg bg-secondary-medium w-100"
+								style="border: 1px solid rgba(255, 255, 255, 0.15)"
+							>
 								<div class="d-flex align-center justify-start mb-1">
-									<v-icon :color="item.iconColor" size="20" class="mr-1">{{ item.icon }}</v-icon>
+									<v-icon :color="item.iconColor" size="20" class="mr-1">{{
+										item.icon
+									}}</v-icon>
 									<h3 class="text-subtitle-2 mb-0">{{ item.title }}</h3>
 								</div>
 								<div class="text-h5 white--text">{{ item.value }} days</div>
-								<div v-if="item.subvalue" class="text-caption white--text">{{ item.subvalue }} {{ item.subtext }}</div>
+								<div v-if="item.subvalue" class="text-caption white--text">
+									{{ item.subvalue }} {{ item.subtext }}
+								</div>
 							</div>
 						</div>
 
 						<div class="consumption-stat-item media-items-card pa-1">
-							<div class="stat-card pa-3 rounded-lg bg-secondary-medium w-100" style="border: 1px solid rgba(255, 255, 255, 0.15);">
+							<div
+								class="stat-card pa-3 rounded-lg bg-secondary-medium w-100"
+								style="border: 1px solid rgba(255, 255, 255, 0.15)"
+							>
 								<div class="d-flex align-center justify-start mb-1">
-									<v-icon color="blue" size="20" class="mr-1">mdi-chart-bar</v-icon>
+									<v-icon color="blue" size="20" class="mr-1"
+										>mdi-chart-bar</v-icon
+									>
 									<h3 class="text-subtitle-2 mb-0">Media Items</h3>
 								</div>
-								<div class="text-h5 white--text">{{ totalBooksRead + anime.length + movies.length }}</div>
-								<div class="text-caption white--text">{{ totalBooksRead }} books, {{ anime.length }} anime, {{ movies.length }} shows</div>
+								<div class="text-h5 white--text">
+									{{ totalBooksRead + anime.length + movies.length }}
+								</div>
+								<div class="text-caption white--text">
+									{{ totalBooksRead }} books, {{ anime.length }} anime,
+									{{ movies.length }} shows
+								</div>
 							</div>
 						</div>
 					</section>
 
-					<section class="d-flex flex-wrap mt-2 consumption-stats-container mb-n2">
-						<div v-for="(item, index) in [
-							{ 
-								title: 'Episodes Watched', 
-								value: totalEpisodesWatched, 
-								subvalue: totalWatchTimeHours, 
-								subtext: 'watch hours',
-								icon: 'mdi-television-classic',
-								iconColor: 'blue',
-								bgColor: 'primary-dark'
-							},
-							{ 
-								title: 'Books Read', 
-								value: totalBooksRead, 
-								subvalue: Math.round(bookHours), 
-								subtext: 'reading hours',
-								icon: 'mdi-book-open-page-variant',
-								iconColor: 'purple',
-								bgColor: 'primary-dark'
-							},
-							{ 
-								title: 'Manga Read', 
-								value: manga.reduce((acc, item) => acc + (item.volumesMin || 0), 0), 
-								subvalue: Math.round(mangaHours), 
-								subtext: 'reading hours',
-								icon: 'mdi-book-account',
-								iconColor: 'green',
-								bgColor: 'primary-dark'
-							},
-							{ 
-								title: 'Pages Read', 
-								value: enhancedTotalPages, 
-								subvalue: `${Math.round(enhancedTotalPages / 60)} hours at 1 page/min`,
-								subtext: '',
-								icon: 'mdi-file-document-outline',
-								iconColor: 'grey',
-								bgColor: 'primary-dark'
-							}
-						]" :key="index" class="consumption-stat-item pa-1">
-							<div class="stat-card pa-3 rounded-lg bg-secondary-medium w-100" style="border: 1px solid rgba(255, 255, 255, 0.15);">
+					<section
+						class="d-flex flex-wrap mt-2 consumption-stats-container mb-n2"
+					>
+						<div
+							v-for="(item, index) in [
+								{
+									title: 'Episodes Watched',
+									value: totalEpisodesWatched,
+									subvalue: totalWatchTimeHours,
+									subtext: 'watch hours',
+									icon: 'mdi-television-classic',
+									iconColor: 'blue',
+									bgColor: 'primary-dark',
+								},
+								{
+									title: 'Books Read',
+									value: totalBooksRead,
+									subvalue: Math.round(bookHours),
+									subtext: 'reading hours',
+									icon: 'mdi-book-open-page-variant',
+									iconColor: 'purple',
+									bgColor: 'primary-dark',
+								},
+								{
+									title: 'Manga Read',
+									value: manga.reduce(
+										(acc, item) => acc + (item.volumesMin || 0),
+										0
+									),
+									subvalue: Math.round(mangaHours),
+									subtext: 'reading hours',
+									icon: 'mdi-book-account',
+									iconColor: 'green',
+									bgColor: 'primary-dark',
+								},
+								{
+									title: 'Pages Read',
+									value: enhancedTotalPages,
+									subvalue: `${Math.round(
+										enhancedTotalPages / 60
+									)} hours at 1 page/min`,
+									subtext: '',
+									icon: 'mdi-file-document-outline',
+									iconColor: 'grey',
+									bgColor: 'primary-dark',
+								},
+							]"
+							:key="index"
+							class="consumption-stat-item pa-1"
+						>
+							<div
+								class="stat-card pa-3 rounded-lg bg-secondary-medium w-100"
+								style="border: 1px solid rgba(255, 255, 255, 0.15)"
+							>
 								<div class="d-flex align-center justify-start mb-1">
-									<v-icon :color="item.iconColor" size="20" class="mr-1">{{ item.icon }}</v-icon>
+									<v-icon :color="item.iconColor" size="20" class="mr-1">{{
+										item.icon
+									}}</v-icon>
 									<h3 class="text-subtitle-2 mb-0">{{ item.title }}</h3>
 								</div>
 								<div class="text-h5 white--text">{{ item.value }}</div>
-								<div v-if="item.subvalue" class="text-caption white--text">{{ item.subvalue }} {{ item.subtext }}</div>
+								<div v-if="item.subvalue" class="text-caption white--text">
+									{{ item.subvalue }} {{ item.subtext }}
+								</div>
 							</div>
 						</div>
 					</section>
@@ -179,33 +239,50 @@
 			<v-col cols="12">
 				<CardComponent title="Recent Activity">
 					<section class="text-color">
-						<div v-for="(activity, index) in recentActivity" :key="index" class="d-flex align-center mb-4">
+						<div
+							v-for="(activity, index) in recentActivity"
+							:key="index"
+							class="d-flex align-center mb-4"
+						>
 							<v-avatar size="40" class="mr-3">
-								<v-icon :color="getMediaTypeColor(activity.mediaType)" size="24">{{ getMediaTypeIcon(activity.mediaType) }}</v-icon>
+								<v-icon
+									:color="getMediaTypeColor(activity.mediaType)"
+									size="24"
+									>{{ getMediaTypeIcon(activity.mediaType) }}</v-icon
+								>
 							</v-avatar>
 							<div class="w-100 d-flex">
 								<div class="flex-grow-1">
 									<div class="d-flex align-center">
-										<div class="text-subtitle-1 font-weight-medium text-left">{{ activity.title }}</div>
-										<div v-if="activity.favourites" class="ml-2">
+										<div class="text-subtitle-1 font-weight-medium text-left">
+											{{ activity.title }}
 											<v-icon
-												class="image-overlay-icon"
+												v-if="activity.favourites"
 												color="yellow-accent-4"
 												icon="mdi-star"
 											></v-icon>
 										</div>
 									</div>
-									<div class="text-subtitle-2 text-left text-grey-lighten-1" v-if="activity.developer || activity.studio || activity.author">
+									<div
+										class="text-subtitle-2 text-left text-grey-lighten-1"
+										v-if="
+											activity.developer || activity.studio || activity.author
+										"
+									>
 										<span>
-											{{ activity.developer || activity.studio || activity.author }}
+											{{
+												activity.developer || activity.studio || activity.author
+											}}
 										</span>
 									</div>
 									<div class="d-flex align-center text-left">
-										<span class="text-caption mr-2">{{ formatDate(activity.updatedAt) }}</span>
+										<span class="text-caption mr-2">{{
+											formatDate(activity.updatedAt)
+										}}</span>
 										<span class="mx-1">•</span>
-										<v-chip 
-											:color="getStatusColor(activity.action)" 
-											size="x-small" 
+										<v-chip
+											:color="getStatusColor(activity.action)"
+											size="x-small"
 											class="ml-1"
 											text-color="white"
 										>
@@ -224,24 +301,36 @@
 			<v-col cols="12">
 				<CardComponent title="Todo Items">
 					<section class="text-color">
-						<div v-for="(item, index) in todoItems" :key="index" class="d-flex align-center mb-4">
+						<div
+							v-for="(item, index) in todoItems"
+							:key="index"
+							class="d-flex align-center mb-4"
+						>
 							<v-avatar size="40" class="mr-3">
-								<v-icon :color="getMediaTypeColor(item.mediaType)" size="24">{{ getMediaTypeIcon(item.mediaType) }}</v-icon>
+								<v-icon :color="getMediaTypeColor(item.mediaType)" size="24">{{
+									getMediaTypeIcon(item.mediaType)
+								}}</v-icon>
 							</v-avatar>
 							<div class="w-100">
-								<div class="text-subtitle-1 font-weight-medium text-left">{{ item.title }}</div>
+								<div class="text-subtitle-1 font-weight-medium text-left">
+									{{ item.title }}
+								</div>
 								<div class="d-flex align-center text-left">
-									<span class="text-caption mr-2">{{ formatDate(item.updatedAt) }}</span>
+									<span class="text-caption mr-2">{{
+										formatDate(item.updatedAt)
+									}}</span>
 									<span class="mx-1">•</span>
-									<v-chip 
-										:color="getTodoStatusColor(item.todoStatus)" 
-										size="x-small" 
+									<v-chip
+										:color="getTodoStatusColor(item.todoStatus)"
+										size="x-small"
 										class="ml-1"
 										text-color="white"
 									>
 										{{ item.todoStatus }}
 									</v-chip>
-									<span class="ml-2 text-caption">{{ getTodoTypeLabel(item) }}</span>
+									<span class="ml-2 text-caption">{{
+										getTodoTypeLabel(item)
+									}}</span>
 								</div>
 							</div>
 						</div>
@@ -261,32 +350,71 @@
 									<div class="stat-row">
 										<span>Playing</span>
 										<span>{{ gameStatusCounts.playing }}</span>
-										<span>{{ calculatePercentage(gameStatusCounts.playing, totalGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													gameStatusCounts.playing,
+													totalGames
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>Completed</span>
 										<span>{{ gameStatusCounts.completed }}</span>
-										<span>{{ calculatePercentage(gameStatusCounts.completed, totalGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													gameStatusCounts.completed,
+													totalGames
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>On-Hold</span>
 										<span>{{ gameStatusCounts.onHold }}</span>
-										<span>{{ calculatePercentage(gameStatusCounts.onHold, totalGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													gameStatusCounts.onHold,
+													totalGames
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>Dropped</span>
 										<span>{{ gameStatusCounts.dropped }}</span>
-										<span>{{ calculatePercentage(gameStatusCounts.dropped, totalGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													gameStatusCounts.dropped,
+													totalGames
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>Plan to Play</span>
 										<span>{{ gameStatusCounts.planToPlay }}</span>
-										<span>{{ calculatePercentage(gameStatusCounts.planToPlay, totalGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													gameStatusCounts.planToPlay,
+													totalGames
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row highlight">
 										<span>Favourites</span>
 										<span>{{ gameFavouritesCount }}</span>
-										<span>{{ calculatePercentage(gameFavouritesCount, totalGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(gameFavouritesCount, totalGames)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row highlight">
 										<span>Total Playtime (Hours)</span>
@@ -306,7 +434,7 @@
 								</div>
 							</section>
 						</v-col>
-						
+
 						<v-col cols="12" sm="4">
 							<section class="stat-section text-color">
 								<h3 class="text-h6 mb-3">Games</h3>
@@ -314,32 +442,74 @@
 									<div class="stat-row">
 										<span>Playing</span>
 										<span>{{ standardGameStatusCounts.playing }}</span>
-										<span>{{ calculatePercentage(standardGameStatusCounts.playing, totalStandardGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													standardGameStatusCounts.playing,
+													totalStandardGames
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>Completed</span>
 										<span>{{ standardGameStatusCounts.completed }}</span>
-										<span>{{ calculatePercentage(standardGameStatusCounts.completed, totalStandardGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													standardGameStatusCounts.completed,
+													totalStandardGames
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>On-Hold</span>
 										<span>{{ standardGameStatusCounts.onHold }}</span>
-										<span>{{ calculatePercentage(standardGameStatusCounts.onHold, totalStandardGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													standardGameStatusCounts.onHold,
+													totalStandardGames
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>Dropped</span>
 										<span>{{ standardGameStatusCounts.dropped }}</span>
-										<span>{{ calculatePercentage(standardGameStatusCounts.dropped, totalStandardGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													standardGameStatusCounts.dropped,
+													totalStandardGames
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>Plan to Play</span>
 										<span>{{ standardGameStatusCounts.planToPlay }}</span>
-										<span>{{ calculatePercentage(standardGameStatusCounts.planToPlay, totalStandardGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													standardGameStatusCounts.planToPlay,
+													totalStandardGames
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row highlight">
 										<span>Favourites</span>
 										<span>{{ standardGameFavouritesCount }}</span>
-										<span>{{ calculatePercentage(standardGameFavouritesCount, totalStandardGames) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													standardGameFavouritesCount,
+													totalStandardGames
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row highlight">
 										<span>Total Playtime (Hours)</span>
@@ -367,32 +537,59 @@
 									<div class="stat-row">
 										<span>Playing</span>
 										<span>{{ vnStatusCounts.playing }}</span>
-										<span>{{ calculatePercentage(vnStatusCounts.playing, totalVNs) }}%</span>
+										<span
+											>{{
+												calculatePercentage(vnStatusCounts.playing, totalVNs)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>Completed</span>
 										<span>{{ vnStatusCounts.completed }}</span>
-										<span>{{ calculatePercentage(vnStatusCounts.completed, totalVNs) }}%</span>
+										<span
+											>{{
+												calculatePercentage(vnStatusCounts.completed, totalVNs)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>On-Hold</span>
 										<span>{{ vnStatusCounts.onHold }}</span>
-										<span>{{ calculatePercentage(vnStatusCounts.onHold, totalVNs) }}%</span>
+										<span
+											>{{
+												calculatePercentage(vnStatusCounts.onHold, totalVNs)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>Dropped</span>
 										<span>{{ vnStatusCounts.dropped }}</span>
-										<span>{{ calculatePercentage(vnStatusCounts.dropped, totalVNs) }}%</span>
+										<span
+											>{{
+												calculatePercentage(vnStatusCounts.dropped, totalVNs)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row">
 										<span>Plan to Play</span>
 										<span>{{ vnStatusCounts.planToPlay }}</span>
-										<span>{{ calculatePercentage(vnStatusCounts.planToPlay, totalVNs) }}%</span>
+										<span
+											>{{
+												calculatePercentage(
+													vnStatusCounts.planToPlay,
+													totalVNs
+												)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row highlight">
 										<span>Favourites</span>
 										<span>{{ vnFavouritesCount }}</span>
-										<span>{{ calculatePercentage(vnFavouritesCount, totalVNs) }}%</span>
+										<span
+											>{{
+												calculatePercentage(vnFavouritesCount, totalVNs)
+											}}%</span
+										>
 									</div>
 									<div class="stat-row highlight">
 										<span>Total Playtime (Hours)</span>
@@ -434,16 +631,16 @@
 							</div>
 						</v-col>
 					</v-row>
-					
+
 					<v-row class="mt-6 text-color">
 						<v-col cols="12">
-							<div class="chart-container" style="height: 800px;">
+							<div class="chart-container" style="height: 800px">
 								<h3 class="text-h6 mb-4">Top Developers</h3>
 								<canvas id="game-developers-chart"></canvas>
 							</div>
 						</v-col>
 					</v-row>
-					
+
 					<v-row class="mt-6 text-color">
 						<v-col cols="12" md="4">
 							<div class="chart-container">
@@ -464,11 +661,16 @@
 							</div>
 						</v-col>
 					</v-row>
-					
+
 					<v-row class="mt-6 text-color">
 						<v-col cols="12">
 							<h3 class="text-h6 mb-4 text-left">Games Completed This Year</h3>
-							<v-table density="compact" fixed-header height="400px" class="games-table">
+							<v-table
+								density="compact"
+								fixed-header
+								height="400px"
+								class="games-table"
+							>
 								<thead class="text-left">
 									<tr>
 										<th>Title</th>
@@ -478,7 +680,10 @@
 									</tr>
 								</thead>
 								<tbody class="text-left">
-									<tr v-for="(game, index) in thisYearCompletedGames" :key="index">
+									<tr
+										v-for="(game, index) in thisYearCompletedGames"
+										:key="index"
+									>
 										<td>{{ game.title }}</td>
 										<td>{{ game.type }}</td>
 										<td>{{ game.playtime }}</td>
@@ -488,11 +693,16 @@
 							</v-table>
 						</v-col>
 					</v-row>
-					
+
 					<v-row class="mt-6 text-color">
 						<v-col cols="12">
 							<h3 class="text-h6 mb-4 text-left">Games Completed Last Year</h3>
-							<v-table density="compact" fixed-header height="400px" class="games-table">
+							<v-table
+								density="compact"
+								fixed-header
+								height="400px"
+								class="games-table"
+							>
 								<thead class="text-left">
 									<tr>
 										<th>Title</th>
@@ -502,7 +712,10 @@
 									</tr>
 								</thead>
 								<tbody class="text-left">
-									<tr v-for="(game, index) in lastYearCompletedGames" :key="index">
+									<tr
+										v-for="(game, index) in lastYearCompletedGames"
+										:key="index"
+									>
 										<td>{{ game.title }}</td>
 										<td>{{ game.type }}</td>
 										<td>{{ game.playtime }}</td>
@@ -520,14 +733,33 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { Chart, PieController, DoughnutController, BarController, CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend } from 'chart.js';
+import {
+	Chart,
+	PieController,
+	DoughnutController,
+	BarController,
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	ArcElement,
+	Tooltip,
+	Legend,
+} from 'chart.js';
 import CardComponent from '@/components/media/CardComponent.vue';
 import { useAnimeStore } from '@/stores/useAnimeStore';
 import { useMangaStore } from '@/stores/useMangaStore';
 import { useGamesStore } from '@/stores/useGamesStore';
 import { useBooksStore } from '@/stores/useBooksStore';
 import { useMoviesStore } from '@/stores/useMoviesStore';
-import { EMediaType, TAnime, TManga, TGame, TBook, TMovie, ETodoStatus } from '@/types';
+import {
+	EMediaType,
+	TAnime,
+	TManga,
+	TGame,
+	TBook,
+	TMovie,
+	ETodoStatus,
+} from '@/types';
 import { filter, orderBy } from 'lodash';
 
 // Register Chart.js components
@@ -564,7 +796,12 @@ const gamesCount = computed(() => games.value.length);
 const booksCount = computed(() => books.value.length);
 const moviesCount = computed(() => movies.value.length);
 const totalMediaCount = computed(
-	() => animeCount.value + mangaCount.value + gamesCount.value + booksCount.value + moviesCount.value
+	() =>
+		animeCount.value +
+		mangaCount.value +
+		gamesCount.value +
+		booksCount.value +
+		moviesCount.value
 );
 
 // Media overview cards
@@ -577,115 +814,130 @@ const mediaOverview = computed(() => [
 ]);
 
 // Status counts
-const watchingCount = computed(() => filter(anime.value, { status: 'Watching' }).length);
-const readingCount = computed(() => 
-	filter(manga.value, { status: 'Reading' }).length + 
-	filter(books.value, { status: 'Reading' }).length
+const watchingCount = computed(
+	() => filter(anime.value, { status: 'Watching' }).length
 );
-const playingCount = computed(() => filter(games.value, { status: 'Playing' }).length);
-const completedCount = computed(() => 
-	filter(anime.value, { status: 'Completed' }).length + 
-	filter(manga.value, { status: 'Completed' }).length + 
-	filter(games.value, { status: 'Completed' }).length + 
-	filter(books.value, { status: 'Completed' }).length + 
-	filter(movies.value, { status: 'Completed' }).length
+const readingCount = computed(
+	() =>
+		filter(manga.value, { status: 'Reading' }).length +
+		filter(books.value, { status: 'Reading' }).length
 );
-const onHoldCount = computed(() => 
-	filter(anime.value, { status: 'On-Hold' }).length + 
-	filter(manga.value, { status: 'On-Hold' }).length + 
-	filter(games.value, { status: 'On-Hold' }).length + 
-	filter(books.value, { status: 'On-Hold' }).length + 
-	filter(movies.value, { status: 'On-Hold' }).length
+const playingCount = computed(
+	() => filter(games.value, { status: 'Playing' }).length
 );
-const droppedCount = computed(() => 
-	filter(anime.value, { status: 'Dropped' }).length + 
-	filter(manga.value, { status: 'Dropped' }).length + 
-	filter(games.value, { status: 'Dropped' }).length + 
-	filter(books.value, { status: 'Dropped' }).length + 
-	filter(movies.value, { status: 'Dropped' }).length
+const completedCount = computed(
+	() =>
+		filter(anime.value, { status: 'Completed' }).length +
+		filter(manga.value, { status: 'Completed' }).length +
+		filter(games.value, { status: 'Completed' }).length +
+		filter(books.value, { status: 'Completed' }).length +
+		filter(movies.value, { status: 'Completed' }).length
 );
-const plannedCount = computed(() => 
-	filter(anime.value, (status: TAnime) => status.status.includes('Plan to')).length + 
-	filter(manga.value, (status: TManga) => status.status.includes('Plan to')).length + 
-	filter(games.value, (status: TGame) => status.status.includes('Plan to')).length + 
-	filter(books.value, (status: TBook) => status.status.includes('Plan to')).length + 
-	filter(movies.value, (status: TMovie) => status.status.includes('Plan to')).length
+const onHoldCount = computed(
+	() =>
+		filter(anime.value, { status: 'On-Hold' }).length +
+		filter(manga.value, { status: 'On-Hold' }).length +
+		filter(games.value, { status: 'On-Hold' }).length +
+		filter(books.value, { status: 'On-Hold' }).length +
+		filter(movies.value, { status: 'On-Hold' }).length
+);
+const droppedCount = computed(
+	() =>
+		filter(anime.value, { status: 'Dropped' }).length +
+		filter(manga.value, { status: 'Dropped' }).length +
+		filter(games.value, { status: 'Dropped' }).length +
+		filter(books.value, { status: 'Dropped' }).length +
+		filter(movies.value, { status: 'Dropped' }).length
+);
+const plannedCount = computed(
+	() =>
+		filter(anime.value, (status: TAnime) => status.status.includes('Plan to'))
+			.length +
+		filter(manga.value, (status: TManga) => status.status.includes('Plan to'))
+			.length +
+		filter(games.value, (status: TGame) => status.status.includes('Plan to'))
+			.length +
+		filter(books.value, (status: TBook) => status.status.includes('Plan to'))
+			.length +
+		filter(movies.value, (status: TMovie) => status.status.includes('Plan to'))
+			.length
 );
 
 // Status breakdown
 const statusBreakdown = computed(() => {
-	const activeCount = watchingCount.value + readingCount.value + playingCount.value;
+	const activeCount =
+		watchingCount.value + readingCount.value + playingCount.value;
 	return [
-		{ 
-			name: 'Active', 
-			count: activeCount, 
+		{
+			name: 'Active',
+			count: activeCount,
 			percentage: (activeCount / totalMediaCount.value) * 100,
-			color: 'green'
+			color: 'green',
 		},
-		{ 
-			name: 'Completed', 
-			count: completedCount.value, 
+		{
+			name: 'Completed',
+			count: completedCount.value,
 			percentage: (completedCount.value / totalMediaCount.value) * 100,
-			color: 'blue'
+			color: 'blue',
 		},
-		{ 
-			name: 'On Hold', 
-			count: onHoldCount.value, 
+		{
+			name: 'On Hold',
+			count: onHoldCount.value,
 			percentage: (onHoldCount.value / totalMediaCount.value) * 100,
-			color: 'yellow'
+			color: 'yellow',
 		},
-		{ 
-			name: 'Dropped', 
-			count: droppedCount.value, 
+		{
+			name: 'Dropped',
+			count: droppedCount.value,
 			percentage: (droppedCount.value / totalMediaCount.value) * 100,
-			color: 'red'
+			color: 'red',
 		},
-		{ 
-			name: 'Planned', 
-			count: plannedCount.value, 
+		{
+			name: 'Planned',
+			count: plannedCount.value,
 			percentage: (plannedCount.value / totalMediaCount.value) * 100,
-			color: 'white'
+			color: 'white',
 		},
 	];
 });
 
 // Media distribution
 const mediaDistribution = computed(() => [
-	{ 
-		name: 'Anime', 
-		count: animeCount.value, 
+	{
+		name: 'Anime',
+		count: animeCount.value,
 		percentage: (animeCount.value / totalMediaCount.value) * 100,
-		color: 'indigo'
+		color: 'indigo',
 	},
-  { 
-		name: 'Books', 
-		count: booksCount.value, 
+	{
+		name: 'Books',
+		count: booksCount.value,
 		percentage: (booksCount.value / totalMediaCount.value) * 100,
-		color: 'purple'
+		color: 'purple',
 	},
-  { 
-		name: 'Games', 
-		count: gamesCount.value, 
+	{
+		name: 'Games',
+		count: gamesCount.value,
 		percentage: (gamesCount.value / totalMediaCount.value) * 100,
-		color: 'amber'
+		color: 'amber',
 	},
-	{ 
-		name: 'Manga', 
-		count: mangaCount.value, 
+	{
+		name: 'Manga',
+		count: mangaCount.value,
 		percentage: (mangaCount.value / totalMediaCount.value) * 100,
-		color: 'green'
+		color: 'green',
 	},
-	{ 
-		name: 'Movies & TV', 
-		count: moviesCount.value, 
+	{
+		name: 'Movies & TV',
+		count: moviesCount.value,
 		percentage: (moviesCount.value / totalMediaCount.value) * 100,
-		color: 'yellow'
+		color: 'yellow',
 	},
 ]);
 
 // Consumption stats
 // Add back the totalPlaytime property
-const totalPlaytime = computed(() => 
+const totalPlaytime = computed(() =>
 	games.value.reduce((acc, item) => acc + (item.playtime || 0), 0)
 );
 
@@ -699,26 +951,31 @@ const mangaHours = computed(() => {
 	// Using estimated manga pages with 1 page per minute reading rate
 	const totalMangaPages = manga.value.reduce((acc, item) => {
 		const volumesRead = item.volumesMin || 0;
-		return acc + (volumesRead * 200); // 200 pages per volume
+		return acc + volumesRead * 200; // 200 pages per volume
 	}, 0);
-	
+
 	return totalMangaPages / 60; // 1 page per minute = 60 pages per hour
 });
 
 const bookHours = computed(() => {
 	// Using book pages with 1 page per minute reading rate
-	const totalBookPages = books.value.reduce((acc, item) => acc + (item.pages || 0), 0);
+	const totalBookPages = books.value.reduce(
+		(acc, item) => acc + (item.pages || 0),
+		0
+	);
 	return totalBookPages / 60; // 1 page per minute = 60 pages per hour
 });
 
 // Add a new metric that combines all media consumption time
 const totalConsumptionHours = computed(() => {
-	return Math.round(animeHours.value + mangaHours.value + bookHours.value + totalPlaytime.value);
+	return Math.round(
+		animeHours.value + mangaHours.value + bookHours.value + totalPlaytime.value
+	);
 });
 
 // Calculate total consumption days
 const totalConsumptionDays = computed(() => {
-	return Math.round(totalConsumptionHours.value / 24 * 10) / 10; // Round to 1 decimal place
+	return Math.round((totalConsumptionHours.value / 24) * 10) / 10; // Round to 1 decimal place
 });
 
 // Define a proper type for todo items
@@ -750,40 +1007,61 @@ type ActivityItem = {
 
 // Recent activity with enhanced information
 const allMedia = computed(() => {
-	const animeItems = anime.value.map(item => ({ 
-		...item, 
-		mediaType: EMediaType.ANIME, 
-		action: getStatusAction(item.status) 
-	} as ActivityItem));
-	
-	const mangaItems = manga.value.map(item => ({ 
-		...item, 
-		mediaType: EMediaType.MANGA, 
-		action: getStatusAction(item.status) 
-	} as ActivityItem));
-	
-	const gameItems = games.value.map(item => ({ 
-		...item, 
-		mediaType: EMediaType.GAME, 
-		action: getStatusAction(item.status) 
-	} as ActivityItem));
-	
-	const bookItems = books.value.map(item => ({ 
-		...item, 
-		mediaType: EMediaType.BOOK, 
-		action: getStatusAction(item.status)
-	} as ActivityItem));
-	
-	const movieItems = movies.value.map(item => ({ 
-		...item, 
-		mediaType: EMediaType.MOVIE, 
-		action: getStatusAction(item.status) 
-	} as ActivityItem));
-	
-	return [...animeItems, ...mangaItems, ...gameItems, ...bookItems, ...movieItems] as ActivityItem[];
+	const animeItems = anime.value.map(
+		item =>
+			({
+				...item,
+				mediaType: EMediaType.ANIME,
+				action: getStatusAction(item.status),
+			} as ActivityItem)
+	);
+
+	const mangaItems = manga.value.map(
+		item =>
+			({
+				...item,
+				mediaType: EMediaType.MANGA,
+				action: getStatusAction(item.status),
+			} as ActivityItem)
+	);
+
+	const gameItems = games.value.map(
+		item =>
+			({
+				...item,
+				mediaType: EMediaType.GAME,
+				action: getStatusAction(item.status),
+			} as ActivityItem)
+	);
+
+	const bookItems = books.value.map(
+		item =>
+			({
+				...item,
+				mediaType: EMediaType.BOOK,
+				action: getStatusAction(item.status),
+			} as ActivityItem)
+	);
+
+	const movieItems = movies.value.map(
+		item =>
+			({
+				...item,
+				mediaType: EMediaType.MOVIE,
+				action: getStatusAction(item.status),
+			} as ActivityItem)
+	);
+
+	return [
+		...animeItems,
+		...mangaItems,
+		...gameItems,
+		...bookItems,
+		...movieItems,
+	] as ActivityItem[];
 });
 
-const recentActivity = computed<ActivityItem[]>(() => 
+const recentActivity = computed<ActivityItem[]>(() =>
 	orderBy(allMedia.value, ['updatedAt'], ['desc']).slice(0, 20)
 );
 
@@ -791,10 +1069,14 @@ const recentActivity = computed<ActivityItem[]>(() =>
 function getStatusAction(status: string): string {
 	// Convert to lowercase for case-insensitive comparison
 	const statusLower = status.toLowerCase();
-	
+
 	if (statusLower === 'completed') {
 		return 'Completed';
-	} else if (statusLower.includes('watching') || statusLower.includes('playing') || statusLower.includes('reading')) {
+	} else if (
+		statusLower.includes('watching') ||
+		statusLower.includes('playing') ||
+		statusLower.includes('reading')
+	) {
 		return 'In Progress';
 	} else if (statusLower.includes('on-hold')) {
 		return 'On Hold';
@@ -810,41 +1092,63 @@ function getStatusAction(status: string): string {
 
 function getStatusColor(status: string): string {
 	switch (status) {
-		case 'Completed': return 'blue';
-		case 'In Progress': return 'green';
-		case 'On Hold': return 'amber';
-		case 'Dropped': return 'red';
-		case 'Planned': return 'white';
-		default: return 'white';
+		case 'Completed':
+			return 'blue';
+		case 'In Progress':
+			return 'green';
+		case 'On Hold':
+			return 'amber';
+		case 'Dropped':
+			return 'red';
+		case 'Planned':
+			return 'white';
+		default:
+			return 'white';
 	}
 }
 
 function getMediaTypeIcon(mediaType: EMediaType): string {
 	switch (mediaType) {
-		case EMediaType.ANIME: return 'mdi-cat';
-		case EMediaType.BOOK: return 'mdi-book-open-variant';
-		case EMediaType.GAME: return 'mdi-gamepad-square';
-		case EMediaType.MANGA: return 'mdi-book-account';
-		case EMediaType.MOVIE: return 'mdi-movie-open';
-		default: return 'mdi-help-circle';
+		case EMediaType.ANIME:
+			return 'mdi-cat';
+		case EMediaType.BOOK:
+			return 'mdi-book-open-variant';
+		case EMediaType.GAME:
+			return 'mdi-gamepad-square';
+		case EMediaType.MANGA:
+			return 'mdi-book-account';
+		case EMediaType.MOVIE:
+			return 'mdi-movie-open';
+		default:
+			return 'mdi-help-circle';
 	}
 }
 
 function getMediaTypeColor(mediaType: EMediaType): string {
 	switch (mediaType) {
-		case EMediaType.ANIME: return 'indigo';
-		case EMediaType.MANGA: return 'green';
-		case EMediaType.GAME: return 'amber';
-		case EMediaType.BOOK: return 'purple';
-		case EMediaType.MOVIE: return 'yellow';
-		default: return 'grey';
+		case EMediaType.ANIME:
+			return 'indigo';
+		case EMediaType.MANGA:
+			return 'green';
+		case EMediaType.GAME:
+			return 'amber';
+		case EMediaType.BOOK:
+			return 'purple';
+		case EMediaType.MOVIE:
+			return 'yellow';
+		default:
+			return 'grey';
 	}
 }
 
 function formatDate(dateString: string | Date | undefined): string {
 	if (!dateString) return 'Unknown';
 	const date = new Date(dateString);
-	return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+	return date.toLocaleDateString(undefined, {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+	});
 }
 
 // Game Status Counts (specifically for game status chart)
@@ -853,33 +1157,44 @@ const gameStatusCounts = computed(() => ({
 	completed: filter(games.value, { status: 'Completed' }).length,
 	onHold: filter(games.value, { status: 'On-Hold' }).length,
 	dropped: filter(games.value, { status: 'Dropped' }).length,
-	planToPlay: filter(games.value, status => status.status.includes('Plan to')).length
+	planToPlay: filter(games.value, status => status.status.includes('Plan to'))
+		.length,
 }));
 
 // Helper function to calculate percentage
 function calculatePercentage(value: number, total: number): string {
 	if (total === 0) return '0.00';
-	return (value / total * 100).toFixed(2);
+	return ((value / total) * 100).toFixed(2);
 }
 
 // Game calculations
 // All games
 const totalGames = computed(() => gamesCount.value);
-const gameFavouritesCount = computed(() => games.value.filter(game => game.favourites).length);
+const gameFavouritesCount = computed(
+	() => games.value.filter(game => game.favourites).length
+);
 
 // Standard games (excluding VNs)
-const standardGames = computed(() => games.value.filter(game => game.type === 'Game'));
+const standardGames = computed(() =>
+	games.value.filter(game => game.type === 'Game')
+);
 const totalStandardGames = computed(() => standardGames.value.length);
-const standardGameFavouritesCount = computed(() => standardGames.value.filter(game => game.favourites).length);
-const standardGamePlaytime = computed(() => 
+const standardGameFavouritesCount = computed(
+	() => standardGames.value.filter(game => game.favourites).length
+);
+const standardGamePlaytime = computed(() =>
 	standardGames.value.reduce((acc, game) => acc + (game.playtime || 0), 0)
 );
 
 // Visual Novels
-const visualNovels = computed(() => games.value.filter(game => game.type === 'Visual Novel'));
+const visualNovels = computed(() =>
+	games.value.filter(game => game.type === 'Visual Novel')
+);
 const totalVNs = computed(() => visualNovels.value.length);
-const vnFavouritesCount = computed(() => visualNovels.value.filter(game => game.favourites).length);
-const vnPlaytime = computed(() => 
+const vnFavouritesCount = computed(
+	() => visualNovels.value.filter(game => game.favourites).length
+);
+const vnPlaytime = computed(() =>
 	visualNovels.value.reduce((acc, game) => acc + (game.playtime || 0), 0)
 );
 
@@ -889,7 +1204,9 @@ const standardGameStatusCounts = computed(() => ({
 	completed: filter(standardGames.value, { status: 'Completed' }).length,
 	onHold: filter(standardGames.value, { status: 'On-Hold' }).length,
 	dropped: filter(standardGames.value, { status: 'Dropped' }).length,
-	planToPlay: filter(standardGames.value, (game: TGame) => game.status.includes('Plan to')).length
+	planToPlay: filter(standardGames.value, (game: TGame) =>
+		game.status.includes('Plan to')
+	).length,
 }));
 
 const vnStatusCounts = computed(() => ({
@@ -897,56 +1214,59 @@ const vnStatusCounts = computed(() => ({
 	completed: filter(visualNovels.value, { status: 'Completed' }).length,
 	onHold: filter(visualNovels.value, { status: 'On-Hold' }).length,
 	dropped: filter(visualNovels.value, { status: 'Dropped' }).length,
-	planToPlay: filter(visualNovels.value, (game: TGame) => game.status.includes('Plan to')).length
+	planToPlay: filter(visualNovels.value, (game: TGame) =>
+		game.status.includes('Plan to')
+	).length,
 }));
 
 // Games By Year (separated by type)
 const allGamesByYear = computed(() => {
 	const yearCounts: { [key: string]: number } = {};
-	
-	(filter(games.value, { status: 'Completed' }) as TGame[]).forEach((game) => {
+
+	(filter(games.value, { status: 'Completed' }) as TGame[]).forEach(game => {
 		if (game.updatedAt) {
 			const year = new Date(game.updatedAt).getFullYear().toString();
 			yearCounts[year] = (yearCounts[year] || 0) + 1;
 		}
 	});
-	
-	return Object.entries(yearCounts)
-		.sort((a, b) => Number(a[0]) - Number(b[0]));
+
+	return Object.entries(yearCounts).sort((a, b) => Number(a[0]) - Number(b[0]));
 });
 
 const standardGamesByYear = computed(() => {
 	const yearCounts: { [key: string]: number } = {};
-	
-	(filter(standardGames.value, { status: 'Completed' }) as TGame[]).forEach((game) => {
-		if (game.updatedAt) {
-			const year = new Date(game.updatedAt).getFullYear().toString();
-			yearCounts[year] = (yearCounts[year] || 0) + 1;
+
+	(filter(standardGames.value, { status: 'Completed' }) as TGame[]).forEach(
+		game => {
+			if (game.updatedAt) {
+				const year = new Date(game.updatedAt).getFullYear().toString();
+				yearCounts[year] = (yearCounts[year] || 0) + 1;
+			}
 		}
-	});
-	
-	return Object.entries(yearCounts)
-		.sort((a, b) => Number(a[0]) - Number(b[0]));
+	);
+
+	return Object.entries(yearCounts).sort((a, b) => Number(a[0]) - Number(b[0]));
 });
 
 const vnGamesByYear = computed(() => {
 	const yearCounts: { [key: string]: number } = {};
-	
-	(filter(visualNovels.value, { status: 'Completed' }) as TGame[]).forEach((game) => {
-		if (game.updatedAt) {
-			const year = new Date(game.updatedAt).getFullYear().toString();
-			yearCounts[year] = (yearCounts[year] || 0) + 1;
+
+	(filter(visualNovels.value, { status: 'Completed' }) as TGame[]).forEach(
+		game => {
+			if (game.updatedAt) {
+				const year = new Date(game.updatedAt).getFullYear().toString();
+				yearCounts[year] = (yearCounts[year] || 0) + 1;
+			}
 		}
-	});
-	
-	return Object.entries(yearCounts)
-		.sort((a, b) => Number(a[0]) - Number(b[0]));
+	);
+
+	return Object.entries(yearCounts).sort((a, b) => Number(a[0]) - Number(b[0]));
 });
 
 // Games completed in the current year
 const thisYearCompletedGames = computed(() => {
 	const currentYear = new Date().getFullYear();
-	
+
 	return orderBy(
 		filter(games.value, (game: TGame) => {
 			if (game.status !== 'Completed' || !game.updatedAt) return false;
@@ -962,7 +1282,7 @@ const thisYearCompletedGames = computed(() => {
 const lastYearCompletedGames = computed(() => {
 	const currentYear = new Date().getFullYear();
 	const lastYear = currentYear - 1;
-	
+
 	return orderBy(
 		filter(games.value, (game: TGame) => {
 			if (game.status !== 'Completed' || !game.updatedAt) return false;
@@ -977,7 +1297,7 @@ const lastYearCompletedGames = computed(() => {
 // Total books read (completed books + manga volumes)
 const totalBooksRead = computed(() => {
 	const completedBooks = filter(books.value, { status: 'Completed' }).length;
-	
+
 	// Count all manga types as volumes
 	const completedMangaVolumes = manga.value.reduce((acc, item) => {
 		// Count volumes for all manga types (Manga, Light Novel, Novel, Manhua, Webtoon, etc.)
@@ -986,22 +1306,25 @@ const totalBooksRead = computed(() => {
 		}
 		return acc;
 	}, 0);
-	
+
 	return completedBooks + completedMangaVolumes;
 });
 
 // Enhanced page calculation (book pages + estimated manga/LN pages)
 const enhancedTotalPages = computed(() => {
 	// Actual book pages
-	const bookPages = books.value.reduce((acc, item) => acc + (item.pages || 0), 0);
-	
+	const bookPages = books.value.reduce(
+		(acc, item) => acc + (item.pages || 0),
+		0
+	);
+
 	// Estimated manga pages (200 pages per volume for all manga types)
 	const mangaPages = manga.value.reduce((acc, item) => {
 		const volumesRead = item.volumesMin || 0;
 		// All manga types use the same page estimation
-		return acc + (volumesRead * 200); // Assuming 200 pages per volume
+		return acc + volumesRead * 200; // Assuming 200 pages per volume
 	}, 0);
-	
+
 	// Light novels from books collection
 	const lightNovelPages = books.value.reduce((acc, item) => {
 		if (item.genre === 'Light Novel') {
@@ -1009,30 +1332,38 @@ const enhancedTotalPages = computed(() => {
 		}
 		return acc;
 	}, 0);
-	
+
 	return bookPages + mangaPages + lightNovelPages;
 });
 
 // Total episodes calculation (anime + TV shows/movies)
 const totalEpisodesWatched = computed(() => {
-	const animeEpisodes = anime.value.reduce((acc, item) => acc + (item.episodesMin || 0), 0);
-	const movieEpisodes = movies.value.reduce((acc, item) => acc + (item.episodesMin || 0), 0);
+	const animeEpisodes = anime.value.reduce(
+		(acc, item) => acc + (item.episodesMin || 0),
+		0
+	);
+	const movieEpisodes = movies.value.reduce(
+		(acc, item) => acc + (item.episodesMin || 0),
+		0
+	);
 	return animeEpisodes + movieEpisodes;
 });
 
 // Estimated watch time in hours
 const totalWatchTimeHours = computed(() => {
 	// Average anime episode = 24 minutes
-	const animeHours = (anime.value.reduce((acc, item) => acc + (item.episodesMin || 0), 0) * 24) / 60;
-	
+	const animeHours =
+		(anime.value.reduce((acc, item) => acc + (item.episodesMin || 0), 0) * 24) /
+		60;
+
 	// Average TV episode = 45 minutes, movies = 120 minutes
 	const movieHours = movies.value.reduce((acc, item) => {
 		const episodeCount = item.episodesMin || 0;
 		// Assuming tv shows have type 'TV-Show' and movies have type 'Movie'
 		const minutesPerEpisode = item.type === 'Movie' ? 120 : 45;
-		return acc + ((episodeCount * minutesPerEpisode) / 60);
+		return acc + (episodeCount * minutesPerEpisode) / 60;
 	}, 0);
-	
+
 	return Math.round(animeHours + movieHours);
 });
 
@@ -1046,23 +1377,33 @@ onMounted(() => {
 
 function createGameStatusCharts() {
 	// All Games Status Chart
-	const allGamesStatusChart = document.getElementById('all-games-status-chart') as HTMLCanvasElement;
+	const allGamesStatusChart = document.getElementById(
+		'all-games-status-chart'
+	) as HTMLCanvasElement;
 	if (allGamesStatusChart) {
 		new Chart(allGamesStatusChart, {
 			type: 'pie',
 			data: {
 				labels: ['Playing', 'Completed', 'On-Hold', 'Dropped', 'Plan to Play'],
-				datasets: [{
-					data: [
-						gameStatusCounts.value.playing,
-						gameStatusCounts.value.completed,
-						gameStatusCounts.value.onHold,
-						gameStatusCounts.value.dropped,
-						gameStatusCounts.value.planToPlay
-					],
-					backgroundColor: ['#4CAF50', '#2196F3', '#FFEB3B', '#F44336', '#FFFFFF'],
-					borderWidth: 0
-				}]
+				datasets: [
+					{
+						data: [
+							gameStatusCounts.value.playing,
+							gameStatusCounts.value.completed,
+							gameStatusCounts.value.onHold,
+							gameStatusCounts.value.dropped,
+							gameStatusCounts.value.planToPlay,
+						],
+						backgroundColor: [
+							'#4CAF50',
+							'#2196F3',
+							'#FFEB3B',
+							'#F44336',
+							'#FFFFFF',
+						],
+						borderWidth: 0,
+					},
+				],
 			},
 			options: {
 				responsive: true,
@@ -1073,32 +1414,42 @@ function createGameStatusCharts() {
 							color: 'white',
 							usePointStyle: true,
 							boxWidth: 10,
-							boxHeight: 10
-						}
-					}
-				}
-			}
+							boxHeight: 10,
+						},
+					},
+				},
+			},
 		});
 	}
-	
+
 	// Standard Games Status Chart
-	const standardGamesStatusChart = document.getElementById('standard-games-status-chart') as HTMLCanvasElement;
+	const standardGamesStatusChart = document.getElementById(
+		'standard-games-status-chart'
+	) as HTMLCanvasElement;
 	if (standardGamesStatusChart) {
 		new Chart(standardGamesStatusChart, {
 			type: 'pie',
 			data: {
 				labels: ['Playing', 'Completed', 'On-Hold', 'Dropped', 'Plan to Play'],
-				datasets: [{
-					data: [
-						standardGameStatusCounts.value.playing,
-						standardGameStatusCounts.value.completed,
-						standardGameStatusCounts.value.onHold,
-						standardGameStatusCounts.value.dropped,
-						standardGameStatusCounts.value.planToPlay
-					],
-					backgroundColor: ['#4CAF50', '#2196F3', '#FFEB3B', '#F44336', '#FFFFFF'],
-					borderWidth: 0
-				}]
+				datasets: [
+					{
+						data: [
+							standardGameStatusCounts.value.playing,
+							standardGameStatusCounts.value.completed,
+							standardGameStatusCounts.value.onHold,
+							standardGameStatusCounts.value.dropped,
+							standardGameStatusCounts.value.planToPlay,
+						],
+						backgroundColor: [
+							'#4CAF50',
+							'#2196F3',
+							'#FFEB3B',
+							'#F44336',
+							'#FFFFFF',
+						],
+						borderWidth: 0,
+					},
+				],
 			},
 			options: {
 				responsive: true,
@@ -1109,32 +1460,42 @@ function createGameStatusCharts() {
 							color: 'white',
 							usePointStyle: true,
 							boxWidth: 10,
-							boxHeight: 10
-						}
-					}
-				}
-			}
+							boxHeight: 10,
+						},
+					},
+				},
+			},
 		});
 	}
-	
+
 	// Visual Novels Status Chart
-	const vnStatusChart = document.getElementById('vn-status-chart') as HTMLCanvasElement;
+	const vnStatusChart = document.getElementById(
+		'vn-status-chart'
+	) as HTMLCanvasElement;
 	if (vnStatusChart) {
 		new Chart(vnStatusChart, {
 			type: 'pie',
 			data: {
 				labels: ['Playing', 'Completed', 'On-Hold', 'Dropped', 'Plan to Play'],
-				datasets: [{
-					data: [
-						vnStatusCounts.value.playing,
-						vnStatusCounts.value.completed,
-						vnStatusCounts.value.onHold,
-						vnStatusCounts.value.dropped,
-						vnStatusCounts.value.planToPlay
-					],
-					backgroundColor: ['#4CAF50', '#2196F3', '#FFEB3B', '#F44336', '#FFFFFF'],
-					borderWidth: 0
-				}]
+				datasets: [
+					{
+						data: [
+							vnStatusCounts.value.playing,
+							vnStatusCounts.value.completed,
+							vnStatusCounts.value.onHold,
+							vnStatusCounts.value.dropped,
+							vnStatusCounts.value.planToPlay,
+						],
+						backgroundColor: [
+							'#4CAF50',
+							'#2196F3',
+							'#FFEB3B',
+							'#F44336',
+							'#FFFFFF',
+						],
+						borderWidth: 0,
+					},
+				],
 			},
 			options: {
 				responsive: true,
@@ -1145,11 +1506,11 @@ function createGameStatusCharts() {
 							color: 'white',
 							usePointStyle: true,
 							boxWidth: 10,
-							boxHeight: 10
-						}
-					}
-				}
-			}
+							boxHeight: 10,
+						},
+					},
+				},
+			},
 		});
 	}
 }
@@ -1157,82 +1518,90 @@ function createGameStatusCharts() {
 function createDeveloperChart() {
 	// Developer counts and filter for those with > 5 games
 	const developers: { [key: string]: number } = {};
-	
+
 	games.value.forEach((game: TGame) => {
 		if (game.developer) {
 			developers[game.developer] = (developers[game.developer] || 0) + 1;
 		}
 	});
-	
+
 	const topDevelopers = Object.entries(developers)
 		.filter(([, count]) => count >= 5)
 		.sort((a, b) => b[1] - a[1]);
-		
+
 	// Developer Chart
-	const developersChart = document.getElementById('game-developers-chart') as HTMLCanvasElement;
+	const developersChart = document.getElementById(
+		'game-developers-chart'
+	) as HTMLCanvasElement;
 	if (developersChart) {
 		new Chart(developersChart, {
 			type: 'bar',
 			data: {
 				labels: topDevelopers.map(([name]) => name),
-				datasets: [{
-					label: 'Number of Games',
-					data: topDevelopers.map(([, count]) => count),
-					backgroundColor: '#3F51B5',
-					borderWidth: 0,
-					barThickness: 12  // Reduce the bar height
-				}]
+				datasets: [
+					{
+						label: 'Number of Games',
+						data: topDevelopers.map(([, count]) => count),
+						backgroundColor: '#3F51B5',
+						borderWidth: 0,
+						barThickness: 12, // Reduce the bar height
+					},
+				],
 			},
 			options: {
 				indexAxis: 'y',
 				responsive: true,
-				maintainAspectRatio: false,  // Allow the chart to adjust its height
+				maintainAspectRatio: false, // Allow the chart to adjust its height
 				plugins: {
 					legend: {
 						labels: {
 							color: 'white',
 							usePointStyle: true,
 							boxWidth: 10,
-							boxHeight: 10
-						}
-					}
+							boxHeight: 10,
+						},
+					},
 				},
 				scales: {
 					x: {
 						ticks: { color: 'white' },
 						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false }
+						border: { display: false },
 					},
 					y: {
 						ticks: { color: 'white' },
 						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false }
-					}
+						border: { display: false },
+					},
 				},
 				layout: {
 					padding: {
-						bottom: 50
-					}
-				}
-			}
+						bottom: 50,
+					},
+				},
+			},
 		});
 	}
 }
 
 function createGamesByYearCharts() {
 	// All Games by Year Chart
-	const allGamesYearChart = document.getElementById('all-games-by-year-chart') as HTMLCanvasElement;
+	const allGamesYearChart = document.getElementById(
+		'all-games-by-year-chart'
+	) as HTMLCanvasElement;
 	if (allGamesYearChart) {
 		new Chart(allGamesYearChart, {
 			type: 'bar',
 			data: {
 				labels: allGamesByYear.value.map(([year]) => year),
-				datasets: [{
-					label: 'Completed Games',
-					data: allGamesByYear.value.map(([, count]) => count),
-					backgroundColor: '#2196F3',
-					borderWidth: 0
-				}]
+				datasets: [
+					{
+						label: 'Completed Games',
+						data: allGamesByYear.value.map(([, count]) => count),
+						backgroundColor: '#2196F3',
+						borderWidth: 0,
+					},
+				],
 			},
 			options: {
 				indexAxis: 'y',
@@ -1244,39 +1613,43 @@ function createGamesByYearCharts() {
 							color: 'white',
 							usePointStyle: true,
 							boxWidth: 10,
-							boxHeight: 10
-						}
-					}
+							boxHeight: 10,
+						},
+					},
 				},
 				scales: {
 					x: {
 						ticks: { color: 'white' },
 						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false }
+						border: { display: false },
 					},
 					y: {
 						ticks: { color: 'white' },
 						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false }
-					}
-				}
-			}
+						border: { display: false },
+					},
+				},
+			},
 		});
 	}
-	
+
 	// Standard Games by Year Chart
-	const standardGamesYearChart = document.getElementById('standard-games-by-year-chart') as HTMLCanvasElement;
+	const standardGamesYearChart = document.getElementById(
+		'standard-games-by-year-chart'
+	) as HTMLCanvasElement;
 	if (standardGamesYearChart) {
 		new Chart(standardGamesYearChart, {
 			type: 'bar',
 			data: {
 				labels: standardGamesByYear.value.map(([year]) => year),
-				datasets: [{
-					label: 'Completed Games',
-					data: standardGamesByYear.value.map(([, count]) => count),
-					backgroundColor: '#4CAF50',
-					borderWidth: 0
-				}]
+				datasets: [
+					{
+						label: 'Completed Games',
+						data: standardGamesByYear.value.map(([, count]) => count),
+						backgroundColor: '#4CAF50',
+						borderWidth: 0,
+					},
+				],
 			},
 			options: {
 				indexAxis: 'y',
@@ -1288,39 +1661,43 @@ function createGamesByYearCharts() {
 							color: 'white',
 							usePointStyle: true,
 							boxWidth: 10,
-							boxHeight: 10
-						}
-					}
+							boxHeight: 10,
+						},
+					},
 				},
 				scales: {
 					x: {
 						ticks: { color: 'white' },
 						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false }
+						border: { display: false },
 					},
 					y: {
 						ticks: { color: 'white' },
 						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false }
-					}
-				}
-			}
+						border: { display: false },
+					},
+				},
+			},
 		});
 	}
-	
+
 	// VN Games by Year Chart
-	const vnGamesYearChart = document.getElementById('vn-games-by-year-chart') as HTMLCanvasElement;
+	const vnGamesYearChart = document.getElementById(
+		'vn-games-by-year-chart'
+	) as HTMLCanvasElement;
 	if (vnGamesYearChart) {
 		new Chart(vnGamesYearChart, {
 			type: 'bar',
 			data: {
 				labels: vnGamesByYear.value.map(([year]) => year),
-				datasets: [{
-					label: 'Completed VNs',
-					data: vnGamesByYear.value.map(([, count]) => count),
-					backgroundColor: '#FF5722',
-					borderWidth: 0
-				}]
+				datasets: [
+					{
+						label: 'Completed VNs',
+						data: vnGamesByYear.value.map(([, count]) => count),
+						backgroundColor: '#FF5722',
+						borderWidth: 0,
+					},
+				],
 			},
 			options: {
 				indexAxis: 'y',
@@ -1332,23 +1709,23 @@ function createGamesByYearCharts() {
 							color: 'white',
 							usePointStyle: true,
 							boxWidth: 10,
-							boxHeight: 10
-						}
-					}
+							boxHeight: 10,
+						},
+					},
 				},
 				scales: {
 					x: {
 						ticks: { color: 'white' },
 						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false }
+						border: { display: false },
 					},
 					y: {
 						ticks: { color: 'white' },
 						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false }
-					}
-				}
-			}
+						border: { display: false },
+					},
+				},
+			},
 		});
 	}
 }
@@ -1356,51 +1733,59 @@ function createGamesByYearCharts() {
 // Add todo items computed property
 const todoItems = computed<TodoItem[]>(() => {
 	const animeItems = anime.value
-		.filter(item => 
-			item.charactersDone !== undefined && 
-			(item.charactersDone === ETodoStatus.TODO || item.charactersDone === ETodoStatus.INCOMPLETE)
+		.filter(
+			item =>
+				item.charactersDone !== undefined &&
+				(item.charactersDone === ETodoStatus.TODO ||
+					item.charactersDone === ETodoStatus.INCOMPLETE)
 		)
-		.map(item => ({ 
-			...item, 
-			mediaType: EMediaType.ANIME, 
+		.map(item => ({
+			...item,
+			mediaType: EMediaType.ANIME,
 			todoStatus: item.charactersDone,
-			todoType: 'charactersDone'
+			todoType: 'charactersDone',
 		}));
-	
+
 	const mangaItems = manga.value
-		.filter(item => 
-			item.charactersDone !== undefined && 
-			(item.charactersDone === ETodoStatus.TODO || item.charactersDone === ETodoStatus.INCOMPLETE)
+		.filter(
+			item =>
+				item.charactersDone !== undefined &&
+				(item.charactersDone === ETodoStatus.TODO ||
+					item.charactersDone === ETodoStatus.INCOMPLETE)
 		)
-		.map(item => ({ 
-			...item, 
-			mediaType: EMediaType.MANGA, 
+		.map(item => ({
+			...item,
+			mediaType: EMediaType.MANGA,
 			todoStatus: item.charactersDone,
-			todoType: 'charactersDone'
+			todoType: 'charactersDone',
 		}));
-	
+
 	const gameCharItems = games.value
-		.filter(item => 
-			item.charactersDone !== undefined && 
-			(item.charactersDone === ETodoStatus.TODO || item.charactersDone === ETodoStatus.INCOMPLETE)
+		.filter(
+			item =>
+				item.charactersDone !== undefined &&
+				(item.charactersDone === ETodoStatus.TODO ||
+					item.charactersDone === ETodoStatus.INCOMPLETE)
 		)
-		.map(item => ({ 
-			...item, 
-			mediaType: EMediaType.GAME, 
+		.map(item => ({
+			...item,
+			mediaType: EMediaType.GAME,
 			todoStatus: item.charactersDone,
-			todoType: 'charactersDone'
+			todoType: 'charactersDone',
 		}));
-	
+
 	const gameMusicItems = games.value
-		.filter(item => 
-			item.musicDownloaded !== undefined && 
-			(item.musicDownloaded === ETodoStatus.TODO || item.musicDownloaded === ETodoStatus.INCOMPLETE)
+		.filter(
+			item =>
+				item.musicDownloaded !== undefined &&
+				(item.musicDownloaded === ETodoStatus.TODO ||
+					item.musicDownloaded === ETodoStatus.INCOMPLETE)
 		)
-		.map(item => ({ 
-			...item, 
-			mediaType: EMediaType.GAME, 
+		.map(item => ({
+			...item,
+			mediaType: EMediaType.GAME,
 			todoStatus: item.musicDownloaded,
-			todoType: 'musicDownloaded'
+			todoType: 'musicDownloaded',
 		}));
 
 	return orderBy(
@@ -1413,22 +1798,30 @@ const todoItems = computed<TodoItem[]>(() => {
 // Helper function to get todo status color
 function getTodoStatusColor(status: ETodoStatus | undefined): string {
 	if (status === undefined) return 'grey';
-	
+
 	switch (status) {
-		case ETodoStatus.COMPLETED: return 'blue';
-		case ETodoStatus.TODO: return 'green';
-		case ETodoStatus.INCOMPLETE: return 'yellow';
-		case ETodoStatus.SKIP: return 'red';
-		default: return 'grey';
+		case ETodoStatus.COMPLETED:
+			return 'blue';
+		case ETodoStatus.TODO:
+			return 'green';
+		case ETodoStatus.INCOMPLETE:
+			return 'yellow';
+		case ETodoStatus.SKIP:
+			return 'red';
+		default:
+			return 'grey';
 	}
 }
 
 // Helper function to get todo type label
 function getTodoTypeLabel(item: TodoItem): string {
 	switch (item.todoType) {
-		case 'charactersDone': return 'Characters';
-		case 'musicDownloaded': return 'Music';
-		default: return item.todoType;
+		case 'charactersDone':
+			return 'Characters';
+		case 'musicDownloaded':
+			return 'Music';
+		default:
+			return item.todoType;
 	}
 }
 </script>
@@ -1527,7 +1920,7 @@ function getTodoTypeLabel(item: TodoItem): string {
 	color: var(--text-color) !important;
 }
 
-.games-table, 
+.games-table,
 .games-table .v-table__wrapper {
 	background-color: var(--bg-secondary-medium) !important;
 	color: var(--text-color) !important;
@@ -1539,14 +1932,14 @@ function getTodoTypeLabel(item: TodoItem): string {
 		width: 100%;
 		margin: 8px 0;
 	}
-	
+
 	.consumption-stat-item {
 		width: 100% !important;
 		flex: 0 0 100% !important;
 		max-width: none !important;
 		min-width: 100% !important;
 	}
-	
+
 	.stat-detail {
 		width: 100%;
 		min-width: 100%;
@@ -1554,13 +1947,13 @@ function getTodoTypeLabel(item: TodoItem): string {
 		margin: 8px 0;
 		padding: 12px 8px !important;
 	}
-	
+
 	.consumption-stats-container {
 		width: 100%;
 		margin: 0 !important;
 		padding: 0 !important;
 	}
-	
+
 	.media-items-card {
 		width: 100% !important;
 		min-width: auto !important;
@@ -1594,7 +1987,7 @@ function getTodoTypeLabel(item: TodoItem): string {
 		max-width: none !important;
 		min-width: 100% !important;
 	}
-	
+
 	.consumption-stats-container {
 		width: 100%;
 		margin: 0 !important;
@@ -1607,7 +2000,7 @@ function getTodoTypeLabel(item: TodoItem): string {
 }
 
 .consumption-stats-container {
-  width: 100%;
+	width: 100%;
 	margin: 0 !important;
 }
 
@@ -1628,7 +2021,7 @@ function getTodoTypeLabel(item: TodoItem): string {
 		width: 100% !important;
 		margin: 4px 0 !important;
 	}
-  
+
 	.consumption-stat-item {
 		width: 100% !important;
 		flex: 0 0 100% !important;
@@ -1636,11 +2029,11 @@ function getTodoTypeLabel(item: TodoItem): string {
 		min-width: auto !important;
 		display: block !important;
 	}
-	
+
 	.consumption-stats-container {
 		width: 100% !important;
 		margin: 0 !important;
 		padding: 0 !important;
 	}
 }
-</style> 
+</style>
