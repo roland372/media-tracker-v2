@@ -3,7 +3,7 @@
 		<v-row>
 			<v-col cols="12">
 				<CardComponent title="Media Overview">
-					<section class="d-flex flex-wrap justify-space-between">
+					<section class="d-flex flex-wrap justify-space-between mx-n0 mx-md-n2 mx-sm-n2">
 						<div v-for="(stat, index) in mediaOverview" :key="index" 
 							class="stat-card ma-2 pa-4 rounded-lg" 
 							:class="`bg-${stat.color}`">
@@ -16,9 +16,9 @@
 		</v-row>
 
 		<v-row class="mt-n5">
-			<v-col cols="12" md="6" class="px-2">
+			<v-col cols="12" md="6">
 				<CardComponent title="Completion Status">
-					<section class="d-flex flex-column text-color">
+					<section class="d-flex flex-column text-color px-1">
 						<div v-for="(status, index) in statusBreakdown" :key="index" class="mb-2">
 							<div class="d-flex justify-space-between align-center mb-1">
 								<div class="d-flex align-center">
@@ -38,9 +38,9 @@
 				</CardComponent>
 			</v-col>
 
-			<v-col cols="12" md="6" class="px-2">
+			<v-col cols="12" md="6" class="mt-n5 mt-md-0 mt-sm-n0">
 				<CardComponent title="Media Distribution">
-					<section class="d-flex flex-column text-color">
+					<section class="d-flex flex-column text-color px-1">
 						<div v-for="(type, index) in mediaDistribution" :key="index" class="mb-2">
 							<div class="d-flex justify-space-between align-center mb-1">
 								<span>{{ type.name }}</span>
@@ -60,8 +60,8 @@
 
 		<v-row class="mt-n5">
 			<v-col cols="12">
-				<CardComponent title="Consumption Stats">
-					<section class="d-flex flex-wrap justify-space-around text-color">
+				<CardComponent title="Consumption Stats" class="text-color">
+					<section class="d-flex flex-wrap consumption-stats-container mb-n2 mt-2">
 						<div v-for="(item, index) in [
 							{ 
 								title: 'Total Media Time', 
@@ -69,7 +69,8 @@
 								subvalue: totalConsumptionHours, 
 								subtext: 'hours',
 								icon: 'mdi-clock-outline',
-								iconColor: 'white' 
+								iconColor: 'white',
+								bgColor: 'primary-dark'
 							},
 							{ 
 								title: 'Anime Time', 
@@ -77,7 +78,8 @@
 								subvalue: Math.round(animeHours), 
 								subtext: 'hours',
 								icon: 'mdi-cat',
-								iconColor: 'indigo' 
+								iconColor: 'indigo',
+								bgColor: 'primary-dark'
 							},
 							{ 
 								title: 'Reading Time', 
@@ -85,7 +87,8 @@
 								subvalue: Math.round(mangaHours + bookHours), 
 								subtext: 'hours',
 								icon: 'mdi-book-open-variant',
-								iconColor: 'green' 
+								iconColor: 'green',
+								bgColor: 'primary-dark'
 							},
 							{ 
 								title: 'Gaming Time', 
@@ -93,27 +96,33 @@
 								subvalue: totalPlaytime, 
 								subtext: 'hours',
 								icon: 'mdi-gamepad-square',
-								iconColor: 'amber' 
-							},
-							{ 
-								title: 'Media Items', 
-								value: totalBooksRead + anime.length + movies.length, 
-								subvalue: `${totalBooksRead} books, ${anime.length} anime, ${movies.length} shows`,
-								subtext: '',
-								icon: 'mdi-chart-bar',
-								iconColor: 'blue' 
+								iconColor: 'amber',
+								bgColor: 'primary-dark'
 							}
-						]" :key="index" class="stat-detail ma-2 pa-3">
-							<div class="d-flex align-center justify-center mb-2">
-								<v-icon :color="item.iconColor" size="24" class="mr-2">{{ item.icon }}</v-icon>
-								<h3 class="text-subtitle-1 mb-0">{{ item.title }}</h3>
+						]" :key="index" class="consumption-stat-item pa-1">
+							<div class="stat-card pa-3 rounded-lg bg-secondary-medium w-100" style="border: 1px solid rgba(255, 255, 255, 0.15);">
+								<div class="d-flex align-center justify-start mb-1">
+									<v-icon :color="item.iconColor" size="20" class="mr-1">{{ item.icon }}</v-icon>
+									<h3 class="text-subtitle-2 mb-0">{{ item.title }}</h3>
+								</div>
+								<div class="text-h5 white--text">{{ item.value }} days</div>
+								<div v-if="item.subvalue" class="text-caption white--text">{{ item.subvalue }} {{ item.subtext }}</div>
 							</div>
-							<div class="text-h5">{{ item.value }}{{ ['Total Media Time', 'Anime Time', 'Reading Time', 'Gaming Time'].includes(item.title) ? ' days' : '' }}</div>
-							<div v-if="item.subvalue" class="text-caption">{{ item.subvalue }} {{ item.subtext }}</div>
+						</div>
+
+						<div class="consumption-stat-item media-items-card pa-1">
+							<div class="stat-card pa-3 rounded-lg bg-secondary-medium w-100" style="border: 1px solid rgba(255, 255, 255, 0.15);">
+								<div class="d-flex align-center justify-start mb-1">
+									<v-icon color="blue" size="20" class="mr-1">mdi-chart-bar</v-icon>
+									<h3 class="text-subtitle-2 mb-0">Media Items</h3>
+								</div>
+								<div class="text-h5 white--text">{{ totalBooksRead + anime.length + movies.length }}</div>
+								<div class="text-caption white--text">{{ totalBooksRead }} books, {{ anime.length }} anime, {{ movies.length }} shows</div>
+							</div>
 						</div>
 					</section>
 
-					<section class="d-flex flex-wrap justify-space-around text-color mt-6">
+					<section class="d-flex flex-wrap mt-2 consumption-stats-container mb-n2">
 						<div v-for="(item, index) in [
 							{ 
 								title: 'Episodes Watched', 
@@ -121,7 +130,8 @@
 								subvalue: totalWatchTimeHours, 
 								subtext: 'watch hours',
 								icon: 'mdi-television-classic',
-								iconColor: 'blue' 
+								iconColor: 'blue',
+								bgColor: 'primary-dark'
 							},
 							{ 
 								title: 'Books Read', 
@@ -129,7 +139,8 @@
 								subvalue: Math.round(bookHours), 
 								subtext: 'reading hours',
 								icon: 'mdi-book-open-page-variant',
-								iconColor: 'purple' 
+								iconColor: 'purple',
+								bgColor: 'primary-dark'
 							},
 							{ 
 								title: 'Manga Read', 
@@ -137,7 +148,8 @@
 								subvalue: Math.round(mangaHours), 
 								subtext: 'reading hours',
 								icon: 'mdi-book-account',
-								iconColor: 'green' 
+								iconColor: 'green',
+								bgColor: 'primary-dark'
 							},
 							{ 
 								title: 'Pages Read', 
@@ -145,15 +157,18 @@
 								subvalue: `${Math.round(enhancedTotalPages / 60)} hours at 1 page/min`,
 								subtext: '',
 								icon: 'mdi-file-document-outline',
-								iconColor: 'grey' 
+								iconColor: 'grey',
+								bgColor: 'primary-dark'
 							}
-						]" :key="index" class="stat-detail ma-2 pa-3">
-							<div class="d-flex align-center justify-center mb-2">
-								<v-icon :color="item.iconColor" size="24" class="mr-2">{{ item.icon }}</v-icon>
-								<h3 class="text-subtitle-1 mb-0">{{ item.title }}</h3>
+						]" :key="index" class="consumption-stat-item pa-1">
+							<div class="stat-card pa-3 rounded-lg bg-secondary-medium w-100" style="border: 1px solid rgba(255, 255, 255, 0.15);">
+								<div class="d-flex align-center justify-start mb-1">
+									<v-icon :color="item.iconColor" size="20" class="mr-1">{{ item.icon }}</v-icon>
+									<h3 class="text-subtitle-2 mb-0">{{ item.title }}</h3>
+								</div>
+								<div class="text-h5 white--text">{{ item.value }}</div>
+								<div v-if="item.subvalue" class="text-caption white--text">{{ item.subvalue }} {{ item.subtext }}</div>
 							</div>
-							<div class="text-h5">{{ item.value }}</div>
-							<div v-if="item.subvalue" class="text-caption">{{ item.subvalue }} {{ item.subtext }}</div>
 						</div>
 					</section>
 				</CardComponent>
@@ -168,19 +183,65 @@
 							<v-avatar size="40" class="mr-3">
 								<v-icon :color="getMediaTypeColor(activity.mediaType)" size="24">{{ getMediaTypeIcon(activity.mediaType) }}</v-icon>
 							</v-avatar>
+							<div class="w-100 d-flex">
+								<div class="flex-grow-1">
+									<div class="d-flex align-center">
+										<div class="text-subtitle-1 font-weight-medium text-left">{{ activity.title }}</div>
+										<div v-if="activity.favourites" class="ml-2">
+											<v-icon
+												class="image-overlay-icon"
+												color="yellow-accent-4"
+												icon="mdi-star"
+											></v-icon>
+										</div>
+									</div>
+									<div class="text-subtitle-2 text-left text-grey-lighten-1" v-if="activity.developer || activity.studio || activity.author">
+										<span>
+											{{ activity.developer || activity.studio || activity.author }}
+										</span>
+									</div>
+									<div class="d-flex align-center text-left">
+										<span class="text-caption mr-2">{{ formatDate(activity.updatedAt) }}</span>
+										<span class="mx-1">•</span>
+										<v-chip 
+											:color="getStatusColor(activity.action)" 
+											size="x-small" 
+											class="ml-1"
+											text-color="white"
+										>
+											{{ activity.action }}
+										</v-chip>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</CardComponent>
+			</v-col>
+		</v-row>
+
+		<v-row class="mt-n5">
+			<v-col cols="12">
+				<CardComponent title="Todo Items">
+					<section class="text-color">
+						<div v-for="(item, index) in todoItems" :key="index" class="d-flex align-center mb-4">
+							<v-avatar size="40" class="mr-3">
+								<v-icon :color="getMediaTypeColor(item.mediaType)" size="24">{{ getMediaTypeIcon(item.mediaType) }}</v-icon>
+							</v-avatar>
 							<div class="w-100">
-								<div class="text-subtitle-2 text-left">{{ activity.title }}</div>
+								<div class="text-subtitle-1 font-weight-medium text-left">{{ item.title }}</div>
 								<div class="d-flex align-center text-left">
-									<span class="text-caption mr-2">{{ formatDate(activity.updatedAt) }}</span>
+									<span class="text-caption mr-2">{{ formatDate(item.updatedAt) }}</span>
 									<span class="mx-1">•</span>
 									<v-chip 
-										:color="getStatusColor(activity.action)" 
+										:color="getTodoStatusColor(item.todoStatus)" 
 										size="x-small" 
 										class="ml-1"
 										text-color="white"
 									>
-										{{ activity.action }}
+										{{ item.todoStatus }}
 									</v-chip>
+									<span class="ml-2 text-caption">{{ getTodoTypeLabel(item) }}</span>
 								</div>
 							</div>
 						</div>
@@ -192,8 +253,8 @@
 		<v-row class="mt-n5">
 			<v-col cols="12">
 				<CardComponent title="Game Stats">
-					<v-row>
-						<v-col cols="12" sm="4" class="px-2">
+					<v-row class="mx-n1 mx-n3 pt-2">
+						<v-col cols="12" sm="4">
 							<section class="stat-section text-color">
 								<h3 class="text-h6 mb-3">All Games</h3>
 								<div class="stat-table">
@@ -246,7 +307,7 @@
 							</section>
 						</v-col>
 						
-						<v-col cols="12" sm="4" class="px-2">
+						<v-col cols="12" sm="4">
 							<section class="stat-section text-color">
 								<h3 class="text-h6 mb-3">Games</h3>
 								<div class="stat-table">
@@ -299,7 +360,7 @@
 							</section>
 						</v-col>
 
-						<v-col cols="12" sm="4" class="px-2">
+						<v-col cols="12" sm="4">
 							<section class="stat-section text-color">
 								<h3 class="text-h6 mb-3">Visual Novels</h3>
 								<div class="stat-table">
@@ -466,7 +527,7 @@ import { useMangaStore } from '@/stores/useMangaStore';
 import { useGamesStore } from '@/stores/useGamesStore';
 import { useBooksStore } from '@/stores/useBooksStore';
 import { useMoviesStore } from '@/stores/useMoviesStore';
-import { EMediaType, TAnime, TManga, TGame, TBook, TMovie } from '@/types';
+import { EMediaType, TAnime, TManga, TGame, TBook, TMovie, ETodoStatus } from '@/types';
 import { filter, orderBy } from 'lodash';
 
 // Register Chart.js components
@@ -660,18 +721,69 @@ const totalConsumptionDays = computed(() => {
 	return Math.round(totalConsumptionHours.value / 24 * 10) / 10; // Round to 1 decimal place
 });
 
-// Recent activity
+// Define a proper type for todo items
+type TodoItem = {
+	mediaType: EMediaType;
+	todoStatus?: ETodoStatus;
+	todoType: string;
+	title: string;
+	developer?: string;
+	studio?: string;
+	author?: string;
+	updatedAt?: Date;
+};
+
+// Define a proper activity item type
+type ActivityItem = {
+	mediaType: EMediaType;
+	action: string;
+	title: string;
+	favourites: boolean;
+	developer?: string;
+	studio?: string;
+	author?: string;
+	authorLink?: string;
+	developerLink?: string;
+	studioLink?: string;
+	updatedAt?: Date;
+};
+
+// Recent activity with enhanced information
 const allMedia = computed(() => {
-	const animeItems = anime.value.map(item => ({ ...item, mediaType: EMediaType.ANIME, action: getStatusAction(item.status) }));
-	const mangaItems = manga.value.map(item => ({ ...item, mediaType: EMediaType.MANGA, action: getStatusAction(item.status) }));
-	const gameItems = games.value.map(item => ({ ...item, mediaType: EMediaType.GAME, action: getStatusAction(item.status) }));
-	const bookItems = books.value.map(item => ({ ...item, mediaType: EMediaType.BOOK, action: getStatusAction(item.status) }));
-	const movieItems = movies.value.map(item => ({ ...item, mediaType: EMediaType.MOVIE, action: getStatusAction(item.status) }));
+	const animeItems = anime.value.map(item => ({ 
+		...item, 
+		mediaType: EMediaType.ANIME, 
+		action: getStatusAction(item.status) 
+	} as ActivityItem));
 	
-	return [...animeItems, ...mangaItems, ...gameItems, ...bookItems, ...movieItems];
+	const mangaItems = manga.value.map(item => ({ 
+		...item, 
+		mediaType: EMediaType.MANGA, 
+		action: getStatusAction(item.status) 
+	} as ActivityItem));
+	
+	const gameItems = games.value.map(item => ({ 
+		...item, 
+		mediaType: EMediaType.GAME, 
+		action: getStatusAction(item.status) 
+	} as ActivityItem));
+	
+	const bookItems = books.value.map(item => ({ 
+		...item, 
+		mediaType: EMediaType.BOOK, 
+		action: getStatusAction(item.status)
+	} as ActivityItem));
+	
+	const movieItems = movies.value.map(item => ({ 
+		...item, 
+		mediaType: EMediaType.MOVIE, 
+		action: getStatusAction(item.status) 
+	} as ActivityItem));
+	
+	return [...animeItems, ...mangaItems, ...gameItems, ...bookItems, ...movieItems] as ActivityItem[];
 });
 
-const recentActivity = computed(() => 
+const recentActivity = computed<ActivityItem[]>(() => 
 	orderBy(allMedia.value, ['updatedAt'], ['desc']).slice(0, 20)
 );
 
@@ -1240,6 +1352,85 @@ function createGamesByYearCharts() {
 		});
 	}
 }
+
+// Add todo items computed property
+const todoItems = computed<TodoItem[]>(() => {
+	const animeItems = anime.value
+		.filter(item => 
+			item.charactersDone !== undefined && 
+			(item.charactersDone === ETodoStatus.TODO || item.charactersDone === ETodoStatus.INCOMPLETE)
+		)
+		.map(item => ({ 
+			...item, 
+			mediaType: EMediaType.ANIME, 
+			todoStatus: item.charactersDone,
+			todoType: 'charactersDone'
+		}));
+	
+	const mangaItems = manga.value
+		.filter(item => 
+			item.charactersDone !== undefined && 
+			(item.charactersDone === ETodoStatus.TODO || item.charactersDone === ETodoStatus.INCOMPLETE)
+		)
+		.map(item => ({ 
+			...item, 
+			mediaType: EMediaType.MANGA, 
+			todoStatus: item.charactersDone,
+			todoType: 'charactersDone'
+		}));
+	
+	const gameCharItems = games.value
+		.filter(item => 
+			item.charactersDone !== undefined && 
+			(item.charactersDone === ETodoStatus.TODO || item.charactersDone === ETodoStatus.INCOMPLETE)
+		)
+		.map(item => ({ 
+			...item, 
+			mediaType: EMediaType.GAME, 
+			todoStatus: item.charactersDone,
+			todoType: 'charactersDone'
+		}));
+	
+	const gameMusicItems = games.value
+		.filter(item => 
+			item.musicDownloaded !== undefined && 
+			(item.musicDownloaded === ETodoStatus.TODO || item.musicDownloaded === ETodoStatus.INCOMPLETE)
+		)
+		.map(item => ({ 
+			...item, 
+			mediaType: EMediaType.GAME, 
+			todoStatus: item.musicDownloaded,
+			todoType: 'musicDownloaded'
+		}));
+
+	return orderBy(
+		[...animeItems, ...mangaItems, ...gameCharItems, ...gameMusicItems],
+		['updatedAt'],
+		['desc']
+	).slice(0, 20);
+});
+
+// Helper function to get todo status color
+function getTodoStatusColor(status: ETodoStatus | undefined): string {
+	if (status === undefined) return 'grey';
+	
+	switch (status) {
+		case ETodoStatus.COMPLETED: return 'blue';
+		case ETodoStatus.TODO: return 'green';
+		case ETodoStatus.INCOMPLETE: return 'yellow';
+		case ETodoStatus.SKIP: return 'red';
+		default: return 'grey';
+	}
+}
+
+// Helper function to get todo type label
+function getTodoTypeLabel(item: TodoItem): string {
+	switch (item.todoType) {
+		case 'charactersDone': return 'Characters';
+		case 'musicDownloaded': return 'Music';
+		default: return item.todoType;
+	}
+}
 </script>
 
 <style scoped>
@@ -1281,6 +1472,8 @@ function createGamesByYearCharts() {
 	background-color: rgba(255, 255, 255, 0.05);
 	border-radius: 8px;
 	transition: all 0.3s ease;
+	overflow: hidden;
+	word-break: break-word;
 }
 
 .stat-detail:hover {
@@ -1301,6 +1494,7 @@ function createGamesByYearCharts() {
 	border-radius: 8px;
 	padding: 16px;
 	height: 100%;
+	margin-bottom: 16px;
 }
 
 .stat-table {
@@ -1346,20 +1540,107 @@ function createGamesByYearCharts() {
 		margin: 8px 0;
 	}
 	
+	.consumption-stat-item {
+		width: 100% !important;
+		flex: 0 0 100% !important;
+		max-width: none !important;
+		min-width: 100% !important;
+	}
+	
 	.stat-detail {
 		width: 100%;
 		min-width: 100%;
 		max-width: 100%;
 		margin: 8px 0;
+		padding: 12px 8px !important;
 	}
 	
-	.stat-section {
-		margin-bottom: 16px;
+	.consumption-stats-container {
 		width: 100%;
+		margin: 0 !important;
+		padding: 0 !important;
 	}
 	
-	.chart-container {
-		margin-bottom: 16px;
+	.media-items-card {
+		width: 100% !important;
+		min-width: auto !important;
+		max-width: none !important;
+	}
+}
+
+@media (min-width: 751px) {
+	.consumption-stat-item {
+		display: flex;
+		flex: 1 1 auto;
+		align-items: stretch;
+		max-width: 25%;
+	}
+}
+
+@media (min-width: 751px) {
+	.consumption-stat-item {
+		display: flex;
+		flex: 1 1 auto;
+		align-items: stretch;
+		max-width: 25%;
+		min-width: 140px;
+	}
+}
+
+@media (max-width: 750px) {
+	.consumption-stat-item {
+		width: 100% !important;
+		flex: 0 0 100% !important;
+		max-width: none !important;
+		min-width: 100% !important;
+	}
+	
+	.consumption-stats-container {
+		width: 100%;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+}
+
+.consumption-stat-item {
+	padding: 4px;
+}
+
+.consumption-stats-container {
+  width: 100%;
+	margin: 0 !important;
+}
+
+/* Desktop styling */
+@media (min-width: 751px) {
+	.consumption-stat-item {
+		display: flex;
+		flex: 1 1 auto;
+		align-items: stretch;
+		max-width: 25%;
+		min-width: 140px;
+	}
+}
+
+/* Mobile styling with stronger overrides */
+@media (max-width: 750px) {
+	.stat-card {
+		width: 100% !important;
+		margin: 4px 0 !important;
+	}
+  
+	.consumption-stat-item {
+		width: 100% !important;
+		flex: 0 0 100% !important;
+		max-width: 100% !important;
+		min-width: auto !important;
+		display: block !important;
+	}
+	
+	.consumption-stats-container {
+		width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
 	}
 }
 </style> 

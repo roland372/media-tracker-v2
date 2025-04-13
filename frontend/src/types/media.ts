@@ -64,3 +64,10 @@ export type TMediaData = {
   manga: TManga[];
   movies: TMovie[];
 };
+
+export enum ETodoStatus {
+	COMPLETED = "Completed",
+	SKIP = "Skip",
+	TODO = "Todo",
+	INCOMPLETE = "Incomplete"
+}

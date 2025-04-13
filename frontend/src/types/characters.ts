@@ -1,3 +1,5 @@
+import { ETodoStatus } from './media';
+
 export enum ECharacterSource {
   ANIME = 'Anime',
   GAME = 'Game',
@@ -22,6 +24,7 @@ export type TCharacter = {
   owner: string;
   series: string;
   source: ECharacterSource;
+  charactersDone?: ETodoStatus;
   createdAt?: Date;
   updatedAt?: Date;
 };

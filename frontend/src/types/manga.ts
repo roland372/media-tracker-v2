@@ -1,3 +1,5 @@
+import { ETodoStatus } from './media';
+
 export enum EMangaStatus {
   READING = 'Reading',
   COMPLETED = 'Completed',
@@ -32,6 +34,7 @@ export type TManga = {
   volumesMin: number;
   author?: string;
   authorLink?: string;
+  charactersDone?: ETodoStatus;
   createdAt?: Date;
   updatedAt?: Date;
 };

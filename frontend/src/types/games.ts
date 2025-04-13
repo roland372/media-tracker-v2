@@ -1,3 +1,5 @@
+import { ETodoStatus } from './media';
+
 export enum EGameStatus {
   PLAYING = 'Playing',
   COMPLETED = 'Completed',
@@ -27,6 +29,8 @@ export type TGame = {
   developerLink?: string;
   notes?: string;
   youtubeLink?: string;
+  charactersDone?: ETodoStatus;
+	musicDownloaded?: ETodoStatus;
   createdAt?: Date;
   updatedAt?: Date;
 };

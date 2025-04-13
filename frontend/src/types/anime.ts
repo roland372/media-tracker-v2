@@ -1,3 +1,5 @@
+import { ETodoStatus } from './media';
+
 export enum EAnimeStatus {
   WATCHING = 'Watching',
   COMPLETED = 'Completed',
@@ -28,6 +30,7 @@ export type TAnime = {
   type: EAnimeType;
   studio?: string;
   studioLink?: string;
+  charactersDone?: ETodoStatus;
   createdAt?: Date;
   updatedAt?: Date;
 };
