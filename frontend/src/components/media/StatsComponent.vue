@@ -129,7 +129,6 @@ const getStatusNameForColor = (color: string): string => {
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 6px;
 	overflow: hidden;
-	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .stacked-progress-segment {
@@ -141,7 +140,6 @@ const getStatusNameForColor = (color: string): string => {
 	font-weight: bold;
 	transition: width 0.3s ease, box-shadow 0.3s ease;
 	min-width: 1px;
-	box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1);
 }
 
 .progress-label {
@@ -154,8 +152,6 @@ const getStatusNameForColor = (color: string): string => {
 	width: 18px;
 	height: 18px;
 	border-radius: 3px;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-	border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* Add styles to specifically target mobile screens */
