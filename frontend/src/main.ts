@@ -6,6 +6,9 @@ import { loadFonts } from "./plugins/webfontloader";
 import "./registerServiceWorker";
 import router from "./router";
 
+// Import global CSS file - must be first to ensure proper cascading
+import './assets/css/global.css';
+
 const pinia = createPinia();
 
 loadFonts();

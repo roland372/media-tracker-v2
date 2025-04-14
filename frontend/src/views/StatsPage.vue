@@ -732,7 +732,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, onBeforeUnmount } from 'vue';
 import {
 	Chart,
 	PieController,
@@ -1368,11 +1368,23 @@ const totalWatchTimeHours = computed(() => {
 });
 
 // Chart initialization
+let charts: Chart[] = [];
+
 onMounted(() => {
 	// Create all the game stats charts
 	createGameStatusCharts();
 	createDeveloperChart();
 	createGamesByYearCharts();
+});
+
+onBeforeUnmount(() => {
+	// Clean up all chart instances when component is unmounted
+	charts.forEach(chart => {
+		if (chart) {
+			chart.destroy();
+		}
+	});
+	charts = [];
 });
 
 function createGameStatusCharts() {
@@ -1381,7 +1393,7 @@ function createGameStatusCharts() {
 		'all-games-status-chart'
 	) as HTMLCanvasElement;
 	if (allGamesStatusChart) {
-		new Chart(allGamesStatusChart, {
+		charts.push(new Chart(allGamesStatusChart, {
 			type: 'pie',
 			data: {
 				labels: ['Playing', 'Completed', 'On-Hold', 'Dropped', 'Plan to Play'],
@@ -1419,7 +1431,7 @@ function createGameStatusCharts() {
 					},
 				},
 			},
-		});
+		}));
 	}
 
 	// Standard Games Status Chart
@@ -1427,7 +1439,7 @@ function createGameStatusCharts() {
 		'standard-games-status-chart'
 	) as HTMLCanvasElement;
 	if (standardGamesStatusChart) {
-		new Chart(standardGamesStatusChart, {
+		charts.push(new Chart(standardGamesStatusChart, {
 			type: 'pie',
 			data: {
 				labels: ['Playing', 'Completed', 'On-Hold', 'Dropped', 'Plan to Play'],
@@ -1465,7 +1477,7 @@ function createGameStatusCharts() {
 					},
 				},
 			},
-		});
+		}));
 	}
 
 	// Visual Novels Status Chart
@@ -1473,7 +1485,7 @@ function createGameStatusCharts() {
 		'vn-status-chart'
 	) as HTMLCanvasElement;
 	if (vnStatusChart) {
-		new Chart(vnStatusChart, {
+		charts.push(new Chart(vnStatusChart, {
 			type: 'pie',
 			data: {
 				labels: ['Playing', 'Completed', 'On-Hold', 'Dropped', 'Plan to Play'],
@@ -1511,7 +1523,7 @@ function createGameStatusCharts() {
 					},
 				},
 			},
-		});
+		}));
 	}
 }
 
@@ -1534,7 +1546,7 @@ function createDeveloperChart() {
 		'game-developers-chart'
 	) as HTMLCanvasElement;
 	if (developersChart) {
-		new Chart(developersChart, {
+		charts.push(new Chart(developersChart, {
 			type: 'bar',
 			data: {
 				labels: topDevelopers.map(([name]) => name),
@@ -1580,7 +1592,7 @@ function createDeveloperChart() {
 					},
 				},
 			},
-		});
+		}));
 	}
 }
 
@@ -1590,7 +1602,7 @@ function createGamesByYearCharts() {
 		'all-games-by-year-chart'
 	) as HTMLCanvasElement;
 	if (allGamesYearChart) {
-		new Chart(allGamesYearChart, {
+		charts.push(new Chart(allGamesYearChart, {
 			type: 'bar',
 			data: {
 				labels: allGamesByYear.value.map(([year]) => year),
@@ -1630,7 +1642,7 @@ function createGamesByYearCharts() {
 					},
 				},
 			},
-		});
+		}));
 	}
 
 	// Standard Games by Year Chart
@@ -1638,7 +1650,7 @@ function createGamesByYearCharts() {
 		'standard-games-by-year-chart'
 	) as HTMLCanvasElement;
 	if (standardGamesYearChart) {
-		new Chart(standardGamesYearChart, {
+		charts.push(new Chart(standardGamesYearChart, {
 			type: 'bar',
 			data: {
 				labels: standardGamesByYear.value.map(([year]) => year),
@@ -1678,7 +1690,7 @@ function createGamesByYearCharts() {
 					},
 				},
 			},
-		});
+		}));
 	}
 
 	// VN Games by Year Chart
@@ -1686,7 +1698,7 @@ function createGamesByYearCharts() {
 		'vn-games-by-year-chart'
 	) as HTMLCanvasElement;
 	if (vnGamesYearChart) {
-		new Chart(vnGamesYearChart, {
+		charts.push(new Chart(vnGamesYearChart, {
 			type: 'bar',
 			data: {
 				labels: vnGamesByYear.value.map(([year]) => year),
@@ -1726,7 +1738,7 @@ function createGamesByYearCharts() {
 					},
 				},
 			},
-		});
+		}));
 	}
 }
 
