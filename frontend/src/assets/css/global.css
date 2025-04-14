@@ -87,6 +87,14 @@ body {
 	background-color: var(--bg-secondary-light);
 }
 
+.style-reset {
+	/* 
+	  This is an empty class used to force a CSS recalculation 
+	  when added to the body element
+	*/
+	animation: none; 
+}
+
 @media (max-width: 480px) {
 	html {
 		font-size: 0.75rem !important;

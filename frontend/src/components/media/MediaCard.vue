@@ -147,7 +147,7 @@ const statusColor = (media: TMedia) => {
 	return color;
 };
 </script>
-<style>
+<style scoped>
 .image-overlay-icon {
 	position: absolute;
 	right: 5px;

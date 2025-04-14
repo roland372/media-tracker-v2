@@ -56,7 +56,7 @@ const displayMedia = () => {
 		: (displayMediaFlag.value = 20);
 };
 </script>
-<style>
+<style scoped>
 .media-img-card {
 	height: 275px;
 }
@@ -244,16 +244,6 @@ const displayMedia = () => {
 @media (max-width: 375px) {
 	.media-img-card {
 		height: 140px;
-	}
-
-	.grid-container {
-		grid-template-columns: repeat(3, auto);
-	}
-}
-
-@media (max-width: 320px) {
-	.media-img-card {
-		height: 120px;
 	}
 
 	.grid-container {

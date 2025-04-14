@@ -66,7 +66,7 @@ const filteredLinks = computed(() =>
 		.slice(1)
 );
 </script>
-<style>
+<style scoped>
 .nd-bg-color {
 	background-color: var(--bg-secondary-medium);
 	border-right: 3px solid var(--bg-secondary-light);

@@ -274,7 +274,7 @@ interface IMediaTableProps {
 
 defineProps<IMediaTableProps>();
 </script>
-<style>
+<style scoped>
 th {
 	background-color: var(--bg-primary-dark) !important;
 	color: var(--text-color) !important;

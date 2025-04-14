@@ -43,7 +43,7 @@ watch(editorContentRef, () => {
 	getEditorContent();
 });
 </script>
-<style>
+<style scoped>
 .tox.tox-tinymce-aux,
 .tox-fullscreen .tox.tox-tinymce-aux {
 	z-index: 4000;
