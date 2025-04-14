@@ -55,19 +55,3 @@ onMounted(() => {
 	});
 });
 </script>
-
-<style>
-/* App-specific styles */
-.loader-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--bg-primary-dark);
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
