@@ -3,8 +3,9 @@
 		<v-row>
 			<v-col cols="12">
 				<CardComponent title="Media Overview">
+					<!-- section below instead of responsive-margin mx-n0 mx-md-n0 mx-sm-n2 -->
 					<section
-						class="d-flex flex-wrap justify-space-between mx-n0 mx-md-n2 mx-sm-n2"
+						class="d-flex flex-wrap justify-space-between responsive-margin"
 					>
 						<div
 							v-for="(stat, index) in mediaOverview"
@@ -1930,7 +1931,7 @@ function getTodoTypeLabel(item: TodoItem): string {
 @media (max-width: 750px) {
 	.stat-card {
 		width: 100%;
-		margin: 8px 0;
+		margin: 8px;
 	}
 
 	.consumption-stat-item {
@@ -2034,6 +2035,18 @@ function getTodoTypeLabel(item: TodoItem): string {
 		width: 100% !important;
 		margin: 0 !important;
 		padding: 0 !important;
+	}
+}
+
+.responsive-margin {
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+}
+
+@media (min-width: 750px) {
+	.responsive-margin {
+		margin-left: -8px !important;
+		margin-right: -8px !important;
 	}
 }
 </style>
