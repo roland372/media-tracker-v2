@@ -71,7 +71,7 @@
 
 						<!--? GAMES -->
 						<section v-if="mediaType === EMediaType.GAME">
-							<div><b>Type:</b> {{ (media as TGame).type }}</div>
+							<div><b>Type:</b> {{ formatTypes((media as TGame).type) }}</div>
 							<div>
 								<b>Link: </b>
 								<a :href="media.link" target="_blank">{{ media.linkName }}</a>
@@ -183,6 +183,39 @@ interface IMediaModalProps {
 const cardClass = computed(() => {
 	return window.innerWidth <= 600 ? 'mobile-card' : 'desktop-card';
 });
+
+// Function to format the types field to properly display comma-separated types
+// with Expansion always as the second item if present
+const formatTypes = (types?: string) => {
+	if (!types) return '';
+	
+	// If there's no comma, just return the type as is
+	if (!types.includes(',')) return types;
+	
+	// Split the types by comma and trim each one
+	const typeArray = types.split(',').map(t => t.trim());
+	
+	// Check if Expansion is in the list
+	const hasExpansion = typeArray.includes('Expansion');
+	
+	// If Expansion exists and it's not already the second item (or first if there's only one other type)
+	if (hasExpansion) {
+		// Remove Expansion from its current position
+		const filteredTypes = typeArray.filter(t => t !== 'Expansion');
+		
+		// If there's at least one other type, put Expansion as the second item
+		if (filteredTypes.length > 0) {
+			// Insert Expansion as the second item
+			return `${filteredTypes[0]}, Expansion${filteredTypes.length > 1 ? ', ' + filteredTypes.slice(1).join(', ') : ''}`;
+		} else {
+			// If Expansion is the only type
+			return 'Expansion';
+		}
+	}
+	
+	// If no Expansion or already in the right position, return as is
+	return types;
+};
 
 // Function to format notes with semicolons as separate lines
 const formatNotes = (notes?: string) => {
