@@ -665,7 +665,52 @@
 
 					<v-row class="mt-6 text-color">
 						<v-col cols="12">
-							<h3 class="text-h6 mb-4 text-left">Games Completed This Year</h3>
+							<h3 class="text-h6 mb-4 text-left d-flex align-center flex-wrap">
+								<div class="d-flex align-center">
+									<v-icon color="amber" class="mr-2">mdi-gamepad-square</v-icon>
+									<span class="header-title">Games Completed This Year</span>
+								</div>
+								<div class="d-flex align-center flex-wrap stats-container">
+									<div class="stat-group mr-2">
+										<v-icon size="small" color="primary" class="mx-1"
+											>mdi-counter</v-icon
+										>
+										<span class="text-subtitle-1"
+											>{{ thisYearCompletedGames.length }} games</span
+										>
+									</div>
+
+									<div class="stat-group mx-2">
+										<v-icon size="small" color="secondary" class="mx-1"
+											>mdi-clock-outline</v-icon
+										>
+										<span class="text-subtitle-1 mr-2"
+											>{{ thisYearTotalPlaytime }} hours</span
+										>
+										<v-icon size="small" color="success" class="mx-1"
+											>mdi-calendar-clock</v-icon
+										>
+										<span class="text-subtitle-1"
+											>{{ Math.floor(thisYearTotalPlaytime / 24) }} days</span
+										>
+									</div>
+
+									<div class="stat-group ml-2">
+										<v-icon size="small" color="info" class="mx-1"
+											>mdi-controller</v-icon
+										>
+										<span class="text-subtitle-1 mr-2"
+											>{{ thisYearStandardGames.length }} games</span
+										>
+										<v-icon size="small" color="warning" class="mx-1"
+											>mdi-book-open-page-variant</v-icon
+										>
+										<span class="text-subtitle-1"
+											>{{ thisYearVisualNovels.length }} VNs</span
+										>
+									</div>
+								</div>
+							</h3>
 							<v-table
 								density="compact"
 								fixed-header
@@ -697,7 +742,52 @@
 
 					<v-row class="mt-6 text-color">
 						<v-col cols="12">
-							<h3 class="text-h6 mb-4 text-left">Games Completed Last Year</h3>
+							<h3 class="text-h6 mb-4 text-left d-flex align-center flex-wrap">
+								<div class="d-flex align-center">
+									<v-icon color="amber" class="mr-2">mdi-gamepad-square</v-icon>
+									<span class="header-title">Games Completed Last Year</span>
+								</div>
+								<div class="d-flex align-center flex-wrap stats-container">
+									<div class="stat-group mr-2">
+										<v-icon size="small" color="primary" class="mx-1"
+											>mdi-counter</v-icon
+										>
+										<span class="text-subtitle-1"
+											>{{ lastYearCompletedGames.length }} games</span
+										>
+									</div>
+
+									<div class="stat-group mx-2">
+										<v-icon size="small" color="secondary" class="mx-1"
+											>mdi-clock-outline</v-icon
+										>
+										<span class="text-subtitle-1 mr-2"
+											>{{ lastYearTotalPlaytime }} hours</span
+										>
+										<v-icon size="small" color="success" class="mx-1"
+											>mdi-calendar-clock</v-icon
+										>
+										<span class="text-subtitle-1"
+											>{{ Math.floor(lastYearTotalPlaytime / 24) }} days</span
+										>
+									</div>
+
+									<div class="stat-group ml-2">
+										<v-icon size="small" color="info" class="mx-1"
+											>mdi-controller</v-icon
+										>
+										<span class="text-subtitle-1 mr-2"
+											>{{ lastYearStandardGames.length }} games</span
+										>
+										<v-icon size="small" color="warning" class="mx-1"
+											>mdi-book-open-page-variant</v-icon
+										>
+										<span class="text-subtitle-1"
+											>{{ lastYearVisualNovels.length }} VNs</span
+										>
+									</div>
+								</div>
+							</h3>
 							<v-table
 								density="compact"
 								fixed-header
@@ -1275,7 +1365,15 @@ const thisYearCompletedGames = computed(() => {
 			return completionYear === currentYear;
 		}),
 		['updatedAt'],
-		['asc']
+		['desc']
+	);
+});
+
+// Calculate total playtime for this year's completed games
+const thisYearTotalPlaytime = computed(() => {
+	return thisYearCompletedGames.value.reduce(
+		(total, game) => total + (game.playtime || 0),
+		0
 	);
 });
 
@@ -1291,7 +1389,15 @@ const lastYearCompletedGames = computed(() => {
 			return completionYear === lastYear;
 		}),
 		['updatedAt'],
-		['asc']
+		['desc']
+	);
+});
+
+// Calculate total playtime for last year's completed games
+const lastYearTotalPlaytime = computed(() => {
+	return lastYearCompletedGames.value.reduce(
+		(total, game) => total + (game.playtime || 0),
+		0
 	);
 });
 
@@ -1825,6 +1931,32 @@ function getTodoTypeLabel(item: TodoItem): string {
 			return item.todoType;
 	}
 }
+
+// Games completed in the current year - by type
+const thisYearStandardGames = computed(() => {
+	return thisYearCompletedGames.value.filter(
+		game => game.type !== 'Visual Novel'
+	);
+});
+
+const thisYearVisualNovels = computed(() => {
+	return thisYearCompletedGames.value.filter(
+		game => game.type === 'Visual Novel'
+	);
+});
+
+// Games completed in the previous year - by type
+const lastYearStandardGames = computed(() => {
+	return lastYearCompletedGames.value.filter(
+		game => game.type !== 'Visual Novel'
+	);
+});
+
+const lastYearVisualNovels = computed(() => {
+	return lastYearCompletedGames.value.filter(
+		game => game.type === 'Visual Novel'
+	);
+});
 </script>
 
 <style scoped>
@@ -1938,7 +2070,6 @@ function getTodoTypeLabel(item: TodoItem): string {
 		width: 100% !important;
 		flex: 0 0 100% !important;
 		max-width: none !important;
-		min-width: 100% !important;
 	}
 
 	.stat-detail {
@@ -2047,6 +2178,45 @@ function getTodoTypeLabel(item: TodoItem): string {
 	.responsive-margin {
 		margin-left: -8px !important;
 		margin-right: -8px !important;
+	}
+}
+
+.stat-group {
+	display: flex;
+	align-items: center;
+	padding: 4px 8px;
+	background-color: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	border-radius: 6px;
+	margin-bottom: 4px;
+}
+
+.stats-container {
+	width: 100%;
+}
+
+@media (max-width: 600px) {
+	.stats-container {
+		margin-left: 0 !important;
+		justify-content: flex-start !important;
+		margin-top: 8px;
+	}
+
+	.stat-group {
+		margin-left: 0 !important;
+		margin-right: 8px !important;
+	}
+}
+
+.header-title {
+	margin-right: 16px;
+}
+
+@media (min-width: 960px) {
+	.stats-container {
+		flex: 1;
+		display: flex;
+		justify-content: flex-end;
 	}
 }
 </style>
