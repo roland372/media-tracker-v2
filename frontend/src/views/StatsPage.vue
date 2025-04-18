@@ -130,14 +130,14 @@
 								class="stat-card pa-3 rounded-lg bg-secondary-medium w-100"
 								style="border: 1px solid rgba(255, 255, 255, 0.15)"
 							>
-								<div class="d-flex align-center justify-start mb-1">
+								<div class="d-flex align-center justify-center mb-1">
 									<v-icon :color="item.iconColor" size="20" class="mr-1">{{
 										item.icon
 									}}</v-icon>
 									<h3 class="text-subtitle-2 mb-0">{{ item.title }}</h3>
 								</div>
-								<div class="text-h5 white--text">{{ item.value }} days</div>
-								<div v-if="item.subvalue" class="text-caption white--text">
+								<div class="text-h5 white--text text-center">{{ item.value }} days</div>
+								<div v-if="item.subvalue" class="text-caption white--text text-center">
 									{{ item.subvalue }} {{ item.subtext }}
 								</div>
 							</div>
@@ -148,16 +148,16 @@
 								class="stat-card pa-3 rounded-lg bg-secondary-medium w-100"
 								style="border: 1px solid rgba(255, 255, 255, 0.15)"
 							>
-								<div class="d-flex align-center justify-start mb-1">
+								<div class="d-flex align-center justify-center mb-1">
 									<v-icon color="blue" size="20" class="mr-1"
 										>mdi-chart-bar</v-icon
 									>
 									<h3 class="text-subtitle-2 mb-0">Media Items</h3>
 								</div>
-								<div class="text-h5 white--text">
+								<div class="text-h5 white--text text-center">
 									{{ totalBooksRead + anime.length + movies.length }}
 								</div>
-								<div class="text-caption white--text">
+								<div class="text-caption white--text text-center">
 									{{ totalBooksRead }} books, {{ anime.length }} anime,
 									{{ movies.length }} shows
 								</div>
@@ -219,14 +219,14 @@
 								class="stat-card pa-3 rounded-lg bg-secondary-medium w-100"
 								style="border: 1px solid rgba(255, 255, 255, 0.15)"
 							>
-								<div class="d-flex align-center justify-start mb-1">
+								<div class="d-flex align-center justify-center mb-1">
 									<v-icon :color="item.iconColor" size="20" class="mr-1">{{
 										item.icon
 									}}</v-icon>
 									<h3 class="text-subtitle-2 mb-0">{{ item.title }}</h3>
 								</div>
-								<div class="text-h5 white--text">{{ item.value }}</div>
-								<div v-if="item.subvalue" class="text-caption white--text">
+								<div class="text-h5 white--text text-center">{{ item.value }}</div>
+								<div v-if="item.subvalue" class="text-caption white--text text-center">
 									{{ item.subvalue }} {{ item.subtext }}
 								</div>
 							</div>
@@ -237,50 +237,48 @@
 		</v-row>
 
 		<v-row class="mt-n5">
-			<v-col cols="12">
+			<v-col cols="12" md="6" class="mb-n5 mb-md-0 mb-sm-n0">
 				<CardComponent title="Recent Activity">
 					<section class="text-color">
 						<div
-							v-for="(activity, index) in recentActivity"
+							v-for="(activity, index) in recentActivity.slice(0, 20)"
 							:key="index"
-							class="d-flex align-center mb-4"
+							class="d-flex align-center mb-3"
 						>
-							<v-avatar size="40" class="mr-3">
+							<v-avatar size="36" class="mr-2">
 								<v-icon
 									:color="getMediaTypeColor(activity.mediaType)"
-									size="24"
+									size="20"
 									>{{ getMediaTypeIcon(activity.mediaType) }}</v-icon
 								>
 							</v-avatar>
 							<div class="w-100 d-flex">
 								<div class="flex-grow-1">
 									<div class="d-flex align-center">
-										<div class="text-subtitle-1 font-weight-medium text-left">
+										<div class="text-subtitle-2 font-weight-medium text-left text-truncate" style="max-width: 200px;">
 											{{ activity.title }}
 											<v-icon
 												v-if="activity.favourites"
 												color="yellow-accent-4"
+												size="small"
 												icon="mdi-star"
 											></v-icon>
 										</div>
 									</div>
 									<div
-										class="text-subtitle-2 text-left text-grey-lighten-1"
-										v-if="
-											activity.developer || activity.studio || activity.author
-										"
+										class="text-caption text-left text-grey-lighten-1 text-truncate"
+										v-if="activity.developer || activity.studio || activity.author"
+										style="max-width: 200px;"
 									>
 										<span>
-											{{
-												activity.developer || activity.studio || activity.author
-											}}
+											{{ activity.developer || activity.studio || activity.author }}
 										</span>
 									</div>
 									<div class="d-flex align-center text-left">
-										<span class="text-caption mr-2">{{
+										<span class="text-caption mr-1">{{
 											formatDate(activity.updatedAt)
 										}}</span>
-										<span class="mx-1">•</span>
+										<span class="mx-1 text-caption">•</span>
 										<v-chip
 											:color="getStatusColor(activity.action)"
 											size="x-small"
@@ -296,31 +294,29 @@
 					</section>
 				</CardComponent>
 			</v-col>
-		</v-row>
 
-		<v-row class="mt-n5">
-			<v-col cols="12">
+			<v-col cols="12" md="6">
 				<CardComponent title="Todo Items">
 					<section class="text-color">
 						<div
-							v-for="(item, index) in todoItems"
+							v-for="(item, index) in todoItems.slice(0, 20)"
 							:key="index"
-							class="d-flex align-center mb-4"
+							class="d-flex align-center mb-3"
 						>
-							<v-avatar size="40" class="mr-3">
-								<v-icon :color="getMediaTypeColor(item.mediaType)" size="24">{{
+							<v-avatar size="36" class="mr-2">
+								<v-icon :color="getMediaTypeColor(item.mediaType)" size="20">{{
 									getMediaTypeIcon(item.mediaType)
 								}}</v-icon>
 							</v-avatar>
 							<div class="w-100">
-								<div class="text-subtitle-1 font-weight-medium text-left">
+								<div class="text-subtitle-2 font-weight-medium text-left text-truncate" style="max-width: 200px;">
 									{{ item.title }}
 								</div>
 								<div class="d-flex align-center text-left">
-									<span class="text-caption mr-2">{{
+									<span class="text-caption mr-1">{{
 										formatDate(item.updatedAt)
 									}}</span>
-									<span class="mx-1">•</span>
+									<span class="mx-1 text-caption">•</span>
 									<v-chip
 										:color="getTodoStatusColor(item.todoStatus)"
 										size="x-small"
@@ -329,7 +325,7 @@
 									>
 										{{ item.todoStatus }}
 									</v-chip>
-									<span class="ml-2 text-caption">{{
+									<span class="ml-1 text-caption">{{
 										getTodoTypeLabel(item)
 									}}</span>
 								</div>
