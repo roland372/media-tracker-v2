@@ -14,7 +14,7 @@
 					}"
 				>
 					<span v-if="item.value >= 4" class="progress-label">
-						{{ Math.ceil(item.value) }}%
+						{{ Math.round(item.value) }}%
 					</span>
 				</div>
 			</div>
@@ -35,7 +35,7 @@
 					></div>
 					<div>
 						{{ getStatusNameForColor(item.color) }} ({{
-							Math.ceil(item.value)
+							Math.round(item.value)
 						}}%)
 					</div>
 				</div>
