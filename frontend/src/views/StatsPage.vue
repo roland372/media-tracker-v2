@@ -841,6 +841,64 @@
 				</CardComponent>
 			</v-col>
 		</v-row>
+
+		<v-row class="mt-n5">
+			<v-col cols="12">
+				<CardComponent title="Media Growth Over Time">
+					<v-row class="mt-2 text-color">
+						<v-col cols="12">
+							<div class="chart-container" style="height: 400px">
+								<h3 class="text-h6 mb-4">Media Collection Growth By Year</h3>
+								<canvas id="media-growth-chart"></canvas>
+							</div>
+						</v-col>
+					</v-row>
+
+					<v-row class="mt-2 text-color">
+						<v-col cols="12">
+							<h3 class="text-h6 mb-4 text-left d-flex align-center flex-wrap">
+								<div class="d-flex align-center">
+									<v-icon color="blue" class="mr-2">mdi-chart-line</v-icon>
+									<span class="header-title">Media Growth By Year</span>
+								</div>
+							</h3>
+							<v-table
+								density="compact"
+								fixed-header
+								height="400px"
+								class="games-table"
+							>
+								<thead class="text-left">
+									<tr>
+										<th>Year</th>
+										<th>Anime</th>
+										<th>Books</th>
+										<th>Games</th>
+										<th>Manga</th>
+										<th style="min-width: 110px">Movies & TV</th>
+										<th style="min-width: 100px">Total Items</th>
+									</tr>
+								</thead>
+								<tbody class="text-left">
+									<tr
+										v-for="(yearData, index) in mediaGrowthByYear"
+										:key="index"
+									>
+										<td>{{ yearData.year }}</td>
+										<td>{{ yearData.anime }}</td>
+										<td>{{ yearData.books }}</td>
+										<td>{{ yearData.games }}</td>
+										<td>{{ yearData.manga }}</td>
+										<td>{{ yearData.movies }}</td>
+										<td><strong>{{ yearData.total }}</strong></td>
+									</tr>
+								</tbody>
+							</v-table>
+						</v-col>
+					</v-row>
+				</CardComponent>
+			</v-col>
+		</v-row>
 	</v-container>
 </template>
 
@@ -1526,6 +1584,9 @@ onMounted(() => {
 	createGameStatusCharts();
 	createDeveloperChart();
 	createGamesByYearCharts();
+	
+	// New media growth chart
+	createMediaGrowthChart();
 });
 
 function createGameStatusCharts() {
@@ -2003,6 +2064,180 @@ const lastYearVisualNovels = computed(() => {
 		game => game.type === 'Visual Novel'
 	);
 });
+
+// Media Growth By Year calculations
+const mediaGrowthByYear = computed(() => {
+	// Get years range for all media
+	const getAllYears = () => {
+		const years = new Set<number>();
+		
+		// Collect years from all media types
+		anime.value.forEach(item => {
+			if (item.createdAt) {
+				years.add(new Date(item.createdAt).getFullYear());
+			}
+		});
+		
+		manga.value.forEach(item => {
+			if (item.createdAt) {
+				years.add(new Date(item.createdAt).getFullYear());
+			}
+		});
+		
+		books.value.forEach(item => {
+			if (item.createdAt) {
+				years.add(new Date(item.createdAt).getFullYear());
+			}
+		});
+		
+		games.value.forEach(item => {
+			if (item.createdAt) {
+				years.add(new Date(item.createdAt).getFullYear());
+			}
+		});
+		
+		movies.value.forEach(item => {
+			if (item.createdAt) {
+				years.add(new Date(item.createdAt).getFullYear());
+			}
+		});
+		
+		// Convert to array and sort
+		return Array.from(years).sort();
+	};
+	
+	const years = getAllYears();
+	const result = [];
+	
+	// For each year, calculate the cumulative count for each media type
+	for (const year of years) {
+		const animeCount = anime.value.filter(
+			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year
+		).length;
+		
+		const mangaCount = manga.value.filter(
+			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year
+		).length;
+		
+		const booksCount = books.value.filter(
+			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year
+		).length;
+		
+		const gamesCount = games.value.filter(
+			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year
+		).length;
+		
+		const moviesCount = movies.value.filter(
+			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year
+		).length;
+		
+		const totalCount = animeCount + mangaCount + booksCount + gamesCount + moviesCount;
+		
+		result.push({
+			year,
+			anime: animeCount,
+			manga: mangaCount,
+			books: booksCount,
+			games: gamesCount,
+			movies: moviesCount,
+			total: totalCount
+		});
+	}
+	
+	// Sort by year in descending order (newest first)
+	return result.sort((a, b) => b.year - a.year);
+});
+
+// Create the media growth chart
+function createMediaGrowthChart() {
+	const mediaGrowthChart = document.getElementById(
+		'media-growth-chart'
+	) as HTMLCanvasElement;
+	
+	if (mediaGrowthChart && mediaGrowthByYear.value.length > 0) {
+		// Sort by year in ascending order for the chart
+		const sortedData = [...mediaGrowthByYear.value].sort((a, b) => a.year - b.year);
+		
+		new Chart(mediaGrowthChart, {
+			type: 'bar',
+			data: {
+				labels: sortedData.map(item => item.year.toString()),
+				datasets: [
+					{
+						label: 'Anime',
+						data: sortedData.map(item => item.anime),
+						backgroundColor: '#3F51B5', // Indigo
+						stack: 'Stack 0',
+					},
+					{
+						label: 'Books',
+						data: sortedData.map(item => item.books),
+						backgroundColor: '#9C27B0', // Purple
+						stack: 'Stack 0',
+					},
+					{
+						label: 'Games',
+						data: sortedData.map(item => item.games),
+						backgroundColor: '#FFC107', // Amber
+						stack: 'Stack 0',
+					},
+					{
+						label: 'Manga',
+						data: sortedData.map(item => item.manga),
+						backgroundColor: '#4CAF50', // Green
+						stack: 'Stack 0',
+					},
+					{
+						label: 'Movies & TV',
+						data: sortedData.map(item => item.movies),
+						backgroundColor: '#FFEB3B', // Yellow
+						stack: 'Stack 0',
+					},
+				],
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						position: 'top',
+						labels: {
+							color: 'white',
+						},
+					},
+					tooltip: {
+						mode: 'index',
+						callbacks: {
+							afterBody: (tooltipItems) => {
+								// Add total to tooltip
+								const dataIndex = tooltipItems[0].dataIndex;
+								const year = sortedData[dataIndex];
+								return `Total: ${year.total}`;
+							},
+						},
+					},
+				},
+				scales: {
+					x: {
+						stacked: true,
+						ticks: { color: 'white' },
+						grid: { color: 'rgba(255, 255, 255, 0.1)' },
+					},
+					y: {
+						stacked: true,
+						ticks: { color: 'white' },
+						grid: { color: 'rgba(255, 255, 255, 0.1)' },
+					},
+				},
+				layout: {
+					padding: {
+						bottom: 50, // Add padding at the bottom
+					},
+				},
+			},
+		});
+	}
+}
 </script>
 
 <style scoped>
