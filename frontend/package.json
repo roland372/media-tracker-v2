@@ -16,6 +16,7 @@
     "copy-image-clipboard": "^2.1.2",
     "he": "^1.2.0",
     "lodash": "^4.17.21",
+    "music-metadata": "^11.2.1",
     "pinia": "^2.0.33",
     "register-service-worker": "^1.7.2",
     "roboto-fontface": "*",

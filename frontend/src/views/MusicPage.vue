@@ -1,942 +1,1429 @@
 <template>
-	<HeaderComponent title="Music">
-		<section class="d-flex align-center justify-space-between">
-			<ButtonText
-				@click="handleOpenAddMusicModal"
-				color="indigo"
-				text="Add Song"
-			/>
-			<div class="px-3 text-color">
-				<p>or</p>
+	<div class="music-page">
+		<HeaderComponent title="Music" />
+		
+		<div class="music-container">
+			<!-- Folder selection -->
+			<div class="folder-selection" v-if="!audioFiles.length">
+				<div class="folder-prompt">
+					<h2>Select music folder to start</h2>
+					<p>Choose a folder containing your audio files (.mp3, .wav, etc.)</p>
+					<ButtonText @click="selectFolder" text="Select Folder" color="indigo" />
+				</div>
 			</div>
-			<v-text-field
-				v-model="musicFetchSearch"
-				@click:append-inner="handleFetchMusicSearch"
-				@click:clear="handleClearMusicSearch"
-				@keydown.enter="handleFetchMusicSearch"
-				append-inner-icon="mdi-magnify"
-				class="text-color"
-				clearable
-				density="compact"
-				hide-details="auto"
-				label="Search for a Song"
-				variant="outlined"
-			/>
-			<!-- <ButtonText color="yellow" text="Settings" /> -->
-		</section>
-		<section v-if="fetchedMusic?.length" class="pt-3">
-			<section class="d-flex flex-wrap justify-space-between">
-				<div
-					v-for="(song, index) in fetchedMusic"
-					:key="index"
-					class="d-flex flex-fill align-stretch pa-1"
-				>
-					<div
-						class="bg-primary-dark d-flex align-end justify-center flex-grow-1 position-relative rounded"
-					>
-						<v-card class="media-music-card" variant="text">
-							<v-img
-								:alt="song.snippet.title"
-								class="media-music-img"
-								cover
-								:src="displayYouTubeImg(song.snippet.thumbnails)"
-							/>
-							<div class="text-start text-color">
-								<v-card-title class="mb-n2">{{
-									he.decode(song.snippet.title)
-								}}</v-card-title>
-								<v-card-subtitle>
-									<div>
-										<b>Link: </b>
-										<a
-											:href="`https://www.youtube.com/watch?v=${song.id.videoId}`"
-											class="link-color"
-											target="_blank"
-											>YouTube</a
-										>
-									</div>
-									<div>
-										<b>Published at: </b>
-										<span>
-											{{
-												new Date(song?.snippet?.publishedAt)
-													.toISOString()
-													.split('T')[0] || ''
-											}}
-										</span>
-									</div>
-								</v-card-subtitle>
+			
+			<!-- Music player with playlist side by side -->
+			<div v-else class="player-layout">
+				<!-- Left side - Now Playing -->
+				<div class="now-playing">
+					<h2 class="section-title">Now Playing</h2>
+					
+					<div class="track-info">
+						<div class="cover-art" v-if="currentTrack">
+							<img :src="currentTrack.imageURL || defaultCoverArt" alt="Album Art" />
+							<div class="playback-overlay" @click="togglePlay">
+								<i :class="playing ? 'fas fa-pause' : 'fas fa-play'"></i>
 							</div>
-							<v-card-actions class="d-flex justify-start ms-1 mb-1">
-								<ButtonText
-									@click="handleOpenAddFetchedMusicModal(song)"
-									color="green"
-									size="small"
-									text="Add Song"
-									type="submit"
-									variant="flat"
-								/>
-							</v-card-actions>
-						</v-card>
+						</div>
+						
+						<div class="track-details" v-if="currentTrack">
+							<h3 class="title">{{ currentTrack.title }}</h3>
+							<p class="artist">{{ currentTrack.artist }}</p>
+							<p class="album" v-if="currentTrack.album">
+								<i class="fas fa-compact-disc"></i> {{ currentTrack.album }}
+							</p>
+							
+							<div class="additional-meta">
+								<p v-if="currentTrack.year">
+									<i class="fas fa-calendar-alt"></i> {{ currentTrack.year }}
+								</p>
+								<p v-if="currentTrack.genre">
+									<i class="fas fa-tag"></i> {{ currentTrack.genre }}
+								</p>
+								<p v-if="currentTrack.bitrate">
+									<i class="fas fa-signal"></i> {{ Math.round(currentTrack.bitrate / 1000) }} kbps
+								</p>
+								<p v-if="currentTrack.codec">
+									<i class="fas fa-file-audio"></i> {{ currentTrack.codec }}
+								</p>
+							</div>
+							
+							<!-- Filename display -->
+							<p class="filename">
+								<i class="fas fa-file"></i> {{ getFilename(currentTrack.link) }}
+							</p>
+						</div>
 					</div>
 				</div>
-			</section>
-		</section>
-	</HeaderComponent>
-	<HeaderComponent title="Favourite Music">
-		<h3 v-if="!favouriteMusic.length" class="text-color">
-			Not found any items.
-		</h3>
-		<section v-else class="d-flex flex-wrap justify-space-between">
-			<div
-				v-for="song in favouriteMusic"
-				:key="song.id"
-				class="d-flex flex-fill align-stretch pa-1"
-			>
-				<div
-					class="bg-primary-dark d-flex align-end justify-center flex-grow-1 position-relative rounded"
-				>
-					<v-card class="media-music-card" variant="text">
-						<v-img
-							@click="handleOpenViewMusicModal(song._id, song)"
-							:alt="song.title"
-							:class="
-								song.imageURL.includes('youtube') ? '' : 'media-music-img'
-							"
-							:cover="song.imageURL.includes('youtube') ? true : false"
-							:src="song.imageURL || placeholderMusicImg"
-							style="cursor: pointer"
-						/>
-						<v-icon
-							v-if="song.favourites"
-							class="image-overlay-icon"
-							color="yellow-accent-4"
-							icon="mdi-star"
-						/>
-						<div class="text-start text-color pb-4">
-							<v-card-title class="mb-n2">{{ song.artist }}</v-card-title>
-							<v-card-subtitle> {{ song.title }}</v-card-subtitle>
+				
+				<!-- Right side - Playlist -->
+				<div class="playlist">
+					<h2 class="section-title">Your Playlist</h2>
+					<div class="playlist-table">
+						<div class="playlist-header">
+							<div class="track-number">#</div>
+							<div class="track-title">TITLE</div>
+							<div class="track-artist">ARTIST</div>
+							<div class="track-album">ALBUM</div>
+							<div class="track-duration">DURATION</div>
 						</div>
-					</v-card>
-				</div>
-			</div>
-		</section>
-		<ButtonText
-			v-if="favouriteMusicCount.length > 20"
-			@click="displayFavouriteMusic"
-			:append-icon="
-				displayFavouriteMusicFlag === 20
-					? 'mdi-arrow-down-bold'
-					: 'mdi-arrow-up-bold'
-			"
-			class="mt-3"
-			color="indigo"
-			:text="displayFavouriteMusicFlag === 20 ? 'Display All' : 'Display Less'"
-		/>
-	</HeaderComponent>
-	<HeaderComponent title="All Music">
-		<v-text-field
-			v-model="musicSearch"
-			@click:clear="() => (musicSearch = '')"
-			clearable
-			class="mb-2 text-color"
-			density="compact"
-			hide-details="auto"
-			label="Search for a Song"
-			variant="outlined"
-		/>
-		<h3 v-if="!allMusic.length" class="text-color">Not found any items.</h3>
-		<section v-else class="d-flex flex-wrap justify-space-between">
-			<div
-				v-for="song in allMusic"
-				:key="song.id"
-				class="d-flex flex-fill align-stretch pa-1"
-			>
-				<div
-					class="bg-primary-dark d-flex align-end justify-center flex-grow-1 position-relative rounded"
-				>
-					<v-card class="media-music-card" variant="text">
-						<v-img
-							@click="handleOpenViewMusicModal(song._id, song)"
-							:alt="song.title"
-							:class="
-								song.imageURL.includes('youtube') ? '' : 'media-music-img'
-							"
-							:cover="song.imageURL.includes('youtube') ? true : false"
-							:src="song.imageURL || placeholderMusicImg"
-							style="cursor: pointer"
-						/>
-						<v-icon
-							v-if="song.favourites"
-							class="image-overlay-icon"
-							color="yellow-accent-4"
-							icon="mdi-star"
-						/>
-						<div class="text-start text-color pb-4">
-							<v-card-title class="mb-n2">{{ song.artist }}</v-card-title>
-							<v-card-subtitle> {{ song.title }}</v-card-subtitle>
+						<div class="track-list" ref="trackListRef">
+							<div 
+								v-for="(track, index) in sortedPlaylist" 
+								:key="originalIndices[index]" 
+								@click="playTrack(index)"
+								:class="['track-item', { active: originalIndices[index] === currentTrackIndex }]"
+							>
+								<div class="track-number">
+									<span v-if="originalIndices[index] !== currentTrackIndex">{{ index + 1 }}</span>
+									<i v-else class="fas fa-volume-up playing-icon"></i>
+								</div>
+								<div class="track-title">
+									<img 
+										:src="track.imageURL || defaultCoverArt" 
+										alt="Thumbnail" 
+										class="track-thumbnail"
+									/>
+									<span>{{ track.title }}</span>
+								</div>
+								<div class="track-artist">{{ track.artist }}</div>
+								<div class="track-album">{{ track.album || '-' }}</div>
+								<div class="track-duration">{{ formatTime(trackDurations[originalIndices[index]] || 0) }}</div>
+							</div>
 						</div>
-					</v-card>
-				</div>
-			</div>
-		</section>
-		<ButtonText
-			v-if="music.length > 20"
-			@click="displayMusic"
-			:append-icon="
-				displayMusicFlag === 20 ? 'mdi-arrow-down-bold' : 'mdi-arrow-up-bold'
-			"
-			class="mt-3"
-			color="indigo"
-			:text="displayMusicFlag === 20 ? 'Display All' : 'Display Less'"
-		/>
-	</HeaderComponent>
-	<v-dialog v-if="addMusicModal" v-model="addMusicModal" max-width="500"
-		><v-card>
-			<div class="bg-primary-light text-color px-5 py-3 text-h6">Add Song</div>
-			<v-form @submit.prevent="handleSubmitAddMusic" validate-on="input">
-				<v-card-text>
-					<v-text-field
-						v-model="newMusic.artist"
-						autofocus
-						class="mb-2"
-						density="compact"
-						hide-details="auto"
-						label="Artist"
-						:rules="stringRules('Artist')"
-						variant="outlined"
-					/>
-					<v-text-field
-						v-model="newMusic.title"
-						class="mb-2"
-						density="compact"
-						hide-details="auto"
-						label="Title"
-						:rules="stringRules('Title')"
-						variant="outlined"
-					/>
-					<v-text-field
-						v-model="newMusic.link"
-						class="mb-2"
-						density="compact"
-						hide-details="auto"
-						label="Link"
-						:rules="emptyURLRules"
-						variant="outlined"
-					/>
-					<v-text-field
-						v-model="newMusic.imageURL"
-						class="mb-3"
-						density="compact"
-						hide-details="auto"
-						label="Image URL"
-						:rules="emptyURLRules"
-						variant="outlined"
-					/>
-					<!-- <div class="v-select">
-            <label
-              for="category"
-              :class="{
-                'select-text-gray': !selectActive,
-                'select-text-black': selectActive,
-              }"
-              >Category</label
-            >
-            <select
-              id="category"
-              v-model="newMusic.category"
-              @focus="selectActive = true"
-              @blur="selectActive = false"
-            >
-              <option
-                v-for="category in musicCategory"
-                :value="category"
-                :key="category"
-              >
-                {{ category }}
-              </option>
-            </select>
-          </div> -->
-					<v-select
-						v-model="newMusic.category"
-						class="mb-n3"
-						density="compact"
-						:items="musicCategory"
-						label="Select Category"
-						variant="outlined"
-					/>
-					<section class="d-flex align-center ms-1 mt-n8 mb-n7">
-						<div>Add to Favourites?</div>
-						<v-checkbox v-model="newMusic.favourites" hide-details />
-					</section>
-				</v-card-text>
-				<v-card-actions class="d-flex justify-start ms-2 mb-2">
-					<ButtonText
-						color="green"
-						text="Add Song"
-						type="submit"
-						variant="flat"
-					/>
-				</v-card-actions>
-			</v-form> </v-card
-	></v-dialog>
-	<v-dialog
-		v-if="addFetchedMusicModal"
-		v-model="addFetchedMusicModal"
-		max-width="500"
-		><v-card>
-			<div class="bg-primary-light text-color px-5 py-3 text-h6">Add Song</div>
-			<v-form @submit.prevent="handleSubmitAddMusic" validate-on="input">
-				<v-card-text>
-					<v-text-field
-						v-model="newMusic.artist"
-						autofocus
-						class="mb-2"
-						density="compact"
-						hide-details="auto"
-						label="Artist"
-						:rules="stringRules('Artist')"
-						variant="outlined"
-					/>
-					<v-text-field
-						v-model="newMusic.title"
-						class="mb-2"
-						density="compact"
-						hide-details="auto"
-						label="Title"
-						:rules="stringRules('Title')"
-						variant="outlined"
-					/>
-					<v-text-field
-						v-model="newMusic.link"
-						class="mb-2"
-						density="compact"
-						hide-details="auto"
-						label="Link"
-						:rules="emptyURLRules"
-						variant="outlined"
-					/>
-					<v-text-field
-						v-model="newMusic.imageURL"
-						class="mb-3"
-						density="compact"
-						hide-details="auto"
-						label="Image URL"
-						:rules="emptyURLRules"
-						variant="outlined"
-					/>
-					<!-- <div class="v-select">
-            <label
-              for="category"
-              :class="{
-                'select-text-gray': !selectActive,
-                'select-text-black': selectActive,
-              }"
-              >Category</label
-            >
-            <select
-              id="category"
-              v-model="newMusic.category"
-              @focus="selectActive = true"
-              @blur="selectActive = false"
-            >
-              <option
-                v-for="category in musicCategory"
-                :value="category"
-                :key="category"
-              >
-                {{ category }}
-              </option>
-            </select>
-          </div> -->
-					<v-select
-						v-model="newMusic.category"
-						class="mb-n3"
-						density="compact"
-						:items="musicCategory"
-						label="Select Category"
-						variant="outlined"
-					/>
-					<section class="d-flex align-center ms-1 mt-n8 mb-n7">
-						<div>Add to Favourites?</div>
-						<v-checkbox v-model="newMusic.favourites" hide-details />
-					</section>
-				</v-card-text>
-				<v-card-actions class="d-flex justify-start ms-2 mb-2">
-					<ButtonText
-						color="green"
-						text="Add Song"
-						type="submit"
-						variant="flat"
-					/>
-				</v-card-actions>
-			</v-form> </v-card
-	></v-dialog>
-	<v-dialog v-if="editMusicModal" v-model="editMusicModal" max-width="500">
-		<v-card>
-			<div class="bg-primary-light text-color px-5 py-3 text-h6">Edit Song</div>
-			<v-form @submit.prevent="handleSubmitEditMusic" validate-on="input">
-				<v-card-text>
-					<v-text-field
-						v-model="musicRef.artist"
-						class="mb-2"
-						density="compact"
-						hide-details="auto"
-						label="Artist"
-						:rules="stringRules('Artist')"
-						variant="outlined"
-					/>
-					<v-text-field
-						v-model="musicRef.title"
-						class="mb-2"
-						density="compact"
-						hide-details="auto"
-						label="Title"
-						:rules="stringRules('Title')"
-						variant="outlined"
-					/>
-					<v-text-field
-						v-model="musicRef.link"
-						class="mb-2"
-						density="compact"
-						hide-details="auto"
-						label="Link"
-						:rules="emptyURLRules"
-						variant="outlined"
-					/>
-					<v-text-field
-						v-model="musicRef.imageURL"
-						class="mb-3"
-						density="compact"
-						hide-details="auto"
-						label="Image URL"
-						:rules="emptyURLRules"
-						variant="outlined"
-					/>
-					<!-- <div class="v-select">
-            <label
-              for="category"
-              :class="{
-                'select-text-gray': !selectActive,
-                'select-text-black': selectActive,
-              }"
-              >Category</label
-            >
-            <select
-              id="category"
-              v-model="musicRef.category"
-              @focus="selectActive = true"
-              @blur="selectActive = false"
-            >
-              <option
-                v-for="category in musicCategory"
-                :value="category"
-                :key="category"
-              >
-                {{ category }}
-              </option>
-            </select>
-          </div> -->
-					<v-select
-						v-model="musicRef.category"
-						class="mb-n3"
-						density="compact"
-						:items="musicCategory"
-						label="Select Category"
-						variant="outlined"
-					/>
-					<section class="d-flex align-center ms-1 mt-n8 mb-n7">
-						<div>Add to Favourites?</div>
-						<v-checkbox v-model="musicRef.favourites" hide-details />
-					</section>
-				</v-card-text>
-				<v-card-actions class="d-flex justify-start ms-2 mb-2">
-					<ButtonText
-						color="yellow"
-						text="Update"
-						type="submit"
-						variant="flat"
-					/>
-				</v-card-actions>
-			</v-form>
-		</v-card>
-	</v-dialog>
-	<v-dialog
-		v-if="deleteMusicModal"
-		v-model="deleteMusicModal"
-		class="delete-dialog-position"
-		max-width="300"
-		><v-card>
-			<div class="bg-primary-light text-color px-5 py-3 text-h6">
-				Deleting {{ musicRef.artist }} - {{ musicRef.title }}
-			</div>
-			<v-card-text>
-				<p>Are you sure you want to delete this song?</p>
-			</v-card-text>
-			<v-card-actions class="d-flex justify-start mb-2 ms-2">
-				<ButtonText
-					@click="handleDeleteCancel"
-					color="yellow"
-					text="Cancel"
-					variant="flat"
-				/>
-				<ButtonText
-					@click="handleDeleteConfirm"
-					color="red"
-					text="Delete"
-					variant="flat"
-				/>
-			</v-card-actions> </v-card
-	></v-dialog>
-	<v-dialog v-if="viewMusicModal" v-model="viewMusicModal" max-width="500"
-		><v-card>
-			<div class="bg-primary-light text-color px-5 py-3 text-h6">
-				{{ musicRef.artist }} - {{ musicRef.title }}
-			</div>
-			<div class="d-sm-flex align-start">
-				<v-img
-					class="rounded ms-2 me-2 me-sm-0 mt-2"
-					:src="musicRef.imageURL || placeholderMusicImg"
-				/>
-				<v-card-text style="max-width: 200px">
-					<div><b>Category:</b> {{ musicRef.category }}</div>
-					<div>
-						<b>Link: </b>
-						<a :href="musicRef.link" target="_blank">{{ displayLinkText() }}</a>
 					</div>
-				</v-card-text>
+				</div>
 			</div>
-			<v-card-actions class="d-flex justify-start">
-				<ButtonText
-					@click="handleOpenEditMusicModal"
-					color="green"
-					text="Edit"
-					variant="flat"
-				/>
-				<ButtonText
-					@click="handleOpenDeleteMusicModal"
-					color="red"
-					text="Delete"
-					variant="flat"
-				/>
-			</v-card-actions> </v-card
-	></v-dialog>
+		</div>
+		
+		<!-- Fixed bottom player controls -->
+		<div v-if="audioFiles.length > 0" class="fixed-player-controls">
+			<div class="player-controls-inner">
+				<div class="track-info-mini" v-if="currentTrack">
+					<img :src="currentTrack.imageURL || defaultCoverArt" alt="Album Art" class="mini-art" />
+					<div class="mini-details">
+						<div class="mini-title">{{ currentTrack.title }}</div>
+						<div class="mini-artist">{{ currentTrack.artist }}</div>
+					</div>
+				</div>
+				
+				<div class="controls-container">
+					<div class="main-controls">
+						<button @click="toggleShuffle" :class="{ active: isShuffled }" class="control-btn">
+							<i class="fas fa-random"></i>
+						</button>
+						<button @click="previousTrack" class="control-btn">
+							<i class="fas fa-step-backward"></i>
+						</button>
+						<button @click="togglePlay" class="play-btn">
+							<i :class="playing ? 'fas fa-pause' : 'fas fa-play'"></i>
+						</button>
+						<button @click="nextTrack" class="control-btn">
+							<i class="fas fa-step-forward"></i>
+						</button>
+						<button @click="toggleLoop" :class="{ active: isLooped }" class="control-btn">
+							<i class="fas fa-repeat"></i>
+						</button>
+					</div>
+					
+					<div class="progress-container">
+						<span class="time-display">{{ formatTime(currentTime) }}</span>
+						<input 
+							type="range" 
+							min="0" 
+							:max="duration || 100" 
+							:value="currentTime"
+							@input="onProgressChange"
+							class="progress-slider"
+						>
+						<span class="time-display">{{ formatTime(duration) }}</span>
+					</div>
+				</div>
+				
+				<div class="volume-control">
+					<i class="fas fa-volume-down"></i>
+					<input 
+						type="range" 
+						min="0" 
+						max="1" 
+						step="0.01" 
+						:value="volume"
+						@input="onVolumeChange"
+						class="volume-slider"
+					>
+					<i class="fas fa-volume-up"></i>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Error/info message -->
+		<div v-if="errorMessage" :class="['error-message', { info: messageIsInfo }]">
+			{{ errorMessage }}
+			<button @click="dismissError" class="dismiss-btn">
+				<i class="fas fa-times"></i>
+			</button>
+		</div>
+		
+		<!-- Hidden audio element -->
+		<audio 
+			ref="audioElement" 
+			@ended="handleTrackEnd" 
+			@timeupdate="updateTime" 
+			@loadedmetadata="updateDuration" 
+			@play="updatePlaying(true)" 
+			@pause="updatePlaying(false)"
+			@error="handleAudioError"
+		></audio>
+	</div>
 </template>
+
 <script setup lang="ts">
+import { ref, reactive, computed, onMounted, watch } from 'vue';
+import * as mm from 'music-metadata';
 import HeaderComponent from '@/components/media/HeaderComponent.vue';
 import ButtonText from '@/components/ui/ButtonText.vue';
-import { useMediaStore } from '@/stores/useMediaStore';
-import {
-	EMusicCategory,
-	TMusic,
-	TMusicInput,
-	TThumbnailUrls,
-	TYouTubeVideo,
-} from '@/types';
-import {
-	fetchMusicURL,
-	musicCategory,
-	placeholderMusicImg,
-} from '@/utils/mediaUtils';
-import {
-	emptyURLRules,
-	stringRules,
-	URLRegex,
-} from '@/utils/validations/formValidations';
-import he from 'he';
-import { filter, orderBy } from 'lodash';
-import { storeToRefs } from 'pinia';
-import { computed, reactive, ref } from 'vue';
+import { EMusicCategory, TMusic, FileSystemDirectoryHandle, FileSystemFileHandle } from '@/types';
 
-const mediaStore = useMediaStore();
-const { userFromDB } = mediaStore;
-const { music } = storeToRefs(mediaStore);
+// Audio player refs and state
+const audioElement = ref<HTMLAudioElement | null>(null);
+const audioFiles = ref<TMusic[]>([]);
+const currentTrackIndex = ref(-1);
+const trackDurations = ref<number[]>([]);
+const isShuffled = ref(false);
+const isLooped = ref(false);
+const defaultCoverArt = '/default-cover.jpg'; // Default cover art path
+const errorMessage = ref('');
+const messageIsInfo = ref(false);
 
-const newMusic: TMusicInput = reactive({
-	artist: '',
-	category: EMusicCategory.JAPANESE,
-	favourites: false,
-	imageURL: '',
-	link: '',
-	owner: userFromDB?.email as string,
-	title: '',
+// Track the original order when shuffle is enabled
+const originalOrder = ref<number[]>([]);
+const shuffledOrder = ref<number[]>([]);
+
+// Media controls (our own implementation instead of useMediaControls)
+const playing = ref(false);
+const currentTime = ref(0);
+const duration = ref(0);
+const volume = ref(1);
+
+// Add a ref for the track list element
+const trackListRef = ref<HTMLElement | null>(null);
+
+// Sorted playlist
+const sortedPlaylist = computed(() => {
+	if (audioFiles.value.length === 0) {
+		return [];
+	}
+	
+	// Use shuffled order if shuffle is enabled
+	if (isShuffled.value && shuffledOrder.value.length > 0) {
+		return shuffledOrder.value.map(index => audioFiles.value[index]);
+	}
+	
+	// Otherwise use original order
+	return audioFiles.value;
 });
 
-const addMusicModal = ref<boolean>(false);
-const addFetchedMusicModal = ref<boolean>(false);
-const deleteMusicModal = ref<boolean>(false);
-const displayMusicFlag = ref<number>(20);
-const displayFavouriteMusicFlag = ref<number>(20);
-const editMusicModal = ref<boolean>(false);
-const fetchedMusic = ref();
-const musicID = ref<string>('');
-const musicRef = ref<TMusicInput>(newMusic);
-const musicFetchSearch = ref<string>('');
-const musicSearch = ref<string>('');
-// const selectActive = ref<boolean>(false);
-const viewMusicModal = ref<boolean>(false);
+// Map to track the original indices
+const originalIndices = computed(() => {
+	if (audioFiles.value.length === 0) {
+		return [];
+	}
+	
+	// Use shuffled order if shuffle is enabled
+	if (isShuffled.value && shuffledOrder.value.length > 0) {
+		return shuffledOrder.value;
+	}
+	
+	// Otherwise use original order
+	return audioFiles.value.map((_, i) => i);
+});
 
-const allMusic = computed(() =>
-	orderBy(music.value, ['artist', 'title'], ['asc', 'asc'])
-		.filter(el => {
-			const searchTermMatch =
-				el.artist.toLowerCase().includes(musicSearch.value.toLowerCase()) ||
-				el.title.toLowerCase().includes(musicSearch.value.toLowerCase());
-
-			return searchTermMatch;
-		})
-		.slice(0, displayMusicFlag.value)
-);
-
-const favouriteMusic = computed(() =>
-	orderBy(filter(music.value, { favourites: true }), ['artist'], ['asc']).slice(
-		0,
-		displayFavouriteMusicFlag.value
-	)
-);
-
-const favouriteMusicCount = computed(() =>
-	filter(music.value, { favourites: true })
-);
-
-const handleClearMusicSearch = () => {
-	musicFetchSearch.value = '';
-	fetchedMusic.value = [];
+// Error handling
+const handleAudioError = (e: Event) => {
+	console.error('Audio error:', e);
+	errorMessage.value = 'Error playing track. Try another file.';
+	
+	// Since this track failed, try the next one after a short delay
+	setTimeout(() => {
+		nextTrack();
+	}, 2000);
 };
 
-const handleDeleteCancel = () => {
-	deleteMusicModal.value = false;
+const dismissError = () => {
+	errorMessage.value = '';
+	messageIsInfo.value = false;
 };
 
-const handleDeleteConfirm = async () => {
-	musicID.value = '';
-	deleteMusicModal.value = false;
-};
-
-const handleFetchMusicSearch = async () => {
-	if (musicFetchSearch.value.length) {
-		const fetchMusic = await fetch(fetchMusicURL(musicFetchSearch.value)).then(
-			res => res.json()
-		);
-
-		fetchedMusic.value = fetchMusic.items;
-	} else {
-		console.log('empty search');
+// Update media state handlers
+const updateTime = () => {
+	if (audioElement.value) {
+		currentTime.value = audioElement.value.currentTime;
 	}
 };
 
-const displayLinkText = () => {
-	if (musicRef.value.link?.toLowerCase().includes('youtube')) {
-		return 'YouTube';
-	} else if (musicRef.value.link?.toLowerCase().includes('spotify')) {
-		return 'Spotify';
-	} else {
-		return 'Link';
+const updateDuration = () => {
+	if (audioElement.value && !isNaN(audioElement.value.duration)) {
+		duration.value = audioElement.value.duration;
+		
+		// Update the track duration in our list if it's different from what we estimated
+		if (currentTrackIndex.value >= 0 && audioFiles.value.length > 0) {
+			// Only update if it's significantly different (e.g., our estimate was way off)
+			const diffThreshold = 10; // 10 seconds threshold
+			const currentDuration = trackDurations.value[currentTrackIndex.value] || 0;
+			
+			if (Math.abs(currentDuration - duration.value) > diffThreshold) {
+				trackDurations.value[currentTrackIndex.value] = duration.value;
+				
+				// Also update the duration metadata of the current track
+				if (audioFiles.value[currentTrackIndex.value]) {
+					audioFiles.value[currentTrackIndex.value].duration = duration.value;
+				}
+			}
+		}
 	}
 };
 
-const displayYouTubeImg = (thumbnails: TThumbnailUrls) => {
-	if (thumbnails.high.url) return thumbnails.high.url;
-	else if (thumbnails.medium.url) return thumbnails.medium.url;
-	else return thumbnails.low.url;
+const updatePlaying = (isPlaying: boolean) => {
+	playing.value = isPlaying;
 };
 
-const displayMusic = () => {
-	displayMusicFlag.value === 20
-		? (displayMusicFlag.value = music.value.length)
-		: (displayMusicFlag.value = 20);
-};
+// Current track computed property
+const currentTrack = computed(() => {
+	if (currentTrackIndex.value >= 0 && audioFiles.value.length > 0) {
+		return audioFiles.value[currentTrackIndex.value];
+	}
+	return null;
+});
 
-const displayFavouriteMusic = () => {
-	displayFavouriteMusicFlag.value === 20
-		? (displayFavouriteMusicFlag.value = favouriteMusicCount.value.length)
-		: (displayFavouriteMusicFlag.value = 20);
-};
-
-const handleOpenAddMusicModal = () => {
-	addMusicModal.value = !addMusicModal.value;
-};
-
-const handleOpenAddFetchedMusicModal = (song: TYouTubeVideo) => {
-	addFetchedMusicModal.value = !addFetchedMusicModal.value;
-	newMusic.title = he.decode(song.snippet.title);
-	newMusic.link = `https://www.youtube.com/watch?v=${song.id.videoId}`;
-	newMusic.imageURL = displayYouTubeImg(song.snippet.thumbnails);
-};
-
-const handleOpenDeleteMusicModal = () => {
-	viewMusicModal.value = false;
-	deleteMusicModal.value = !deleteMusicModal.value;
-};
-
-const handleOpenEditMusicModal = () => {
-	viewMusicModal.value = false;
-	editMusicModal.value = !editMusicModal.value;
-
-	const updatedMusic: TMusicInput = reactive({
-		artist: musicRef.value.artist,
-		category: musicRef.value.category,
-		favourites: musicRef.value.favourites,
-		imageURL: musicRef.value.imageURL,
-		link: musicRef.value.link,
-		owner: userFromDB?.email as string,
-		title: musicRef.value.title,
+// Polyfill for File System Access API
+const openFileSelector = async () => {
+	return new Promise<File[]>((resolve) => {
+		try {
+			const input = document.createElement('input');
+			input.type = 'file';
+			input.multiple = true;
+			input.accept = 'audio/*';
+			
+			input.onchange = () => {
+				if (input.files && input.files.length > 0) {
+					resolve(Array.from(input.files));
+				} else {
+					resolve([]);
+				}
+			};
+			
+			// Make sure this doesn't get garbage collected before the user interacts with it
+			document.body.appendChild(input);
+			input.style.display = 'none';
+			input.click();
+			
+			// Remove it after selection
+			setTimeout(() => {
+				document.body.removeChild(input);
+			}, 5000);
+		} catch (e) {
+			console.error('Error opening file selector:', e);
+			resolve([]);
+		}
 	});
-
-	musicRef.value = updatedMusic;
 };
 
-const handleOpenViewMusicModal = (id: string, song: TMusic) => {
-	viewMusicModal.value = !viewMusicModal.value;
-	musicRef.value = song;
-	musicID.value = id;
+// Extract metadata from audio file
+const extractAudioMetadata = async (file: File, fileUrl: string): Promise<TMusic> => {
+	// Default metadata
+	const metadata: TMusic = {
+		title: file.name.replace(/\.[^/.]+$/, ''), // Remove extension
+		artist: 'Unknown Artist',
+		category: EMusicCategory.OTHER,
+		favourites: false,
+		imageURL: defaultCoverArt,
+		link: fileUrl,
+		owner: 'local',
+	};
+	
+	try {
+		// Use music-metadata to parse the file
+		const parsedMetadata = await mm.parseBlob(file);
+		
+		// Extract common metadata if available
+		if (parsedMetadata.common) {
+			const common = parsedMetadata.common;
+			
+			// Basic metadata
+			if (common.title) metadata.title = common.title;
+			if (common.artist) metadata.artist = common.artist;
+			if (common.album) metadata.album = common.album;
+			if (common.year) metadata.year = common.year.toString();
+			if (common.genre && common.genre.length > 0) metadata.genre = common.genre[0];
+			if (common.track) metadata.trackNumber = common.track.no || undefined;
+			
+			// Extract album art
+			if (common.picture && common.picture.length > 0) {
+				const picture = common.picture[0];
+				const blob = new Blob([picture.data], { type: picture.format });
+				metadata.imageURL = URL.createObjectURL(blob);
+			}
+		}
+		
+		// Format-specific metadata
+		if (parsedMetadata.format) {
+			if (parsedMetadata.format.duration) metadata.duration = parsedMetadata.format.duration;
+			if (parsedMetadata.format.bitrate) metadata.bitrate = parsedMetadata.format.bitrate;
+			if (parsedMetadata.format.sampleRate) metadata.sampleRate = parsedMetadata.format.sampleRate;
+			if (parsedMetadata.format.codec) metadata.codec = parsedMetadata.format.codec;
+		}
+		
+		// If no picture was found in the metadata, assign a default based on genre
+		if (metadata.imageURL === defaultCoverArt && metadata.genre) {
+			const genre = metadata.genre.toLowerCase();
+			if (genre.includes('rock')) {
+				metadata.imageURL = 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?q=80&w=300';
+			} else if (genre.includes('pop')) {
+				metadata.imageURL = 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=300';
+			} else if (genre.includes('jazz')) {
+				metadata.imageURL = 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=300';
+			} else if (genre.includes('classical')) {
+				metadata.imageURL = 'https://images.unsplash.com/photo-1507838153414-b4b713384a76?q=80&w=300';
+			} else if (genre.includes('electronic')) {
+				metadata.imageURL = 'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?q=80&w=300';
+			} else if (genre.includes('hip hop') || genre.includes('rap')) {
+				metadata.imageURL = 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=300';
+			}
+		}
+		
+		// If still using default and we have an album name, try to generate an album art
+		if (metadata.imageURL === defaultCoverArt && metadata.album) {
+			// Create a canvas to generate album art
+			const canvas = document.createElement('canvas');
+			canvas.width = 300;
+			canvas.height = 300;
+			const ctx = canvas.getContext('2d');
+			
+			if (ctx) {
+				// Generate a random color based on the album name
+				const hash = metadata.album.split('').reduce((acc, char) => {
+					return char.charCodeAt(0) + ((acc << 5) - acc);
+				}, 0);
+				
+				const r = (hash & 0xFF0000) >> 16;
+				const g = (hash & 0x00FF00) >> 8;
+				const b = hash & 0x0000FF;
+				
+				// Fill background
+				ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+				ctx.fillRect(0, 0, 300, 300);
+				
+				// Add album name
+				ctx.fillStyle = 'white';
+				ctx.font = 'bold 30px Arial';
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				
+				// Handle long album names
+				let displayAlbum = metadata.album;
+				if (displayAlbum.length > 20) {
+					displayAlbum = displayAlbum.substring(0, 17) + '...';
+				}
+				
+				ctx.fillText(displayAlbum, 150, 130);
+				
+				// Add artist name if available
+				if (metadata.artist !== 'Unknown Artist') {
+					ctx.font = '20px Arial';
+					
+					let displayArtist = metadata.artist;
+					if (displayArtist.length > 25) {
+						displayArtist = displayArtist.substring(0, 22) + '...';
+					}
+					
+					ctx.fillText(displayArtist, 150, 180);
+				}
+				
+				// Convert to data URL
+				metadata.imageURL = canvas.toDataURL('image/jpeg');
+			}
+		}
+	} catch (error) {
+		console.error('Error extracting metadata:', error);
+		
+		// Fall back to filename parsing if music-metadata fails
+		try {
+			// Try to extract metadata from filename
+			// Common pattern: Artist - Title
+			const fileNameParts = file.name.replace(/\.[^/.]+$/, '').split(' - ');
+			if (fileNameParts.length >= 2) {
+				metadata.artist = fileNameParts[0].trim();
+				metadata.title = fileNameParts[1].trim();
+				
+				// Check if there's album info in brackets
+				const albumMatch = metadata.title.match(/\[(.*?)\]/);
+				if (albumMatch && albumMatch[1]) {
+					metadata.album = albumMatch[1];
+					metadata.title = metadata.title.replace(/\[.*?\]/, '').trim();
+				}
+			}
+			
+			// Try to extract year from filename (4 digit number)
+			const yearMatch = file.name.match(/\b(19|20)\d{2}\b/);
+			if (yearMatch && yearMatch[0]) {
+				metadata.year = yearMatch[0];
+			}
+		} catch (e) {
+			// Just use default metadata in worst case
+			console.error('Fallback metadata extraction failed:', e);
+		}
+	}
+	
+	return metadata;
 };
 
-const handleSubmitAddMusic = async () => {
-	if (
-		newMusic.artist &&
-		newMusic.title &&
-		(!newMusic.link || URLRegex.test(String(newMusic.link))) &&
-		(!newMusic.imageURL || URLRegex.test(String(newMusic.imageURL)))
-	) {
-		addMusicModal.value = false;
-		addFetchedMusicModal.value = false;
-
-		newMusic.artist = '';
-		newMusic.category = EMusicCategory.JAPANESE;
-		newMusic.favourites = false;
-		newMusic.imageURL = '';
-		newMusic.link = '';
-		newMusic.title = '';
+// Select folder handler (using file input as fallback)
+const selectFolder = async () => {
+	try {
+		let usedFallback = false;
+		let files: TMusic[] = [];
+		let durations: number[] = [];
+		
+		// Try to use File System Access API if available
+		if ('showDirectoryPicker' in window) {
+			try {
+				const dirHandle = await window.showDirectoryPicker();
+				
+				// Process all files in the directory
+				for await (const entry of dirHandle.values()) {
+					// Check if it's a file and has audio extension
+					if (entry.kind === 'file' && isAudioFile(entry.name)) {
+						const file = await entry.getFile();
+						const fileUrl = URL.createObjectURL(file);
+						
+						// Extract metadata
+						const metadata = await extractAudioMetadata(file, fileUrl);
+						files.push(metadata);
+						
+						// Get duration
+						const duration = metadata.duration || await getAudioDuration(fileUrl);
+						durations.push(duration);
+					}
+				}
+			} catch (error) {
+				console.warn('Directory picker failed, falling back to file input:', error);
+				usedFallback = true;
+			}
+		} else {
+			usedFallback = true;
+		}
+		
+		// Fallback to regular file input if needed
+		if (usedFallback || files.length === 0) {
+			console.log('Using file input fallback...');
+			const selectedFiles = await openFileSelector();
+			
+			files = [];
+			durations = [];
+			
+			for (const file of selectedFiles) {
+				if (isAudioFile(file.name)) {
+					const fileUrl = URL.createObjectURL(file);
+					
+					// Extract metadata
+					const metadata = await extractAudioMetadata(file, fileUrl);
+					files.push(metadata);
+					
+					// Get duration
+					const duration = metadata.duration || await getAudioDuration(fileUrl);
+					durations.push(duration);
+				}
+			}
+		}
+		
+		// Set the files if we found any
+		if (files.length > 0) {
+			setAudioFiles(files, durations);
+		} else {
+			console.warn('No audio files were selected or found in the directory');
+		}
+	} catch (error) {
+		console.error('Error selecting folder:', error);
 	}
 };
 
-const handleSubmitEditMusic = async () => {
-	if (
-		musicRef.value.artist &&
-		musicRef.value.title &&
-		(!musicRef.value.link || URLRegex.test(String(musicRef.value.link))) &&
-		(!musicRef.value.imageURL || URLRegex.test(String(musicRef.value.imageURL)))
-	) {
-		editMusicModal.value = false;
+// Set audio files and initialize player
+const setAudioFiles = (files: TMusic[], durations: number[]) => {
+	// Update state with the files
+	audioFiles.value = files;
+	trackDurations.value = durations;
+	
+	// Initialize the original order
+	originalOrder.value = Array.from({ length: files.length }, (_, i) => i);
+	
+	// Play the first track if we have files
+	if (files.length > 0) {
+		currentTrackIndex.value = 0;
+		playTrack(0);
+		
+		// Scroll to the first track after a short delay to ensure DOM is ready
+		setTimeout(scrollToActiveSong, 300);
 	}
 };
+
+// Check if a file is an audio file based on extension
+const isAudioFile = (filename: string): boolean => {
+	const audioExtensions = ['.mp3', '.wav', '.ogg', '.m4a', '.flac', '.aac'];
+	return audioExtensions.some(ext => filename.toLowerCase().endsWith(ext));
+};
+
+// Get audio duration (with error handling)
+const getAudioDuration = (url: string): Promise<number> => {
+	return new Promise((resolve) => {
+		const audio = new Audio();
+		
+		// Set timeout in case audio loading takes too long
+		const timeout = setTimeout(() => {
+			console.warn('Audio duration fetch timed out, using default');
+			resolve(180); // Default to 3 minutes
+		}, 5000);
+		
+		audio.onloadedmetadata = () => {
+			clearTimeout(timeout);
+			resolve(audio.duration);
+		};
+		
+		audio.onerror = () => {
+			clearTimeout(timeout);
+			console.warn('Error getting audio duration, using default');
+			resolve(180); // Default to 3 minutes
+		};
+		
+		audio.src = url;
+	});
+};
+
+// Format time in seconds to MM:SS
+const formatTime = (timeInSeconds: number): string => {
+	if (!timeInSeconds) return '0:00';
+	
+	const minutes = Math.floor(timeInSeconds / 60);
+	const seconds = Math.floor(timeInSeconds % 60);
+	return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+};
+
+// Play a specific track by index
+const playTrack = (index: number) => {
+	// Get the original index (in case we're using shuffled order)
+	const originalIndex = originalIndices.value[index];
+	
+	if (originalIndex >= 0 && originalIndex < audioFiles.value.length) {
+		currentTrackIndex.value = originalIndex;
+		if (audioElement.value) {
+			try {
+				// Clear any previous error
+				errorMessage.value = '';
+				
+				// Set the source and play
+				audioElement.value.src = audioFiles.value[originalIndex].link;
+				audioElement.value.load();
+				
+				const playPromise = audioElement.value.play();
+				
+				// Handle play promise (required for modern browsers)
+				if (playPromise !== undefined) {
+					playPromise.catch(error => {
+						console.error('Play error:', error);
+						errorMessage.value = `Couldn't play track: ${error.message || 'Unknown error'}`;
+					});
+				}
+			} catch (error) {
+				console.error('Error starting playback:', error);
+				errorMessage.value = 'Error starting playback';
+			}
+		}
+	}
+};
+
+// Toggle play/pause
+const togglePlay = () => {
+	if (!audioElement.value) return;
+	
+	if (playing.value) {
+		audioElement.value.pause();
+	} else {
+		audioElement.value.play();
+	}
+};
+
+// Go to next track
+const nextTrack = () => {
+	if (audioFiles.value.length === 0) return;
+	
+	// Find the index of the currently playing track in the playlist
+	const currentIndex = originalIndices.value.indexOf(currentTrackIndex.value);
+	const nextIndex = (currentIndex + 1) % originalIndices.value.length;
+	
+	// Play the next track
+	playTrack(nextIndex);
+};
+
+// Go to previous track
+const previousTrack = () => {
+	if (audioFiles.value.length === 0) return;
+	
+	// If we're more than 3 seconds into the track, restart it instead of going to previous
+	if (currentTime.value > 3) {
+		if (audioElement.value) {
+			audioElement.value.currentTime = 0;
+		}
+		return;
+	}
+	
+	// Find the index of the currently playing track in the playlist
+	const currentIndex = originalIndices.value.indexOf(currentTrackIndex.value);
+	const prevIndex = (currentIndex - 1 + originalIndices.value.length) % originalIndices.value.length;
+	
+	// Play the previous track
+	playTrack(prevIndex);
+};
+
+// Handle track end
+const handleTrackEnd = () => {
+	if (isLooped.value) {
+		// Replay the current track
+		if (audioElement.value) {
+			audioElement.value.currentTime = 0;
+			audioElement.value.play();
+		}
+	} else {
+		// Go to next track
+		nextTrack();
+	}
+};
+
+// Toggle shuffle mode
+const toggleShuffle = () => {
+	isShuffled.value = !isShuffled.value;
+	
+	if (isShuffled.value) {
+		// Create a shuffled order
+		shuffledOrder.value = [...originalOrder.value];
+		// Fisher-Yates shuffle algorithm
+		for (let i = shuffledOrder.value.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[shuffledOrder.value[i], shuffledOrder.value[j]] = [shuffledOrder.value[j], shuffledOrder.value[i]];
+		}
+		
+		// Display a message about shuffle mode
+		if (audioFiles.value.length > 0) {
+			showInfoMessage("Shuffle mode enabled. Next song will be random.");
+			
+			// Scroll to show the active song in the new order
+			setTimeout(scrollToActiveSong, 100);
+		}
+	} else {
+		// Display a message about normal mode
+		if (audioFiles.value.length > 0) {
+			showInfoMessage("Playing songs in original order.");
+			
+			// Scroll to show the active song in the new order
+			setTimeout(scrollToActiveSong, 100);
+		}
+	}
+};
+
+// Show an informational message
+const showInfoMessage = (message: string, duration = 2000) => {
+	errorMessage.value = message;
+	messageIsInfo.value = true;
+	
+	setTimeout(() => {
+		if (errorMessage.value === message) {
+			errorMessage.value = '';
+			messageIsInfo.value = false;
+		}
+	}, duration);
+};
+
+// Toggle loop mode
+const toggleLoop = () => {
+	isLooped.value = !isLooped.value;
+};
+
+// Handle progress change from slider
+const onProgressChange = (event: Event) => {
+	const target = event.target as HTMLInputElement;
+	if (audioElement.value) {
+		audioElement.value.currentTime = Number(target.value);
+	}
+};
+
+// Handle volume change from slider
+const onVolumeChange = (event: Event) => {
+	const target = event.target as HTMLInputElement;
+	volume.value = Number(target.value);
+	
+	if (audioElement.value) {
+		audioElement.value.volume = volume.value;
+	}
+};
+
+// Set initial volume when audio element is available
+onMounted(() => {
+	if (audioElement.value) {
+		audioElement.value.volume = volume.value;
+	}
+});
+
+// Watch for volume changes
+watch(volume, (newVolume) => {
+	if (audioElement.value) {
+		audioElement.value.volume = newVolume;
+	}
+});
+
+// Get filename from URL or file path
+const getFilename = (url: string): string => {
+	try {
+		// For blob URLs, extract the last part or generate a name
+		if (url.startsWith('blob:')) {
+			// Try to find a filename in the original file object
+			const currentTrack = audioFiles.value[currentTrackIndex.value];
+			if (currentTrack && currentTrack.title) {
+				// Try to recreate a filename based on metadata
+				let filename = currentTrack.title;
+				if (currentTrack.artist && currentTrack.artist !== 'Unknown Artist') {
+					filename = `${currentTrack.artist} - ${filename}`;
+				}
+				return filename;
+			}
+			
+			// If all else fails, return a placeholder
+			return 'audio-file';
+		}
+		
+		// For file URLs, extract the filename
+		const urlObj = new URL(url);
+		const pathname = urlObj.pathname;
+		const segments = pathname.split('/');
+		return decodeURIComponent(segments[segments.length - 1]);
+	} catch (e) {
+		// If parsing fails, try to extract from the URL string directly
+		try {
+			const parts = url.split('/');
+			return parts[parts.length - 1];
+		} catch (err) {
+			return 'Unknown file';
+		}
+	}
+};
+
+// Function to scroll to the currently active song
+const scrollToActiveSong = () => {
+	if (!trackListRef.value) return;
+	
+	// Find the index of the currently playing track in the playlist
+	const currentIndex = originalIndices.value.indexOf(currentTrackIndex.value);
+	if (currentIndex < 0) return;
+	
+	// Find the active track element
+	const activeTrack = trackListRef.value.children[currentIndex] as HTMLElement;
+	if (!activeTrack) return;
+	
+	// Scroll to the active track with smooth animation
+	activeTrack.scrollIntoView({
+		behavior: 'smooth',
+		block: 'center'
+	});
+};
+
+// Watch for changes to currentTrackIndex and scroll to the active song
+watch(currentTrackIndex, () => {
+	// Small delay to ensure DOM is updated
+	setTimeout(scrollToActiveSong, 100);
+});
 </script>
+
 <style scoped>
-/* .v-select {
-  display: inline-block;
-  position: relative;
+.music-page {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	background-color: var(--bg-primary-dark);
+	color: var(--text-color);
+	position: relative;
+	overflow: hidden;
 }
-.v-select label {
-  position: absolute;
-  top: -10px;
-  left: 10px;
-  background-color: white;
-  padding: 0 5px;
+
+.music-container {
+	flex: 1;
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	max-height: calc(100vh - 100px);
 }
-.v-select select {
-  appearance: none;
-  padding: 8px 32px 8px 10px;
-  border: 1px solid #c4c4c4;
-  border-radius: 4px;
-  background-image: url("https://cdn.jsdelivr.net/npm/material-design-icons/iconfont/material-icons.css");
-  background-repeat: no-repeat;
-  background-position: right center;
-  background-size: 24px;
-  background-color: white;
-  width: 200px;
+
+/* Folder selection styles */
+.folder-selection {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	text-align: center;
+	padding: 40px 0;
 }
-.select-text-gray {
-  color: gray;
+
+.folder-prompt {
+	max-width: 400px;
+	padding: 30px;
+	border-radius: 10px;
+	background-color: var(--bg-primary-medium);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
-.select-text-black {
-  color: black;
-} */
-.image-overlay-icon {
+
+.folder-prompt h2 {
+	margin-bottom: 15px;
+	font-size: 24px;
+	color: var(--text-color);
+}
+
+.folder-prompt p {
+	margin-bottom: 25px;
+	color: #b3b3b3;
+}
+
+/* Layout for player and playlist */
+.player-layout {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 20px;
+	flex: 1;
+	overflow: hidden;
+	min-height: 0;
+	height: calc(100% - 20px); /* Account for the bottom margin */
+	margin-bottom: 20px; /* Add margin above the controls */
+}
+
+@media (min-width: 1024px) {
+	.player-layout {
+		grid-template-columns: 400px 1fr; /* Fixed width for Now Playing, rest for playlist */
+	}
+}
+
+/* Now Playing section */
+.now-playing {
+	background-color: var(--bg-primary-medium);
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+	overflow-y: auto;
+	max-height: 100%;
+	margin-bottom: 20px;
+}
+
+.section-title {
+	font-size: 24px;
+	margin-bottom: 20px;
+	color: var(--text-color);
+	font-weight: 700;
+}
+
+.track-info {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+@media (min-width: 768px) {
+	.track-info {
+		align-items: center;
+	}
+}
+
+.cover-art {
+	position: relative;
+	width: 250px;
+	height: 250px;
+	overflow: hidden;
+	border-radius: 8px;
+	flex-shrink: 0;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+	margin: 0 auto;
+}
+
+.cover-art img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.3s ease;
+}
+
+.playback-overlay {
 	position: absolute;
-	right: 5px;
-	top: 5px;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	transition: all 0.3s ease;
+	cursor: pointer;
 }
 
-.delete-dialog-position {
-	margin-top: -50vh;
+.playback-overlay i {
+	font-size: 50px;
+	color: white;
+	filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5));
 }
 
-.media-music-img {
-	height: 260px;
+.cover-art:hover .playback-overlay {
+	background-color: rgba(0, 0, 0, 0.3);
+	opacity: 1;
 }
 
-.media-music-card {
-	width: 350px;
+.cover-art:hover img {
+	transform: scale(1.05);
 }
 
-@media (max-width: 3250px) {
-	.media-music-img {
-		height: 260px;
-	}
-
-	.media-music-card {
-		width: 350px;
-	}
+.track-details {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
 
-@media (max-width: 2560px) {
-	.media-music-img {
-		height: 210px;
-	}
-
-	.media-music-card {
-		width: 280px;
-	}
-}
-
-@media (max-width: 2550px) {
-	.media-music-img {
-		height: 210px;
-	}
-
-	.media-music-card {
-		width: 280px;
+@media (min-width: 768px) {
+	.track-details {
+		align-items: center;
+		text-align: center;
 	}
 }
 
-@media (max-width: 1920px) {
-	.media-music-img {
-		height: 205px;
-	}
+.track-details .title {
+	font-size: 28px;
+	margin-bottom: 8px;
+	font-weight: 700;
+	color: var(--text-color);
+}
 
-	.media-music-card {
-		width: 275px;
+.track-details .artist {
+	color: var(--link-color);
+	font-size: 18px;
+	margin-bottom: 5px;
+	font-weight: 500;
+}
+
+.track-details .album {
+	color: #b3b3b3;
+	font-size: 16px;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	gap: 7px;
+}
+
+.additional-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	justify-content: center;
+}
+
+.additional-meta p {
+	color: var(--text-color);
+	font-size: 13px;
+	background-color: var(--bg-secondary-medium);
+	padding: 5px 10px;
+	border-radius: 15px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.additional-meta i {
+	color: var(--link-color);
+	font-size: 12px;
+}
+
+.filename {
+	margin-top: 10px;
+	color: #b3b3b3;
+	font-size: 12px;
+	background-color: var(--bg-primary-dark);
+	padding: 8px 12px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-family: monospace;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 100%;
+}
+
+.filename i {
+	color: var(--link-color);
+}
+
+/* Playlist styles */
+.playlist {
+	background-color: var(--bg-primary-medium);
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow: hidden;
+	max-height: calc(100% - 20px); /* Ensure it doesn't overflow into the margin */
+}
+
+.playlist-table {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	overflow: hidden;
+}
+
+.playlist-header {
+	display: grid;
+	grid-template-columns: 50px 2fr 1fr 1fr 100px;
+	padding: 10px;
+	border-bottom: 1px solid var(--bg-secondary-medium);
+	color: #8892b0;
+	font-size: 12px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	position: sticky;
+	top: 0;
+	background-color: var(--bg-primary-medium);
+	z-index: 1;
+}
+
+.track-list {
+	flex: 1;
+	overflow-y: auto;
+	padding-right: 5px;
+	scroll-behavior: smooth;
+}
+
+/* Use global scrollbar styles */
+.track-item {
+	display: grid;
+	grid-template-columns: 50px 2fr 1fr 1fr 100px;
+	align-items: center;
+	padding: 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	border-bottom: 1px solid var(--bg-secondary-medium);
+}
+
+.track-item:hover {
+	background-color: var(--bg-secondary-medium);
+}
+
+.track-item.active {
+	background-color: var(--bg-primary-light);
+}
+
+.track-number {
+	color: #8892b0;
+	font-size: 14px;
+	text-align: center;
+}
+
+.playing-icon {
+	color: var(--link-color);
+	animation: pulse 1.5s infinite;
+}
+
+.track-thumbnail {
+	width: 30px;
+	height: 30px;
+	border-radius: 4px;
+	margin-right: 12px;
+	object-fit: cover;
+}
+
+.track-title {
+	display: flex;
+	align-items: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-weight: 500;
+	color: var(--text-color);
+}
+
+.track-artist, .track-album {
+	color: #8892b0;
+	font-size: 14px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.track-duration {
+	color: #8892b0;
+	font-size: 14px;
+	text-align: right;
+}
+
+/* Fixed player controls at bottom */
+.fixed-player-controls {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: var(--bg-primary-dark);
+	border-top: 1px solid var(--bg-secondary-medium);
+	padding: 8px 0;
+	display: flex;
+	justify-content: center;
+	z-index: 1000;
+	height: 70px;
+}
+
+.player-controls-inner {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	max-width: calc(100% - 60px);
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+@media (min-width: 768px) {
+	.player-controls-inner {
+		max-width: calc(100% - 260px);
+		margin-left: auto;
+		margin-right: 0;
 	}
 }
 
-@media (max-width: 1440px) {
-	.media-music-img {
-		height: 260px;
-	}
+.track-info-mini {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex: 1;
+	max-width: 200px;
+}
 
-	.media-music-card {
-		width: 350px;
+.mini-art {
+	width: 50px;
+	height: 50px;
+	border-radius: 5px;
+	object-fit: cover;
+}
+
+.mini-details {
+	overflow: hidden;
+}
+
+.mini-title {
+	font-weight: 600;
+	font-size: 14px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: var(--text-color);
+}
+
+.mini-artist {
+	font-size: 12px;
+	color: #8892b0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.controls-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex: 2;
+	max-width: 500px;
+}
+
+.main-controls {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	margin-bottom: 5px;
+}
+
+.progress-container {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+}
+
+.progress-slider {
+	flex: 1;
+	height: 4px;
+	-webkit-appearance: none;
+	background: var(--bg-secondary-medium);
+	border-radius: 2px;
+	outline: none;
+}
+
+.progress-slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 12px;
+	height: 12px;
+	background: var(--link-color);
+	border-radius: 50%;
+	cursor: pointer;
+	transition: transform 0.1s;
+}
+
+.progress-slider::-webkit-slider-thumb:hover {
+	transform: scale(1.2);
+}
+
+.time-display {
+	font-size: 12px;
+	color: #8892b0;
+	min-width: 40px;
+}
+
+.control-btn {
+	background: none;
+	border: none;
+	color: #8892b0;
+	font-size: 16px;
+	cursor: pointer;
+	transition: color 0.3s, transform 0.2s;
+}
+
+.control-btn:hover {
+	color: var(--link-color);
+	transform: scale(1.1);
+}
+
+.control-btn.active {
+	color: var(--link-color);
+}
+
+.play-btn {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: var(--link-color);
+	color: var(--bg-primary-dark);
+	border: none;
+	font-size: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: transform 0.2s, background-color 0.3s;
+}
+
+.play-btn:hover {
+	transform: scale(1.05);
+	background-color: var(--bg-secondary-light);
+}
+
+.volume-control {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex: 1;
+	max-width: 200px;
+	justify-content: flex-end;
+}
+
+.volume-slider {
+	width: 80px;
+	height: 4px;
+	-webkit-appearance: none;
+	background: var(--bg-secondary-medium);
+	border-radius: 2px;
+	outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 12px;
+	height: 12px;
+	background: var(--link-color);
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+/* Error/info message styles */
+.error-message {
+	position: fixed;
+	bottom: 90px;
+	left: 50%;
+	transform: translateX(-50%);
+	color: white;
+	padding: 12px 20px;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	z-index: 1000;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	animation: slideUp 0.3s forwards;
+}
+
+.error-message.info {
+	background-color: var(--bg-secondary-light);
+}
+
+.error-message:not(.info) {
+	background-color: #e63946;
+}
+
+.dismiss-btn {
+	background: none;
+	border: none;
+	color: white;
+	font-size: 16px;
+	margin-left: 15px;
+	cursor: pointer;
+	opacity: 0.8;
+	transition: opacity 0.3s;
+}
+
+.dismiss-btn:hover {
+	opacity: 1;
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translate(-50%, 20px);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, 0);
 	}
 }
 
-@media (max-width: 1280px) {
-	.media-music-img {
-		height: 200px;
+@keyframes pulse {
+	0% {
+		opacity: 0.5;
 	}
-
-	.media-music-card {
-		width: 270px;
+	50% {
+		opacity: 1;
 	}
-}
-
-@media (max-width: 1024px) {
-	.media-music-img {
-		height: 270px;
-	}
-
-	.media-music-card {
-		width: 400px;
+	100% {
+		opacity: 0.5;
 	}
 }
 
-@media (max-width: 960px) {
-	.media-music-img {
-		height: 270px;
-	}
-
-	.media-music-card {
-		width: 370px;
-	}
-}
-
-@media (max-width: 880px) {
-	.media-music-img {
-		height: 255px;
-	}
-
-	.media-music-card {
-		width: 340px;
-	}
-}
-
-@media (max-width: 768px) {
-	.media-music-img {
-		height: 230px;
-	}
-
-	.media-music-card {
-		width: 310px;
-	}
-}
-
-@media (max-width: 700px) {
-	.media-music-img {
-		height: 205px;
-	}
-
-	.media-music-card {
-		width: 275px;
-	}
-}
-
-@media (max-width: 630px) {
-	.media-music-img {
-		height: 185px;
-	}
-
-	.media-music-card {
-		width: 250px;
-	}
-}
-
-@media (max-width: 580px) {
-	.media-music-img {
-		height: 155px;
-	}
-
-	.media-music-card {
-		width: 210px;
-	}
-}
-
-@media (max-width: 500px) {
-	.media-music-img {
-		height: 125px;
-	}
-
-	.media-music-card {
-		width: 170px;
-	}
-}
-
-@media (max-width: 425px) {
-	.media-music-img {
-		height: 110px;
-	}
-
-	.media-music-card {
-		width: 145px;
-	}
-}
-
-@media (max-width: 375px) {
-	.media-music-img {
-		height: 90px;
-	}
-
-	.media-music-card {
-		width: 120px;
-	}
-}
-
-@media (max-width: 320px) {
-	.media-music-img {
-		height: 90px;
-	}
-
-	.media-music-card {
-		width: 120px;
-	}
-}
+/* Add FontAwesome for icons */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 </style>
