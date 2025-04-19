@@ -898,8 +898,6 @@ watch(currentTrackIndex, () => {
 	flex: 1;
 	overflow: hidden;
 	min-height: 0;
-	padding: 20px;
-	padding-bottom: 10px;
 }
 
 @media (min-width: 1024px) {
@@ -916,7 +914,6 @@ watch(currentTrackIndex, () => {
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 	overflow-y: auto;
 	max-height: 100%;
-	margin-bottom: 20px;
 }
 
 .section-title {
@@ -1193,38 +1190,18 @@ watch(currentTrackIndex, () => {
 	height: 70px;
 }
 
-@media (min-width: 768px) {
-	.fixed-player-controls {
-		left: 56px; /* Account for navigation drawer width on medium screens */
-	}
-}
-
-@media (min-width: 960px) {
-	.fixed-player-controls {
-		width: calc(100% - 56px); /* Adjust width to account for drawer */
-	}
-}
-
-@media (min-width: 1280px) {
-	.fixed-player-controls {
-		width: calc(100% - 256px); /* Adjust for expanded drawer on larger screens */
-		left: 256px;
-	}
-}
-
 .player-controls-inner {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	max-width: calc(100% - 60px);
 	margin: 0 auto;
 	padding: 0 20px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 960px) {
 	.player-controls-inner {
-		max-width: calc(100% - 260px);
+		max-width: calc(100% - 56px);
 		margin-left: auto;
 		margin-right: 0;
 	}
