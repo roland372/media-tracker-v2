@@ -989,38 +989,62 @@ const statusBreakdown = computed(() => {
 });
 
 // Media distribution
-const mediaDistribution = computed(() => [
-	{
-		name: 'Anime',
-		count: animeCount.value,
-		percentage: (animeCount.value / totalMediaCount.value) * 100,
-		color: 'indigo',
-	},
-	{
-		name: 'Books',
-		count: booksCount.value,
-		percentage: (booksCount.value / totalMediaCount.value) * 100,
-		color: 'purple',
-	},
-	{
-		name: 'Games',
-		count: gamesCount.value,
-		percentage: (gamesCount.value / totalMediaCount.value) * 100,
-		color: 'amber',
-	},
-	{
-		name: 'Manga',
-		count: mangaCount.value,
-		percentage: (mangaCount.value / totalMediaCount.value) * 100,
-		color: 'green',
-	},
-	{
-		name: 'Movies & TV',
-		count: moviesCount.value,
-		percentage: (moviesCount.value / totalMediaCount.value) * 100,
-		color: 'yellow',
-	},
-]);
+const mediaDistribution = computed(() => {
+	const items = [
+		{
+			name: 'Anime',
+			count: animeCount.value,
+			percentage: (animeCount.value / totalMediaCount.value) * 100,
+			color: 'indigo',
+		},
+		{
+			name: 'Books',
+			count: booksCount.value,
+			percentage: (booksCount.value / totalMediaCount.value) * 100,
+			color: 'purple',
+		},
+		{
+			name: 'Games',
+			count: gamesCount.value,
+			percentage: (gamesCount.value / totalMediaCount.value) * 100,
+			color: 'amber',
+		},
+		{
+			name: 'Manga',
+			count: mangaCount.value,
+			percentage: (mangaCount.value / totalMediaCount.value) * 100,
+			color: 'green',
+		},
+		{
+			name: 'Movies & TV',
+			count: moviesCount.value,
+			percentage: (moviesCount.value / totalMediaCount.value) * 100,
+			color: 'yellow',
+		},
+	];
+	
+	// Round percentages but ensure they sum to 100%
+	const roundedItems = items.map(item => ({
+		...item,
+		percentage: Math.round(item.percentage)
+	}));
+	
+	// Calculate the sum of the rounded percentages
+	const sum = roundedItems.reduce((acc, item) => acc + item.percentage, 0);
+	
+	// If the sum is not 100, adjust the largest value
+	if (sum !== 100) {
+		// Find the item with the largest percentage
+		const largestItem = roundedItems.reduce((prev, current) => 
+			prev.percentage > current.percentage ? prev : current
+		);
+		
+		// Adjust the largest item to make the sum 100
+		largestItem.percentage += (100 - sum);
+	}
+	
+	return roundedItems;
+});
 
 // Consumption stats
 // Add back the totalPlaytime property
