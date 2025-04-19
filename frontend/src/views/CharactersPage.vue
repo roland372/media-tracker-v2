@@ -59,7 +59,7 @@
 		:media="
 			orderBy(
 				filter(characters, { favourites: true }),
-				[character => character.name.toLowerCase()],
+				[(character: TCharacter) => character.name.toLowerCase()],
 				['asc']
 			)
 		"
@@ -159,8 +159,8 @@ const filteredCharacters = computed(() => {
 			favouritesFilter.value === 'favourites'
 				? el.favourites
 				: favouritesFilter.value === 'non-favourites'
-				? !el.favourites
-				: true;
+					? !el.favourites
+					: true;
 
 		return sourceMatch && sourceFilterMatch && favouritesMatch;
 	};

@@ -59,7 +59,7 @@
 		:media="
 			orderBy(
 				filter(manga, { favourites: true }),
-				[manga => manga.title.toLowerCase()],
+				[(manga: TManga) => manga.title.toLowerCase()],
 				['asc']
 			)
 		"
@@ -144,12 +144,13 @@ const filteredManga = computed(() => {
 
 	const flagConfigs: Array<{ field: keyof TManga; flag: string }> = [
 		{ field: 'title', flag: 't:' },
-		{ field: 'author', flag: 'a:' }
+		{ field: 'author', flag: 'a:' },
 	];
 
 	const additionalFilters = (el: TManga) => {
 		const statusMatch =
-			mangaStatuses.value.length === 0 || !mangaStatuses.value.includes(el.status as TMediaStatus);
+			mangaStatuses.value.length === 0 ||
+			!mangaStatuses.value.includes(el.status as TMediaStatus);
 
 		const typeMatch =
 			mangaType.value.length === 0 || mangaType.value.includes(el.type);
@@ -158,14 +159,14 @@ const filteredManga = computed(() => {
 			favouritesFilter.value === 'favourites'
 				? el.favourites
 				: favouritesFilter.value === 'non-favourites'
-				? !el.favourites
-				: true;
+					? !el.favourites
+					: true;
 
 		return statusMatch && typeMatch && favouritesMatch;
 	};
 
 	const filteredItems = advancedSearch(
-		manga.value, 
+		manga.value,
 		searchTerm.value,
 		flagConfigs,
 		additionalFilters

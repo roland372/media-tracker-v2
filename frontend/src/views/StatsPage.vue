@@ -196,7 +196,7 @@
 								{
 									title: 'Manga Read',
 									value: manga.reduce(
-										(acc, item) => acc + (item.volumesMin || 0),
+										(acc: number, item: TManga) => acc + (item.volumesMin || 0),
 										0
 									),
 									subvalue: Math.round(mangaHours),

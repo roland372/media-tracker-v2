@@ -59,7 +59,7 @@
 		:media="
 			orderBy(
 				filter(games, { favourites: true }),
-				[game => game.title.toLowerCase()],
+				[(game: TGame) => game.title.toLowerCase()],
 				['asc']
 			)
 		"
@@ -140,48 +140,54 @@ const filteredGames = computed(() => {
 
 	const flagConfigs: Array<{ field: keyof TGame; flag: string }> = [
 		{ field: 'title', flag: 't:' },
-		{ field: 'developer', flag: 'd:' }
+		{ field: 'developer', flag: 'd:' },
 	];
 
 	const additionalFilters = (el: TGame) => {
 		const statusMatch =
-			gameStatuses.value.length === 0 || !gameStatuses.value.includes(el.status as TMediaStatus);
+			gameStatuses.value.length === 0 ||
+			!gameStatuses.value.includes(el.status as TMediaStatus);
 
 		// Handle comma-separated type values with special handling for Expansion
 		const typeMatch = (() => {
 			if (gameType.value.length === 0) return true; // If no types selected, don't filter by type
-			
+
 			// Split the item's type by comma and trim each value
 			const itemTypes = el.type.split(',').map(t => t.trim());
-			
+
 			// Check if Expansion is one of the selected filters
 			const hasExpansionFilter = gameType.value.includes('Expansion');
 			// Check if other types besides Expansion are selected
 			const otherSelectedTypes = gameType.value.filter(t => t !== 'Expansion');
-			
+
 			// Case 1: Only Expansion is selected - show all items with Expansion type
 			if (hasExpansionFilter && otherSelectedTypes.length === 0) {
 				return itemTypes.includes('Expansion');
 			}
-			
+
 			// Case 2: Expansion + one other type (e.g., Visual Novel) are selected
 			// Show only items that have BOTH the selected type AND Expansion
 			if (hasExpansionFilter && otherSelectedTypes.length === 1) {
-				return itemTypes.includes('Expansion') && itemTypes.includes(otherSelectedTypes[0]);
+				return (
+					itemTypes.includes('Expansion') &&
+					itemTypes.includes(otherSelectedTypes[0])
+				);
 			}
-			
+
 			// Case 3: Multiple types selected but no Expansion
 			// Or more than 2 filters including Expansion
 			// Regular behavior - show any item that matches at least one selected type
-			return gameType.value.some(selectedType => itemTypes.includes(selectedType));
+			return gameType.value.some(selectedType =>
+				itemTypes.includes(selectedType)
+			);
 		})();
 
 		const favouritesMatch =
 			favouritesFilter.value === 'favourites'
 				? el.favourites
 				: favouritesFilter.value === 'non-favourites'
-				? !el.favourites
-				: true;
+					? !el.favourites
+					: true;
 
 		return statusMatch && typeMatch && favouritesMatch;
 	};

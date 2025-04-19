@@ -59,7 +59,7 @@
 		:media="
 			orderBy(
 				filter(movies, { favourites: true }),
-				[movie => movie.title.toLowerCase()],
+				[(movie: TMovie) => movie.title.toLowerCase()],
 				['asc']
 			)
 		"
@@ -143,12 +143,13 @@ const filteredMovies = computed(() => {
 	}
 
 	const flagConfigs: Array<{ field: keyof TMovie; flag: string }> = [
-		{ field: 'title', flag: 't:' }
+		{ field: 'title', flag: 't:' },
 	];
 
 	const additionalFilters = (el: TMovie) => {
 		const statusMatch =
-			movieStatuses.value.length === 0 || !movieStatuses.value.includes(el.status as TMediaStatus);
+			movieStatuses.value.length === 0 ||
+			!movieStatuses.value.includes(el.status as TMediaStatus);
 
 		const typeMatch =
 			movieType.value.length === 0 || movieType.value.includes(el.type);
@@ -157,8 +158,8 @@ const filteredMovies = computed(() => {
 			favouritesFilter.value === 'favourites'
 				? el.favourites
 				: favouritesFilter.value === 'non-favourites'
-				? !el.favourites
-				: true;
+					? !el.favourites
+					: true;
 
 		return statusMatch && typeMatch && favouritesMatch;
 	};

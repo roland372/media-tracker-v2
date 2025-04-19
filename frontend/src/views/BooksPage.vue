@@ -55,7 +55,7 @@
 		:media="
 			orderBy(
 				filter(books, { favourites: true }),
-				[book => book.title.toLowerCase()],
+				[(book: TBook) => book.title.toLowerCase()],
 				['asc']
 			)
 		"
@@ -68,7 +68,13 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useBooksStore } from '@/stores/useBooksStore';
-import { EBookStatus, EMediaType, TBook, TSortingOptions, TMediaStatus } from '@/types';
+import {
+	EBookStatus,
+	EMediaType,
+	TBook,
+	TSortingOptions,
+	TMediaStatus,
+} from '@/types';
 import {
 	calculatePercentage,
 	filterMediaStatus,
@@ -128,25 +134,26 @@ const favourites = computed(
 const filteredBooks = computed(() => {
 	const flagConfigs: Array<{ field: keyof TBook; flag: string }> = [
 		{ field: 'title', flag: 't:' },
-		{ field: 'author', flag: 'a:' }
+		{ field: 'author', flag: 'a:' },
 	];
 
 	const additionalFilters = (el: TBook) => {
 		const statusMatch =
-			bookStatuses.value.length === 0 || !bookStatuses.value.includes(el.status as TMediaStatus);
+			bookStatuses.value.length === 0 ||
+			!bookStatuses.value.includes(el.status as TMediaStatus);
 
 		const favouritesMatch =
 			favouritesFilter.value === 'favourites'
 				? el.favourites
 				: favouritesFilter.value === 'non-favourites'
-				? !el.favourites
-				: true;
+					? !el.favourites
+					: true;
 
 		return statusMatch && favouritesMatch;
 	};
 
 	const filteredItems = advancedSearch(
-		books.value, 
+		books.value,
 		searchTerm.value,
 		flagConfigs,
 		additionalFilters

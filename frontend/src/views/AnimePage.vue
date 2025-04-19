@@ -59,7 +59,7 @@
 		:media="
 			orderBy(
 				filter(anime, { favourites: true }),
-				[anime => anime.title.toLowerCase()],
+				[(anime: TAnime) => anime.title.toLowerCase()],
 				['asc']
 			)
 		"
@@ -140,12 +140,13 @@ const filteredAnime = computed(() => {
 
 	const flagConfigs: Array<{ field: keyof TAnime; flag: string }> = [
 		{ field: 'title', flag: 't:' },
-		{ field: 'studio', flag: 's:' }
+		{ field: 'studio', flag: 's:' },
 	];
 
 	const additionalFilters = (el: TAnime) => {
 		const statusMatch =
-			animeStatuses.value.length === 0 || !animeStatuses.value.includes(el.status as TMediaStatus);
+			animeStatuses.value.length === 0 ||
+			!animeStatuses.value.includes(el.status as TMediaStatus);
 
 		const typeMatch =
 			animeType.value.length === 0 || animeType.value.includes(el.type);
@@ -154,14 +155,14 @@ const filteredAnime = computed(() => {
 			favouritesFilter.value === 'favourites'
 				? el.favourites
 				: favouritesFilter.value === 'non-favourites'
-				? !el.favourites
-				: true;
+					? !el.favourites
+					: true;
 
 		return statusMatch && typeMatch && favouritesMatch;
 	};
 
 	const filteredItems = advancedSearch(
-		anime.value, 
+		anime.value,
 		searchTerm.value,
 		flagConfigs,
 		additionalFilters

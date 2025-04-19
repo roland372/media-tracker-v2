@@ -25,7 +25,7 @@ import SnackbarComponent from '@/components/ui/SnackbarComponent.vue';
 import { useUsersStore } from '@/stores/useUsersStore';
 import { useUtilsStore } from '@/stores/useUtilsStore';
 import { storeToRefs } from 'pinia';
-import { useDisplay } from 'vuetify';
+import { useDisplay } from 'vuetify/lib/composables/display';
 
 const usersStore = useUsersStore();
 const utilsStore = useUtilsStore();

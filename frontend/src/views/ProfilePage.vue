@@ -40,7 +40,7 @@
 							class="v-row wrap align-center justify-space-evenly pa-3 text-no-wrap"
 						>
 							<section
-								v-for="media in mediaType.filter(el => !el.isAdmin)"
+								v-for="media in mediaType.filter((el: MediaTypeItem) => !el.isAdmin)"
 								:key="media.media"
 								class="pb-1 v-col-6 v-col-sm-4"
 							>
@@ -79,7 +79,7 @@
 						<hr />
 						<div class="d-flex align-center justify-start flex-wrap py-3">
 							<ButtonText
-								v-for="button in backupButtons.filter(el => !el.isAdmin)"
+								v-for="button in backupButtons.filter((el: BackupButtonItem) => !el.isAdmin)"
 								:key="button.text"
 								@click="handleDownloadMedia(button.data, button.text)"
 								:class="button.class"
@@ -148,6 +148,22 @@ import {
 import { beigeTheme, blueTheme, grayTheme, setAppTheme } from '@/utils/themes';
 import { computed, ref } from 'vue';
 
+// Define types for the objects used in filter callbacks
+type BackupButtonItem = {
+	class: string;
+	color: string;
+	data: TAnime[] | TBook[] | TCharacter[] | TEmote[] | TGame[] | TManga[] | TMovie[] | TMusic[];
+	size: string;
+	text: string;
+	isAdmin?: boolean;
+}
+
+type MediaTypeItem = {
+	media: string;
+	total: number;
+	isAdmin?: boolean;
+}
+
 const utilsStore = useUtilsStore();
 const { setSnackbar } = utilsStore;
 
@@ -167,7 +183,7 @@ const userProfile = computed(() => ({
 const settingsModal = ref<boolean>(false);
 const userRef = ref(userProfile);
 
-const backupButtons = computed(() => [
+const backupButtons = computed<BackupButtonItem[]>(() => [
 	{
 		class: 'me-2 mt-2',
 		color: 'indigo',
@@ -244,7 +260,7 @@ const colorThemeButtons = [
 	},
 ];
 
-const mediaType = computed(() => [
+const mediaType = computed<MediaTypeItem[]>(() => [
 	{ media: 'Anime', total: anime.value.length },
 	{ media: 'Books', total: books.value.length },
 	{ media: 'Characters', total: characters.value.length },

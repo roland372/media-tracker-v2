@@ -18,17 +18,21 @@
 				mediaType !== EMediaType.MANGA &&
 				mediaType !== EMediaType.MOVIE
 			"
-			class="bg-black image-text-overlay"
+			class="bg-black image-text-overlay truncate-chip"
 			color="white"
 			size="x-small"
 			text-color="white"
 			:text="displayImageText(media)"
 		/>
 		<ChipComponent
-			class="bg-black image-title-overlay"
+			class="bg-black image-title-overlay truncate-chip"
 			color="white"
 			size="x-small"
-			:text="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TBook | TGame | TManga | TMovie).title"
+			:text="
+				mediaType === EMediaType.CHARACTER
+					? (media as TCharacter).name
+					: (media as TAnime | TBook | TGame | TManga | TMovie).title
+			"
 			text-color="white"
 		/>
 		<MediaModal
@@ -36,7 +40,11 @@
 			v-model="dialog"
 			:media="media"
 			:media-type="mediaType"
-			:title="mediaType === EMediaType.CHARACTER ? (media as TCharacter).name : (media as TAnime | TBook | TGame | TManga | TMovie).title"
+			:title="
+				mediaType === EMediaType.CHARACTER
+					? (media as TCharacter).name
+					: (media as TAnime | TBook | TGame | TManga | TMovie).title
+			"
 		/>
 	</v-img>
 </template>
@@ -180,5 +188,16 @@ const statusColor = (media: TMedia) => {
 
 .delete-dialog-position {
 	margin-top: -50vh;
+}
+
+.truncate-chip {
+	max-width: 100%;
+}
+
+.truncate-chip :deep(.v-chip__content) {
+	max-width: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 </style>

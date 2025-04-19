@@ -20,7 +20,7 @@
 				@click="handleFilterClear"
 				class="ma-1"
 				:variant="selectedStatuses.length === 0 ? 'flat' : 'outlined'"
-				color="primary"
+				color="deep-purple"
 				:text="
 					mediaType === EMediaType.BOOK ||
 					mediaType === EMediaType.CHARACTER ||
@@ -127,12 +127,12 @@
 							]"
 							item-title="title"
 							item-value="value"
-							style="min-width: 140px"
+							style="min-width: 150px"
 						/>
 					</div>
 				</div>
 			</v-card-text>
-			<v-card-actions class="ms-2 mb-2 mt-n7">
+			<v-card-actions class="ms-2 mb-2 me-2 mt-n9 justify-start">
 				<ButtonText
 					@click="handleSortMedia"
 					color="green"
@@ -189,15 +189,15 @@ const isStatusSelected = (status: TMediaStatus): boolean => {
 	if (selectedStatuses.value.length === 0) {
 		return true;
 	}
-	
+
 	// If we have exactly n-1 statuses in the list (where n is total number of statuses),
 	// then we're in the "only one status selected" mode
 	const allStatuses = props.mediaStatus.map(s => s.name);
 	if (selectedStatuses.value.length === allStatuses.length - 1) {
 		// In this case, the ONE status that is NOT in the exclusion list is selected/filled
 		return !selectedStatuses.value.includes(status);
-	} 
-	
+	}
+
 	// For all other cases (multiple specific statuses selected),
 	// those NOT in the exclusion list are selected/filled
 	return !selectedStatuses.value.includes(status);
@@ -217,7 +217,7 @@ const handleDisplayClick = () => {
 const handleFilterClear = () => {
 	// Get all available status names
 	const allStatuses = props.mediaStatus.map(s => s.name);
-	
+
 	// Toggle between showing all (no filters) and showing none (all excluded)
 	if (selectedStatuses.value.length === 0) {
 		// Currently all statuses are active/visible - exclude all of them
@@ -226,7 +226,7 @@ const handleFilterClear = () => {
 		// Some filters active - clear all filters to show everything
 		selectedStatuses.value = [];
 	}
-	
+
 	emit('filter', selectedStatuses.value);
 };
 
@@ -245,12 +245,12 @@ const handleSortMedia = () => {
 const handleStatusClick = (status: TMediaStatus) => {
 	// Get all available status names
 	const allStatuses = props.mediaStatus.map(s => s.name);
-	
+
 	// When all buttons are filled (no filters active)
 	if (selectedStatuses.value.length === 0) {
 		// When clicking a status, select only that one by excluding all others
 		selectedStatuses.value = allStatuses.filter(s => s !== status);
-	} 
+	}
 	// When one or more buttons are already selected
 	else {
 		// Check if we're in the special case where only a few are selected
@@ -261,27 +261,33 @@ const handleStatusClick = (status: TMediaStatus) => {
 				selectedStatuses.value.push(status);
 			} else {
 				// Status is currently not selected - select it by removing from exclusion list
-				selectedStatuses.value = selectedStatuses.value.filter(s => s !== status);
+				selectedStatuses.value = selectedStatuses.value.filter(
+					s => s !== status
+				);
 			}
-		} 
+		}
 		// In the other mode, selected statuses ARE in the list
 		else {
 			if (selectedStatuses.value.includes(status)) {
 				// Status is currently selected - deselect it by removing from selection list
-				selectedStatuses.value = selectedStatuses.value.filter(s => s !== status);
+				selectedStatuses.value = selectedStatuses.value.filter(
+					s => s !== status
+				);
 			} else {
 				// Status is currently not selected - select it by adding to selection list
 				selectedStatuses.value.push(status);
 			}
 		}
-		
+
 		// If all are now either selected or deselected, clear the list
-		if (selectedStatuses.value.length === 0 || 
-			selectedStatuses.value.length === allStatuses.length) {
+		if (
+			selectedStatuses.value.length === 0 ||
+			selectedStatuses.value.length === allStatuses.length
+		) {
 			selectedStatuses.value = [];
 		}
 	}
-	
+
 	emit('filter', selectedStatuses.value);
 };
 </script>
