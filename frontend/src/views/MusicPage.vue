@@ -1,38 +1,45 @@
 <template>
 	<div class="music-page">
 		<!-- <HeaderComponent title="Music" /> -->
-		
+
 		<div class="music-container">
 			<!-- Folder selection -->
 			<div v-if="!audioFiles.length" class="folder-selection">
 				<div class="folder-prompt">
 					<h2>Select music folder to start</h2>
 					<p>Choose a folder containing your audio files (.mp3, .wav, etc.)</p>
-					<ButtonText @click="selectFolder" text="Select Folder" color="indigo" />
+					<ButtonText
+						@click="selectFolder"
+						text="Select Folder"
+						color="indigo"
+					/>
 				</div>
 			</div>
-			
+
 			<!-- Music player with playlist side by side -->
 			<div v-else class="player-layout">
 				<!-- Left side - Now Playing -->
 				<div class="now-playing">
 					<h2 class="section-title">Now Playing</h2>
-					
+
 					<div class="track-info">
 						<div class="cover-art" v-if="currentTrack">
-							<img :src="currentTrack.imageURL || defaultCoverArt" alt="Album Art" />
+							<img
+								:src="currentTrack.imageURL || defaultCoverArt"
+								alt="Album Art"
+							/>
 							<div class="playback-overlay" @click="togglePlay">
 								<i :class="playing ? 'fas fa-pause' : 'fas fa-play'"></i>
 							</div>
 						</div>
-						
+
 						<div class="track-details" v-if="currentTrack">
 							<h3 class="title">{{ currentTrack.title }}</h3>
 							<p class="artist">{{ currentTrack.artist }}</p>
 							<p class="album" v-if="currentTrack.album">
 								<i class="fas fa-compact-disc"></i> {{ currentTrack.album }}
 							</p>
-							
+
 							<div class="additional-meta">
 								<p v-if="currentTrack.year">
 									<i class="fas fa-calendar-alt"></i> {{ currentTrack.year }}
@@ -41,13 +48,14 @@
 									<i class="fas fa-tag"></i> {{ currentTrack.genre }}
 								</p>
 								<p v-if="currentTrack.bitrate">
-									<i class="fas fa-signal"></i> {{ Math.round(currentTrack.bitrate / 1000) }} kbps
+									<i class="fas fa-signal"></i>
+									{{ Math.round(currentTrack.bitrate / 1000) }} kbps
 								</p>
 								<p v-if="currentTrack.codec">
 									<i class="fas fa-file-audio"></i> {{ currentTrack.codec }}
 								</p>
 							</div>
-							
+
 							<!-- Filename display -->
 							<p class="filename">
 								<i class="fas fa-file"></i> {{ getFilename(currentTrack.link) }}
@@ -55,7 +63,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<!-- Right side - Playlist -->
 				<div class="playlist">
 					<h2 class="section-title">Your Playlist</h2>
@@ -68,48 +76,63 @@
 							<div class="track-duration">DURATION</div>
 						</div>
 						<div class="track-list" ref="trackListRef">
-							<div 
-								v-for="(track, index) in sortedPlaylist" 
-								:key="originalIndices[index]" 
+							<div
+								v-for="(track, index) in sortedPlaylist"
+								:key="originalIndices[index]"
 								@click="playTrack(index)"
-								:class="['track-item', { active: originalIndices[index] === currentTrackIndex }]"
+								:class="[
+									'track-item',
+									{ active: originalIndices[index] === currentTrackIndex },
+								]"
 							>
 								<div class="track-number">
-									<span v-if="originalIndices[index] !== currentTrackIndex">{{ index + 1 }}</span>
+									<span v-if="originalIndices[index] !== currentTrackIndex">{{
+										index + 1
+									}}</span>
 									<i v-else class="fas fa-volume-up playing-icon"></i>
 								</div>
 								<div class="track-title">
-									<img 
-										:src="track.imageURL || defaultCoverArt" 
-										alt="Thumbnail" 
+									<img
+										:src="track.imageURL || defaultCoverArt"
+										alt="Thumbnail"
 										class="track-thumbnail"
 									/>
 									<span>{{ track.title }}</span>
 								</div>
 								<div class="track-artist">{{ track.artist }}</div>
 								<div class="track-album">{{ track.album || '-' }}</div>
-								<div class="track-duration">{{ formatTime(trackDurations[originalIndices[index]] || 0) }}</div>
+								<div class="track-duration">
+									{{ formatTime(trackDurations[originalIndices[index]] || 0) }}
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- Fixed bottom player controls -->
 		<div v-if="audioFiles.length > 0" class="fixed-player-controls">
 			<div class="player-controls-inner">
 				<div class="track-info-mini" v-if="currentTrack">
-					<img :src="currentTrack.imageURL || defaultCoverArt" alt="Album Art" class="mini-art" />
+					<img
+						:src="currentTrack.imageURL || defaultCoverArt"
+						alt="Album Art"
+						class="mini-art"
+					/>
 					<div class="mini-details">
 						<div class="mini-title">{{ currentTrack.title }}</div>
 						<div class="mini-artist">{{ currentTrack.artist }}</div>
 					</div>
 				</div>
-				
+
 				<div class="controls-container">
 					<div class="main-controls">
-						<button @click="toggleShuffle" :class="{ active: isShuffled }" class="control-btn">
+						<button
+							@click="toggleShuffle"
+							:class="{ active: isShuffled }"
+							class="control-btn"
+						>
 							<i class="fas fa-random"></i>
 						</button>
 						<button @click="previousTrack" class="control-btn">
@@ -121,56 +144,63 @@
 						<button @click="nextTrack" class="control-btn">
 							<i class="fas fa-step-forward"></i>
 						</button>
-						<button @click="toggleLoop" :class="{ active: isLooped }" class="control-btn">
+						<button
+							@click="toggleLoop"
+							:class="{ active: isLooped }"
+							class="control-btn"
+						>
 							<i class="fas fa-repeat"></i>
 						</button>
 					</div>
-					
+
 					<div class="progress-container">
 						<span class="time-display">{{ formatTime(currentTime) }}</span>
-						<input 
-							type="range" 
-							min="0" 
-							:max="duration || 100" 
+						<input
+							type="range"
+							min="0"
+							:max="duration || 100"
 							:value="currentTime"
 							@input="onProgressChange"
 							class="progress-slider"
-						>
+						/>
 						<span class="time-display">{{ formatTime(duration) }}</span>
 					</div>
 				</div>
-				
+
 				<div class="volume-control">
 					<i class="fas fa-volume-down"></i>
-					<input 
-						type="range" 
-						min="0" 
-						max="1" 
-						step="0.01" 
+					<input
+						type="range"
+						min="0"
+						max="1"
+						step="0.01"
 						:value="volume"
 						@input="onVolumeChange"
 						class="volume-slider"
-					>
+					/>
 					<i class="fas fa-volume-up"></i>
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- Error/info message -->
-		<div v-if="errorMessage" :class="['error-message', { info: messageIsInfo }]">
+		<div
+			v-if="errorMessage"
+			:class="['error-message', { info: messageIsInfo }]"
+		>
 			{{ errorMessage }}
 			<button @click="dismissError" class="dismiss-btn">
 				<i class="fas fa-times"></i>
 			</button>
 		</div>
-		
+
 		<!-- Hidden audio element -->
-		<audio 
-			ref="audioElement" 
-			@ended="handleTrackEnd" 
-			@timeupdate="updateTime" 
-			@loadedmetadata="updateDuration" 
-			@play="updatePlaying(true)" 
+		<audio
+			ref="audioElement"
+			@ended="handleTrackEnd"
+			@timeupdate="updateTime"
+			@loadedmetadata="updateDuration"
+			@play="updatePlaying(true)"
 			@pause="updatePlaying(false)"
 			@error="handleAudioError"
 		></audio>
@@ -182,7 +212,12 @@ import { ref, reactive, computed, onMounted, watch } from 'vue';
 import * as mm from 'music-metadata';
 import HeaderComponent from '@/components/media/HeaderComponent.vue';
 import ButtonText from '@/components/ui/ButtonText.vue';
-import { EMusicCategory, TMusic, FileSystemDirectoryHandle, FileSystemFileHandle } from '@/types';
+import {
+	EMusicCategory,
+	TMusic,
+	FileSystemDirectoryHandle,
+	FileSystemFileHandle,
+} from '@/types';
 
 // Audio player refs and state
 const audioElement = ref<HTMLAudioElement | null>(null);
@@ -208,17 +243,20 @@ const volume = ref(1);
 // Add a ref for the track list element
 const trackListRef = ref<HTMLElement | null>(null);
 
+// Toggle this to true to use mock data, false to revert to folder selection
+const useMockData = ref(true);
+
 // Sorted playlist
 const sortedPlaylist = computed(() => {
 	if (audioFiles.value.length === 0) {
 		return [];
 	}
-	
+
 	// Use shuffled order if shuffle is enabled
 	if (isShuffled.value && shuffledOrder.value.length > 0) {
 		return shuffledOrder.value.map(index => audioFiles.value[index]);
 	}
-	
+
 	// Otherwise use original order
 	return audioFiles.value;
 });
@@ -228,12 +266,12 @@ const originalIndices = computed(() => {
 	if (audioFiles.value.length === 0) {
 		return [];
 	}
-	
+
 	// Use shuffled order if shuffle is enabled
 	if (isShuffled.value && shuffledOrder.value.length > 0) {
 		return shuffledOrder.value;
 	}
-	
+
 	// Otherwise use original order
 	return audioFiles.value.map((_, i) => i);
 });
@@ -242,7 +280,7 @@ const originalIndices = computed(() => {
 const handleAudioError = (e: Event) => {
 	console.error('Audio error:', e);
 	errorMessage.value = 'Error playing track. Try another file.';
-	
+
 	// Since this track failed, try the next one after a short delay
 	setTimeout(() => {
 		nextTrack();
@@ -264,16 +302,17 @@ const updateTime = () => {
 const updateDuration = () => {
 	if (audioElement.value && !isNaN(audioElement.value.duration)) {
 		duration.value = audioElement.value.duration;
-		
+
 		// Update the track duration in our list if it's different from what we estimated
 		if (currentTrackIndex.value >= 0 && audioFiles.value.length > 0) {
 			// Only update if it's significantly different (e.g., our estimate was way off)
 			const diffThreshold = 10; // 10 seconds threshold
-			const currentDuration = trackDurations.value[currentTrackIndex.value] || 0;
-			
+			const currentDuration =
+				trackDurations.value[currentTrackIndex.value] || 0;
+
 			if (Math.abs(currentDuration - duration.value) > diffThreshold) {
 				trackDurations.value[currentTrackIndex.value] = duration.value;
-				
+
 				// Also update the duration metadata of the current track
 				if (audioFiles.value[currentTrackIndex.value]) {
 					audioFiles.value[currentTrackIndex.value].duration = duration.value;
@@ -297,13 +336,13 @@ const currentTrack = computed(() => {
 
 // Polyfill for File System Access API
 const openFileSelector = async () => {
-	return new Promise<File[]>((resolve) => {
+	return new Promise<File[]>(resolve => {
 		try {
 			const input = document.createElement('input');
 			input.type = 'file';
 			input.multiple = true;
 			input.accept = 'audio/*';
-			
+
 			input.onchange = () => {
 				if (input.files && input.files.length > 0) {
 					resolve(Array.from(input.files));
@@ -311,12 +350,12 @@ const openFileSelector = async () => {
 					resolve([]);
 				}
 			};
-			
+
 			// Make sure this doesn't get garbage collected before the user interacts with it
 			document.body.appendChild(input);
 			input.style.display = 'none';
 			input.click();
-			
+
 			// Remove it after selection
 			setTimeout(() => {
 				document.body.removeChild(input);
@@ -329,7 +368,10 @@ const openFileSelector = async () => {
 };
 
 // Extract metadata from audio file
-const extractAudioMetadata = async (file: File, fileUrl: string): Promise<TMusic> => {
+const extractAudioMetadata = async (
+	file: File,
+	fileUrl: string
+): Promise<TMusic> => {
 	// Default metadata
 	const metadata: TMusic = {
 		title: file.name.replace(/\.[^/.]+$/, ''), // Remove extension
@@ -340,23 +382,24 @@ const extractAudioMetadata = async (file: File, fileUrl: string): Promise<TMusic
 		link: fileUrl,
 		owner: 'local',
 	};
-	
+
 	try {
 		// Use music-metadata to parse the file
 		const parsedMetadata = await mm.parseBlob(file);
-		
+
 		// Extract common metadata if available
 		if (parsedMetadata.common) {
 			const common = parsedMetadata.common;
-			
+
 			// Basic metadata
 			if (common.title) metadata.title = common.title;
 			if (common.artist) metadata.artist = common.artist;
 			if (common.album) metadata.album = common.album;
 			if (common.year) metadata.year = common.year.toString();
-			if (common.genre && common.genre.length > 0) metadata.genre = common.genre[0];
+			if (common.genre && common.genre.length > 0)
+				metadata.genre = common.genre[0];
 			if (common.track) metadata.trackNumber = common.track.no || undefined;
-			
+
 			// Extract album art
 			if (common.picture && common.picture.length > 0) {
 				const picture = common.picture[0];
@@ -364,33 +407,43 @@ const extractAudioMetadata = async (file: File, fileUrl: string): Promise<TMusic
 				metadata.imageURL = URL.createObjectURL(blob);
 			}
 		}
-		
+
 		// Format-specific metadata
 		if (parsedMetadata.format) {
-			if (parsedMetadata.format.duration) metadata.duration = parsedMetadata.format.duration;
-			if (parsedMetadata.format.bitrate) metadata.bitrate = parsedMetadata.format.bitrate;
-			if (parsedMetadata.format.sampleRate) metadata.sampleRate = parsedMetadata.format.sampleRate;
-			if (parsedMetadata.format.codec) metadata.codec = parsedMetadata.format.codec;
+			if (parsedMetadata.format.duration)
+				metadata.duration = parsedMetadata.format.duration;
+			if (parsedMetadata.format.bitrate)
+				metadata.bitrate = parsedMetadata.format.bitrate;
+			if (parsedMetadata.format.sampleRate)
+				metadata.sampleRate = parsedMetadata.format.sampleRate;
+			if (parsedMetadata.format.codec)
+				metadata.codec = parsedMetadata.format.codec;
 		}
-		
+
 		// If no picture was found in the metadata, assign a default based on genre
 		if (metadata.imageURL === defaultCoverArt && metadata.genre) {
 			const genre = metadata.genre.toLowerCase();
 			if (genre.includes('rock')) {
-				metadata.imageURL = 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?q=80&w=300';
+				metadata.imageURL =
+					'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?q=80&w=300';
 			} else if (genre.includes('pop')) {
-				metadata.imageURL = 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=300';
+				metadata.imageURL =
+					'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=300';
 			} else if (genre.includes('jazz')) {
-				metadata.imageURL = 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=300';
+				metadata.imageURL =
+					'https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=300';
 			} else if (genre.includes('classical')) {
-				metadata.imageURL = 'https://images.unsplash.com/photo-1507838153414-b4b713384a76?q=80&w=300';
+				metadata.imageURL =
+					'https://images.unsplash.com/photo-1507838153414-b4b713384a76?q=80&w=300';
 			} else if (genre.includes('electronic')) {
-				metadata.imageURL = 'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?q=80&w=300';
+				metadata.imageURL =
+					'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?q=80&w=300';
 			} else if (genre.includes('hip hop') || genre.includes('rap')) {
-				metadata.imageURL = 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=300';
+				metadata.imageURL =
+					'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=300';
 			}
 		}
-		
+
 		// If still using default and we have an album name, try to generate an album art
 		if (metadata.imageURL === defaultCoverArt && metadata.album) {
 			// Create a canvas to generate album art
@@ -398,54 +451,54 @@ const extractAudioMetadata = async (file: File, fileUrl: string): Promise<TMusic
 			canvas.width = 300;
 			canvas.height = 300;
 			const ctx = canvas.getContext('2d');
-			
+
 			if (ctx) {
 				// Generate a random color based on the album name
 				const hash = metadata.album.split('').reduce((acc, char) => {
 					return char.charCodeAt(0) + ((acc << 5) - acc);
 				}, 0);
-				
-				const r = (hash & 0xFF0000) >> 16;
-				const g = (hash & 0x00FF00) >> 8;
-				const b = hash & 0x0000FF;
-				
+
+				const r = (hash & 0xff0000) >> 16;
+				const g = (hash & 0x00ff00) >> 8;
+				const b = hash & 0x0000ff;
+
 				// Fill background
 				ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
 				ctx.fillRect(0, 0, 300, 300);
-				
+
 				// Add album name
 				ctx.fillStyle = 'white';
 				ctx.font = 'bold 30px Arial';
 				ctx.textAlign = 'center';
 				ctx.textBaseline = 'middle';
-				
+
 				// Handle long album names
 				let displayAlbum = metadata.album;
 				if (displayAlbum.length > 20) {
 					displayAlbum = displayAlbum.substring(0, 17) + '...';
 				}
-				
+
 				ctx.fillText(displayAlbum, 150, 130);
-				
+
 				// Add artist name if available
 				if (metadata.artist !== 'Unknown Artist') {
 					ctx.font = '20px Arial';
-					
+
 					let displayArtist = metadata.artist;
 					if (displayArtist.length > 25) {
 						displayArtist = displayArtist.substring(0, 22) + '...';
 					}
-					
+
 					ctx.fillText(displayArtist, 150, 180);
 				}
-				
+
 				// Convert to data URL
 				metadata.imageURL = canvas.toDataURL('image/jpeg');
 			}
 		}
 	} catch (error) {
 		console.error('Error extracting metadata:', error);
-		
+
 		// Fall back to filename parsing if music-metadata fails
 		try {
 			// Try to extract metadata from filename
@@ -454,7 +507,7 @@ const extractAudioMetadata = async (file: File, fileUrl: string): Promise<TMusic
 			if (fileNameParts.length >= 2) {
 				metadata.artist = fileNameParts[0].trim();
 				metadata.title = fileNameParts[1].trim();
-				
+
 				// Check if there's album info in brackets
 				const albumMatch = metadata.title.match(/\[(.*?)\]/);
 				if (albumMatch && albumMatch[1]) {
@@ -462,7 +515,7 @@ const extractAudioMetadata = async (file: File, fileUrl: string): Promise<TMusic
 					metadata.title = metadata.title.replace(/\[.*?\]/, '').trim();
 				}
 			}
-			
+
 			// Try to extract year from filename (4 digit number)
 			const yearMatch = file.name.match(/\b(19|20)\d{2}\b/);
 			if (yearMatch && yearMatch[0]) {
@@ -473,7 +526,7 @@ const extractAudioMetadata = async (file: File, fileUrl: string): Promise<TMusic
 			console.error('Fallback metadata extraction failed:', e);
 		}
 	}
-	
+
 	return metadata;
 };
 
@@ -483,59 +536,64 @@ const selectFolder = async () => {
 		let usedFallback = false;
 		let files: TMusic[] = [];
 		let durations: number[] = [];
-		
+
 		// Try to use File System Access API if available
 		if ('showDirectoryPicker' in window) {
 			try {
 				const dirHandle = await window.showDirectoryPicker();
-				
+
 				// Process all files in the directory
 				for await (const entry of dirHandle.values()) {
 					// Check if it's a file and has audio extension
 					if (entry.kind === 'file' && isAudioFile(entry.name)) {
 						const file = await entry.getFile();
 						const fileUrl = URL.createObjectURL(file);
-						
+
 						// Extract metadata
 						const metadata = await extractAudioMetadata(file, fileUrl);
 						files.push(metadata);
-						
+
 						// Get duration
-						const duration = metadata.duration || await getAudioDuration(fileUrl);
+						const duration =
+							metadata.duration || (await getAudioDuration(fileUrl));
 						durations.push(duration);
 					}
 				}
 			} catch (error) {
-				console.warn('Directory picker failed, falling back to file input:', error);
+				console.warn(
+					'Directory picker failed, falling back to file input:',
+					error
+				);
 				usedFallback = true;
 			}
 		} else {
 			usedFallback = true;
 		}
-		
+
 		// Fallback to regular file input if needed
 		if (usedFallback || files.length === 0) {
 			console.log('Using file input fallback...');
 			const selectedFiles = await openFileSelector();
-			
+
 			files = [];
 			durations = [];
-			
+
 			for (const file of selectedFiles) {
 				if (isAudioFile(file.name)) {
 					const fileUrl = URL.createObjectURL(file);
-					
+
 					// Extract metadata
 					const metadata = await extractAudioMetadata(file, fileUrl);
 					files.push(metadata);
-					
+
 					// Get duration
-					const duration = metadata.duration || await getAudioDuration(fileUrl);
+					const duration =
+						metadata.duration || (await getAudioDuration(fileUrl));
 					durations.push(duration);
 				}
 			}
 		}
-		
+
 		// Set the files if we found any
 		if (files.length > 0) {
 			setAudioFiles(files, durations);
@@ -552,15 +610,15 @@ const setAudioFiles = (files: TMusic[], durations: number[]) => {
 	// Update state with the files
 	audioFiles.value = files;
 	trackDurations.value = durations;
-	
+
 	// Initialize the original order
 	originalOrder.value = Array.from({ length: files.length }, (_, i) => i);
-	
+
 	// Play the first track if we have files
 	if (files.length > 0) {
 		currentTrackIndex.value = 0;
 		playTrack(0);
-		
+
 		// Scroll to the first track after a short delay to ensure DOM is ready
 		setTimeout(scrollToActiveSong, 300);
 	}
@@ -574,26 +632,26 @@ const isAudioFile = (filename: string): boolean => {
 
 // Get audio duration (with error handling)
 const getAudioDuration = (url: string): Promise<number> => {
-	return new Promise((resolve) => {
+	return new Promise(resolve => {
 		const audio = new Audio();
-		
+
 		// Set timeout in case audio loading takes too long
 		const timeout = setTimeout(() => {
 			console.warn('Audio duration fetch timed out, using default');
 			resolve(180); // Default to 3 minutes
 		}, 5000);
-		
+
 		audio.onloadedmetadata = () => {
 			clearTimeout(timeout);
 			resolve(audio.duration);
 		};
-		
+
 		audio.onerror = () => {
 			clearTimeout(timeout);
 			console.warn('Error getting audio duration, using default');
 			resolve(180); // Default to 3 minutes
 		};
-		
+
 		audio.src = url;
 	});
 };
@@ -601,7 +659,7 @@ const getAudioDuration = (url: string): Promise<number> => {
 // Format time in seconds to MM:SS
 const formatTime = (timeInSeconds: number): string => {
 	if (!timeInSeconds) return '0:00';
-	
+
 	const minutes = Math.floor(timeInSeconds / 60);
 	const seconds = Math.floor(timeInSeconds % 60);
 	return `${minutes}:${seconds.toString().padStart(2, '0')}`;
@@ -611,20 +669,20 @@ const formatTime = (timeInSeconds: number): string => {
 const playTrack = (index: number) => {
 	// Get the original index (in case we're using shuffled order)
 	const originalIndex = originalIndices.value[index];
-	
+
 	if (originalIndex >= 0 && originalIndex < audioFiles.value.length) {
 		currentTrackIndex.value = originalIndex;
 		if (audioElement.value) {
 			try {
 				// Clear any previous error
 				errorMessage.value = '';
-				
+
 				// Set the source and play
 				audioElement.value.src = audioFiles.value[originalIndex].link;
 				audioElement.value.load();
-				
+
 				const playPromise = audioElement.value.play();
-				
+
 				// Handle play promise (required for modern browsers)
 				if (playPromise !== undefined) {
 					playPromise.catch(error => {
@@ -643,7 +701,7 @@ const playTrack = (index: number) => {
 // Toggle play/pause
 const togglePlay = () => {
 	if (!audioElement.value) return;
-	
+
 	if (playing.value) {
 		audioElement.value.pause();
 	} else {
@@ -654,11 +712,11 @@ const togglePlay = () => {
 // Go to next track
 const nextTrack = () => {
 	if (audioFiles.value.length === 0) return;
-	
+
 	// Find the index of the currently playing track in the playlist
 	const currentIndex = originalIndices.value.indexOf(currentTrackIndex.value);
 	const nextIndex = (currentIndex + 1) % originalIndices.value.length;
-	
+
 	// Play the next track
 	playTrack(nextIndex);
 };
@@ -666,7 +724,7 @@ const nextTrack = () => {
 // Go to previous track
 const previousTrack = () => {
 	if (audioFiles.value.length === 0) return;
-	
+
 	// If we're more than 3 seconds into the track, restart it instead of going to previous
 	if (currentTime.value > 3) {
 		if (audioElement.value) {
@@ -674,11 +732,13 @@ const previousTrack = () => {
 		}
 		return;
 	}
-	
+
 	// Find the index of the currently playing track in the playlist
 	const currentIndex = originalIndices.value.indexOf(currentTrackIndex.value);
-	const prevIndex = (currentIndex - 1 + originalIndices.value.length) % originalIndices.value.length;
-	
+	const prevIndex =
+		(currentIndex - 1 + originalIndices.value.length) %
+		originalIndices.value.length;
+
 	// Play the previous track
 	playTrack(prevIndex);
 };
@@ -700,28 +760,31 @@ const handleTrackEnd = () => {
 // Toggle shuffle mode
 const toggleShuffle = () => {
 	isShuffled.value = !isShuffled.value;
-	
+
 	if (isShuffled.value) {
 		// Create a shuffled order
 		shuffledOrder.value = [...originalOrder.value];
 		// Fisher-Yates shuffle algorithm
 		for (let i = shuffledOrder.value.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
-			[shuffledOrder.value[i], shuffledOrder.value[j]] = [shuffledOrder.value[j], shuffledOrder.value[i]];
+			[shuffledOrder.value[i], shuffledOrder.value[j]] = [
+				shuffledOrder.value[j],
+				shuffledOrder.value[i],
+			];
 		}
-		
+
 		// Display a message about shuffle mode
 		if (audioFiles.value.length > 0) {
-			showInfoMessage("Shuffle mode enabled. Next song will be random.");
-			
+			showInfoMessage('Shuffle mode enabled. Next song will be random.');
+
 			// Scroll to show the active song in the new order
 			setTimeout(scrollToActiveSong, 100);
 		}
 	} else {
 		// Display a message about normal mode
 		if (audioFiles.value.length > 0) {
-			showInfoMessage("Playing songs in original order.");
-			
+			showInfoMessage('Playing songs in original order.');
+
 			// Scroll to show the active song in the new order
 			setTimeout(scrollToActiveSong, 100);
 		}
@@ -732,7 +795,7 @@ const toggleShuffle = () => {
 const showInfoMessage = (message: string, duration = 2000) => {
 	errorMessage.value = message;
 	messageIsInfo.value = true;
-	
+
 	setTimeout(() => {
 		if (errorMessage.value === message) {
 			errorMessage.value = '';
@@ -758,7 +821,7 @@ const onProgressChange = (event: Event) => {
 const onVolumeChange = (event: Event) => {
 	const target = event.target as HTMLInputElement;
 	volume.value = Number(target.value);
-	
+
 	if (audioElement.value) {
 		audioElement.value.volume = volume.value;
 	}
@@ -769,10 +832,15 @@ onMounted(() => {
 	if (audioElement.value) {
 		audioElement.value.volume = volume.value;
 	}
+
+	// Load mock data if flag is enabled
+	if (useMockData.value) {
+		loadMockData();
+	}
 });
 
 // Watch for volume changes
-watch(volume, (newVolume) => {
+watch(volume, newVolume => {
 	if (audioElement.value) {
 		audioElement.value.volume = newVolume;
 	}
@@ -793,11 +861,11 @@ const getFilename = (url: string): string => {
 				}
 				return filename;
 			}
-			
+
 			// If all else fails, return a placeholder
 			return 'audio-file';
 		}
-		
+
 		// For file URLs, extract the filename
 		const urlObj = new URL(url);
 		const pathname = urlObj.pathname;
@@ -817,19 +885,19 @@ const getFilename = (url: string): string => {
 // Function to scroll to the currently active song
 const scrollToActiveSong = () => {
 	if (!trackListRef.value) return;
-	
+
 	// Find the index of the currently playing track in the playlist
 	const currentIndex = originalIndices.value.indexOf(currentTrackIndex.value);
 	if (currentIndex < 0) return;
-	
+
 	// Find the active track element
 	const activeTrack = trackListRef.value.children[currentIndex] as HTMLElement;
 	if (!activeTrack) return;
-	
+
 	// Scroll to the active track with smooth animation
 	activeTrack.scrollIntoView({
 		behavior: 'smooth',
-		block: 'center'
+		block: 'center',
 	});
 };
 
@@ -838,6 +906,203 @@ watch(currentTrackIndex, () => {
 	// Small delay to ensure DOM is updated
 	setTimeout(scrollToActiveSong, 100);
 });
+
+// Mock data for development and styling
+const loadMockData = () => {
+	const mockFiles: TMusic[] = [
+		{
+			title: 'Starlight',
+			artist: 'Stellardrone',
+			album: 'Light Years',
+			year: '2022',
+			genre: 'Electronic',
+			category: EMusicCategory.OTHER,
+			favourites: false,
+			imageURL:
+				'https://images.unsplash.com/photo-1614149162883-504ce4d13909?q=80&w=300',
+			link: 'https://example.com/audio1.mp3',
+			owner: 'local',
+			bitrate: 320000,
+			codec: 'MP3',
+			duration: 240,
+		},
+		{
+			title: 'Ocean Waves',
+			artist: 'Aquatic Dreams',
+			album: 'Deep Blue',
+			year: '2021',
+			genre: 'Ambient',
+			category: EMusicCategory.OTHER,
+			favourites: true,
+			imageURL:
+				'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=300',
+			link: 'https://example.com/audio2.mp3',
+			owner: 'local',
+			bitrate: 256000,
+			codec: 'AAC',
+			duration: 180,
+		},
+		{
+			title: 'Mountain Echo',
+			artist: 'Nature Sound',
+			album: 'Wilderness',
+			year: '2020',
+			genre: 'Folk',
+			category: EMusicCategory.OTHER,
+			favourites: false,
+			imageURL:
+				'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=300',
+			link: 'https://example.com/audio3.mp3',
+			owner: 'local',
+			bitrate: 192000,
+			codec: 'FLAC',
+			duration: 320,
+		},
+		{
+			title: 'Urban Rhythm',
+			artist: 'City Pulse',
+			album: 'Downtown',
+			year: '2019',
+			genre: 'Hip Hop',
+			category: EMusicCategory.OTHER,
+			favourites: false,
+			imageURL:
+				'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=300',
+			link: 'https://example.com/audio4.mp3',
+			owner: 'local',
+			bitrate: 320000,
+			codec: 'MP3',
+			duration: 210,
+		},
+		{
+			title: 'Desert Wind',
+			artist: 'Sand Dunes',
+			album: 'Horizon',
+			year: '2023',
+			genre: 'World',
+			category: EMusicCategory.OTHER,
+			favourites: true,
+			imageURL:
+				'https://images.unsplash.com/photo-1511860810434-a92f84c6f01e?q=80&w=300',
+			link: 'https://example.com/audio5.mp3',
+			owner: 'local',
+			bitrate: 256000,
+			codec: 'OGG',
+			duration: 280,
+		},
+		{
+			title: 'Desert Wind',
+			artist: 'Sand Dunes',
+			album: 'Horizon',
+			year: '2023',
+			genre: 'World',
+			category: EMusicCategory.OTHER,
+			favourites: true,
+			imageURL:
+				'https://images.unsplash.com/photo-1511860810434-a92f84c6f01e?q=80&w=300',
+			link: 'https://example.com/audio5.mp3',
+			owner: 'local',
+			bitrate: 256000,
+			codec: 'OGG',
+			duration: 280,
+		},
+		{
+			title: 'Desert Wind',
+			artist: 'Sand Dunes',
+			album: 'Horizon',
+			year: '2023',
+			genre: 'World',
+			category: EMusicCategory.OTHER,
+			favourites: true,
+			imageURL:
+				'https://images.unsplash.com/photo-1511860810434-a92f84c6f01e?q=80&w=300',
+			link: 'https://example.com/audio5.mp3',
+			owner: 'local',
+			bitrate: 256000,
+			codec: 'OGG',
+			duration: 280,
+		},
+		{
+			title: 'Desert Wind',
+			artist: 'Sand Dunes',
+			album: 'Horizon',
+			year: '2023',
+			genre: 'World',
+			category: EMusicCategory.OTHER,
+			favourites: true,
+			imageURL:
+				'https://images.unsplash.com/photo-1511860810434-a92f84c6f01e?q=80&w=300',
+			link: 'https://example.com/audio5.mp3',
+			owner: 'local',
+			bitrate: 256000,
+			codec: 'OGG',
+			duration: 280,
+		},
+		{
+			title: 'Desert Wind',
+			artist: 'Sand Dunes',
+			album: 'Horizon',
+			year: '2023',
+			genre: 'World',
+			category: EMusicCategory.OTHER,
+			favourites: true,
+			imageURL:
+				'https://images.unsplash.com/photo-1511860810434-a92f84c6f01e?q=80&w=300',
+			link: 'https://example.com/audio5.mp3',
+			owner: 'local',
+			bitrate: 256000,
+			codec: 'OGG',
+			duration: 280,
+		},
+		{
+			title: 'Desert Wind',
+			artist: 'Sand Dunes',
+			album: 'Horizon',
+			year: '2023',
+			genre: 'World',
+			category: EMusicCategory.OTHER,
+			favourites: true,
+			imageURL:
+				'https://images.unsplash.com/photo-1511860810434-a92f84c6f01e?q=80&w=300',
+			link: 'https://example.com/audio5.mp3',
+			owner: 'local',
+			bitrate: 256000,
+			codec: 'OGG',
+			duration: 280,
+		},
+		{
+			title: 'Desert Wind',
+			artist: 'Sand Dunes',
+			album: 'Horizon',
+			year: '2023',
+			genre: 'World',
+			category: EMusicCategory.OTHER,
+			favourites: true,
+			imageURL:
+				'https://images.unsplash.com/photo-1511860810434-a92f84c6f01e?q=80&w=300',
+			link: 'https://example.com/audio5.mp3',
+			owner: 'local',
+			bitrate: 256000,
+			codec: 'OGG',
+			duration: 280,
+		},
+	];
+
+	const mockDurations = mockFiles.map(file => file.duration || 180);
+
+	// Set the mock data
+	audioFiles.value = mockFiles;
+	trackDurations.value = mockDurations;
+
+	// Initialize the original order
+	originalOrder.value = Array.from({ length: mockFiles.length }, (_, i) => i);
+
+	// Set the first track as current
+	currentTrackIndex.value = 0;
+
+	// Show info message
+	showInfoMessage('Mock data loaded for styling purposes', 3000);
+};
 </script>
 
 <style scoped>
@@ -941,48 +1206,48 @@ watch(currentTrackIndex, () => {
 @media (max-width: 767px) {
 	.now-playing {
 		/* padding: 10px; */
-		max-height: min-content; /* Reduce height on mobile */
+		max-height: min-content;
 	}
-	
+
 	.section-title {
 		margin-bottom: 10px;
 	}
-	
+
 	.track-info {
 		gap: 10px;
 	}
-	
+
 	.cover-art {
 		width: 150px;
 		height: 150px;
 	}
-	
+
 	.track-details .title {
 		font-size: 18px;
 		margin-bottom: 4px;
 	}
-	
+
 	.track-details .artist {
 		font-size: 14px;
 		margin-bottom: 3px;
 	}
-	
+
 	.track-details .album {
 		font-size: 12px;
 		margin-bottom: 6px;
 	}
-	
+
 	.additional-meta {
 		gap: 6px;
 		margin-top: 8px;
 		margin-bottom: 8px;
 	}
-	
+
 	.additional-meta p {
 		font-size: 11px;
 		padding: 3px 6px;
 	}
-	
+
 	.filename {
 		margin-top: 6px;
 		font-size: 10px;
@@ -1232,7 +1497,6 @@ watch(currentTrackIndex, () => {
 	flex: 1;
 	min-height: 0;
 	overflow: hidden;
-	
 }
 
 @media (min-width: 768px) {
@@ -1329,7 +1593,8 @@ watch(currentTrackIndex, () => {
 	color: var(--text-color);
 }
 
-.track-artist, .track-album {
+.track-artist,
+.track-album {
 	color: #8892b0;
 	font-size: 14px;
 	white-space: nowrap;
@@ -1468,7 +1733,9 @@ watch(currentTrackIndex, () => {
 	color: #8892b0;
 	font-size: 16px;
 	cursor: pointer;
-	transition: color 0.3s, transform 0.2s;
+	transition:
+		color 0.3s,
+		transform 0.2s;
 }
 
 .control-btn:hover {
@@ -1492,7 +1759,9 @@ watch(currentTrackIndex, () => {
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	transition: transform 0.2s, background-color 0.3s;
+	transition:
+		transform 0.2s,
+		background-color 0.3s;
 }
 
 .play-btn:hover {
