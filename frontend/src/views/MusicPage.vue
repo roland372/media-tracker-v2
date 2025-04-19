@@ -1,10 +1,10 @@
 <template>
 	<div class="music-page">
-		<HeaderComponent title="Music" />
+		<!-- <HeaderComponent title="Music" /> -->
 		
 		<div class="music-container">
 			<!-- Folder selection -->
-			<div class="folder-selection" v-if="!audioFiles.length">
+			<div v-if="!audioFiles.length" class="folder-selection">
 				<div class="folder-prompt">
 					<h2>Select music folder to start</h2>
 					<p>Choose a folder containing your audio files (.mp3, .wav, etc.)</p>
@@ -844,11 +844,17 @@ watch(currentTrackIndex, () => {
 .music-page {
 	display: flex;
 	flex-direction: column;
-	height: calc(100vh - 120px);
+	height: calc(100vh - 100px);
 	background-color: var(--bg-primary-dark);
 	color: var(--text-color);
 	position: relative;
 	overflow: hidden;
+}
+
+@media (max-width: 960px) {
+	.music-page {
+		margin-top: -10px;
+	}
 }
 
 .music-container {
@@ -858,6 +864,12 @@ watch(currentTrackIndex, () => {
 	display: flex;
 	flex-direction: column;
 	height: calc(100% - 70px); /* Account for player controls (70px) */
+}
+
+@media (max-width: 960px) {
+	.music-container {
+		padding-bottom: 30px;
+	}
 }
 
 /* Folder selection styles */
@@ -892,17 +904,20 @@ watch(currentTrackIndex, () => {
 
 /* Layout for player and playlist */
 .player-layout {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
 	flex: 1;
 	overflow: hidden;
 	min-height: 0;
+	max-height: 100%;
 }
 
 @media (min-width: 1024px) {
 	.player-layout {
+		display: grid;
 		grid-template-columns: 400px 1fr; /* Fixed width for Now Playing, rest for playlist */
+		gap: 20px;
 	}
 }
 
@@ -910,40 +925,121 @@ watch(currentTrackIndex, () => {
 .now-playing {
 	background-color: var(--bg-primary-medium);
 	border-radius: 10px;
-	padding: 20px;
+	padding: 12px;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-	overflow-y: auto;
 	max-height: 100%;
 }
 
+@media (min-width: 1024px) {
+	.now-playing {
+		padding: 20px;
+		overflow-y: auto;
+	}
+}
+
+/* Mobile optimizations for Now Playing */
+@media (max-width: 767px) {
+	.now-playing {
+		/* padding: 10px; */
+		max-height: min-content; /* Reduce height on mobile */
+	}
+	
+	.section-title {
+		margin-bottom: 10px;
+	}
+	
+	.track-info {
+		gap: 10px;
+	}
+	
+	.cover-art {
+		width: 150px;
+		height: 150px;
+	}
+	
+	.track-details .title {
+		font-size: 18px;
+		margin-bottom: 4px;
+	}
+	
+	.track-details .artist {
+		font-size: 14px;
+		margin-bottom: 3px;
+	}
+	
+	.track-details .album {
+		font-size: 12px;
+		margin-bottom: 6px;
+	}
+	
+	.additional-meta {
+		gap: 6px;
+		margin-top: 8px;
+		margin-bottom: 8px;
+	}
+	
+	.additional-meta p {
+		font-size: 11px;
+		padding: 3px 6px;
+	}
+	
+	.filename {
+		margin-top: 6px;
+		font-size: 10px;
+		padding: 4px 8px;
+	}
+}
+
 .section-title {
-	font-size: 24px;
-	margin-bottom: 20px;
+	font-size: 20px;
+	margin-bottom: 15px;
 	color: var(--text-color);
 	font-weight: 700;
+}
+
+@media (min-width: 768px) {
+	.section-title {
+		font-size: 24px;
+		margin-bottom: 20px;
+	}
 }
 
 .track-info {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: 15px;
 }
 
 @media (min-width: 768px) {
 	.track-info {
 		align-items: center;
+		gap: 20px;
 	}
 }
 
 .cover-art {
 	position: relative;
-	width: 250px;
-	height: 250px;
+	width: 180px;
+	height: 180px;
 	overflow: hidden;
 	border-radius: 8px;
 	flex-shrink: 0;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 	margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+	.cover-art {
+		width: 220px;
+		height: 220px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.cover-art {
+		width: 250px;
+		height: 250px;
+	}
 }
 
 .cover-art img {
@@ -969,9 +1065,15 @@ watch(currentTrackIndex, () => {
 }
 
 .playback-overlay i {
-	font-size: 50px;
+	font-size: 40px;
 	color: white;
 	filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5));
+}
+
+@media (min-width: 768px) {
+	.playback-overlay i {
+		font-size: 50px;
+	}
 }
 
 .cover-art:hover .playback-overlay {
@@ -991,76 +1093,128 @@ watch(currentTrackIndex, () => {
 	text-align: center;
 }
 
-@media (min-width: 768px) {
-	.track-details {
-		align-items: center;
-		text-align: center;
-	}
-}
-
 .track-details .title {
-	font-size: 28px;
-	margin-bottom: 8px;
+	font-size: 20px;
+	margin-bottom: 6px;
 	font-weight: 700;
 	color: var(--text-color);
 }
 
+@media (min-width: 768px) {
+	.track-details .title {
+		font-size: 24px;
+		margin-bottom: 8px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.track-details .title {
+		font-size: 28px;
+	}
+}
+
 .track-details .artist {
 	color: var(--link-color);
-	font-size: 18px;
-	margin-bottom: 5px;
+	font-size: 16px;
+	margin-bottom: 4px;
 	font-weight: 500;
+}
+
+@media (min-width: 768px) {
+	.track-details .artist {
+		font-size: 18px;
+		margin-bottom: 5px;
+	}
 }
 
 .track-details .album {
 	color: #b3b3b3;
-	font-size: 16px;
-	margin-bottom: 10px;
-	display: flex;
-	align-items: center;
-	gap: 7px;
-}
-
-.additional-meta {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
-	margin-top: 15px;
-	margin-bottom: 15px;
-	justify-content: center;
-}
-
-.additional-meta p {
-	color: var(--text-color);
-	font-size: 13px;
-	background-color: var(--bg-secondary-medium);
-	padding: 5px 10px;
-	border-radius: 15px;
+	font-size: 14px;
+	margin-bottom: 8px;
 	display: flex;
 	align-items: center;
 	gap: 5px;
 }
 
+@media (min-width: 768px) {
+	.track-details .album {
+		font-size: 16px;
+		margin-bottom: 10px;
+		gap: 7px;
+	}
+}
+
+.additional-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	justify-content: center;
+}
+
+@media (min-width: 768px) {
+	.additional-meta {
+		gap: 10px;
+		margin-top: 15px;
+		margin-bottom: 15px;
+	}
+}
+
+.additional-meta p {
+	color: var(--text-color);
+	font-size: 12px;
+	background-color: var(--bg-secondary-medium);
+	padding: 4px 8px;
+	border-radius: 15px;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+@media (min-width: 768px) {
+	.additional-meta p {
+		font-size: 13px;
+		padding: 5px 10px;
+		gap: 5px;
+	}
+}
+
 .additional-meta i {
 	color: var(--link-color);
-	font-size: 12px;
+	font-size: 11px;
+}
+
+@media (min-width: 768px) {
+	.additional-meta i {
+		font-size: 12px;
+	}
 }
 
 .filename {
-	margin-top: 10px;
+	margin-top: 8px;
 	color: #b3b3b3;
-	font-size: 12px;
+	font-size: 11px;
 	background-color: var(--bg-primary-dark);
-	padding: 8px 12px;
+	padding: 6px 10px;
 	border-radius: 5px;
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	gap: 6px;
 	font-family: monospace;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	max-width: 100%;
+}
+
+@media (min-width: 768px) {
+	.filename {
+		margin-top: 10px;
+		font-size: 12px;
+		padding: 8px 12px;
+		gap: 8px;
+	}
 }
 
 .filename i {
@@ -1071,12 +1225,26 @@ watch(currentTrackIndex, () => {
 .playlist {
 	background-color: var(--bg-primary-medium);
 	border-radius: 10px;
-	padding: 20px;
+	padding: 15px;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 	display: flex;
 	flex-direction: column;
-	height: 100%;
+	flex: 1;
+	min-height: 0;
 	overflow: hidden;
+	
+}
+
+@media (min-width: 768px) {
+	.playlist {
+		padding: 20px;
+	}
+}
+
+@media (max-width: 1024px) {
+	.playlist {
+		/* margin-bottom: 20px; */
+	}
 }
 
 .playlist-table {
@@ -1085,7 +1253,7 @@ watch(currentTrackIndex, () => {
 	flex-direction: column;
 	flex: 1;
 	overflow: hidden;
-	max-height: 100%;
+	min-height: 0;
 }
 
 .playlist-header {
@@ -1109,7 +1277,7 @@ watch(currentTrackIndex, () => {
 	overflow-y: auto;
 	padding-right: 5px;
 	scroll-behavior: smooth;
-	max-height: calc(100vh - 190px); /* Adjust for headers and player controls */
+	max-height: 100%;
 }
 
 /* Use global scrollbar styles */
