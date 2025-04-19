@@ -17,6 +17,23 @@ module.exports = defineConfig({
     workboxOptions: {
       skipWaiting: true,
       exclude: [/_redirects/],
+      runtimeCaching: [
+        {
+          urlPattern: /\.(mp3|wav|ogg|m4a|flac|aac)$/i,
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'audio-cache',
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 7 * 24 * 60 * 60 // 1 week
+            },
+            cacheableResponse: {
+              statuses: [0, 200]
+            },
+            rangeRequests: true
+          }
+        }
+      ]
     },
   },
 });

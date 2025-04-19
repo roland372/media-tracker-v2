@@ -19,11 +19,11 @@
 			<!-- Music player with playlist side by side -->
 			<div v-else class="player-layout">
 				<!-- Left side - Now Playing -->
-				<div class="now-playing">
+				<div class="now-playing" :class="{'now-playing-horizontal': windowWidth < 1024}">
 					<h2 class="section-title">Now Playing</h2>
 
-					<div class="track-info">
-						<div class="cover-art" v-if="currentTrack">
+					<div class="track-info" :class="{'track-info-horizontal': windowWidth < 1024}">
+						<div class="cover-art" v-if="currentTrack" :class="{'cover-art-small': windowWidth < 1024}">
 							<img
 								:src="currentTrack.imageURL || defaultCoverArt"
 								alt="Album Art"
@@ -33,7 +33,7 @@
 							</div>
 						</div>
 
-						<div class="track-details" v-if="currentTrack">
+						<div class="track-details" v-if="currentTrack" :class="{'track-details-horizontal': windowWidth < 1024}">
 							<h3 class="title">{{ currentTrack.title }}</h3>
 							<p class="artist">{{ currentTrack.artist }}</p>
 							<p class="album" v-if="currentTrack.album">
@@ -208,7 +208,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue';
+import { ref, reactive, computed, onMounted, watch, onUnmounted } from 'vue';
 import * as mm from 'music-metadata';
 import HeaderComponent from '@/components/media/HeaderComponent.vue';
 import ButtonText from '@/components/ui/ButtonText.vue';
@@ -244,7 +244,28 @@ const volume = ref(1);
 const trackListRef = ref<HTMLElement | null>(null);
 
 // Toggle this to true to use mock data, false to revert to folder selection
-const useMockData = ref(true);
+const useMockData = ref(false);
+
+// Window width tracking for responsive layout
+const windowWidth = ref(window.innerWidth);
+const updateWindowWidth = () => {
+	windowWidth.value = window.innerWidth;
+};
+
+// Add resize event listener
+onMounted(() => {
+	window.addEventListener('resize', updateWindowWidth);
+
+	// Load mock data if flag is enabled
+	if (useMockData.value) {
+		loadMockData();
+	}
+});
+
+// Remove event listener on component unmount
+onUnmounted(() => {
+	window.removeEventListener('resize', updateWindowWidth);
+});
 
 // Sorted playlist
 const sortedPlaylist = computed(() => {
@@ -832,11 +853,6 @@ onMounted(() => {
 	if (audioElement.value) {
 		audioElement.value.volume = volume.value;
 	}
-
-	// Load mock data if flag is enabled
-	if (useMockData.value) {
-		loadMockData();
-	}
 });
 
 // Watch for volume changes
@@ -1195,6 +1211,11 @@ const loadMockData = () => {
 	max-height: 100%;
 }
 
+.now-playing-horizontal {
+	display: flex;
+	flex-direction: column;
+}
+
 @media (min-width: 1024px) {
 	.now-playing {
 		padding: 20px;
@@ -1212,7 +1233,7 @@ const loadMockData = () => {
 	.section-title {
 		margin-bottom: 10px;
 	}
-
+	
 	.track-info {
 		gap: 10px;
 	}
@@ -1273,13 +1294,25 @@ const loadMockData = () => {
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
+	align-items: center;
 }
 
-@media (min-width: 768px) {
-	.track-info {
-		align-items: center;
-		gap: 20px;
-	}
+.track-info-horizontal {
+	flex-direction: row !important;
+	align-items: flex-start !important;
+	gap: 20px;
+}
+
+.track-info-horizontal .additional-meta {
+	justify-content: flex-start;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.track-info-horizontal .filename {
+	margin-left: 0;
+	margin-right: auto;
+	margin-top: 5px;
 }
 
 .cover-art {
@@ -1293,6 +1326,12 @@ const loadMockData = () => {
 	margin: 0 auto;
 }
 
+.cover-art-small {
+	width: 100px !important;
+	height: 100px !important;
+	margin: 0 !important;
+}
+
 @media (min-width: 768px) {
 	.cover-art {
 		width: 220px;
@@ -1304,6 +1343,7 @@ const loadMockData = () => {
 	.cover-art {
 		width: 250px;
 		height: 250px;
+		margin: 0 auto;
 	}
 }
 
@@ -1356,6 +1396,11 @@ const loadMockData = () => {
 	flex-direction: column;
 	align-items: center;
 	text-align: center;
+}
+
+.track-details-horizontal {
+	align-items: flex-start !important;
+	text-align: left !important;
 }
 
 .track-details .title {
@@ -1471,6 +1516,9 @@ const loadMockData = () => {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	max-width: 100%;
+	width: fit-content;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 @media (min-width: 768px) {
@@ -1536,6 +1584,17 @@ const loadMockData = () => {
 	z-index: 1;
 }
 
+@media (max-width: 768px) {
+	.playlist-header {
+		grid-template-columns: 40px 3fr 80px;
+	}
+	
+	.playlist-header .track-artist,
+	.playlist-header .track-album {
+		display: none;
+	}
+}
+
 .track-list {
 	flex: 1;
 	overflow-y: auto;
@@ -1556,8 +1615,15 @@ const loadMockData = () => {
 	border-bottom: 1px solid var(--bg-secondary-medium);
 }
 
-.track-item:hover {
-	background-color: var(--bg-secondary-medium);
+@media (max-width: 768px) {
+	.track-item {
+		grid-template-columns: 40px 3fr 80px;
+	}
+	
+	.track-item .track-artist,
+	.track-item .track-album {
+		display: none;
+	}
 }
 
 .track-item.active {
@@ -1623,6 +1689,13 @@ const loadMockData = () => {
 	height: 70px;
 }
 
+@media (max-width: 768px) {
+	.fixed-player-controls {
+		height: auto;
+		padding: 10px 0;
+	}
+}
+
 .player-controls-inner {
 	display: flex;
 	justify-content: space-between;
@@ -1630,6 +1703,29 @@ const loadMockData = () => {
 	width: 100%;
 	margin: 0 auto;
 	padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+	.player-controls-inner {
+		flex-direction: column;
+		gap: 10px;
+		padding: 0 10px;
+	}
+	
+	.track-info-mini {
+		max-width: 100%;
+		width: 100%;
+		justify-content: center;
+		margin-bottom: 5px;
+	}
+	
+	.volume-control {
+		max-width: 100%;
+		width: 100%;
+		justify-content: center;
+		order: -1;
+		margin-bottom: 5px;
+	}
 }
 
 @media (min-width: 960px) {
@@ -1691,11 +1787,32 @@ const loadMockData = () => {
 	margin-bottom: 5px;
 }
 
+@media (max-width: 768px) {
+	.main-controls {
+		gap: 20px;
+	}
+}
+
 .progress-container {
 	display: flex;
 	align-items: center;
 	gap: 10px;
 	width: 100%;
+}
+
+@media (max-width: 768px) {
+	.progress-container {
+		padding: 5px 0;
+	}
+	
+	.progress-slider {
+		height: 6px;
+	}
+	
+	.progress-slider::-webkit-slider-thumb {
+		width: 16px;
+		height: 16px;
+	}
 }
 
 .progress-slider {
@@ -1738,6 +1855,13 @@ const loadMockData = () => {
 		transform 0.2s;
 }
 
+@media (max-width: 768px) {
+	.control-btn {
+		font-size: 20px;
+		padding: 8px;
+	}
+}
+
 .control-btn:hover {
 	color: var(--link-color);
 	transform: scale(1.1);
@@ -1764,9 +1888,12 @@ const loadMockData = () => {
 		background-color 0.3s;
 }
 
-.play-btn:hover {
-	transform: scale(1.05);
-	background-color: var(--bg-secondary-light);
+@media (max-width: 768px) {
+	.play-btn {
+		width: 50px;
+		height: 50px;
+		font-size: 20px;
+	}
 }
 
 .volume-control {
