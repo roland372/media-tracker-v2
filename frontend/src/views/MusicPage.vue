@@ -844,7 +844,7 @@ watch(currentTrackIndex, () => {
 .music-page {
 	display: flex;
 	flex-direction: column;
-	height: 100vh;
+	height: calc(100vh - 120px);
 	background-color: var(--bg-primary-dark);
 	color: var(--text-color);
 	position: relative;
@@ -857,7 +857,7 @@ watch(currentTrackIndex, () => {
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
-	max-height: calc(100vh - 100px);
+	height: calc(100% - 70px); /* Account for player controls (70px) */
 }
 
 /* Folder selection styles */
@@ -898,8 +898,8 @@ watch(currentTrackIndex, () => {
 	flex: 1;
 	overflow: hidden;
 	min-height: 0;
-	height: calc(100% - 20px); /* Account for the bottom margin */
-	margin-bottom: 20px; /* Add margin above the controls */
+	padding: 20px;
+	padding-bottom: 10px;
 }
 
 @media (min-width: 1024px) {
@@ -1080,7 +1080,6 @@ watch(currentTrackIndex, () => {
 	flex-direction: column;
 	height: 100%;
 	overflow: hidden;
-	max-height: calc(100% - 20px); /* Ensure it doesn't overflow into the margin */
 }
 
 .playlist-table {
@@ -1089,6 +1088,7 @@ watch(currentTrackIndex, () => {
 	flex-direction: column;
 	flex: 1;
 	overflow: hidden;
+	max-height: 100%;
 }
 
 .playlist-header {
@@ -1112,6 +1112,7 @@ watch(currentTrackIndex, () => {
 	overflow-y: auto;
 	padding-right: 5px;
 	scroll-behavior: smooth;
+	max-height: calc(100vh - 190px); /* Adjust for headers and player controls */
 }
 
 /* Use global scrollbar styles */
@@ -1190,6 +1191,25 @@ watch(currentTrackIndex, () => {
 	justify-content: center;
 	z-index: 1000;
 	height: 70px;
+}
+
+@media (min-width: 768px) {
+	.fixed-player-controls {
+		left: 56px; /* Account for navigation drawer width on medium screens */
+	}
+}
+
+@media (min-width: 960px) {
+	.fixed-player-controls {
+		width: calc(100% - 56px); /* Adjust width to account for drawer */
+	}
+}
+
+@media (min-width: 1280px) {
+	.fixed-player-controls {
+		width: calc(100% - 256px); /* Adjust for expanded drawer on larger screens */
+		left: 256px;
+	}
 }
 
 .player-controls-inner {
