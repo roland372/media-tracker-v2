@@ -136,8 +136,13 @@
 									}}</v-icon>
 									<h3 class="text-subtitle-2 mb-0">{{ item.title }}</h3>
 								</div>
-								<div class="text-h5 white--text text-center">{{ item.value }} days</div>
-								<div v-if="item.subvalue" class="text-caption white--text text-center">
+								<div class="text-h5 white--text text-center">
+									{{ item.value }} days
+								</div>
+								<div
+									v-if="item.subvalue"
+									class="text-caption white--text text-center"
+								>
 									{{ item.subvalue }} {{ item.subtext }}
 								</div>
 							</div>
@@ -225,8 +230,13 @@
 									}}</v-icon>
 									<h3 class="text-subtitle-2 mb-0">{{ item.title }}</h3>
 								</div>
-								<div class="text-h5 white--text text-center">{{ item.value }}</div>
-								<div v-if="item.subvalue" class="text-caption white--text text-center">
+								<div class="text-h5 white--text text-center">
+									{{ item.value }}
+								</div>
+								<div
+									v-if="item.subvalue"
+									class="text-caption white--text text-center"
+								>
 									{{ item.subvalue }} {{ item.subtext }}
 								</div>
 							</div>
@@ -255,7 +265,10 @@
 							<div class="w-100 d-flex">
 								<div class="flex-grow-1">
 									<div class="d-flex align-center">
-										<div class="text-subtitle-2 font-weight-medium text-left text-truncate" style="max-width: 200px;">
+										<div
+											class="text-subtitle-2 font-weight-medium text-left text-truncate"
+											style="max-width: 200px"
+										>
 											{{ activity.title }}
 											<v-icon
 												v-if="activity.favourites"
@@ -267,11 +280,15 @@
 									</div>
 									<div
 										class="text-caption text-left text-grey-lighten-1 text-truncate"
-										v-if="activity.developer || activity.studio || activity.author"
-										style="max-width: 200px;"
+										v-if="
+											activity.developer || activity.studio || activity.author
+										"
+										style="max-width: 200px"
 									>
 										<span>
-											{{ activity.developer || activity.studio || activity.author }}
+											{{
+												activity.developer || activity.studio || activity.author
+											}}
 										</span>
 									</div>
 									<div class="d-flex align-center text-left">
@@ -309,7 +326,10 @@
 								}}</v-icon>
 							</v-avatar>
 							<div class="w-100">
-								<div class="text-subtitle-2 font-weight-medium text-left text-truncate" style="max-width: 200px;">
+								<div
+									class="text-subtitle-2 font-weight-medium text-left text-truncate"
+									style="max-width: 200px"
+								>
 									{{ item.title }}
 								</div>
 								<div class="d-flex align-center text-left">
@@ -715,10 +735,12 @@
 							>
 								<thead class="text-left">
 									<tr>
-										<th>Title</th>
-										<th>Type</th>
-										<th>Playtime (Hours)</th>
-										<th>Completion Date</th>
+										<th style="min-width: 250px">Title</th>
+										<th style="min-width: 150px">Type</th>
+										<th style="min-width: 50px">Playtime (Hours)</th>
+										<th style="min-width: 130px">
+											Completion Date
+										</th>
 									</tr>
 								</thead>
 								<tbody class="text-left">
@@ -729,7 +751,9 @@
 										<td>{{ game.title }}</td>
 										<td>{{ game.type }}</td>
 										<td>{{ game.playtime }}</td>
-										<td>{{ formatDate(game.updatedAt) }}</td>
+										<td style="white-space: nowrap">
+											{{ formatDate(game.updatedAt) }}
+										</td>
 									</tr>
 								</tbody>
 							</v-table>
@@ -792,10 +816,12 @@
 							>
 								<thead class="text-left">
 									<tr>
-										<th>Title</th>
-										<th>Type</th>
-										<th>Playtime (Hours)</th>
-										<th>Completion Date</th>
+										<th style="min-width: 250px">Title</th>
+										<th style="min-width: 150px">Type</th>
+										<th style="min-width: 50px">Playtime (Hours)</th>
+										<th style="min-width: 130px">
+											Completion Date
+										</th>
 									</tr>
 								</thead>
 								<tbody class="text-left">
@@ -1022,27 +1048,27 @@ const mediaDistribution = computed(() => {
 			color: 'yellow',
 		},
 	];
-	
+
 	// Round percentages but ensure they sum to 100%
 	const roundedItems = items.map(item => ({
 		...item,
-		percentage: Math.round(item.percentage)
+		percentage: Math.round(item.percentage),
 	}));
-	
+
 	// Calculate the sum of the rounded percentages
 	const sum = roundedItems.reduce((acc, item) => acc + item.percentage, 0);
-	
+
 	// If the sum is not 100, adjust the largest value
 	if (sum !== 100) {
 		// Find the item with the largest percentage
-		const largestItem = roundedItems.reduce((prev, current) => 
+		const largestItem = roundedItems.reduce((prev, current) =>
 			prev.percentage > current.percentage ? prev : current
 		);
-		
+
 		// Adjust the largest item to make the sum 100
-		largestItem.percentage += (100 - sum);
+		largestItem.percentage += 100 - sum;
 	}
-	
+
 	return roundedItems;
 });
 

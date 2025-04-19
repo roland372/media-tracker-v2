@@ -283,7 +283,22 @@ th {
 table,
 v-table,
 .v-table__wrapper {
-	background-color: var(--bg-secondary-medium);
-	color: var(--text-color);
+	background-color: var(--bg-secondary-medium) !important;
+	color: var(--text-color) !important;
+}
+
+tbody, tr, td {
+	background-color: var(--bg-secondary-medium) !important;
+	color: var(--text-color) !important;
+}
+
+.v-table > .v-table__wrapper > table > tbody > tr > td {
+	background-color: var(--bg-secondary-medium) !important;
+	color: var(--text-color) !important;
+}
+
+.v-table > .v-table__wrapper > table > tbody {
+	background-color: var(--bg-secondary-medium) !important;
+	color: var(--text-color) !important;
 }
 </style>

@@ -72,6 +72,7 @@ body {
 
 ::-webkit-scrollbar {
 	width: 10px;
+	height: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -92,7 +93,7 @@ body {
 	  This is an empty class used to force a CSS recalculation 
 	  when added to the body element
 	*/
-	animation: none; 
+	animation: none;
 }
 
 @media (max-width: 480px) {
