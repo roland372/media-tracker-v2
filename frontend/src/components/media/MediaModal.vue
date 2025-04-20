@@ -27,9 +27,9 @@
 							</div>
 							<div v-if="(media as TAnime).studio">
 								<b>Studio: </b>
-								<a 
-									v-if="(media as TAnime).studioLink" 
-									:href="(media as TAnime).studioLink" 
+								<a
+									v-if="(media as TAnime).studioLink"
+									:href="(media as TAnime).studioLink"
 									target="_blank"
 								>
 									{{ (media as TAnime).studio }}
@@ -72,15 +72,23 @@
 						<!--? GAMES -->
 						<section v-if="mediaType === EMediaType.GAME">
 							<div><b>Type:</b> {{ formatTypes((media as TGame).type) }}</div>
-							<div>
+							<div v-if="media.link">
 								<b>Link: </b>
 								<a :href="media.link" target="_blank">{{ media.linkName }}</a>
+								<span>
+									<span class="mx-1">|</span>
+									<a
+										:href="`/games/${encodeURIComponent((media as TGame).title)}`"
+										target="_blank"
+										>View Details</a
+									>
+								</span>
 							</div>
 							<div v-if="(media as TGame).developer">
 								<b>Developer: </b>
-								<a 
-									v-if="(media as TGame).developerLink" 
-									:href="(media as TGame).developerLink" 
+								<a
+									v-if="(media as TGame).developerLink"
+									:href="(media as TGame).developerLink"
 									target="_blank"
 								>
 									{{ (media as TGame).developer }}
@@ -89,13 +97,19 @@
 							</div>
 							<div v-if="(media as TGame).youtubeLink">
 								<b>YouTube: </b>
-								<a :href="(media as TGame).youtubeLink" target="_blank">Watch</a>
+								<a :href="(media as TGame).youtubeLink" target="_blank"
+									>Watch</a
+								>
 							</div>
 							<div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
 							<div><b>Status:</b> {{ (media as TGame).status }}</div>
 							<div v-if="(media as TGame).notes">
 								<b>Notes:</b>
-								<div v-for="(note, index) in formatNotes((media as TGame).notes)" :key="index" class="pl-3">
+								<div
+									v-for="(note, index) in formatNotes((media as TGame).notes)"
+									:key="index"
+									class="pl-3"
+								>
 									{{ note }}
 								</div>
 							</div>
@@ -110,9 +124,9 @@
 							</div>
 							<div v-if="(media as TManga).author">
 								<b>Author: </b>
-								<a 
-									v-if="(media as TManga).authorLink" 
-									:href="(media as TManga).authorLink" 
+								<a
+									v-if="(media as TManga).authorLink"
+									:href="(media as TManga).authorLink"
 									target="_blank"
 								>
 									{{ (media as TManga).author }}
@@ -188,21 +202,21 @@ const cardClass = computed(() => {
 // with Expansion always as the second item if present
 const formatTypes = (types?: string) => {
 	if (!types) return '';
-	
+
 	// If there's no comma, just return the type as is
 	if (!types.includes(',')) return types;
-	
+
 	// Split the types by comma and trim each one
 	const typeArray = types.split(',').map(t => t.trim());
-	
+
 	// Check if Expansion is in the list
 	const hasExpansion = typeArray.includes('Expansion');
-	
+
 	// If Expansion exists and it's not already the second item (or first if there's only one other type)
 	if (hasExpansion) {
 		// Remove Expansion from its current position
 		const filteredTypes = typeArray.filter(t => t !== 'Expansion');
-		
+
 		// If there's at least one other type, put Expansion as the second item
 		if (filteredTypes.length > 0) {
 			// Insert Expansion as the second item
@@ -212,7 +226,7 @@ const formatTypes = (types?: string) => {
 			return 'Expansion';
 		}
 	}
-	
+
 	// If no Expansion or already in the right position, return as is
 	return types;
 };

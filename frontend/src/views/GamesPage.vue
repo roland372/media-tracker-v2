@@ -1,70 +1,76 @@
 <template>
-	<StatsComponent
-		:media-type="EMediaType.GAME"
-		:progress="progress"
-		:status="status"
-		:stats="stats"
-		:total-days="totalDays"
-	/>
-	<MediaTable
-		v-if="displayFlag === 'table'"
-		:media="filteredGames"
-		:media-type="EMediaType.GAME"
-		title="All Games"
-	>
-		<DisplayFilterSearchPanel
-			@display="handleChangeDisplayFlag"
-			@filter="handleGameFilter"
-			@filter-favourites="handleFavouritesFilter"
-			@filter-type="handleGameFilterType"
-			@search="handleGameSearch"
-			@sort="handleGameSort"
-			:display-flag="displayFlag"
-			:filter-type="gameType"
-			:media-status="status"
+	<!-- Show game details when on a game detail route -->
+	<router-view v-if="$route.name === 'GameDetailsPage'" />
+
+	<!-- Show games list when not on a game detail route -->
+	<template v-else>
+		<StatsComponent
 			:media-type="EMediaType.GAME"
-			:sort-fields="sortFields"
-			:selected-statuses="gameStatuses"
+			:progress="progress"
+			:status="status"
+			:stats="stats"
+			:total-days="totalDays"
 		/>
-	</MediaTable>
-	<MediaComponent
-		v-if="displayFlag === 'grid'"
-		all-media
-		:media="filteredGames"
-		:media-type="EMediaType.GAME"
-		title="All Games"
-	>
-		<DisplayFilterSearchPanel
-			@display="handleChangeDisplayFlag"
-			@filter="handleGameFilter"
-			@filter-favourites="handleFavouritesFilter"
-			@filter-type="handleGameFilterType"
-			@search="handleGameSearch"
-			@sort="handleGameSort"
-			:display-flag="displayFlag"
-			:filter-type="gameType"
-			:media-status="status"
+		<MediaTable
+			v-if="displayFlag === 'table'"
+			:media="filteredGames"
 			:media-type="EMediaType.GAME"
-			:sort-fields="sortFields"
-			:selected-statuses="gameStatuses"
+			title="All Games"
+		>
+			<DisplayFilterSearchPanel
+				@display="handleChangeDisplayFlag"
+				@filter="handleGameFilter"
+				@filter-favourites="handleFavouritesFilter"
+				@filter-type="handleGameFilterType"
+				@search="handleGameSearch"
+				@sort="handleGameSort"
+				:display-flag="displayFlag"
+				:filter-type="gameType"
+				:media-status="status"
+				:media-type="EMediaType.GAME"
+				:sort-fields="sortFields"
+				:selected-statuses="gameStatuses"
+			/>
+		</MediaTable>
+		<MediaComponent
+			v-if="displayFlag === 'grid'"
+			all-media
+			:media="filteredGames"
+			:media-type="EMediaType.GAME"
+			title="All Games"
+		>
+			<DisplayFilterSearchPanel
+				@display="handleChangeDisplayFlag"
+				@filter="handleGameFilter"
+				@filter-favourites="handleFavouritesFilter"
+				@filter-type="handleGameFilterType"
+				@search="handleGameSearch"
+				@sort="handleGameSort"
+				:display-flag="displayFlag"
+				:filter-type="gameType"
+				:media-status="status"
+				:media-type="EMediaType.GAME"
+				:sort-fields="sortFields"
+				:selected-statuses="gameStatuses"
+			/>
+		</MediaComponent>
+		<MediaComponent
+			:media="orderBy(games, ['updatedAt'], ['desc']).slice(0, 20)"
+			:media-type="EMediaType.GAME"
+			title="Recent Games"
 		/>
-	</MediaComponent>
-	<MediaComponent
-		:media="orderBy(games, ['updatedAt'], ['desc']).slice(0, 20)"
-		:media-type="EMediaType.GAME"
-		title="Recent Games"
-	/>
-	<MediaComponent
-		:media-type="EMediaType.GAME"
-		:media="
-			orderBy(
-				filter(games, { favourites: true }),
-				[(game: TGame) => game.title.toLowerCase()],
-				['asc']
-			)
-		"
-		title="Favourite Games"
-	/>
+		<MediaComponent
+			:media-type="EMediaType.GAME"
+			:media="
+				orderBy(
+					filter(games, { favourites: true }),
+					[(game: TGame) => game.title.toLowerCase()],
+					['asc']
+				)
+			"
+			title="Favourite Games"
+		/>
+	</template>
 </template>
 <script setup lang="ts">
 import DisplayFilterSearchPanel from '@/components/media/DisplayFilterSearchPanel.vue';
