@@ -75,14 +75,14 @@
 							<div v-if="media.link">
 								<b>Link: </b>
 								<a :href="media.link" target="_blank">{{ media.linkName }}</a>
-								<span>
+								<!-- <span>
 									<span class="mx-1">|</span>
 									<a
 										:href="`/games/${encodeURIComponent((media as TGame).title)}`"
 										target="_blank"
 										>View Details</a
 									>
-								</span>
+								</span> -->
 							</div>
 							<div v-if="(media as TGame).developer">
 								<b>Developer: </b>

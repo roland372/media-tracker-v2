@@ -7,22 +7,22 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
   ...navLinks.map((link) => {
-    if (link.name === 'GamesPage') {
-      return {
-        component: () => import(`@/views/${link.name}.vue`),
-        meta: { title: link.title + " | Media-Tracker", requiresAuth: true },
-        name: link.name,
-        path: link.url,
-        children: [
-          {
-            component: () => import('@/views/GameDetailsPage.vue'),
-            meta: { title: "Game Details | Media-Tracker", requiresAuth: true },
-            name: 'GameDetailsPage',
-            path: ':title',
-          }
-        ]
-      };
-    }
+    // if (link.name === 'GamesPage') {
+    //   return {
+    //     component: () => import(`@/views/${link.name}.vue`),
+    //     meta: { title: link.title + " | Media-Tracker", requiresAuth: true },
+    //     name: link.name,
+    //     path: link.url,
+    //     children: [
+    //       {
+    //         component: () => import('@/views/GameDetailsPage.vue'),
+    //         meta: { title: "Game Details | Media-Tracker", requiresAuth: true },
+    //         name: 'GameDetailsPage',
+    //         path: ':title',
+    //       }
+    //     ]
+    //   };
+    // }
 
     return {
       component: () => import(`@/views/${link.name}.vue`),
