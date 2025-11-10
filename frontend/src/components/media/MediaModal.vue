@@ -41,6 +41,15 @@
 								{{ (media as TAnime).episodesMax }}
 							</div>
 							<div><b>Status:</b> {{ (media as TAnime).status }}</div>
+							<div v-if="(media as TAnime).notes">
+								<b>Notes:</b>
+								<div
+									v-for="(note, index) in formatNotes((media as TAnime).notes)"
+									:key="index"
+									class="pl-3 note-text"
+									v-html="linkifyNotes(note)"
+								></div>
+							</div>
 						</section>
 
 						<!--? BOOKS -->
@@ -53,6 +62,15 @@
 							<div><b>Genre:</b> {{ (media as TBook).genre }}</div>
 							<div><b>Pages:</b> {{ (media as TBook).pages }}</div>
 							<div><b>Status:</b> {{ (media as TBook).status }}</div>
+							<div v-if="(media as TBook).notes">
+								<b>Notes:</b>
+								<div
+									v-for="(note, index) in formatNotes((media as TBook).notes)"
+									:key="index"
+									class="pl-3 note-text"
+									v-html="linkifyNotes(note)"
+								></div>
+							</div>
 						</section>
 
 						<!--? CHARACTERS -->
@@ -66,6 +84,15 @@
 							<div><b>Series:</b> {{ (media as TCharacter).series }}</div>
 							<div>
 								<b>Hair Color:</b> {{ (media as TCharacter).hairColor }}
+							</div>
+							<div v-if="(media as TCharacter).notes">
+								<b>Notes:</b>
+								<div
+									v-for="(note, index) in formatNotes((media as TCharacter).notes)"
+									:key="index"
+									class="pl-3 note-text"
+									v-html="linkifyNotes(note)"
+								></div>
 							</div>
 						</section>
 
@@ -103,15 +130,14 @@
 							</div>
 							<div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
 							<div><b>Status:</b> {{ (media as TGame).status }}</div>
-							<div v-if="media.notes">
+							<div v-if="(media as TGame).notes">
 								<b>Notes:</b>
 								<div
-									v-for="(note, index) in formatNotes(media.notes)"
+									v-for="(note, index) in formatNotes((media as TGame).notes)"
 									:key="index"
-									class="pl-3"
-								>
-									{{ note }}
-								</div>
+									class="pl-3 note-text"
+									v-html="linkifyNotes(note)"
+								></div>
 							</div>
 						</section>
 
@@ -142,6 +168,15 @@
 								{{ (media as TManga).volumesMax }}
 							</div>
 							<div><b>Status:</b> {{ (media as TManga).status }}</div>
+							<div v-if="(media as TManga).notes">
+								<b>Notes:</b>
+								<div
+									v-for="(note, index) in formatNotes((media as TManga).notes)"
+									:key="index"
+									class="pl-3 note-text"
+									v-html="linkifyNotes(note)"
+								></div>
+							</div>
 						</section>
 
 						<!--? MOVIES -->
@@ -162,6 +197,15 @@
 								</div>
 							</div>
 							<div><b>Status:</b> {{ (media as TMovie).status }}</div>
+							<div v-if="(media as TMovie).notes">
+								<b>Notes:</b>
+								<div
+									v-for="(note, index) in formatNotes((media as TMovie).notes)"
+									:key="index"
+									class="pl-3 note-text"
+									v-html="linkifyNotes(note)"
+								></div>
+							</div>
 						</section>
 
 						<section>
@@ -239,6 +283,68 @@ const formatNotes = (notes?: string) => {
 	return notes.split(';').map(note => note.trim());
 };
 
+// Function to escape HTML characters
+const escapeHtml = (text: string): string => {
+	const map: Record<string, string> = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		'"': '&quot;',
+		"'": '&#039;',
+	};
+	return text.replace(/[&<>"']/g, (m) => map[m]);
+};
+
+// Function to convert URLs in text to clickable links
+const linkifyNotes = (text: string): string => {
+	if (!text) return '';
+	
+	// URL regex pattern that matches http://, https://, and www. URLs
+	const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/gi;
+	
+	// Find all URL matches first
+	const matches: Array<{ url: string; index: number }> = [];
+	let match;
+	const regex = new RegExp(urlRegex.source, urlRegex.flags);
+	
+	while ((match = regex.exec(text)) !== null) {
+		matches.push({
+			url: match[0],
+			index: match.index,
+		});
+	}
+	
+	// If no URLs found, return escaped text
+	if (matches.length === 0) {
+		return escapeHtml(text);
+	}
+	
+	// Build the result by combining escaped text and linkified URLs
+	const parts: string[] = [];
+	let lastIndex = 0;
+	
+	for (const match of matches) {
+		// Add text before the URL (escaped)
+		if (match.index > lastIndex) {
+			parts.push(escapeHtml(text.substring(lastIndex, match.index)));
+		}
+		
+		// Add the URL as a clickable link
+		const url = match.url;
+		const href = url.startsWith('http') ? url : `https://${url}`;
+		parts.push(`<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer" class="note-link">${escapeHtml(url)}</a>`);
+		
+		lastIndex = match.index + url.length;
+	}
+	
+	// Add remaining text after the last URL (escaped)
+	if (lastIndex < text.length) {
+		parts.push(escapeHtml(text.substring(lastIndex)));
+	}
+	
+	return parts.join('');
+};
+
 defineProps<IMediaModalProps>();
 </script>
 <style scoped>
@@ -257,5 +363,22 @@ defineProps<IMediaModalProps>();
 .media-modal-title {
 	word-wrap: break-word;
 	white-space: normal;
+}
+
+.note-text {
+	word-wrap: break-word;
+	word-break: break-word;
+	overflow-wrap: break-word;
+	white-space: normal;
+}
+
+.note-link {
+	color: inherit;
+	text-decoration: underline;
+	word-break: break-all;
+}
+
+.note-link:hover {
+	opacity: 0.8;
 }
 </style>
