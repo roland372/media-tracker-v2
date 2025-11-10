@@ -18,6 +18,7 @@ export type TMovie = {
   imageURL: string;
   link: string;
   linkName: string;
+  notes?: string;
   owner: string;
   seasonsMax: number;
   seasonsMin: number;

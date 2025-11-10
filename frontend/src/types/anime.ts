@@ -30,6 +30,7 @@ export type TAnime = {
   type: EAnimeType;
   studio?: string;
   studioLink?: string;
+  notes?: string;
   charactersDone?: ETodoStatus;
   createdAt?: Date;
   updatedAt?: Date;

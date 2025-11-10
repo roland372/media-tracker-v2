@@ -103,10 +103,10 @@
 							</div>
 							<div><b>Playtime:</b> {{ (media as TGame).playtime }} hours</div>
 							<div><b>Status:</b> {{ (media as TGame).status }}</div>
-							<div v-if="(media as TGame).notes">
+							<div v-if="media.notes">
 								<b>Notes:</b>
 								<div
-									v-for="(note, index) in formatNotes((media as TGame).notes)"
+									v-for="(note, index) in formatNotes(media.notes)"
 									:key="index"
 									class="pl-3"
 								>
@@ -220,7 +220,9 @@ const formatTypes = (types?: string) => {
 		// If there's at least one other type, put Expansion as the second item
 		if (filteredTypes.length > 0) {
 			// Insert Expansion as the second item
-			return `${filteredTypes[0]}, Expansion${filteredTypes.length > 1 ? ', ' + filteredTypes.slice(1).join(', ') : ''}`;
+			return `${filteredTypes[0]}, Expansion${
+				filteredTypes.length > 1 ? ', ' + filteredTypes.slice(1).join(', ') : ''
+			}`;
 		} else {
 			// If Expansion is the only type
 			return 'Expansion';

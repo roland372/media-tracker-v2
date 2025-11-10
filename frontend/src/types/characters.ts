@@ -21,6 +21,7 @@ export type TCharacter = {
   linkName: string;
   mal_id?: number;
   name: string;
+  notes?: string;
   owner: string;
   series: string;
   source: ECharacterSource;

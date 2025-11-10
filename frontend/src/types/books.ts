@@ -13,6 +13,7 @@ export type TBook = {
   imageURL: string;
   link: string;
   linkName: string;
+  notes?: string;
   owner: string;
   pages: number;
   status: EBookStatus;
