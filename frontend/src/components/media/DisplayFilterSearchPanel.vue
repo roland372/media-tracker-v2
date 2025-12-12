@@ -115,8 +115,8 @@
 							v-model="favouritesFilter"
 							@update:modelValue="handleFavouriteFilter"
 							:class="{
-								'mt-n7 ml-3': mediaType !== EMediaType.BOOK,
-								'mt-2 ml-3': mediaType === EMediaType.BOOK,
+								'mt-n7 ml-2': mediaType !== EMediaType.BOOK,
+								'mt-2 ml-2': mediaType === EMediaType.BOOK,
 							}"
 							density="compact"
 							label="Favourites Filter"
