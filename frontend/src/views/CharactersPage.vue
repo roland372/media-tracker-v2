@@ -17,6 +17,7 @@
 			@filter="handleCharacterFilter"
 			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleCharacterFilterSource"
+			@filter-updated-at-range="handleUpdatedAtRange"
 			@search="handleCharacterSearch"
 			@sort="handleCharacterSort"
 			:display-flag="displayFlag"
@@ -25,6 +26,7 @@
 			:media-type="EMediaType.CHARACTER"
 			:sort-fields="sortFields"
 			:selected-statuses="characterSources"
+			:updated-at-range="updatedAtRange"
 		/>
 	</MediaTable>
 	<MediaComponent
@@ -39,6 +41,7 @@
 			@filter="handleCharacterFilter"
 			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleCharacterFilterSource"
+			@filter-updated-at-range="handleUpdatedAtRange"
 			@search="handleCharacterSearch"
 			@sort="handleCharacterSort"
 			:display-flag="displayFlag"
@@ -47,6 +50,7 @@
 			:media-type="EMediaType.CHARACTER"
 			:sort-fields="sortFields"
 			:selected-statuses="characterSources"
+			:updated-at-range="updatedAtRange"
 		/>
 	</MediaComponent>
 	<MediaComponent
@@ -76,6 +80,7 @@ import {
 	ECharacterSource,
 	EMediaType,
 	TCharacter,
+	TDateRange,
 	TSortingOptions,
 	TMediaStatus,
 } from '@/types';
@@ -85,6 +90,7 @@ import {
 	getProgressItems,
 	sortBy,
 	advancedSearch,
+	isWithinDateRange,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -97,6 +103,7 @@ const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
 const characterSources = ref<TMediaStatus[]>([]);
 const characterSource = ref<string[]>([...Object.values(ECharacterSource)]);
+const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'name',
 	sortOrder: 'asc',
@@ -150,6 +157,10 @@ const filteredCharacters = computed(() => {
 		const sourceMatch =
 			characterSources.value.length === 0 ||
 			!characterSources.value.includes(el.source as TMediaStatus);
+		const updatedAtMatch = isWithinDateRange(
+			el.updatedAt,
+			updatedAtRange.value
+		);
 
 		const sourceFilterMatch =
 			characterSource.value.length === 0 ||
@@ -162,7 +173,7 @@ const filteredCharacters = computed(() => {
 					? !el.favourites
 					: true;
 
-		return sourceMatch && sourceFilterMatch && favouritesMatch;
+		return sourceMatch && sourceFilterMatch && favouritesMatch && updatedAtMatch;
 	};
 
 	const filteredItems = advancedSearch(
@@ -242,4 +253,6 @@ const handleCharacterSearch = (emittedValue: string) =>
 
 const handleCharacterSort = (emittedValue: TSortingOptions) =>
 	(sortingOptions.value = emittedValue);
+const handleUpdatedAtRange = (emittedValue: TDateRange) =>
+	(updatedAtRange.value = emittedValue);
 </script>

@@ -17,6 +17,7 @@
 			@filter="handleAnimeFilter"
 			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleAnimeFilterType"
+			@filter-updated-at-range="handleUpdatedAtRange"
 			@search="handleAnimeSearch"
 			@sort="handleAnimeSort"
 			:display-flag="displayFlag"
@@ -25,6 +26,7 @@
 			:media-type="EMediaType.ANIME"
 			:sort-fields="sortFields"
 			:selected-statuses="animeStatuses"
+			:updated-at-range="updatedAtRange"
 		/>
 	</MediaTable>
 	<MediaComponent
@@ -39,6 +41,7 @@
 			@filter="handleAnimeFilter"
 			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleAnimeFilterType"
+			@filter-updated-at-range="handleUpdatedAtRange"
 			@search="handleAnimeSearch"
 			@sort="handleAnimeSort"
 			:display-flag="displayFlag"
@@ -47,6 +50,7 @@
 			:media-type="EMediaType.ANIME"
 			:sort-fields="sortFields"
 			:selected-statuses="animeStatuses"
+			:updated-at-range="updatedAtRange"
 		/>
 	</MediaComponent>
 	<MediaComponent
@@ -77,6 +81,7 @@ import {
 	EAnimeType,
 	EMediaType,
 	TAnime,
+	TDateRange,
 	TSortingOptions,
 	TMediaStatus,
 } from '@/types';
@@ -87,6 +92,7 @@ import {
 	round,
 	sortBy,
 	advancedSearch,
+	isWithinDateRange,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -99,6 +105,7 @@ const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
 const animeStatuses = ref<TMediaStatus[]>([]);
 const animeType = ref<string[]>([...Object.values(EAnimeType)]);
+const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'title',
 	sortOrder: 'asc',
@@ -147,6 +154,10 @@ const filteredAnime = computed(() => {
 		const statusMatch =
 			animeStatuses.value.length === 0 ||
 			!animeStatuses.value.includes(el.status as TMediaStatus);
+		const updatedAtMatch = isWithinDateRange(
+			el.updatedAt,
+			updatedAtRange.value
+		);
 
 		const typeMatch =
 			animeType.value.length === 0 || animeType.value.includes(el.type);
@@ -158,7 +169,7 @@ const filteredAnime = computed(() => {
 					? !el.favourites
 					: true;
 
-		return statusMatch && typeMatch && favouritesMatch;
+		return statusMatch && typeMatch && favouritesMatch && updatedAtMatch;
 	};
 
 	const filteredItems = advancedSearch(
@@ -261,6 +272,8 @@ const handleAnimeSearch = (emittedValue: string) =>
 
 const handleAnimeSort = (emittedValue: TSortingOptions) =>
 	(sortingOptions.value = emittedValue);
+const handleUpdatedAtRange = (emittedValue: TDateRange) =>
+	(updatedAtRange.value = emittedValue);
 
 const handleChangeDisplayFlag = () => {
 	if (displayFlag.value === 'table') {

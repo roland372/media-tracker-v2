@@ -17,6 +17,7 @@
 			@filter="handleMovieFilter"
 			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleMovieFilterType"
+			@filter-updated-at-range="handleUpdatedAtRange"
 			@search="handleMovieSearch"
 			@sort="handleMovieSort"
 			:display-flag="displayFlag"
@@ -25,6 +26,7 @@
 			:media-type="EMediaType.MOVIE"
 			:sort-fields="sortFields"
 			:selected-statuses="movieStatuses"
+			:updated-at-range="updatedAtRange"
 		/>
 	</MediaTable>
 	<MediaComponent
@@ -39,6 +41,7 @@
 			@filter="handleMovieFilter"
 			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleMovieFilterType"
+			@filter-updated-at-range="handleUpdatedAtRange"
 			@search="handleMovieSearch"
 			@sort="handleMovieSort"
 			:display-flag="displayFlag"
@@ -47,6 +50,7 @@
 			:media-type="EMediaType.MOVIE"
 			:sort-fields="sortFields"
 			:selected-statuses="movieStatuses"
+			:updated-at-range="updatedAtRange"
 		/>
 	</MediaComponent>
 	<MediaComponent
@@ -77,6 +81,7 @@ import {
 	EMovieStatus,
 	EMovieType,
 	TMovie,
+	TDateRange,
 	TSortingOptions,
 	TMediaStatus,
 } from '@/types';
@@ -87,6 +92,7 @@ import {
 	round,
 	sortBy,
 	advancedSearch,
+	isWithinDateRange,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -99,6 +105,7 @@ const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
 const movieStatuses = ref<TMediaStatus[]>([]);
 const movieType = ref<string[]>([...Object.values(EMovieType)]);
+const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'title',
 	sortOrder: 'asc',
@@ -150,6 +157,10 @@ const filteredMovies = computed(() => {
 		const statusMatch =
 			movieStatuses.value.length === 0 ||
 			!movieStatuses.value.includes(el.status as TMediaStatus);
+		const updatedAtMatch = isWithinDateRange(
+			el.updatedAt,
+			updatedAtRange.value
+		);
 
 		const typeMatch =
 			movieType.value.length === 0 || movieType.value.includes(el.type);
@@ -161,7 +172,7 @@ const filteredMovies = computed(() => {
 					? !el.favourites
 					: true;
 
-		return statusMatch && typeMatch && favouritesMatch;
+		return statusMatch && typeMatch && favouritesMatch && updatedAtMatch;
 	};
 
 	const filteredItems = advancedSearch(
@@ -280,4 +291,6 @@ const handleMovieSearch = (emittedValue: string) =>
 
 const handleMovieSort = (emittedValue: TSortingOptions) =>
 	(sortingOptions.value = emittedValue);
+const handleUpdatedAtRange = (emittedValue: TDateRange) =>
+	(updatedAtRange.value = emittedValue);
 </script>

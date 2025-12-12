@@ -17,6 +17,7 @@
 			@filter="handleMangaFilter"
 			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleMangaFilterType"
+			@filter-updated-at-range="handleUpdatedAtRange"
 			@search="handleMangaSearch"
 			@sort="handleMangaSort"
 			:display-flag="displayFlag"
@@ -25,6 +26,7 @@
 			:media-type="EMediaType.MANGA"
 			:sort-fields="sortFields"
 			:selected-statuses="mangaStatuses"
+			:updated-at-range="updatedAtRange"
 		/>
 	</MediaTable>
 	<MediaComponent
@@ -39,6 +41,7 @@
 			@filter="handleMangaFilter"
 			@filter-favourites="handleFavouritesFilter"
 			@filter-type="handleMangaFilterType"
+			@filter-updated-at-range="handleUpdatedAtRange"
 			@search="handleMangaSearch"
 			@sort="handleMangaSort"
 			:display-flag="displayFlag"
@@ -47,6 +50,7 @@
 			:media-type="EMediaType.MANGA"
 			:sort-fields="sortFields"
 			:selected-statuses="mangaStatuses"
+			:updated-at-range="updatedAtRange"
 		/>
 	</MediaComponent>
 	<MediaComponent
@@ -77,6 +81,7 @@ import {
 	EMangaType,
 	EMediaType,
 	TManga,
+	TDateRange,
 	TSortingOptions,
 	TMediaStatus,
 } from '@/types';
@@ -87,6 +92,7 @@ import {
 	round,
 	sortBy,
 	advancedSearch,
+	isWithinDateRange,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -99,6 +105,7 @@ const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
 const mangaStatuses = ref<TMediaStatus[]>([]);
 const mangaType = ref<string[]>([...Object.values(EMangaType)]);
+const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'title',
 	sortOrder: 'asc',
@@ -151,6 +158,10 @@ const filteredManga = computed(() => {
 		const statusMatch =
 			mangaStatuses.value.length === 0 ||
 			!mangaStatuses.value.includes(el.status as TMediaStatus);
+		const updatedAtMatch = isWithinDateRange(
+			el.updatedAt,
+			updatedAtRange.value
+		);
 
 		const typeMatch =
 			mangaType.value.length === 0 || mangaType.value.includes(el.type);
@@ -162,7 +173,7 @@ const filteredManga = computed(() => {
 					? !el.favourites
 					: true;
 
-		return statusMatch && typeMatch && favouritesMatch;
+		return statusMatch && typeMatch && favouritesMatch && updatedAtMatch;
 	};
 
 	const filteredItems = advancedSearch(
@@ -321,4 +332,6 @@ const handleMangaSearch = (emittedValue: string) =>
 
 const handleMangaSort = (emittedValue: TSortingOptions) =>
 	(sortingOptions.value = emittedValue);
+const handleUpdatedAtRange = (emittedValue: TDateRange) =>
+	(updatedAtRange.value = emittedValue);
 </script>

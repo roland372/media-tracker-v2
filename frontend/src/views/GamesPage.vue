@@ -22,6 +22,7 @@
 				@filter="handleGameFilter"
 				@filter-favourites="handleFavouritesFilter"
 				@filter-type="handleGameFilterType"
+				@filter-updated-at-range="handleUpdatedAtRange"
 				@search="handleGameSearch"
 				@sort="handleGameSort"
 				:display-flag="displayFlag"
@@ -30,6 +31,7 @@
 				:media-type="EMediaType.GAME"
 				:sort-fields="sortFields"
 				:selected-statuses="gameStatuses"
+				:updated-at-range="updatedAtRange"
 			/>
 		</MediaTable>
 		<MediaComponent
@@ -44,6 +46,7 @@
 				@filter="handleGameFilter"
 				@filter-favourites="handleFavouritesFilter"
 				@filter-type="handleGameFilterType"
+				@filter-updated-at-range="handleUpdatedAtRange"
 				@search="handleGameSearch"
 				@sort="handleGameSort"
 				:display-flag="displayFlag"
@@ -52,6 +55,7 @@
 				:media-type="EMediaType.GAME"
 				:sort-fields="sortFields"
 				:selected-statuses="gameStatuses"
+				:updated-at-range="updatedAtRange"
 			/>
 		</MediaComponent>
 		<MediaComponent
@@ -83,6 +87,7 @@ import {
 	EGameType,
 	EMediaType,
 	TGame,
+	TDateRange,
 	TSortingOptions,
 	TMediaStatus,
 } from '@/types';
@@ -93,6 +98,7 @@ import {
 	round,
 	sortBy,
 	advancedSearch,
+	isWithinDateRange,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -105,6 +111,7 @@ const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
 const gameStatuses = ref<TMediaStatus[]>([]);
 const gameType = ref<string[]>([...Object.values(EGameType)]);
+const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'title',
 	sortOrder: 'asc',
@@ -153,6 +160,10 @@ const filteredGames = computed(() => {
 		const statusMatch =
 			gameStatuses.value.length === 0 ||
 			!gameStatuses.value.includes(el.status as TMediaStatus);
+		const updatedAtMatch = isWithinDateRange(
+			el.updatedAt,
+			updatedAtRange.value
+		);
 
 		// Handle comma-separated type values with special handling for Expansion
 		const typeMatch = (() => {
@@ -195,7 +206,7 @@ const filteredGames = computed(() => {
 					? !el.favourites
 					: true;
 
-		return statusMatch && typeMatch && favouritesMatch;
+		return statusMatch && typeMatch && favouritesMatch && updatedAtMatch;
 	};
 
 	const filteredItems = advancedSearch(
@@ -296,4 +307,6 @@ const handleGameSearch = (emittedValue: string) =>
 
 const handleGameSort = (emittedValue: TSortingOptions) =>
 	(sortingOptions.value = emittedValue);
+const handleUpdatedAtRange = (emittedValue: TDateRange) =>
+	(updatedAtRange.value = emittedValue);
 </script>

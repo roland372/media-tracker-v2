@@ -76,7 +76,7 @@
 			<div class="bg-primary-light text-color px-5 py-3 text-h6">
 				Select sorting options
 			</div>
-			<v-card-text class="d-sm-flex justify-space-between ms-n1">
+			<v-card-text class="d-sm-flex justify-space-between ms-n1 flex-wrap">
 				<div>
 					<strong> Sort by </strong>
 					<v-radio-group v-model="sortingOptions.sortField" class="ms-n3">
@@ -131,8 +131,77 @@
 						/>
 					</div>
 				</div>
+				<div class="me-2 my-n4" style="min-width: 240px">
+					<strong>Select Date Range</strong>
+					<v-row class="mt-1 ms-n2" dense>
+						<v-col cols="12" sm="6">
+							<v-menu
+								v-model="startMenu"
+								:close-on-content-click="false"
+								transition="scale-transition"
+								offset-y
+								max-width="320"
+								min-width="240"
+							>
+								<template #activator="{ props }">
+									<v-text-field
+										v-bind="props"
+										v-model="startInput"
+										hide-details="auto"
+										label="From"
+										variant="outlined"
+										density="compact"
+										clearable
+										style="min-width: 180px; max-width: 210px"
+										@update:model-value="handleStartInput"
+										@click:clear="handleStartInput('')"
+									/>
+								</template>
+								<v-date-picker
+									first-day-of-week="1"
+									hide-header
+									v-model="updatedAtRange.start"
+									color="primary"
+									@update:model-value="handleStartPickerMenu"
+								/>
+							</v-menu>
+						</v-col>
+						<v-col cols="12" sm="6">
+							<v-menu
+								v-model="endMenu"
+								:close-on-content-click="false"
+								transition="scale-transition"
+								offset-y
+								max-width="320"
+								min-width="240"
+							>
+								<template #activator="{ props }">
+									<v-text-field
+										v-bind="props"
+										v-model="endInput"
+										hide-details="auto"
+										label="To"
+										variant="outlined"
+										density="compact"
+										clearable
+										style="min-width: 180px; max-width: 210px"
+										@update:model-value="handleEndInput"
+										@click:clear="handleEndInput('')"
+									/>
+								</template>
+								<v-date-picker
+									first-day-of-week="1"
+									hide-header
+									v-model="updatedAtRange.end"
+									color="primary"
+									@update:model-value="handleEndPickerMenu"
+								/>
+							</v-menu>
+						</v-col>
+					</v-row>
+				</div>
 			</v-card-text>
-			<v-card-actions class="ms-2 mb-2 me-2 mt-n9 justify-start">
+			<v-card-actions class="ms-2 mb-2 me-2 mt-0 justify-start">
 				<ButtonText
 					@click="handleSortMedia"
 					color="green"
@@ -143,10 +212,11 @@
 	></v-dialog>
 </template>
 <script setup lang="ts">
+/* global defineEmits, defineProps */
 import ButtonIcon from '@/components/ui/ButtonIcon.vue';
 import ButtonText from '@/components/ui/ButtonText.vue';
-import { EMediaType, TMediaStatus, TSortingOptions } from '@/types';
-import { ComputedRef, defineEmits, defineProps, ref } from 'vue';
+import { EMediaType, TDateRange, TMediaStatus, TSortingOptions } from '@/types';
+import { ComputedRef, ref, watch } from 'vue';
 
 interface IDisplayFilterSearchPanelProps {
 	displayFlag: string;
@@ -159,6 +229,7 @@ interface IDisplayFilterSearchPanelProps {
 		value: ComputedRef<number>;
 	}[];
 	selectedStatuses?: TMediaStatus[];
+	updatedAtRange?: TDateRange;
 }
 
 const emit = defineEmits([
@@ -168,6 +239,7 @@ const emit = defineEmits([
 	'filter',
 	'filterType',
 	'filterFavourites',
+	'filterUpdatedAtRange',
 ]);
 const props = defineProps<IDisplayFilterSearchPanelProps>();
 
@@ -180,8 +252,104 @@ const sortingOptions = ref<TSortingOptions>({
 const mediaTypeFilter = ref<string[]>([...(props.filterType ?? [])]);
 const mediaTypeValues = [...(props.filterType ?? [])];
 const selectedStatuses = ref<TMediaStatus[]>(props.selectedStatuses || []);
+const updatedAtRange = ref<TDateRange>({
+	start: props.updatedAtRange?.start ?? '',
+	end: props.updatedAtRange?.end ?? '',
+});
+const startMenu = ref<boolean>(false);
+const endMenu = ref<boolean>(false);
 
 const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
+
+// Format date from YYYY-MM-DD to DD/MM/YYYY for display
+const formatDateDisplay = (dateValue: string | Date | undefined | null): string => {
+	if (!dateValue) return '';
+	
+	// Convert to string if it's a Date object
+	let dateString: string;
+	if (dateValue instanceof Date) {
+		const year = dateValue.getFullYear();
+		const month = String(dateValue.getMonth() + 1).padStart(2, '0');
+		const day = String(dateValue.getDate()).padStart(2, '0');
+		return `${day}/${month}/${year}`;
+	} else if (typeof dateValue === 'string') {
+		dateString = dateValue;
+	} else {
+		return '';
+	}
+	
+	// Parse YYYY-MM-DD format directly to avoid timezone issues
+	const parts = dateString.split('-');
+	if (parts.length !== 3) return dateString;
+	const [year, month, day] = parts;
+	return `${day}/${month}/${year}`;
+};
+
+const startInput = ref<string>(formatDateDisplay(updatedAtRange.value.start));
+const endInput = ref<string>(formatDateDisplay(updatedAtRange.value.end));
+
+// Parse user input (supports DD/MM/YYYY, DD-MM-YYYY, YYYY-MM-DD) into ISO string
+const parseDateInput = (value: string | null | undefined): string => {
+	if (!value) return '';
+	const trimmed = value.trim();
+	if (!trimmed) return '';
+
+	const normalized = trimmed.replace(/\./g, '/').replace(/-/g, '/');
+	const parts = normalized.split('/');
+	if (parts.length !== 3) return '';
+
+	let day: string;
+	let month: string;
+	let year: string;
+
+	// Detect format by checking first segment length
+	if (parts[0].length === 4) {
+		// YYYY/MM/DD
+		[year, month, day] = parts;
+	} else {
+		// DD/MM/YYYY
+		[day, month, year] = parts;
+	}
+
+	// Pad day/month
+	day = day.padStart(2, '0');
+	month = month.padStart(2, '0');
+
+	const iso = `${year}-${month}-${day}`;
+	const date = new Date(iso);
+	if (isNaN(date.getTime())) return '';
+	return iso;
+};
+
+const handleStartInput = (value: string | null | undefined) => {
+	startInput.value = value || '';
+	updatedAtRange.value.start = parseDateInput(value);
+};
+
+const handleEndInput = (value: string | null | undefined) => {
+	endInput.value = value || '';
+	updatedAtRange.value.end = parseDateInput(value);
+};
+
+const handleStartPicker = (value: string | Date) => {
+	updatedAtRange.value.start = value as string;
+	startInput.value = formatDateDisplay(value);
+};
+
+const handleEndPicker = (value: string | Date) => {
+	updatedAtRange.value.end = value as string;
+	endInput.value = formatDateDisplay(value);
+};
+
+const handleStartPickerMenu = (value: string | Date) => {
+	handleStartPicker(value);
+	startMenu.value = false;
+};
+
+const handleEndPickerMenu = (value: string | Date) => {
+	handleEndPicker(value);
+	endMenu.value = false;
+};
 
 // Check if a status is currently selected (highlighted/filled)
 const isStatusSelected = (status: TMediaStatus): boolean => {
@@ -239,6 +407,7 @@ const handleSearchClear = () => emit('search', '');
 const handleSortMedia = () => {
 	emit('sort', sortingOptions.value);
 	emit('filterType', mediaTypeFilter.value);
+	emit('filterUpdatedAtRange', updatedAtRange.value);
 	settingsModal.value = !settingsModal.value;
 };
 
@@ -290,4 +459,17 @@ const handleStatusClick = (status: TMediaStatus) => {
 
 	emit('filter', selectedStatuses.value);
 };
+
+watch(
+	() => props.updatedAtRange,
+	newRange => {
+		updatedAtRange.value = {
+			start: newRange?.start ?? '',
+			end: newRange?.end ?? '',
+		};
+		startInput.value = formatDateDisplay(updatedAtRange.value.start);
+		endInput.value = formatDateDisplay(updatedAtRange.value.end);
+	},
+	{ deep: true }
+);
 </script>

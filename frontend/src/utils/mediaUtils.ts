@@ -12,6 +12,7 @@ import {
   EMovieStatus,
   EMovieType,
   EMusicCategory,
+  TDateRange,
 } from "@/types";
 import { Ref } from "vue";
 
@@ -64,6 +65,28 @@ export const toNumber = (value: string | number): number => {
 export const sortBy = <T>(item: T, sortField: keyof T) => {
   const value = item[sortField];
   return typeof value === 'string' ? value.toLowerCase() : value;
+};
+
+export const isWithinDateRange = (
+  value: Date | string | undefined,
+  range?: TDateRange
+) => {
+  if (!range || (!range.start && !range.end)) return true;
+  if (!value) return false;
+
+  const itemDate = new Date(value);
+  if (isNaN(itemDate.getTime())) return false;
+
+  const startDate = range.start ? new Date(range.start) : null;
+  const endDate = range.end ? new Date(range.end) : null;
+  if (endDate) {
+    endDate.setHours(23, 59, 59, 999);
+  }
+
+  const afterStart = !startDate || itemDate >= startDate;
+  const beforeEnd = !endDate || itemDate <= endDate;
+
+  return afterStart && beforeEnd;
 };
 
 export const animeStatus = [

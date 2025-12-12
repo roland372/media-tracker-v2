@@ -16,6 +16,7 @@
 			@display="handleChangeDisplayFlag"
 			@filter="handleBookFilter"
 			@filter-favourites="handleFavouritesFilter"
+			@filter-updated-at-range="handleUpdatedAtRange"
 			@search="handleBookSearch"
 			@sort="handleBookSort"
 			:display-flag="displayFlag"
@@ -23,6 +24,7 @@
 			:media-type="EMediaType.BOOK"
 			:sort-fields="sortFields"
 			:selected-statuses="bookStatuses"
+			:updated-at-range="updatedAtRange"
 		/>
 	</MediaTable>
 	<MediaComponent
@@ -36,6 +38,7 @@
 			@display="handleChangeDisplayFlag"
 			@filter="handleBookFilter"
 			@filter-favourites="handleFavouritesFilter"
+			@filter-updated-at-range="handleUpdatedAtRange"
 			@search="handleBookSearch"
 			@sort="handleBookSort"
 			:display-flag="displayFlag"
@@ -43,6 +46,7 @@
 			:media-type="EMediaType.BOOK"
 			:sort-fields="sortFields"
 			:selected-statuses="bookStatuses"
+			:updated-at-range="updatedAtRange"
 		/>
 	</MediaComponent>
 	<MediaComponent
@@ -72,6 +76,7 @@ import {
 	EBookStatus,
 	EMediaType,
 	TBook,
+	TDateRange,
 	TSortingOptions,
 	TMediaStatus,
 } from '@/types';
@@ -82,6 +87,7 @@ import {
 	round,
 	sortBy,
 	advancedSearch,
+	isWithinDateRange,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -93,6 +99,7 @@ const { books } = storeToRefs(booksStore);
 const displayFlag = ref<string>('grid');
 const searchTerm = ref<string>('');
 const bookStatuses = ref<TMediaStatus[]>([]);
+const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
 const sortingOptions = ref<TSortingOptions>({
 	sortField: 'title',
 	sortOrder: 'asc',
@@ -141,6 +148,10 @@ const filteredBooks = computed(() => {
 		const statusMatch =
 			bookStatuses.value.length === 0 ||
 			!bookStatuses.value.includes(el.status as TMediaStatus);
+		const updatedAtMatch = isWithinDateRange(
+			el.updatedAt,
+			updatedAtRange.value
+		);
 
 		const favouritesMatch =
 			favouritesFilter.value === 'favourites'
@@ -149,7 +160,7 @@ const filteredBooks = computed(() => {
 					? !el.favourites
 					: true;
 
-		return statusMatch && favouritesMatch;
+		return statusMatch && favouritesMatch && updatedAtMatch;
 	};
 
 	const filteredItems = advancedSearch(
@@ -238,6 +249,8 @@ const handleBookSearch = (emittedValue: string) =>
 
 const handleBookSort = (emittedValue: TSortingOptions) =>
 	(sortingOptions.value = emittedValue);
+const handleUpdatedAtRange = (emittedValue: TDateRange) =>
+	(updatedAtRange.value = emittedValue);
 
 const handleChangeDisplayFlag = () => {
 	if (displayFlag.value === 'table') {

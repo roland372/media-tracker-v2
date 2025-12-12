@@ -46,6 +46,11 @@ export type TSortingOptions = {
   sortOrder: "asc" | "desc";
 };
 
+export type TDateRange = {
+  start?: string;
+  end?: string;
+};
+
 export type TTheme = {
   primaryDark: string;
   primaryLight: string;
