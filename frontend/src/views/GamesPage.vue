@@ -154,6 +154,7 @@ const filteredGames = computed(() => {
 	const flagConfigs: Array<{ field: keyof TGame; flag: string }> = [
 		{ field: 'title', flag: 't:' },
 		{ field: 'developer', flag: 'd:' },
+		{ field: 'series', flag: 's:' },
 	];
 
 	const additionalFilters = (el: TGame) => {

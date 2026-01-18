@@ -21,6 +21,10 @@
 						<!--? ANIME -->
 						<section v-if="mediaType === EMediaType.ANIME">
 							<div><b>Type:</b> {{ (media as TAnime).type }}</div>
+							<div v-if="(media as TAnime).series">
+								<b>Series: </b>
+								<span>{{ (media as TAnime).series }}</span>
+							</div>
 							<div>
 								<b>Link: </b>
 								<a :href="media.link" target="_blank">{{ media.linkName }}</a>
@@ -121,6 +125,10 @@
 									{{ (media as TGame).developer }}
 								</a>
 								<span v-else>{{ (media as TGame).developer }}</span>
+							</div>
+							<div v-if="(media as TGame).series">
+								<b>Series: </b>
+								<span>{{ (media as TGame).series }}</span>
 							</div>
 							<div v-if="(media as TGame).youtubeLink">
 								<b>YouTube: </b>

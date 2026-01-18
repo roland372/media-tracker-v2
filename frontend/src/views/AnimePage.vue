@@ -147,7 +147,7 @@ const filteredAnime = computed(() => {
 
 	const flagConfigs: Array<{ field: keyof TAnime; flag: string }> = [
 		{ field: 'title', flag: 't:' },
-		{ field: 'studio', flag: 's:' },
+		{ field: 'series', flag: 's:' },
 	];
 
 	const additionalFilters = (el: TAnime) => {

@@ -52,13 +52,13 @@
 			hide-details="auto"
 			:label="`${
 				mediaType === EMediaType.ANIME
-					? `Search for an ${mediaType} (t: title, s: studio)`
+					? `Search for an ${mediaType} (t: title, s: series)`
 					: mediaType === EMediaType.BOOK
 					? `Search for a ${mediaType} (t: title, a: author)`
 					: mediaType === EMediaType.CHARACTER
 					? `Search for a ${mediaType} (n: name, s: series)`
 					: mediaType === EMediaType.GAME
-					? `Search for a ${mediaType} (t: title, d: developer)`
+					? `Search for a ${mediaType} (t: title, d: developer, s: series)`
 					: mediaType === EMediaType.MANGA
 					? `Search for a ${mediaType} (t: title, a: author)`
 					: mediaType === EMediaType.MOVIE
