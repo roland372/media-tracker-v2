@@ -31,6 +31,7 @@ export type TAnime = {
   studio?: string;
   studioLink?: string;
   series?: string;
+  characters?: string;
   notes?: string;
   charactersDone?: ETodoStatus;
   createdAt?: Date;

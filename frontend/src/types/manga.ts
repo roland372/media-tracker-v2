@@ -34,6 +34,7 @@ export type TManga = {
   volumesMin: number;
   author?: string;
   authorLink?: string;
+  characters?: string;
   notes?: string;
   charactersDone?: ETodoStatus;
   createdAt?: Date;

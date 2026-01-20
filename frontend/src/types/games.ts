@@ -29,6 +29,7 @@ export type TGame = {
   developerLink?: string;
   series?: string;
   notes?: string;
+  characters?: string;
   youtubeLink?: string;
   charactersDone?: ETodoStatus;
 	musicDownloaded?: ETodoStatus;

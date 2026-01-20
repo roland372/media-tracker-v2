@@ -25,6 +25,12 @@
 								<b>Series: </b>
 								<span>{{ (media as TAnime).series }}</span>
 							</div>
+							<div v-if="(media as TAnime).characters">
+								<b>Characters: </b>
+								<a :href="(media as TAnime).characters" target="_blank"
+									>Characters</a
+								>
+							</div>
 							<div>
 								<b>Link: </b>
 								<a :href="media.link" target="_blank">{{ media.linkName }}</a>
@@ -126,6 +132,12 @@
 								</a>
 								<span v-else>{{ (media as TGame).developer }}</span>
 							</div>
+							<div v-if="(media as TGame).characters">
+								<b>Characters: </b>
+								<a :href="(media as TGame).characters" target="_blank"
+									>Characters</a
+								>
+							</div>
 							<div v-if="(media as TGame).series">
 								<b>Series: </b>
 								<span>{{ (media as TGame).series }}</span>
@@ -152,6 +164,12 @@
 						<!--? MANGA -->
 						<section v-if="mediaType === EMediaType.MANGA">
 							<div><b>Type:</b> {{ (media as TManga).type }}</div>
+							<div v-if="(media as TManga).characters">
+								<b>Characters: </b>
+								<a :href="(media as TManga).characters" target="_blank"
+									>Characters</a
+								>
+							</div>
 							<div>
 								<b>Link: </b>
 								<a :href="media.link" target="_blank">{{ media.linkName }}</a>
