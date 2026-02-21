@@ -12,6 +12,11 @@ import HeaderComponent from '@/components/media/HeaderComponent.vue';
 const signInWithGoogle = async () => {
 	await supabase.auth.signInWithOAuth({
 		provider: 'google',
+		options: {
+			queryParams: {
+				scope: 'email profile openid https://www.googleapis.com/auth/spreadsheets',
+			},
+		},
 	});
 };
 </script>

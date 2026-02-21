@@ -1,5 +1,5 @@
 <template>
-	<v-dialog width="auto">
+	<v-dialog width="auto" :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)">
 		<template v-slot:default>
 			<!-- <v-card max-width="450" class="pb-2">
 				<div class="bg-primary-light text-color px-5 py-3 text-h6"></div> -->
@@ -10,13 +10,23 @@
 					{{ title }}
 				</div>
 				<div class="d-sm-flex align-start">
-					<v-img
-						class="rounded ms-2 me-2 me-sm-0 mt-2"
-						cover
-						min-height="200px"
-						min-width="150px"
-						:src="media.imageURL || placeholderImg"
-					/>
+					<div class="media-modal-left-column">
+						<v-img
+							class="rounded ms-2 me-2 me-sm-0 mt-2"
+							cover
+							min-height="200px"
+							min-width="150px"
+							:src="media.imageURL || placeholderImg"
+						/>
+						<div v-if="rowIndex >= 0" class="media-modal-edit-wrap mt-2 ms-2">
+							<ButtonText
+								:on-click="() => (showEditForm = true)"
+								color="green"
+								text="Edit"
+								variant="flat"
+							/>
+						</div>
+					</div>
 					<v-card-text>
 						<!--? ANIME -->
 						<section v-if="mediaType === EMediaType.ANIME">
@@ -243,6 +253,15 @@
 			</v-card>
 		</template>
 	</v-dialog>
+	<EditFormComponent
+		v-if="rowIndex >= 0"
+		v-model="showEditForm"
+		:media="media"
+		:media-type="mediaType"
+		:row-index="rowIndex"
+		:title="title"
+		@edit="handleEditSuccess"
+	/>
 </template>
 <script setup lang="ts">
 import {
@@ -256,13 +275,75 @@ import {
 	TMovie,
 } from '@/types';
 import { placeholderImg } from '@/utils/mediaUtils';
-import { computed, defineProps } from 'vue';
+import { fetchAllSheetsData, findMediaRowIndex } from '@/utils/sheetsUtils';
+import { useMediaStore } from '@/stores/useMediaStore';
+import { useAnimeStore } from '@/stores/useAnimeStore';
+import { useBooksStore } from '@/stores/useBooksStore';
+import { useCharactersStore } from '@/stores/useCharactersStore';
+import { useGamesStore } from '@/stores/useGamesStore';
+import { useMangaStore } from '@/stores/useMangaStore';
+import { useMoviesStore } from '@/stores/useMoviesStore';
+import EditFormComponent from '@/components/media/EditFormComponent.vue';
+import ButtonText from '@/components/ui/ButtonText.vue';
+import { computed, ref } from 'vue';
 
 interface IMediaModalProps {
 	media: TMedia;
 	mediaType: EMediaType;
 	title: string;
+	modelValue?: boolean;
 }
+
+/* eslint-disable no-undef -- defineEmits/defineProps are script-setup compiler macros */
+const props = defineProps<IMediaModalProps>();
+const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
+const showEditForm = ref(false);
+
+const mediaStore = useMediaStore();
+const animeStore = useAnimeStore();
+const booksStore = useBooksStore();
+const charactersStore = useCharactersStore();
+const gamesStore = useGamesStore();
+const mangaStore = useMangaStore();
+const moviesStore = useMoviesStore();
+
+const rowIndex = computed(() => {
+	const mediaObj = props.media as Record<string, unknown>;
+	let list: Record<string, unknown>[] = [];
+	switch (props.mediaType) {
+		case EMediaType.ANIME:
+			list = animeStore.anime as unknown as Record<string, unknown>[];
+			break;
+		case EMediaType.BOOK:
+			list = booksStore.books as unknown as Record<string, unknown>[];
+			break;
+		case EMediaType.CHARACTER:
+			list = charactersStore.characters as unknown as Record<string, unknown>[];
+			break;
+		case EMediaType.GAME:
+			list = gamesStore.games as unknown as Record<string, unknown>[];
+			break;
+		case EMediaType.MANGA:
+			list = mangaStore.manga as unknown as Record<string, unknown>[];
+			break;
+		case EMediaType.MOVIE:
+			list = moviesStore.movies as unknown as Record<string, unknown>[];
+			break;
+		default:
+			return -1;
+	}
+	const idx = findMediaRowIndex(props.mediaType, mediaObj, list);
+	return idx >= 0 ? idx : 0;
+});
+
+const handleEditSuccess = async () => {
+	const { usersData, mediaData } = await fetchAllSheetsData();
+	mediaStore.fetchAllMedia(mediaData);
+	if (usersData.length > 0) {
+		// Refresh user if needed
+	}
+	emit('update:modelValue', false);
+};
 
 const cardClass = computed(() => {
 	return window.innerWidth <= 600 ? 'mobile-card' : 'desktop-card';
@@ -371,7 +452,6 @@ const linkifyNotes = (text: string): string => {
 	return parts.join('');
 };
 
-defineProps<IMediaModalProps>();
 </script>
 <style scoped>
 /* Default for larger screens */
@@ -384,6 +464,16 @@ defineProps<IMediaModalProps>();
 	max-width: 200px; /* Max width for mobile */
 	width: 100%; /* Ensure it's not too narrow on mobile */
 	min-width: 200px; /* Ensure it stays at least 200px */
+}
+
+.media-modal-left-column {
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+}
+
+.media-modal-edit-wrap {
+	align-self: flex-start;
 }
 
 .media-modal-title {
