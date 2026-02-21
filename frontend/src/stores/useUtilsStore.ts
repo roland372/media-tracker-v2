@@ -6,6 +6,8 @@ export const useUtilsStore = defineStore("utils", () => {
   const setLoading = (payload: boolean): boolean => (isLoading.value = payload);
 
   type TSnackbarOptions = {
+    actionId?: string;
+    actionText?: string;
     color?: string;
     img?: string;
     text: string;

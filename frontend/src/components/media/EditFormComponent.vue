@@ -775,6 +775,10 @@ import {
 	movieStatus,
 	movieType,
 } from '@/utils/mediaUtils';
+import {
+	getGoogleAccessToken,
+	isGoogleTokenClientConfigured,
+} from '@/utils/googleTokenClient';
 import { getSheetNameForMediaType, updateSheetRow } from '@/utils/sheetsUtils';
 import { useUtilsStore } from '@/stores/useUtilsStore';
 import ButtonIcon from '@/components/ui/ButtonIcon.vue';
@@ -830,15 +834,35 @@ const toSheetData = (obj: Record<string, unknown>): Record<string, string | numb
 };
 
 const doUpdate = async (data: Record<string, string | number | boolean>) => {
-	const { data: sessionData } = await supabase.auth.getSession();
-	const token = sessionData.session?.provider_token;
-	if (!token) {
-		utilsStore.setSnackbar(true, {
-			color: 'warning',
-			text: 'No Google token. Sign out and sign back in to get Sheets access.',
-		});
-		return false;
+	let token: string | null = null;
+
+	if (isGoogleTokenClientConfigured()) {
+		try {
+			token = await getGoogleAccessToken();
+		} catch (e) {
+			utilsStore.setSnackbar(true, {
+				actionId: 'reconnect-google',
+				actionText: 'Reconnect Google',
+				color: 'warning',
+				text:
+					e instanceof Error ? e.message : 'Could not get Google token. Try reconnecting.',
+			});
+			return false;
+		}
+	} else {
+		const { data: sessionData } = await supabase.auth.getSession();
+		token = sessionData.session?.provider_token ?? null;
+		if (!token) {
+			utilsStore.setSnackbar(true, {
+				actionId: 'reconnect-google',
+				actionText: 'Reconnect Google',
+				color: 'warning',
+				text: 'No Google token. Sign out and sign back in to get Sheets access.',
+			});
+			return false;
+		}
 	}
+
 	const sheetName = getSheetNameForMediaType(props.mediaType);
 	const result = await updateSheetRow(token, sheetName, props.rowIndex, data);
 	if (result.success) {
@@ -846,7 +870,20 @@ const doUpdate = async (data: Record<string, string | number | boolean>) => {
 		emit('edit');
 		emit('update:modelValue', false);
 	} else {
-		utilsStore.setSnackbar(true, { color: 'error', text: result.error || 'Update failed.' });
+		const msg = result.error || 'Update failed.';
+		const isTokenError =
+			msg.toLowerCase().includes('token') ||
+			msg.toLowerCase().includes('expired') ||
+			msg.toLowerCase().includes('401') ||
+			msg.toLowerCase().includes('invalid');
+		utilsStore.setSnackbar(true, {
+			actionId: 'reconnect-google',
+			actionText: 'Reconnect Google',
+			color: 'error',
+			text: isTokenError
+				? 'Token expired. Sign out and sign in again to update.'
+				: msg,
+		});
 	}
 	return result.success;
 };

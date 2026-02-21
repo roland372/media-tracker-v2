@@ -1,6 +1,10 @@
 <template>
 	<section class="bg-primary-dark page-container">
-		<SnackbarComponent v-model="snackbar" :options="snackbarOptions" />
+		<SnackbarComponent
+			v-model="snackbar"
+			:options="snackbarOptions"
+			@action="onSnackbarAction"
+		/>
 		<NavbarComponent v-if="user && !mdAndUp" />
 		<v-layout>
 			<NavigationDrawer v-if="user && mdAndUp" />
@@ -17,6 +21,7 @@
 	</section>
 </template>
 <script setup lang="ts">
+import { supabase } from '@/auth/supabaseClient';
 import FooterComponent from '@/components/ui/FooterComponent.vue';
 import NavbarComponent from '@/components/ui/NavbarComponent.vue';
 import NavigationDrawer from '@/components/ui/NavigationDrawer.vue';
@@ -31,6 +36,20 @@ const usersStore = useUsersStore();
 const utilsStore = useUtilsStore();
 const { snackbar, snackbarOptions } = storeToRefs(utilsStore);
 const { user } = storeToRefs(usersStore);
+
+const onSnackbarAction = (actionId?: string) => {
+	if (actionId === 'reconnect-google') {
+		supabase.auth.signInWithOAuth({
+			provider: 'google',
+			options: {
+				queryParams: {
+					scope:
+						'email profile openid https://www.googleapis.com/auth/spreadsheets',
+				},
+			},
+		});
+	}
+};
 
 const {
 	mdAndUp,
