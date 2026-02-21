@@ -10,6 +10,12 @@
 
 const SHEETS_SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
 
+/** Google access tokens typically expire in 1 hour; treat as valid for 55 minutes. */
+const TOKEN_VALID_MS = 55 * 60 * 1000;
+
+let cachedToken: string | null = null;
+let cachedAt = 0;
+
 declare global {
 	interface Window {
 		google?: {
@@ -77,6 +83,8 @@ function getTokenClient() {
 				if (response.error) {
 					pendingReject(new Error(response.error));
 				} else if (response.access_token) {
+					cachedToken = response.access_token;
+					cachedAt = Date.now();
 					pendingResolve(response.access_token);
 				} else {
 					pendingReject(new Error('No access token in response'));
@@ -88,12 +96,17 @@ function getTokenClient() {
 }
 
 /**
- * Request a Google access token with Sheets scope. Uses Google Identity Services;
- * if the user has an active Google session they may get a token with minimal or no prompt.
+ * Request a Google access token with Sheets scope. Uses Google Identity Services.
+ * Returns a cached token if still valid (within ~55 min); otherwise requests a new one
+ * (which may show the sign-in modal only when the token has expired).
  * Returns the access token or throws.
  */
 export function getGoogleAccessToken(): Promise<string> {
 	return waitForGoogle().then(() => {
+		const now = Date.now();
+		if (cachedToken !== null && now - cachedAt < TOKEN_VALID_MS) {
+			return Promise.resolve(cachedToken);
+		}
 		return new Promise<string>((resolve, reject) => {
 			pendingResolve = resolve;
 			pendingReject = reject;
@@ -104,4 +117,13 @@ export function getGoogleAccessToken(): Promise<string> {
 
 export function isGoogleTokenClientConfigured(): boolean {
 	return Boolean(getClientId());
+}
+
+/**
+ * Clear the cached token so the next getGoogleAccessToken() will request a new one.
+ * Call this when the API returns 401/expired so the user can get a fresh token on retry.
+ */
+export function clearGoogleTokenCache(): void {
+	cachedToken = null;
+	cachedAt = 0;
 }

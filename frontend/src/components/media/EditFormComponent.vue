@@ -776,6 +776,7 @@ import {
 	movieType,
 } from '@/utils/mediaUtils';
 import {
+	clearGoogleTokenCache,
 	getGoogleAccessToken,
 	isGoogleTokenClientConfigured,
 } from '@/utils/googleTokenClient';
@@ -876,12 +877,15 @@ const doUpdate = async (data: Record<string, string | number | boolean>) => {
 			msg.toLowerCase().includes('expired') ||
 			msg.toLowerCase().includes('401') ||
 			msg.toLowerCase().includes('invalid');
+		if (isTokenError && isGoogleTokenClientConfigured()) {
+			clearGoogleTokenCache();
+		}
 		utilsStore.setSnackbar(true, {
 			actionId: 'reconnect-google',
 			actionText: 'Reconnect Google',
 			color: 'error',
 			text: isTokenError
-				? 'Token expired. Sign out and sign in again to update.'
+				? 'Token expired. Try editing again to sign in with Google.'
 				: msg,
 		});
 	}
