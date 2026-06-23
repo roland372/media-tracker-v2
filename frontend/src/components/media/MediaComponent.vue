@@ -6,7 +6,7 @@
 			<section
 				v-for="(image, index) in media.slice(
 					0,
-					allMedia ? displayMediaFlag : props.media.length
+					allMedia ? displayLimit : props.media.length
 				)"
 				:key="index"
 				class="d-flex align-center justify-center"
@@ -22,11 +22,11 @@
 			v-if="allMedia && media.length > 20"
 			@click="displayMedia"
 			:append-icon="
-				displayMediaFlag === 20 ? 'mdi-arrow-down-bold' : 'mdi-arrow-up-bold'
+				showAll ? 'mdi-arrow-up-bold' : 'mdi-arrow-down-bold'
 			"
 			class="mt-3"
 			color="indigo"
-			:text="displayMediaFlag === 20 ? 'Display All' : 'Display Less'"
+			:text="showAll ? 'Display Less' : 'Display All'"
 		/>
 	</CardComponent>
 </template>
@@ -35,7 +35,7 @@ import CardComponent from '@/components/media/CardComponent.vue';
 import MediaCard from '@/components/media/MediaCard.vue';
 import ButtonText from '@/components/ui/ButtonText.vue';
 import { EMediaType, TMedia } from '@/types';
-import { defineProps, ref, withDefaults } from 'vue';
+import { computed, defineProps, ref, withDefaults } from 'vue';
 
 interface IMediaComponentProps {
 	allMedia?: boolean;
@@ -48,12 +48,15 @@ const props = withDefaults(defineProps<IMediaComponentProps>(), {
 	allMedia: false,
 });
 
-const displayMediaFlag = ref<number>(20);
+const DEFAULT_DISPLAY_LIMIT = 20;
+const showAll = ref(false);
+
+const displayLimit = computed(() =>
+	showAll.value ? props.media.length : DEFAULT_DISPLAY_LIMIT
+);
 
 const displayMedia = () => {
-	displayMediaFlag.value === 20
-		? (displayMediaFlag.value = props.media.length)
-		: (displayMediaFlag.value = 20);
+	showAll.value = !showAll.value;
 };
 </script>
 <style scoped>
