@@ -197,13 +197,20 @@ export function getProgressItems(
 }
 
 /**
+ * Finds the index of a search flag in a query, case-insensitively.
+ */
+function findFlagIndex(searchTerm: string, flag: string): number {
+  return searchTerm.toLowerCase().indexOf(flag.toLowerCase());
+}
+
+/**
  * Extracts search term from a flag-based search query
  * @param searchTerm The full search query
  * @param flag The flag to extract (e.g., 't:', 's:', 'a:', etc.)
  * @returns The extracted search term for the specific flag
  */
 export function extractFlagSearchTerm(searchTerm: string, flag: string): string {
-  const flagIndex = searchTerm.indexOf(flag);
+  const flagIndex = findFlagIndex(searchTerm, flag);
   if (flagIndex === -1) return '';
 
   // Extract the search term
@@ -229,7 +236,7 @@ export function extractFlagSearchTerm(searchTerm: string, flag: string): string 
  */
 export function fieldFlagMatch<T>(item: T, field: keyof T, searchTerm: string, flag: string): boolean {
   // If flag is not in the search term, return true (no constraint)
-  if (!searchTerm.includes(flag)) return true;
+  if (findFlagIndex(searchTerm, flag) === -1) return true;
 
   // Extract the search term for this flag
   const flagSearchTerm = extractFlagSearchTerm(searchTerm, flag);
@@ -265,7 +272,9 @@ export function advancedSearch<T>(
   }
 
   // Check if any configured flags are present in the search term
-  const hasFlags = flagConfigs.some(config => searchTerm.includes(config.flag));
+  const hasFlags = flagConfigs.some(
+    config => findFlagIndex(searchTerm, config.flag) !== -1
+  );
 
   return items.filter(item => {
     // If using advanced search with flags
