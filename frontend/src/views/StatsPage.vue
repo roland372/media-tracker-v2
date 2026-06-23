@@ -160,10 +160,10 @@
 									<h3 class="text-subtitle-2 mb-0">Media Items</h3>
 								</div>
 								<div class="text-h5 white--text text-center">
-									{{ totalBooksRead + anime.length + movies.length }}
+									{{ booksCount + anime.length + movies.length }}
 								</div>
 								<div class="text-caption white--text text-center">
-									{{ totalBooksRead }} books, {{ anime.length }} anime,
+									{{ booksCount }} books, {{ anime.length }} anime,
 									{{ movies.length }} shows
 								</div>
 							</div>
@@ -1139,7 +1139,11 @@ const totalPlaytime = computed(() =>
 // Calculate total time spent across all media
 const animeHours = computed(() => {
 	const episodeLength = 0.4; // 24 minutes average
-	return totalEpisodesWatched.value * episodeLength;
+	const animeEpisodes = anime.value.reduce(
+		(acc, item) => acc + (item.episodesMin || 0),
+		0
+	);
+	return animeEpisodes * episodeLength;
 });
 
 const mangaHours = computed(() => {
@@ -1505,21 +1509,10 @@ const lastYearTotalPlaytime = computed(() => {
 	);
 });
 
-// Total books read (completed books + manga volumes)
-const totalBooksRead = computed(() => {
-	const completedBooks = filter(books.value, { status: 'Completed' }).length;
-
-	// Count all manga types as volumes
-	const completedMangaVolumes = manga.value.reduce((acc, item) => {
-		// Count volumes for all manga types (Manga, Light Novel, Novel, Manhua, Webtoon, etc.)
-		if (item.status === 'Completed') {
-			return acc + (item.volumesMin || 0);
-		}
-		return acc;
-	}, 0);
-
-	return completedBooks + completedMangaVolumes;
-});
+// Completed books only (manga volumes are tracked separately)
+const totalBooksRead = computed(
+	() => filter(books.value, { status: 'Completed' }).length
+);
 
 // Enhanced page calculation (book pages + estimated manga/LN pages)
 const enhancedTotalPages = computed(() => {
@@ -1532,19 +1525,10 @@ const enhancedTotalPages = computed(() => {
 	// Estimated manga pages (200 pages per volume for all manga types)
 	const mangaPages = manga.value.reduce((acc, item) => {
 		const volumesRead = item.volumesMin || 0;
-		// All manga types use the same page estimation
-		return acc + volumesRead * 200; // Assuming 200 pages per volume
+		return acc + volumesRead * 200;
 	}, 0);
 
-	// Light novels from books collection
-	const lightNovelPages = books.value.reduce((acc, item) => {
-		if (item.genre === 'Light Novel') {
-			return acc + 250; // Assuming 250 pages per light novel
-		}
-		return acc;
-	}, 0);
-
-	return bookPages + mangaPages + lightNovelPages;
+	return bookPages + mangaPages;
 });
 
 // Total episodes calculation (anime + TV shows/movies)
