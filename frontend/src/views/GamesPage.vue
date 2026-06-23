@@ -27,9 +27,13 @@
 				@sort="handleGameSort"
 				:display-flag="displayFlag"
 				:filter-type="gameType"
+				:filter-type-options="gameTypeOptions"
+				:favourites-filter="favouritesFilter"
 				:media-status="status"
 				:media-type="EMediaType.GAME"
+				:search-term="searchTerm"
 				:sort-fields="sortFields"
+				:sorting-options="sortingOptions"
 				:selected-statuses="gameStatuses"
 				:updated-at-range="updatedAtRange"
 			/>
@@ -51,9 +55,13 @@
 				@sort="handleGameSort"
 				:display-flag="displayFlag"
 				:filter-type="gameType"
+				:filter-type-options="gameTypeOptions"
+				:favourites-filter="favouritesFilter"
 				:media-status="status"
 				:media-type="EMediaType.GAME"
+				:search-term="searchTerm"
 				:sort-fields="sortFields"
+				:sorting-options="sortingOptions"
 				:selected-statuses="gameStatuses"
 				:updated-at-range="updatedAtRange"
 			/>
@@ -82,6 +90,7 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useGamesStore } from '@/stores/useGamesStore';
+import { useMediaPageFilters } from '@/composables/useMediaPageFilters';
 import {
 	EGameStatus,
 	EGameType,
@@ -102,20 +111,25 @@ import {
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 const gamesStore = useGamesStore();
 const { games } = storeToRefs(gamesStore);
 
-const displayFlag = ref<string>('grid');
-const searchTerm = ref<string>('');
-const gameStatuses = ref<TMediaStatus[]>([]);
-const gameType = ref<string[]>([...Object.values(EGameType)]);
-const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
-const sortingOptions = ref<TSortingOptions>({
+const gameTypeOptions = [...Object.values(EGameType)];
+const {
+	displayFlag,
+	searchTerm,
+	selectedStatuses: gameStatuses,
+	typeFilter: gameType,
+	updatedAtRange,
+	sortingOptions,
+	favouritesFilter,
+} = useMediaPageFilters(EMediaType.GAME, {
 	sortField: 'title',
-	sortOrder: 'asc',
+	typeFilter: gameTypeOptions,
 });
+
 const sortFields = [
 	{
 		label: 'Playtime',
@@ -135,7 +149,6 @@ const sortFields = [
 	},
 ];
 
-const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
 const handleFavouritesFilter = (
 	filterValue: 'all' | 'favourites' | 'non-favourites'
 ) => {

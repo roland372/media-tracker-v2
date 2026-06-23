@@ -20,9 +20,12 @@
 			@search="handleBookSearch"
 			@sort="handleBookSort"
 			:display-flag="displayFlag"
+			:favourites-filter="favouritesFilter"
 			:media-status="status"
 			:media-type="EMediaType.BOOK"
+			:search-term="searchTerm"
 			:sort-fields="sortFields"
+			:sorting-options="sortingOptions"
 			:selected-statuses="bookStatuses"
 			:updated-at-range="updatedAtRange"
 		/>
@@ -42,9 +45,12 @@
 			@search="handleBookSearch"
 			@sort="handleBookSort"
 			:display-flag="displayFlag"
+			:favourites-filter="favouritesFilter"
 			:media-status="status"
 			:media-type="EMediaType.BOOK"
+			:search-term="searchTerm"
 			:sort-fields="sortFields"
+			:sorting-options="sortingOptions"
 			:selected-statuses="bookStatuses"
 			:updated-at-range="updatedAtRange"
 		/>
@@ -72,6 +78,7 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useBooksStore } from '@/stores/useBooksStore';
+import { useMediaPageFilters } from '@/composables/useMediaPageFilters';
 import {
 	EBookStatus,
 	EMediaType,
@@ -91,19 +98,22 @@ import {
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 const booksStore = useBooksStore();
 const { books } = storeToRefs(booksStore);
 
-const displayFlag = ref<string>('grid');
-const searchTerm = ref<string>('');
-const bookStatuses = ref<TMediaStatus[]>([]);
-const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
-const sortingOptions = ref<TSortingOptions>({
+const {
+	displayFlag,
+	searchTerm,
+	selectedStatuses: bookStatuses,
+	updatedAtRange,
+	sortingOptions,
+	favouritesFilter,
+} = useMediaPageFilters(EMediaType.BOOK, {
 	sortField: 'title',
-	sortOrder: 'asc',
 });
+
 const sortFields = [
 	{
 		label: 'Author',
@@ -127,7 +137,6 @@ const sortFields = [
 	},
 ];
 
-const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
 const handleFavouritesFilter = (
 	filterValue: 'all' | 'favourites' | 'non-favourites'
 ) => {

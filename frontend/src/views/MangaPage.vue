@@ -22,9 +22,13 @@
 			@sort="handleMangaSort"
 			:display-flag="displayFlag"
 			:filter-type="mangaType"
+			:filter-type-options="mangaTypeOptions"
+			:favourites-filter="favouritesFilter"
 			:media-status="status"
 			:media-type="EMediaType.MANGA"
+			:search-term="searchTerm"
 			:sort-fields="sortFields"
+			:sorting-options="sortingOptions"
 			:selected-statuses="mangaStatuses"
 			:updated-at-range="updatedAtRange"
 		/>
@@ -46,9 +50,13 @@
 			@sort="handleMangaSort"
 			:display-flag="displayFlag"
 			:filter-type="mangaType"
+			:filter-type-options="mangaTypeOptions"
+			:favourites-filter="favouritesFilter"
 			:media-status="status"
 			:media-type="EMediaType.MANGA"
+			:search-term="searchTerm"
 			:sort-fields="sortFields"
+			:sorting-options="sortingOptions"
 			:selected-statuses="mangaStatuses"
 			:updated-at-range="updatedAtRange"
 		/>
@@ -76,6 +84,7 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useMangaStore } from '@/stores/useMangaStore';
+import { useMediaPageFilters } from '@/composables/useMediaPageFilters';
 import {
 	EMangaStatus,
 	EMangaType,
@@ -96,20 +105,25 @@ import {
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 const mangaStore = useMangaStore();
 const { manga } = storeToRefs(mangaStore);
 
-const displayFlag = ref<string>('grid');
-const searchTerm = ref<string>('');
-const mangaStatuses = ref<TMediaStatus[]>([]);
-const mangaType = ref<string[]>([...Object.values(EMangaType)]);
-const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
-const sortingOptions = ref<TSortingOptions>({
+const mangaTypeOptions = [...Object.values(EMangaType)];
+const {
+	displayFlag,
+	searchTerm,
+	selectedStatuses: mangaStatuses,
+	typeFilter: mangaType,
+	updatedAtRange,
+	sortingOptions,
+	favouritesFilter,
+} = useMediaPageFilters(EMediaType.MANGA, {
 	sortField: 'title',
-	sortOrder: 'asc',
+	typeFilter: mangaTypeOptions,
 });
+
 const sortFields = [
 	{
 		label: 'Chapters',
@@ -133,7 +147,6 @@ const sortFields = [
 	},
 ];
 
-const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
 const handleFavouritesFilter = (
 	filterValue: 'all' | 'favourites' | 'non-favourites'
 ) => {

@@ -1,82 +1,89 @@
 <template>
-	<section class="d-md-flex align-center justify-space-between mb-2">
-		<div>
-			<ButtonIcon
-				@click="handleDisplayClick"
-				color="indigo"
-				:icon="displayFlag === 'table' ? 'mdi-view-grid' : 'mdi-table'"
-				icon-size="25"
+	<v-sheet class="filter-panel rounded-lg pa-2 mb-3" elevation="0">
+		<div class="d-flex flex-row align-center ga-2 filter-panel__search-row">
+			<v-text-field
+				v-model="mediaSearch"
+				@click:clear="handleSearchClear"
+				@input="handleMediaSearch"
+				clearable
+				class="text-color filter-panel__search flex-grow-1"
+				density="compact"
+				hide-details="auto"
+				:label="searchLabel"
+				variant="outlined"
 			/>
-			<ButtonIcon
-				@click="handleOpenSettingsModal"
-				class="ms-2"
-				color="grey-darken-3"
-				icon="mdi-cog"
-				icon-size="25"
-			/>
+			<div class="d-flex align-center justify-end filter-panel__actions">
+				<v-tooltip location="bottom" text="View & filter options">
+					<template #activator="{ props: tooltipProps }">
+						<span v-bind="tooltipProps">
+							<ButtonIcon
+								@click="handleOpenSettingsModal"
+								button-size="small"
+								color="grey-darken-3"
+								icon="mdi-tune-variant"
+								icon-size="18"
+							/>
+						</span>
+					</template>
+				</v-tooltip>
+			</div>
 		</div>
-		<div class="d-flex align-center flex-wrap">
+
+		<div class="my-3"></div>
+
+		<div class="d-flex align-center flex-wrap ga-2">
 			<ButtonText
 				@click="handleFilterClear"
-				class="ma-1"
 				:variant="selectedStatuses.length === 0 ? 'flat' : 'outlined'"
 				color="deep-purple"
-				:text="
-					mediaType === EMediaType.BOOK ||
-					mediaType === EMediaType.CHARACTER ||
-					mediaType === EMediaType.GAME ||
-					mediaType === EMediaType.MOVIE
-						? `All ${mediaType}s`
-						: `All ${mediaType}`
-				"
+				size="default"
+				:text="allMediaLabel"
 			/>
 			<ButtonText
 				v-for="(status, index) in mediaStatus"
 				@click="handleStatusClick(status.name)"
-				class="ma-1"
 				:color="status.color"
 				:key="index"
+				size="default"
 				:text="status.name"
 				:variant="isStatusSelected(status.name) ? 'flat' : 'outlined'"
 			/>
 		</div>
-	</section>
-	<section class="mb-3">
-		<v-text-field
-			v-model="mediaSearch"
-			@click:clear="handleSearchClear"
-			@input="handleMediaSearch"
-			clearable
-			class="text-color"
-			density="compact"
-			hide-details="auto"
-			:label="`${
-				mediaType === EMediaType.ANIME
-					? `Search for an ${mediaType} (t: title, s: series)`
-					: mediaType === EMediaType.BOOK
-					? `Search for a ${mediaType} (t: title, a: author)`
-					: mediaType === EMediaType.CHARACTER
-					? `Search for a ${mediaType} (n: name, s: series)`
-					: mediaType === EMediaType.GAME
-					? `Search for a ${mediaType} (t: title, d: developer, s: series)`
-					: mediaType === EMediaType.MANGA
-					? `Search for a ${mediaType} (t: title, a: author)`
-					: mediaType === EMediaType.MOVIE
-					? `Search for a ${mediaType} (t: title)`
-					: `Search for a ${mediaType}`
-			}`"
-			variant="outlined"
-		/>
-	</section>
+	</v-sheet>
 	<v-dialog
 		v-if="settingsModal"
 		v-model="settingsModal"
-		:max-width="mediaType !== EMediaType.BOOK ? 500 : 450"
+		:max-width="mediaType !== EMediaType.BOOK ? 520 : 480"
 		><v-card>
 			<div class="bg-primary-light text-color px-5 py-3 text-h6">
-				Select sorting options
+				View & filter options
 			</div>
-			<v-card-text class="d-sm-flex justify-space-between ms-n1 flex-wrap">
+			<v-card-text class="ms-n1">
+				<div class="mb-4">
+					<strong class="d-block mb-2">View</strong>
+					<div class="d-flex flex-wrap ga-2">
+						<ButtonText
+							@click="handleSetGridView"
+							color="indigo"
+							prepend-icon="mdi-view-grid"
+							size="small"
+							text="Grid"
+							:variant="displayFlag === 'grid' ? 'flat' : 'outlined'"
+						/>
+						<ButtonText
+							@click="handleSetTableView"
+							color="indigo"
+							prepend-icon="mdi-table"
+							size="small"
+							text="Table"
+							:variant="displayFlag === 'table' ? 'flat' : 'outlined'"
+						/>
+					</div>
+				</div>
+
+				<v-divider class="mb-4 opacity-25" />
+
+				<div class="d-sm-flex justify-space-between flex-wrap">
 				<div>
 					<strong> Sort by </strong>
 					<v-radio-group v-model="sortingOptions.sortField" class="ms-n3">
@@ -200,8 +207,17 @@
 						</v-col>
 					</v-row>
 				</div>
+				</div>
 			</v-card-text>
-			<v-card-actions class="ms-2 mb-2 me-2 mt-0 justify-start">
+			<v-card-actions class="mx-2 mb-2 mt-0 justify-space-between">
+				<ButtonText
+					@click="handleResetAllFilters"
+					color="red"
+					prepend-icon="mdi-filter-off"
+					size="small"
+					text="Reset all filters"
+					variant="text"
+				/>
 				<ButtonText
 					@click="handleSortMedia"
 					color="green"
@@ -215,12 +231,20 @@
 /* global defineEmits, defineProps */
 import ButtonIcon from '@/components/ui/ButtonIcon.vue';
 import ButtonText from '@/components/ui/ButtonText.vue';
+import {
+	TFavouritesFilter,
+	useMediaFiltersStore,
+} from '@/stores/useMediaFiltersStore';
 import { EMediaType, TDateRange, TMediaStatus, TSortingOptions } from '@/types';
-import { ComputedRef, ref, watch } from 'vue';
+import { ComputedRef, computed, ref, watch } from 'vue';
 
 interface IDisplayFilterSearchPanelProps {
 	displayFlag: string;
 	filterType?: string[];
+	filterTypeOptions?: string[];
+	searchTerm?: string;
+	favouritesFilter?: TFavouritesFilter;
+	sortingOptions?: TSortingOptions;
 	mediaType: EMediaType;
 	sortFields: Record<string, string>[];
 	mediaStatus: {
@@ -242,15 +266,49 @@ const emit = defineEmits([
 	'filterUpdatedAtRange',
 ]);
 const props = defineProps<IDisplayFilterSearchPanelProps>();
+const filtersStore = useMediaFiltersStore();
 
-const mediaSearch = ref<string | undefined>('');
-const settingsModal = ref<boolean>(false);
-const sortingOptions = ref<TSortingOptions>({
-	sortField: props.mediaType === EMediaType.CHARACTER ? 'name' : 'title',
-	sortOrder: 'asc',
+const searchLabel = computed(() => {
+	switch (props.mediaType) {
+		case EMediaType.ANIME:
+			return `Search for an ${props.mediaType} (t: title, s: series)`;
+		case EMediaType.BOOK:
+			return `Search for a ${props.mediaType} (t: title, a: author)`;
+		case EMediaType.CHARACTER:
+			return `Search for a ${props.mediaType} (n: name, s: series)`;
+		case EMediaType.GAME:
+			return `Search for a ${props.mediaType} (t: title, d: developer, s: series)`;
+		case EMediaType.MANGA:
+			return `Search for a ${props.mediaType} (t: title, a: author)`;
+		case EMediaType.MOVIE:
+			return `Search for a ${props.mediaType} (t: title)`;
+		default:
+			return `Search for a ${props.mediaType}`;
+	}
 });
-const mediaTypeFilter = ref<string[]>([...(props.filterType ?? [])]);
-const mediaTypeValues = [...(props.filterType ?? [])];
+
+const allMediaLabel = computed(() => {
+	const pluralTypes = [
+		EMediaType.BOOK,
+		EMediaType.CHARACTER,
+		EMediaType.GAME,
+		EMediaType.MOVIE,
+	];
+
+	return pluralTypes.includes(props.mediaType)
+		? `All ${props.mediaType}s`
+		: `All ${props.mediaType}`;
+});
+
+const mediaSearch = ref<string>(props.searchTerm ?? '');
+const settingsModal = ref<boolean>(false);
+const sortingOptions = ref<TSortingOptions>(
+	props.sortingOptions ?? getDefaultSortingOptions()
+);
+const mediaTypeValues = [
+	...(props.filterTypeOptions ?? props.filterType ?? []),
+];
+const mediaTypeFilter = ref<string[]>([...(props.filterType ?? mediaTypeValues)]);
 const selectedStatuses = ref<TMediaStatus[]>(props.selectedStatuses || []);
 const updatedAtRange = ref<TDateRange>({
 	start: props.updatedAtRange?.start ?? '',
@@ -259,7 +317,23 @@ const updatedAtRange = ref<TDateRange>({
 const startMenu = ref<boolean>(false);
 const endMenu = ref<boolean>(false);
 
-const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
+const favouritesFilter = ref<TFavouritesFilter>(
+	props.favouritesFilter ?? 'all'
+);
+
+function getDefaultSortingOptions(): TSortingOptions {
+	return {
+		sortField: props.mediaType === EMediaType.CHARACTER ? 'name' : 'title',
+		sortOrder: 'asc',
+	};
+}
+
+function getResetDefaults() {
+	return {
+		sortField: getDefaultSortingOptions().sortField,
+		typeFilter: mediaTypeValues.length ? [...mediaTypeValues] : undefined,
+	};
+}
 
 // Format date from YYYY-MM-DD to DD/MM/YYYY for display
 const formatDateDisplay = (dateValue: string | Date | undefined | null): string => {
@@ -375,11 +449,38 @@ const handleFavouriteFilter = () => {
 	emit('filterFavourites', favouritesFilter.value);
 };
 
-const handleDisplayClick = () => {
-	emit('display');
-	emit('search', '');
+const handleSetGridView = () => {
+	if (props.displayFlag !== 'grid') {
+		emit('display');
+	}
+};
+
+const handleSetTableView = () => {
+	if (props.displayFlag !== 'table') {
+		emit('display');
+	}
+};
+
+const handleResetAllFilters = () => {
+	const resetDefaults = getResetDefaults();
+
+	filtersStore.resetFilters(props.mediaType, resetDefaults);
+
+	mediaSearch.value = '';
 	selectedStatuses.value = [];
-	emit('filter', selectedStatuses.value);
+	sortingOptions.value = getDefaultSortingOptions();
+	mediaTypeFilter.value = [...mediaTypeValues];
+	favouritesFilter.value = 'all';
+	updatedAtRange.value = { start: '', end: '' };
+	startInput.value = '';
+	endInput.value = '';
+
+	emit('search', '');
+	emit('filter', []);
+	emit('sort', sortingOptions.value);
+	emit('filterType', mediaTypeFilter.value);
+	emit('filterFavourites', 'all');
+	emit('filterUpdatedAtRange', updatedAtRange.value);
 };
 
 const handleFilterClear = () => {
@@ -461,6 +562,50 @@ const handleStatusClick = (status: TMediaStatus) => {
 };
 
 watch(
+	() => props.searchTerm,
+	newSearchTerm => {
+		mediaSearch.value = newSearchTerm ?? '';
+	}
+);
+
+watch(
+	() => props.selectedStatuses,
+	newStatuses => {
+		selectedStatuses.value = newStatuses ? [...newStatuses] : [];
+	},
+	{ deep: true }
+);
+
+watch(
+	() => props.favouritesFilter,
+	newFavouritesFilter => {
+		if (newFavouritesFilter) {
+			favouritesFilter.value = newFavouritesFilter;
+		}
+	}
+);
+
+watch(
+	() => props.sortingOptions,
+	newSortingOptions => {
+		if (newSortingOptions) {
+			sortingOptions.value = { ...newSortingOptions };
+		}
+	},
+	{ deep: true }
+);
+
+watch(
+	() => props.filterType,
+	newFilterType => {
+		if (newFilterType) {
+			mediaTypeFilter.value = [...newFilterType];
+		}
+	},
+	{ deep: true }
+);
+
+watch(
 	() => props.updatedAtRange,
 	newRange => {
 		updatedAtRange.value = {
@@ -473,3 +618,24 @@ watch(
 	{ deep: true }
 );
 </script>
+
+<style scoped>
+.filter-panel {
+	background-color: rgba(255, 255, 255, 0.03);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.filter-panel__search {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.filter-panel__search :deep(.v-label),
+.filter-panel__search :deep(.v-field-label) {
+	font-size: 0.8125rem;
+}
+
+.filter-panel__actions {
+	flex-shrink: 0;
+}
+</style>

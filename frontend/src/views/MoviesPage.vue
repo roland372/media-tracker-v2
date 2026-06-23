@@ -22,9 +22,13 @@
 			@sort="handleMovieSort"
 			:display-flag="displayFlag"
 			:filter-type="movieType"
+			:filter-type-options="movieTypeOptions"
+			:favourites-filter="favouritesFilter"
 			:media-status="status"
 			:media-type="EMediaType.MOVIE"
+			:search-term="searchTerm"
 			:sort-fields="sortFields"
+			:sorting-options="sortingOptions"
 			:selected-statuses="movieStatuses"
 			:updated-at-range="updatedAtRange"
 		/>
@@ -46,9 +50,13 @@
 			@sort="handleMovieSort"
 			:display-flag="displayFlag"
 			:filter-type="movieType"
+			:filter-type-options="movieTypeOptions"
+			:favourites-filter="favouritesFilter"
 			:media-status="status"
 			:media-type="EMediaType.MOVIE"
+			:search-term="searchTerm"
 			:sort-fields="sortFields"
+			:sorting-options="sortingOptions"
 			:selected-statuses="movieStatuses"
 			:updated-at-range="updatedAtRange"
 		/>
@@ -76,6 +84,7 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useMoviesStore } from '@/stores/useMoviesStore';
+import { useMediaPageFilters } from '@/composables/useMediaPageFilters';
 import {
 	EMediaType,
 	EMovieStatus,
@@ -96,20 +105,25 @@ import {
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 const moviesStore = useMoviesStore();
 const { movies } = storeToRefs(moviesStore);
 
-const displayFlag = ref<string>('grid');
-const searchTerm = ref<string>('');
-const movieStatuses = ref<TMediaStatus[]>([]);
-const movieType = ref<string[]>([...Object.values(EMovieType)]);
-const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
-const sortingOptions = ref<TSortingOptions>({
+const movieTypeOptions = [...Object.values(EMovieType)];
+const {
+	displayFlag,
+	searchTerm,
+	selectedStatuses: movieStatuses,
+	typeFilter: movieType,
+	updatedAtRange,
+	sortingOptions,
+	favouritesFilter,
+} = useMediaPageFilters(EMediaType.MOVIE, {
 	sortField: 'title',
-	sortOrder: 'asc',
+	typeFilter: movieTypeOptions,
 });
+
 const sortFields = [
 	{
 		label: 'Episodes',
@@ -133,7 +147,6 @@ const sortFields = [
 	},
 ];
 
-const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
 const handleFavouritesFilter = (
 	filterValue: 'all' | 'favourites' | 'non-favourites'
 ) => {

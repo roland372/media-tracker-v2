@@ -22,9 +22,13 @@
 			@sort="handleCharacterSort"
 			:display-flag="displayFlag"
 			:filter-type="characterSource"
+			:filter-type-options="characterSourceOptions"
+			:favourites-filter="favouritesFilter"
 			:media-status="source"
 			:media-type="EMediaType.CHARACTER"
+			:search-term="searchTerm"
 			:sort-fields="sortFields"
+			:sorting-options="sortingOptions"
 			:selected-statuses="characterSources"
 			:updated-at-range="updatedAtRange"
 		/>
@@ -46,9 +50,13 @@
 			@sort="handleCharacterSort"
 			:display-flag="displayFlag"
 			:filter-type="characterSource"
+			:filter-type-options="characterSourceOptions"
+			:favourites-filter="favouritesFilter"
 			:media-status="source"
 			:media-type="EMediaType.CHARACTER"
+			:search-term="searchTerm"
 			:sort-fields="sortFields"
+			:sorting-options="sortingOptions"
 			:selected-statuses="characterSources"
 			:updated-at-range="updatedAtRange"
 		/>
@@ -76,6 +84,7 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useCharactersStore } from '@/stores/useCharactersStore';
+import { useMediaPageFilters } from '@/composables/useMediaPageFilters';
 import {
 	ECharacterSource,
 	EMediaType,
@@ -94,20 +103,25 @@ import {
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 const charactersStore = useCharactersStore();
 const { characters } = storeToRefs(charactersStore);
 
-const displayFlag = ref<string>('grid');
-const searchTerm = ref<string>('');
-const characterSources = ref<TMediaStatus[]>([]);
-const characterSource = ref<string[]>([...Object.values(ECharacterSource)]);
-const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
-const sortingOptions = ref<TSortingOptions>({
+const characterSourceOptions = [...Object.values(ECharacterSource)];
+const {
+	displayFlag,
+	searchTerm,
+	selectedStatuses: characterSources,
+	typeFilter: characterSource,
+	updatedAtRange,
+	sortingOptions,
+	favouritesFilter,
+} = useMediaPageFilters(EMediaType.CHARACTER, {
 	sortField: 'name',
-	sortOrder: 'asc',
+	typeFilter: characterSourceOptions,
 });
+
 const sortFields = [
 	{
 		label: 'Gender',
@@ -131,7 +145,6 @@ const sortFields = [
 	},
 ];
 
-const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
 const handleFavouritesFilter = (
 	filterValue: 'all' | 'favourites' | 'non-favourites'
 ) => {

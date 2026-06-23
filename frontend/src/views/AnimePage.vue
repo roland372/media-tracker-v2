@@ -22,9 +22,13 @@
 			@sort="handleAnimeSort"
 			:display-flag="displayFlag"
 			:filter-type="animeType"
+			:filter-type-options="animeTypeOptions"
+			:favourites-filter="favouritesFilter"
 			:media-status="status"
 			:media-type="EMediaType.ANIME"
+			:search-term="searchTerm"
 			:sort-fields="sortFields"
+			:sorting-options="sortingOptions"
 			:selected-statuses="animeStatuses"
 			:updated-at-range="updatedAtRange"
 		/>
@@ -46,9 +50,13 @@
 			@sort="handleAnimeSort"
 			:display-flag="displayFlag"
 			:filter-type="animeType"
+			:filter-type-options="animeTypeOptions"
+			:favourites-filter="favouritesFilter"
 			:media-status="status"
 			:media-type="EMediaType.ANIME"
+			:search-term="searchTerm"
 			:sort-fields="sortFields"
+			:sorting-options="sortingOptions"
 			:selected-statuses="animeStatuses"
 			:updated-at-range="updatedAtRange"
 		/>
@@ -76,6 +84,7 @@ import MediaComponent from '@/components/media/MediaComponent.vue';
 import MediaTable from '@/components/media/MediaTable.vue';
 import StatsComponent from '@/components/media/StatsComponent.vue';
 import { useAnimeStore } from '@/stores/useAnimeStore';
+import { useMediaPageFilters } from '@/composables/useMediaPageFilters';
 import {
 	EAnimeStatus,
 	EAnimeType,
@@ -96,20 +105,25 @@ import {
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 const animeStore = useAnimeStore();
 const { anime } = storeToRefs(animeStore);
 
-const displayFlag = ref<string>('grid');
-const searchTerm = ref<string>('');
-const animeStatuses = ref<TMediaStatus[]>([]);
-const animeType = ref<string[]>([...Object.values(EAnimeType)]);
-const updatedAtRange = ref<TDateRange>({ start: '', end: '' });
-const sortingOptions = ref<TSortingOptions>({
+const animeTypeOptions = [...Object.values(EAnimeType)];
+const {
+	displayFlag,
+	searchTerm,
+	selectedStatuses: animeStatuses,
+	typeFilter: animeType,
+	updatedAtRange,
+	sortingOptions,
+	favouritesFilter,
+} = useMediaPageFilters(EMediaType.ANIME, {
 	sortField: 'title',
-	sortOrder: 'asc',
+	typeFilter: animeTypeOptions,
 });
+
 const sortFields = [
 	{
 		label: 'Progress',
@@ -129,7 +143,6 @@ const sortFields = [
 	},
 ];
 
-const favouritesFilter = ref<'all' | 'favourites' | 'non-favourites'>('all');
 const handleFavouritesFilter = (
 	filterValue: 'all' | 'favourites' | 'non-favourites'
 ) => {
