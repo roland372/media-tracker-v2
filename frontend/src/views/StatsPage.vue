@@ -197,7 +197,7 @@
 									title: 'Manga Read',
 									value: manga.reduce(
 										(acc: number, item: TManga) => acc + (item.volumesMin || 0),
-										0
+										0,
 									),
 									subvalue: Math.round(mangaHours),
 									subtext: 'reading hours',
@@ -209,7 +209,7 @@
 									title: 'Pages Read',
 									value: enhancedTotalPages,
 									subvalue: `${Math.round(
-										enhancedTotalPages / 60
+										enhancedTotalPages / 60,
 									)} hours at 1 page/min`,
 									subtext: '',
 									icon: 'mdi-file-document-outline',
@@ -249,7 +249,7 @@
 		<v-row class="mt-n5">
 			<v-col cols="12" md="6" class="mb-n5 mb-md-0 mb-sm-n0">
 				<CardComponent title="Recent Activity">
-					<section class="text-color">
+					<section class="text-color scroll-list">
 						<div
 							v-for="(activity, index) in recentActivity.slice(0, 20)"
 							:key="index"
@@ -266,8 +266,7 @@
 								<div class="flex-grow-1">
 									<div class="d-flex align-center">
 										<div
-											class="text-subtitle-2 font-weight-medium text-left text-truncate"
-											style="max-width: 200px"
+											class="text-subtitle-2 font-weight-medium text-left stats-title-truncate"
 										>
 											{{ activity.title }}
 											<v-icon
@@ -279,11 +278,10 @@
 										</div>
 									</div>
 									<div
-										class="text-caption text-left text-grey-lighten-1 text-truncate"
+										class="text-caption text-left text-grey-lighten-1 stats-title-truncate"
 										v-if="
 											activity.developer || activity.studio || activity.author
 										"
-										style="max-width: 200px"
 									>
 										<span>
 											{{
@@ -314,7 +312,7 @@
 
 			<v-col cols="12" md="6">
 				<CardComponent title="Todo Items">
-					<section class="text-color">
+					<section class="text-color scroll-list">
 						<div
 							v-for="(item, index) in todoItems.slice(0, 20)"
 							:key="index"
@@ -327,8 +325,7 @@
 							</v-avatar>
 							<div class="w-100">
 								<div
-									class="text-subtitle-2 font-weight-medium text-left text-truncate"
-									style="max-width: 200px"
+									class="text-subtitle-2 font-weight-medium text-left stats-title-truncate"
 								>
 									{{ item.title }}
 								</div>
@@ -371,7 +368,7 @@
 											>{{
 												calculatePercentage(
 													gameStatusCounts.playing,
-													totalGames
+													totalGames,
 												)
 											}}%</span
 										>
@@ -383,7 +380,7 @@
 											>{{
 												calculatePercentage(
 													gameStatusCounts.completed,
-													totalGames
+													totalGames,
 												)
 											}}%</span
 										>
@@ -395,7 +392,7 @@
 											>{{
 												calculatePercentage(
 													gameStatusCounts.onHold,
-													totalGames
+													totalGames,
 												)
 											}}%</span
 										>
@@ -407,7 +404,7 @@
 											>{{
 												calculatePercentage(
 													gameStatusCounts.dropped,
-													totalGames
+													totalGames,
 												)
 											}}%</span
 										>
@@ -419,7 +416,7 @@
 											>{{
 												calculatePercentage(
 													gameStatusCounts.planToPlay,
-													totalGames
+													totalGames,
 												)
 											}}%</span
 										>
@@ -463,7 +460,7 @@
 											>{{
 												calculatePercentage(
 													standardGameStatusCounts.playing,
-													totalStandardGames
+													totalStandardGames,
 												)
 											}}%</span
 										>
@@ -475,7 +472,7 @@
 											>{{
 												calculatePercentage(
 													standardGameStatusCounts.completed,
-													totalStandardGames
+													totalStandardGames,
 												)
 											}}%</span
 										>
@@ -487,7 +484,7 @@
 											>{{
 												calculatePercentage(
 													standardGameStatusCounts.onHold,
-													totalStandardGames
+													totalStandardGames,
 												)
 											}}%</span
 										>
@@ -499,7 +496,7 @@
 											>{{
 												calculatePercentage(
 													standardGameStatusCounts.dropped,
-													totalStandardGames
+													totalStandardGames,
 												)
 											}}%</span
 										>
@@ -511,7 +508,7 @@
 											>{{
 												calculatePercentage(
 													standardGameStatusCounts.planToPlay,
-													totalStandardGames
+													totalStandardGames,
 												)
 											}}%</span
 										>
@@ -523,7 +520,7 @@
 											>{{
 												calculatePercentage(
 													standardGameFavouritesCount,
-													totalStandardGames
+													totalStandardGames,
 												)
 											}}%</span
 										>
@@ -594,7 +591,7 @@
 											>{{
 												calculatePercentage(
 													vnStatusCounts.planToPlay,
-													totalVNs
+													totalVNs,
 												)
 											}}%</span
 										>
@@ -738,9 +735,7 @@
 										<th style="min-width: 250px">Title</th>
 										<th style="min-width: 150px">Type</th>
 										<th style="min-width: 50px">Playtime (Hours)</th>
-										<th style="min-width: 130px">
-											Completion Date
-										</th>
+										<th style="min-width: 130px">Completion Date</th>
 									</tr>
 								</thead>
 								<tbody class="text-left">
@@ -819,9 +814,7 @@
 										<th style="min-width: 250px">Title</th>
 										<th style="min-width: 150px">Type</th>
 										<th style="min-width: 50px">Playtime (Hours)</th>
-										<th style="min-width: 130px">
-											Completion Date
-										</th>
+										<th style="min-width: 130px">Completion Date</th>
 									</tr>
 								</thead>
 								<tbody class="text-left">
@@ -890,7 +883,9 @@
 										<td>{{ yearData.games }}</td>
 										<td>{{ yearData.manga }}</td>
 										<td>{{ yearData.movies }}</td>
-										<td><strong>{{ yearData.total }}</strong></td>
+										<td>
+											<strong>{{ yearData.total }}</strong>
+										</td>
 									</tr>
 								</tbody>
 							</v-table>
@@ -943,7 +938,7 @@ Chart.register(
 	BarElement,
 	ArcElement,
 	Tooltip,
-	Legend
+	Legend,
 );
 
 // Store instances
@@ -972,7 +967,7 @@ const totalMediaCount = computed(
 		mangaCount.value +
 		gamesCount.value +
 		booksCount.value +
-		moviesCount.value
+		moviesCount.value,
 );
 
 // Media overview cards
@@ -986,15 +981,15 @@ const mediaOverview = computed(() => [
 
 // Status counts
 const watchingCount = computed(
-	() => filter(anime.value, { status: 'Watching' }).length
+	() => filter(anime.value, { status: 'Watching' }).length,
 );
 const readingCount = computed(
 	() =>
 		filter(manga.value, { status: 'Reading' }).length +
-		filter(books.value, { status: 'Reading' }).length
+		filter(books.value, { status: 'Reading' }).length,
 );
 const playingCount = computed(
-	() => filter(games.value, { status: 'Playing' }).length
+	() => filter(games.value, { status: 'Playing' }).length,
 );
 const completedCount = computed(
 	() =>
@@ -1002,7 +997,7 @@ const completedCount = computed(
 		filter(manga.value, { status: 'Completed' }).length +
 		filter(games.value, { status: 'Completed' }).length +
 		filter(books.value, { status: 'Completed' }).length +
-		filter(movies.value, { status: 'Completed' }).length
+		filter(movies.value, { status: 'Completed' }).length,
 );
 const onHoldCount = computed(
 	() =>
@@ -1010,7 +1005,7 @@ const onHoldCount = computed(
 		filter(manga.value, { status: 'On-Hold' }).length +
 		filter(games.value, { status: 'On-Hold' }).length +
 		filter(books.value, { status: 'On-Hold' }).length +
-		filter(movies.value, { status: 'On-Hold' }).length
+		filter(movies.value, { status: 'On-Hold' }).length,
 );
 const droppedCount = computed(
 	() =>
@@ -1018,7 +1013,7 @@ const droppedCount = computed(
 		filter(manga.value, { status: 'Dropped' }).length +
 		filter(games.value, { status: 'Dropped' }).length +
 		filter(books.value, { status: 'Dropped' }).length +
-		filter(movies.value, { status: 'Dropped' }).length
+		filter(movies.value, { status: 'Dropped' }).length,
 );
 const plannedCount = computed(
 	() =>
@@ -1031,7 +1026,7 @@ const plannedCount = computed(
 		filter(books.value, (status: TBook) => status.status.includes('Plan to'))
 			.length +
 		filter(movies.value, (status: TMovie) => status.status.includes('Plan to'))
-			.length
+			.length,
 );
 
 // Status breakdown
@@ -1120,7 +1115,7 @@ const mediaDistribution = computed(() => {
 	if (sum !== 100) {
 		// Find the item with the largest percentage
 		const largestItem = roundedItems.reduce((prev, current) =>
-			prev.percentage > current.percentage ? prev : current
+			prev.percentage > current.percentage ? prev : current,
 		);
 
 		// Adjust the largest item to make the sum 100
@@ -1133,7 +1128,7 @@ const mediaDistribution = computed(() => {
 // Consumption stats
 // Add back the totalPlaytime property
 const totalPlaytime = computed(() =>
-	games.value.reduce((acc, item) => acc + (item.playtime || 0), 0)
+	games.value.reduce((acc, item) => acc + (item.playtime || 0), 0),
 );
 
 // Calculate total time spent across all media
@@ -1141,7 +1136,7 @@ const animeHours = computed(() => {
 	const episodeLength = 0.4; // 24 minutes average
 	const animeEpisodes = anime.value.reduce(
 		(acc, item) => acc + (item.episodesMin || 0),
-		0
+		0,
 	);
 	return animeEpisodes * episodeLength;
 });
@@ -1160,7 +1155,7 @@ const bookHours = computed(() => {
 	// Using book pages with 1 page per minute reading rate
 	const totalBookPages = books.value.reduce(
 		(acc, item) => acc + (item.pages || 0),
-		0
+		0,
 	);
 	return totalBookPages / 60; // 1 page per minute = 60 pages per hour
 });
@@ -1168,7 +1163,7 @@ const bookHours = computed(() => {
 // Add a new metric that combines all media consumption time
 const totalConsumptionHours = computed(() => {
 	return Math.round(
-		animeHours.value + mangaHours.value + bookHours.value + totalPlaytime.value
+		animeHours.value + mangaHours.value + bookHours.value + totalPlaytime.value,
 	);
 });
 
@@ -1212,7 +1207,7 @@ const allMedia = computed(() => {
 				...item,
 				mediaType: EMediaType.ANIME,
 				action: getStatusAction(item.status),
-			} as ActivityItem)
+			}) as ActivityItem,
 	);
 
 	const mangaItems = manga.value.map(
@@ -1221,7 +1216,7 @@ const allMedia = computed(() => {
 				...item,
 				mediaType: EMediaType.MANGA,
 				action: getStatusAction(item.status),
-			} as ActivityItem)
+			}) as ActivityItem,
 	);
 
 	const gameItems = games.value.map(
@@ -1230,7 +1225,7 @@ const allMedia = computed(() => {
 				...item,
 				mediaType: EMediaType.GAME,
 				action: getStatusAction(item.status),
-			} as ActivityItem)
+			}) as ActivityItem,
 	);
 
 	const bookItems = books.value.map(
@@ -1239,7 +1234,7 @@ const allMedia = computed(() => {
 				...item,
 				mediaType: EMediaType.BOOK,
 				action: getStatusAction(item.status),
-			} as ActivityItem)
+			}) as ActivityItem,
 	);
 
 	const movieItems = movies.value.map(
@@ -1248,7 +1243,7 @@ const allMedia = computed(() => {
 				...item,
 				mediaType: EMediaType.MOVIE,
 				action: getStatusAction(item.status),
-			} as ActivityItem)
+			}) as ActivityItem,
 	);
 
 	return [
@@ -1261,7 +1256,7 @@ const allMedia = computed(() => {
 });
 
 const recentActivity = computed<ActivityItem[]>(() =>
-	orderBy(allMedia.value, ['updatedAt'], ['desc']).slice(0, 20)
+	orderBy(allMedia.value, ['updatedAt'], ['desc']).slice(0, 20),
 );
 
 // Helper functions
@@ -1370,31 +1365,31 @@ function calculatePercentage(value: number, total: number): string {
 // All games
 const totalGames = computed(() => gamesCount.value);
 const gameFavouritesCount = computed(
-	() => games.value.filter(game => game.favourites).length
+	() => games.value.filter(game => game.favourites).length,
 );
 
 // Standard games (excluding VNs)
 const standardGames = computed(() =>
-	games.value.filter(game => game.type === 'Game')
+	games.value.filter(game => game.type === 'Game'),
 );
 const totalStandardGames = computed(() => standardGames.value.length);
 const standardGameFavouritesCount = computed(
-	() => standardGames.value.filter(game => game.favourites).length
+	() => standardGames.value.filter(game => game.favourites).length,
 );
 const standardGamePlaytime = computed(() =>
-	standardGames.value.reduce((acc, game) => acc + (game.playtime || 0), 0)
+	standardGames.value.reduce((acc, game) => acc + (game.playtime || 0), 0),
 );
 
 // Visual Novels
 const visualNovels = computed(() =>
-	games.value.filter(game => game.type === 'Visual Novel')
+	games.value.filter(game => game.type === 'Visual Novel'),
 );
 const totalVNs = computed(() => visualNovels.value.length);
 const vnFavouritesCount = computed(
-	() => visualNovels.value.filter(game => game.favourites).length
+	() => visualNovels.value.filter(game => game.favourites).length,
 );
 const vnPlaytime = computed(() =>
-	visualNovels.value.reduce((acc, game) => acc + (game.playtime || 0), 0)
+	visualNovels.value.reduce((acc, game) => acc + (game.playtime || 0), 0),
 );
 
 // Status counts for each game type
@@ -1404,7 +1399,7 @@ const standardGameStatusCounts = computed(() => ({
 	onHold: filter(standardGames.value, { status: 'On-Hold' }).length,
 	dropped: filter(standardGames.value, { status: 'Dropped' }).length,
 	planToPlay: filter(standardGames.value, (game: TGame) =>
-		game.status.includes('Plan to')
+		game.status.includes('Plan to'),
 	).length,
 }));
 
@@ -1414,7 +1409,7 @@ const vnStatusCounts = computed(() => ({
 	onHold: filter(visualNovels.value, { status: 'On-Hold' }).length,
 	dropped: filter(visualNovels.value, { status: 'Dropped' }).length,
 	planToPlay: filter(visualNovels.value, (game: TGame) =>
-		game.status.includes('Plan to')
+		game.status.includes('Plan to'),
 	).length,
 }));
 
@@ -1441,7 +1436,7 @@ const standardGamesByYear = computed(() => {
 				const year = new Date(game.updatedAt).getFullYear().toString();
 				yearCounts[year] = (yearCounts[year] || 0) + 1;
 			}
-		}
+		},
 	);
 
 	return Object.entries(yearCounts).sort((a, b) => Number(a[0]) - Number(b[0]));
@@ -1456,7 +1451,7 @@ const vnGamesByYear = computed(() => {
 				const year = new Date(game.updatedAt).getFullYear().toString();
 				yearCounts[year] = (yearCounts[year] || 0) + 1;
 			}
-		}
+		},
 	);
 
 	return Object.entries(yearCounts).sort((a, b) => Number(a[0]) - Number(b[0]));
@@ -1473,7 +1468,7 @@ const thisYearCompletedGames = computed(() => {
 			return completionYear === currentYear;
 		}),
 		['updatedAt'],
-		['desc']
+		['desc'],
 	);
 });
 
@@ -1481,7 +1476,7 @@ const thisYearCompletedGames = computed(() => {
 const thisYearTotalPlaytime = computed(() => {
 	return thisYearCompletedGames.value.reduce(
 		(total, game) => total + (game.playtime || 0),
-		0
+		0,
 	);
 });
 
@@ -1497,7 +1492,7 @@ const lastYearCompletedGames = computed(() => {
 			return completionYear === lastYear;
 		}),
 		['updatedAt'],
-		['desc']
+		['desc'],
 	);
 });
 
@@ -1505,13 +1500,13 @@ const lastYearCompletedGames = computed(() => {
 const lastYearTotalPlaytime = computed(() => {
 	return lastYearCompletedGames.value.reduce(
 		(total, game) => total + (game.playtime || 0),
-		0
+		0,
 	);
 });
 
 // Completed books only (manga volumes are tracked separately)
 const totalBooksRead = computed(
-	() => filter(books.value, { status: 'Completed' }).length
+	() => filter(books.value, { status: 'Completed' }).length,
 );
 
 // Enhanced page calculation (book pages + estimated manga/LN pages)
@@ -1519,7 +1514,7 @@ const enhancedTotalPages = computed(() => {
 	// Actual book pages
 	const bookPages = books.value.reduce(
 		(acc, item) => acc + (item.pages || 0),
-		0
+		0,
 	);
 
 	// Estimated manga pages (200 pages per volume for all manga types)
@@ -1535,11 +1530,11 @@ const enhancedTotalPages = computed(() => {
 const totalEpisodesWatched = computed(() => {
 	const animeEpisodes = anime.value.reduce(
 		(acc, item) => acc + (item.episodesMin || 0),
-		0
+		0,
 	);
 	const movieEpisodes = movies.value.reduce(
 		(acc, item) => acc + (item.episodesMin || 0),
-		0
+		0,
 	);
 	return animeEpisodes + movieEpisodes;
 });
@@ -1568,7 +1563,7 @@ onMounted(() => {
 	createGameStatusCharts();
 	createDeveloperChart();
 	createGamesByYearCharts();
-	
+
 	// New media growth chart
 	createMediaGrowthChart();
 });
@@ -1576,7 +1571,7 @@ onMounted(() => {
 function createGameStatusCharts() {
 	// All Games Status Chart
 	const allGamesStatusChart = document.getElementById(
-		'all-games-status-chart'
+		'all-games-status-chart',
 	) as HTMLCanvasElement;
 	if (allGamesStatusChart) {
 		new Chart(allGamesStatusChart, {
@@ -1622,7 +1617,7 @@ function createGameStatusCharts() {
 
 	// Standard Games Status Chart
 	const standardGamesStatusChart = document.getElementById(
-		'standard-games-status-chart'
+		'standard-games-status-chart',
 	) as HTMLCanvasElement;
 	if (standardGamesStatusChart) {
 		new Chart(standardGamesStatusChart, {
@@ -1668,7 +1663,7 @@ function createGameStatusCharts() {
 
 	// Visual Novels Status Chart
 	const vnStatusChart = document.getElementById(
-		'vn-status-chart'
+		'vn-status-chart',
 	) as HTMLCanvasElement;
 	if (vnStatusChart) {
 		new Chart(vnStatusChart, {
@@ -1729,7 +1724,7 @@ function createDeveloperChart() {
 
 	// Developer Chart
 	const developersChart = document.getElementById(
-		'game-developers-chart'
+		'game-developers-chart',
 	) as HTMLCanvasElement;
 	if (developersChart) {
 		new Chart(developersChart, {
@@ -1785,7 +1780,7 @@ function createDeveloperChart() {
 function createGamesByYearCharts() {
 	// All Games by Year Chart
 	const allGamesYearChart = document.getElementById(
-		'all-games-by-year-chart'
+		'all-games-by-year-chart',
 	) as HTMLCanvasElement;
 	if (allGamesYearChart) {
 		new Chart(allGamesYearChart, {
@@ -1833,7 +1828,7 @@ function createGamesByYearCharts() {
 
 	// Standard Games by Year Chart
 	const standardGamesYearChart = document.getElementById(
-		'standard-games-by-year-chart'
+		'standard-games-by-year-chart',
 	) as HTMLCanvasElement;
 	if (standardGamesYearChart) {
 		new Chart(standardGamesYearChart, {
@@ -1881,7 +1876,7 @@ function createGamesByYearCharts() {
 
 	// VN Games by Year Chart
 	const vnGamesYearChart = document.getElementById(
-		'vn-games-by-year-chart'
+		'vn-games-by-year-chart',
 	) as HTMLCanvasElement;
 	if (vnGamesYearChart) {
 		new Chart(vnGamesYearChart, {
@@ -1935,7 +1930,7 @@ const todoItems = computed<TodoItem[]>(() => {
 			item =>
 				item.charactersDone !== undefined &&
 				(item.charactersDone === ETodoStatus.TODO ||
-					item.charactersDone === ETodoStatus.INCOMPLETE)
+					item.charactersDone === ETodoStatus.INCOMPLETE),
 		)
 		.map(item => ({
 			...item,
@@ -1949,7 +1944,7 @@ const todoItems = computed<TodoItem[]>(() => {
 			item =>
 				item.charactersDone !== undefined &&
 				(item.charactersDone === ETodoStatus.TODO ||
-					item.charactersDone === ETodoStatus.INCOMPLETE)
+					item.charactersDone === ETodoStatus.INCOMPLETE),
 		)
 		.map(item => ({
 			...item,
@@ -1963,7 +1958,7 @@ const todoItems = computed<TodoItem[]>(() => {
 			item =>
 				item.charactersDone !== undefined &&
 				(item.charactersDone === ETodoStatus.TODO ||
-					item.charactersDone === ETodoStatus.INCOMPLETE)
+					item.charactersDone === ETodoStatus.INCOMPLETE),
 		)
 		.map(item => ({
 			...item,
@@ -1977,7 +1972,7 @@ const todoItems = computed<TodoItem[]>(() => {
 			item =>
 				item.musicDownloaded !== undefined &&
 				(item.musicDownloaded === ETodoStatus.TODO ||
-					item.musicDownloaded === ETodoStatus.INCOMPLETE)
+					item.musicDownloaded === ETodoStatus.INCOMPLETE),
 		)
 		.map(item => ({
 			...item,
@@ -1989,7 +1984,7 @@ const todoItems = computed<TodoItem[]>(() => {
 	return orderBy(
 		[...animeItems, ...mangaItems, ...gameCharItems, ...gameMusicItems],
 		['updatedAt'],
-		['desc']
+		['desc'],
 	).slice(0, 20);
 });
 
@@ -2026,26 +2021,26 @@ function getTodoTypeLabel(item: TodoItem): string {
 // Games completed in the current year - by type
 const thisYearStandardGames = computed(() => {
 	return thisYearCompletedGames.value.filter(
-		game => game.type !== 'Visual Novel'
+		game => game.type !== 'Visual Novel',
 	);
 });
 
 const thisYearVisualNovels = computed(() => {
 	return thisYearCompletedGames.value.filter(
-		game => game.type === 'Visual Novel'
+		game => game.type === 'Visual Novel',
 	);
 });
 
 // Games completed in the previous year - by type
 const lastYearStandardGames = computed(() => {
 	return lastYearCompletedGames.value.filter(
-		game => game.type !== 'Visual Novel'
+		game => game.type !== 'Visual Novel',
 	);
 });
 
 const lastYearVisualNovels = computed(() => {
 	return lastYearCompletedGames.value.filter(
-		game => game.type === 'Visual Novel'
+		game => game.type === 'Visual Novel',
 	);
 });
 
@@ -2054,69 +2049,70 @@ const mediaGrowthByYear = computed(() => {
 	// Get years range for all media
 	const getAllYears = () => {
 		const years = new Set<number>();
-		
+
 		// Collect years from all media types
 		anime.value.forEach(item => {
 			if (item.createdAt) {
 				years.add(new Date(item.createdAt).getFullYear());
 			}
 		});
-		
+
 		manga.value.forEach(item => {
 			if (item.createdAt) {
 				years.add(new Date(item.createdAt).getFullYear());
 			}
 		});
-		
+
 		books.value.forEach(item => {
 			if (item.createdAt) {
 				years.add(new Date(item.createdAt).getFullYear());
 			}
 		});
-		
+
 		games.value.forEach(item => {
 			if (item.createdAt) {
 				years.add(new Date(item.createdAt).getFullYear());
 			}
 		});
-		
+
 		movies.value.forEach(item => {
 			if (item.createdAt) {
 				years.add(new Date(item.createdAt).getFullYear());
 			}
 		});
-		
+
 		// Convert to array and sort
 		return Array.from(years).sort();
 	};
-	
+
 	const years = getAllYears();
 	const result = [];
-	
+
 	// For each year, calculate the cumulative count for each media type
 	for (const year of years) {
 		const animeCount = anime.value.filter(
-			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year
+			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year,
 		).length;
-		
+
 		const mangaCount = manga.value.filter(
-			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year
+			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year,
 		).length;
-		
+
 		const booksCount = books.value.filter(
-			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year
+			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year,
 		).length;
-		
+
 		const gamesCount = games.value.filter(
-			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year
+			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year,
 		).length;
-		
+
 		const moviesCount = movies.value.filter(
-			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year
+			item => item.createdAt && new Date(item.createdAt).getFullYear() <= year,
 		).length;
-		
-		const totalCount = animeCount + mangaCount + booksCount + gamesCount + moviesCount;
-		
+
+		const totalCount =
+			animeCount + mangaCount + booksCount + gamesCount + moviesCount;
+
 		result.push({
 			year,
 			anime: animeCount,
@@ -2124,10 +2120,10 @@ const mediaGrowthByYear = computed(() => {
 			books: booksCount,
 			games: gamesCount,
 			movies: moviesCount,
-			total: totalCount
+			total: totalCount,
 		});
 	}
-	
+
 	// Sort by year in descending order (newest first)
 	return result.sort((a, b) => b.year - a.year);
 });
@@ -2135,13 +2131,15 @@ const mediaGrowthByYear = computed(() => {
 // Create the media growth chart
 function createMediaGrowthChart() {
 	const mediaGrowthChart = document.getElementById(
-		'media-growth-chart'
+		'media-growth-chart',
 	) as HTMLCanvasElement;
-	
+
 	if (mediaGrowthChart && mediaGrowthByYear.value.length > 0) {
 		// Sort by year in ascending order for the chart
-		const sortedData = [...mediaGrowthByYear.value].sort((a, b) => a.year - b.year);
-		
+		const sortedData = [...mediaGrowthByYear.value].sort(
+			(a, b) => a.year - b.year,
+		);
+
 		new Chart(mediaGrowthChart, {
 			type: 'bar',
 			data: {
@@ -2192,7 +2190,7 @@ function createMediaGrowthChart() {
 					tooltip: {
 						mode: 'index',
 						callbacks: {
-							afterBody: (tooltipItems) => {
+							afterBody: tooltipItems => {
 								// Add total to tooltip
 								const dataIndex = tooltipItems[0].dataIndex;
 								const year = sortedData[dataIndex];
@@ -2483,5 +2481,18 @@ function createMediaGrowthChart() {
 		display: flex;
 		justify-content: flex-end;
 	}
+}
+
+.scroll-list {
+	max-height: 370px;
+	overflow-y: auto;
+	padding-right: 6px;
+}
+
+.stats-title-truncate {
+	max-width: 350px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 </style>
