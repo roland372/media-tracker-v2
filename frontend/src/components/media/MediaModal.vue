@@ -18,7 +18,7 @@
 							min-width="150px"
 							:src="media.imageURL || placeholderImg"
 						/>
-						<div v-if="rowIndex >= 0" class="media-modal-edit-wrap mt-2 ms-2">
+						<div v-if="rowIndex >= 0 && isAuthenticated" class="media-modal-edit-wrap mt-2 ms-2">
 							<ButtonText
 								:on-click="() => (showEditForm = true)"
 								color="green"
@@ -254,7 +254,7 @@
 		</template>
 	</v-dialog>
 	<EditFormComponent
-		v-if="rowIndex >= 0"
+		v-if="rowIndex >= 0 && isAuthenticated"
 		v-model="showEditForm"
 		:media="media"
 		:media-type="mediaType"
@@ -283,8 +283,10 @@ import { useCharactersStore } from '@/stores/useCharactersStore';
 import { useGamesStore } from '@/stores/useGamesStore';
 import { useMangaStore } from '@/stores/useMangaStore';
 import { useMoviesStore } from '@/stores/useMoviesStore';
+import { useUsersStore } from '@/stores/useUsersStore';
 import EditFormComponent from '@/components/media/EditFormComponent.vue';
 import ButtonText from '@/components/ui/ButtonText.vue';
+import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 
 interface IMediaModalProps {
@@ -298,6 +300,8 @@ interface IMediaModalProps {
 const props = defineProps<IMediaModalProps>();
 const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
 const showEditForm = ref(false);
+const usersStore = useUsersStore();
+const { isAuthenticated } = storeToRefs(usersStore);
 
 const mediaStore = useMediaStore();
 const animeStore = useAnimeStore();

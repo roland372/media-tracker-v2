@@ -16,6 +16,7 @@
 		<v-divider></v-divider>
 
 		<v-list-item
+			v-if="isAuthenticated"
 			class="pa-2 profile-item"
 			:prepend-avatar="user?.profileImg"
 			:title="user?.username"
@@ -23,6 +24,17 @@
 		>
 			<template v-slot:subtitle>
 				<div class="custom-subtitle">{{ user?.email }}</div>
+			</template>
+		</v-list-item>
+		<v-list-item
+			v-else
+			class="pa-2 profile-item"
+			prepend-icon="mdi-login"
+			title="Sign in"
+			to="/login"
+		>
+			<template v-slot:subtitle>
+				<div class="custom-subtitle">Demo mode</div>
 			</template>
 		</v-list-item>
 
@@ -54,7 +66,7 @@ import { navLinks } from '@/utils/links';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 const usersStore = useUsersStore();
-const { user } = storeToRefs(usersStore);
+const { user, isAuthenticated } = storeToRefs(usersStore);
 
 const filteredLinks = computed(() =>
 	navLinks

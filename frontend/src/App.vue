@@ -14,14 +14,20 @@ import { supabase } from './auth/supabaseClient';
 import { useUsersStore } from './stores/useUsersStore';
 import { useUtilsStore } from './stores/useUtilsStore';
 import { fetchAllSheetsData } from './utils/sheetsUtils';
+import { loadDemoMediaData } from './utils/demoDataUtils';
 
 const mediaStore = useMediaStore();
 const usersStore = useUsersStore();
 const utilsStore = useUtilsStore();
 const { fetchAllMedia } = mediaStore;
 const { setLoading } = utilsStore;
-const { fetchUser } = usersStore;
+const { fetchUser, setAuthenticated } = usersStore;
 const { isLoading } = storeToRefs(utilsStore);
+
+const loadGuestData = async () => {
+	const mediaData = await loadDemoMediaData();
+	await fetchAllMedia({ ...mediaData, emotes: [] });
+};
 
 onMounted(() => {
 	// console.log("APP MOUNTED");
@@ -31,6 +37,7 @@ onMounted(() => {
 
 	supabase.auth.onAuthStateChange(async (_event, session) => {
 		if (session?.user) {
+			setAuthenticated(true);
 			const { usersData, mediaData } = await fetchAllSheetsData();
 
 			if (usersData.length > 0) {
@@ -49,6 +56,8 @@ onMounted(() => {
 				localStorage.setItem('snackbarShown', 'true');
 			}
 		} else {
+			setAuthenticated(false);
+			await loadGuestData();
 			setLoading(false);
 			utilsStore.setSnackbar(false);
 		}

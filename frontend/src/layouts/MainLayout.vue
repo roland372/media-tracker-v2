@@ -5,18 +5,28 @@
 			:options="snackbarOptions"
 			@action="onSnackbarAction"
 		/>
-		<NavbarComponent v-if="user && !mdAndUp" />
+		<v-alert
+			v-if="!isAuthenticated"
+			class="guest-banner text-center rounded-0 mb-0"
+			color="warning"
+			density="compact"
+			:closable="false"
+			variant="tonal"
+		>
+			You're viewing demo data. Sign in to access your full library.
+			<router-link class="guest-banner__link ms-2" to="/login">Sign in</router-link>
+		</v-alert>
+		<NavbarComponent v-if="!mdAndUp" />
 		<v-layout>
-			<NavigationDrawer v-if="user && mdAndUp" />
+			<NavigationDrawer v-if="mdAndUp" />
 			<v-container
-				class="text-center rounded"
-				:class="{ 'ms-md-14': user }"
+				class="text-center rounded ms-md-14"
 				fluid
 			>
 				<router-view />
 			</v-container>
 		</v-layout>
-		<FooterComponent class="mt-10" :class="{ 'ms-md-14': user }" />
+		<FooterComponent class="mt-10 ms-md-14" />
 		<ScrollToTopButton />
 	</section>
 </template>
@@ -35,7 +45,7 @@ import { useDisplay } from 'vuetify/lib/composables/display';
 const usersStore = useUsersStore();
 const utilsStore = useUtilsStore();
 const { snackbar, snackbarOptions } = storeToRefs(utilsStore);
-const { user } = storeToRefs(usersStore);
+const { isAuthenticated } = storeToRefs(usersStore);
 
 const onSnackbarAction = (actionId?: string) => {
 	if (actionId === 'reconnect-google') {
@@ -60,5 +70,11 @@ const {
 .page-container {
 	min-height: 100vh;
 	position: relative;
+}
+
+.guest-banner__link {
+	color: inherit;
+	font-weight: 600;
+	text-decoration: underline;
 }
 </style>

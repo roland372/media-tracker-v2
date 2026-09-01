@@ -2,7 +2,6 @@ import { supabase } from '@/auth/supabaseClient';
 import { useUsersStore } from '@/stores/useUsersStore';
 import { navLinks } from "@/utils/links";
 import { storeToRefs } from "pinia";
-import { watch } from "vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
@@ -26,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
 
     return {
       component: () => import(`@/views/${link.name}.vue`),
-      meta: { title: link.title + " | Media-Tracker", requiresAuth: true },
+      meta: { title: link.title + " | Media-Tracker" },
       name: link.name,
       path: link.url,
     };
@@ -61,19 +60,15 @@ const router = createRouter({
 
 router.beforeEach(async (to, _, next) => {
   const usersStore = useUsersStore();
-  const { user } = storeToRefs(usersStore);
+  const { user, isAuthenticated } = storeToRefs(usersStore);
 
   const pageTitle = to.meta.title as string;
   document.title = pageTitle;
 
-  watch(
-    () => user.value,
-    () => {
-      if (to.name === "EmotesPage" && user.value?.role !== "ADMIN") {
-        next({ name: "NotFound" });
-      }
-    }
-  );
+  if (to.name === "EmotesPage" && user.value?.role !== "ADMIN") {
+    next({ name: "NotFound" });
+    return;
+  }
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     const { data: { session } } = await supabase.auth.getSession();
@@ -83,9 +78,15 @@ router.beforeEach(async (to, _, next) => {
     } else {
       next("/login");
     }
-  } else {
-    next();
+    return;
   }
+
+  if (to.name === "LoginPage" && isAuthenticated.value) {
+    next({ name: "HomePage" });
+    return;
+  }
+
+  next();
 });
 
 export default router;

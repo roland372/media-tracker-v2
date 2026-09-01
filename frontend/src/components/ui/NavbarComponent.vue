@@ -18,13 +18,18 @@
 
 			<template v-slot:append>
 				<section class="d-flex align-center justify-center">
-					<router-link to="/profile">
+					<router-link v-if="isAuthenticated" to="/profile">
 						<img
 							alt="Avatar"
 							class="rounded-circle ms-2 mt-2"
 							:src="user?.profileImg"
 							style="width: 40px"
 						/>
+					</router-link>
+					<router-link v-else to="/login">
+						<v-btn class="ms-2" color="indigo" size="small" variant="tonal">
+							Sign in
+						</v-btn>
 					</router-link>
 					<v-app-bar-nav-icon
 						@click.stop="drawer = !drawer"
@@ -93,7 +98,7 @@ import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 
 const usersStore = useUsersStore();
-const { user } = storeToRefs(usersStore);
+const { user, isAuthenticated } = storeToRefs(usersStore);
 
 const filteredLinks = computed(() =>
 	navLinks
