@@ -58,7 +58,7 @@ const router = createRouter({
   },
 });
 
-router.beforeEach(async (to, _, next) => {
+router.beforeEach(async (to, from, next) => {
   const usersStore = useUsersStore();
   const { user, isAuthenticated } = storeToRefs(usersStore);
 
@@ -84,6 +84,18 @@ router.beforeEach(async (to, _, next) => {
   if (to.name === "LoginPage" && isAuthenticated.value) {
     next({ name: "HomePage" });
     return;
+  }
+
+  const isInitialNavigation = from.matched.length === 0;
+  const isOAuthReturn = window.location.hash.includes("access_token=");
+  if (to.name === "HomePage" && isInitialNavigation && !isOAuthReturn) {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      next({ name: "AboutPage" });
+      return;
+    }
   }
 
   next();

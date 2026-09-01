@@ -10,9 +10,10 @@ And after that you can easily access your media, change the status, keep track o
 
 ## Usage
 
-1. Install dependencies
+1. Go to the frontend folder and install dependencies
 
 ```
+cd frontend
 npm install
 ```
 
@@ -20,7 +21,7 @@ npm install
 
 3. Set up a [Supabase](https://supabase.com/) project with Google as an auth provider. Add the Sheets scope so the app can update your spreadsheet after login.
 
-4. Create a `.env` file in this directory with the following variables and replace the empty values with your own:
+4. Create a `.env` file in the `frontend` directory with the following variables and replace the empty values with your own:
 
 ```
 VUE_APP_SUPABASE_URL=
