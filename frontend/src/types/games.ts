@@ -28,6 +28,8 @@ export type TGame = {
   developer?: string;
   developerLink?: string;
   series?: string;
+  /** Position within a series (1, 2, 1.1, …). Sheet column: seriesOrder */
+  seriesOrder?: number;
   notes?: string;
   characters?: string;
   youtubeLink?: string;

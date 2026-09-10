@@ -1,5 +1,5 @@
 import { TGame } from '@/types';
-import { toNumber } from '@/utils/mediaUtils';
+import { parseSeriesOrder, toNumber } from '@/utils/mediaUtils';
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
@@ -13,6 +13,7 @@ export const useGamesStore = defineStore("games", () => {
     return mediaData.games.map((item) => ({
       ...item,
       playtime: toNumber(item.playtime),
+      seriesOrder: parseSeriesOrder(item.seriesOrder),
       favourites: (item.favourites as unknown as string) === "TRUE"
     }));
   };

@@ -77,7 +77,7 @@
 				orderBy(
 					filter(games, { favourites: true }),
 					[(game: TGame) => game.title.toLowerCase()],
-					['asc']
+					['asc'],
 				)
 			"
 			title="Favourite Games"
@@ -108,6 +108,7 @@ import {
 	sortBy,
 	advancedSearch,
 	isWithinDateRange,
+	compareGamesBySeries,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -126,7 +127,7 @@ const {
 	sortingOptions,
 	favouritesFilter,
 } = useMediaPageFilters(EMediaType.GAME, {
-	sortField: 'title',
+	sortField: 'series',
 	typeFilter: gameTypeOptions,
 });
 
@@ -144,19 +145,23 @@ const sortFields = [
 		value: 'title',
 	},
 	{
+		label: 'Series',
+		value: 'series',
+	},
+	{
 		label: 'Type',
 		value: 'type',
 	},
 ];
 
 const handleFavouritesFilter = (
-	filterValue: 'all' | 'favourites' | 'non-favourites'
+	filterValue: 'all' | 'favourites' | 'non-favourites',
 ) => {
 	favouritesFilter.value = filterValue;
 };
 
 const favourites = computed(
-	() => filteredGames.value.filter(games => games.favourites).length
+	() => filteredGames.value.filter(games => games.favourites).length,
 );
 
 const filteredGames = computed(() => {
@@ -176,7 +181,7 @@ const filteredGames = computed(() => {
 			!gameStatuses.value.includes(el.status as TMediaStatus);
 		const updatedAtMatch = isWithinDateRange(
 			el.updatedAt,
-			updatedAtRange.value
+			updatedAtRange.value,
 		);
 
 		// Handle comma-separated type values with special handling for Expansion
@@ -209,7 +214,7 @@ const filteredGames = computed(() => {
 			// Or more than 2 filters including Expansion
 			// Regular behavior - show any item that matches at least one selected type
 			return gameType.value.some(selectedType =>
-				itemTypes.includes(selectedType)
+				itemTypes.includes(selectedType),
 			);
 		})();
 
@@ -227,14 +232,19 @@ const filteredGames = computed(() => {
 		games.value,
 		searchTerm.value,
 		flagConfigs,
-		additionalFilters
+		additionalFilters,
 	);
 
-	const sortedGames = orderBy(
-		filteredItems,
-		[game => sortBy(game, sortingOptions.value.sortField as keyof TGame)],
-		[sortingOptions.value.sortOrder]
-	);
+	const sortedGames =
+		sortingOptions.value.sortField === 'series'
+			? [...filteredItems].sort((a, b) =>
+					compareGamesBySeries(a, b, sortingOptions.value.sortOrder),
+				)
+			: orderBy(
+					filteredItems,
+					[game => sortBy(game, sortingOptions.value.sortField as keyof TGame)],
+					[sortingOptions.value.sortOrder],
+				);
 
 	return sortedGames;
 });
@@ -244,23 +254,23 @@ const totalGames = computed(() => filteredGames.value.length);
 const totalPlaytime = computed(() =>
 	filteredGames.value.reduce((accumulator, object) => {
 		return accumulator + object.playtime;
-	}, 0)
+	}, 0),
 );
 
 const playing = computed(
-	() => filterMediaStatus(filteredGames, 'playing').length
+	() => filterMediaStatus(filteredGames, 'playing').length,
 );
 const completed = computed(
-	() => filterMediaStatus(filteredGames, 'completed').length
+	() => filterMediaStatus(filteredGames, 'completed').length,
 );
 const onHold = computed(
-	() => filterMediaStatus(filteredGames, 'on-hold').length
+	() => filterMediaStatus(filteredGames, 'on-hold').length,
 );
 const dropped = computed(
-	() => filterMediaStatus(filteredGames, 'dropped').length
+	() => filterMediaStatus(filteredGames, 'dropped').length,
 );
 const planToPlay = computed(
-	() => filterMediaStatus(filteredGames, 'Plan to Play').length
+	() => filterMediaStatus(filteredGames, 'Plan to Play').length,
 );
 
 const progress = computed(() =>
@@ -285,7 +295,7 @@ const progress = computed(() =>
 			color: 'white',
 			value: calculatePercentage(planToPlay.value, totalGames.value),
 		},
-	])
+	]),
 );
 
 const status = computed(() => [

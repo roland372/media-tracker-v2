@@ -322,8 +322,15 @@ const favouritesFilter = ref<TFavouritesFilter>(
 );
 
 function getDefaultSortingOptions(): TSortingOptions {
+	const sortField =
+		props.mediaType === EMediaType.CHARACTER
+			? 'name'
+			: props.mediaType === EMediaType.GAME
+				? 'series'
+				: 'title';
+
 	return {
-		sortField: props.mediaType === EMediaType.CHARACTER ? 'name' : 'title',
+		sortField,
 		sortOrder: 'asc',
 	};
 }

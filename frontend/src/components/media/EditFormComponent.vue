@@ -332,6 +332,15 @@
 								variant="outlined"
 							/>
 							<v-text-field
+								v-model.number="gameRef.seriesOrder"
+								class="mb-2"
+								density="compact"
+								hide-details="auto"
+								label="Series Order"
+								placeholder="1, 2, 1.1…"
+								variant="outlined"
+							/>
+							<v-text-field
 								v-model="gameRef.linkName"
 								class="mb-2"
 								density="compact"

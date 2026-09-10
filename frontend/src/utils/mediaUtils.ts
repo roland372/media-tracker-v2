@@ -13,6 +13,7 @@ import {
   EMovieType,
   EMusicCategory,
   TDateRange,
+  TGame,
 } from "@/types";
 import { Ref } from "vue";
 
@@ -60,6 +61,34 @@ export const round = (value: number, precision: number) => {
 export const toNumber = (value: string | number): number => {
   const num = +value;
   return isNaN(num) ? 0 : num;
+};
+
+export const parseSeriesOrder = (value: unknown): number | undefined => {
+  if (value === undefined || value === null || value === '') return undefined;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : undefined;
+};
+
+export const compareGamesBySeries = (
+  a: TGame,
+  b: TGame,
+  sortOrder: 'asc' | 'desc'
+) => {
+  const dir = sortOrder === 'asc' ? 1 : -1;
+  const seriesA = (a.series?.trim() || a.title).toLowerCase();
+  const seriesB = (b.series?.trim() || b.title).toLowerCase();
+  const seriesCmp = seriesA.localeCompare(seriesB);
+  if (seriesCmp !== 0) return seriesCmp * dir;
+
+  const hasOrderA = typeof a.seriesOrder === 'number' && Number.isFinite(a.seriesOrder);
+  const hasOrderB = typeof b.seriesOrder === 'number' && Number.isFinite(b.seriesOrder);
+  if (hasOrderA && hasOrderB && a.seriesOrder !== b.seriesOrder) {
+    return ((a.seriesOrder as number) - (b.seriesOrder as number)) * dir;
+  }
+  if (hasOrderA && !hasOrderB) return -1;
+  if (!hasOrderA && hasOrderB) return 1;
+
+  return a.title.toLowerCase().localeCompare(b.title.toLowerCase()) * dir;
 };
 
 export const sortBy = <T>(item: T, sortField: keyof T) => {
