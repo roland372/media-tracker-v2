@@ -86,56 +86,70 @@
 
 		<!-- TODO: Create separate component for Details -->
 		<CardComponent title="Details">
-			<!-- <v-row class="pt-1 text-color">
-				<v-col cols="12">
-					<div class="chart-container" style="height: 800px">
-						<h3 class="text-h6 mb-4">Top Developers</h3>
-						<canvas id="game-developers-chart"></canvas>
-					</div>
-				</v-col>
-			</v-row>
-
 			<v-row class="pt-1 text-color">
-				<v-col cols="12">
-					<div class="chart-container" style="height: 800px">
-						<h3 class="text-h6 mb-4">Top Series</h3>
-						<canvas id="game-series-chart"></canvas>
-					</div>
-				</v-col>
-			</v-row> -->
-
-			<v-row class="mt-2 text-color">
 				<v-col cols="12" md="6">
-					<div class="chart-container" style="height: 800px">
+					<div class="chart-container custom-chart-scroll">
 						<h3 class="text-h6 mb-4">Top Developers</h3>
-						<canvas id="game-developers-chart"></canvas>
+						<!-- The inner wrapper dictates how long the canvas stretches internally -->
+						<div :style="{ height: topDevelopers.length * 20 + 'px' }">
+							<canvas id="game-developers-chart"></canvas>
+						</div>
 					</div>
 				</v-col>
 				<v-col cols="12" md="6">
-					<div class="chart-container" style="height: 800px">
+					<div class="chart-container custom-chart-scroll">
 						<h3 class="text-h6 mb-4">Top Series</h3>
-						<canvas id="game-series-chart"></canvas>
+						<div :style="{ height: topSeries.length * 20 + 'px' }">
+							<canvas id="game-series-chart"></canvas>
+						</div>
 					</div>
 				</v-col>
 			</v-row>
 
 			<v-row class="mt-2 text-color">
 				<v-col cols="12" md="4">
-					<div class="chart-container">
+					<div
+						class="chart-container"
+						:class="{ 'custom-chart-scroll': allGamesByYear.length > 25 }"
+					>
 						<h3 class="text-h6 mb-4">All Games by Year</h3>
-						<canvas id="all-games-by-year-chart"></canvas>
+						<div
+							:style="{
+								height: Math.max(allGamesByYear.length * 20, 250) + 'px', // Ensure a minimum height of 250px
+							}"
+						>
+							<canvas id="all-games-by-year-chart"></canvas>
+						</div>
 					</div>
 				</v-col>
 				<v-col cols="12" md="4">
-					<div class="chart-container">
+					<div
+						class="chart-container"
+						:class="{ 'custom-chart-scroll': standardGamesByYear.length > 25 }"
+					>
 						<h3 class="text-h6 mb-4">Standard Games by Year</h3>
-						<canvas id="standard-games-by-year-chart"></canvas>
+						<div
+							:style="{
+								height: Math.max(standardGamesByYear.length * 20, 250) + 'px',
+							}"
+						>
+							<canvas id="standard-games-by-year-chart"></canvas>
+						</div>
 					</div>
 				</v-col>
 				<v-col cols="12" md="4">
-					<div class="chart-container">
+					<div
+						class="chart-container"
+						:class="{ 'custom-chart-scroll': vnGamesByYear.length > 25 }"
+					>
 						<h3 class="text-h6 mb-4">Visual Novels by Year</h3>
-						<canvas id="vn-games-by-year-chart"></canvas>
+						<div
+							:style="{
+								height: Math.max(vnGamesByYear.length * 20, 250) + 'px',
+							}"
+						>
+							<canvas id="vn-games-by-year-chart"></canvas>
+						</div>
 					</div>
 				</v-col>
 			</v-row>
@@ -693,7 +707,7 @@ onMounted(() => {
 	createGamesByYearCharts();
 });
 
-const createDeveloperChart = () => {
+const topDevelopers = computed(() => {
 	// Developer counts and filter for those with > 5 games
 	const developers: { [key: string]: number } = {};
 
@@ -703,10 +717,12 @@ const createDeveloperChart = () => {
 		}
 	});
 
-	const topDevelopers = Object.entries(developers)
+	return Object.entries(developers)
 		.filter(([, count]) => count >= 5)
 		.sort((a, b) => b[1] - a[1]);
+});
 
+const createDeveloperChart = () => {
 	// Developer Chart
 	const developersChart = document.getElementById(
 		'game-developers-chart',
@@ -715,11 +731,11 @@ const createDeveloperChart = () => {
 		new Chart(developersChart, {
 			type: 'bar',
 			data: {
-				labels: topDevelopers.map(([name]) => name),
+				labels: topDevelopers.value.map(([name]) => name),
 				datasets: [
 					{
 						label: 'Number of Games',
-						data: topDevelopers.map(([, count]) => count),
+						data: topDevelopers.value.map(([, count]) => count),
 						backgroundColor: '#3F51B5',
 						borderWidth: 0,
 						barThickness: 12, // Reduce the bar height
@@ -754,7 +770,7 @@ const createDeveloperChart = () => {
 				},
 				layout: {
 					padding: {
-						bottom: 50,
+						bottom: 10,
 					},
 				},
 			},
@@ -762,7 +778,7 @@ const createDeveloperChart = () => {
 	}
 };
 
-const createSeriesChart = () => {
+const topSeries = computed(() => {
 	// Series counts and filter for those with > 5 games
 	const series: { [key: string]: number } = {};
 
@@ -772,10 +788,12 @@ const createSeriesChart = () => {
 		}
 	});
 
-	const topSeries = Object.entries(series)
+	return Object.entries(series)
 		.filter(([, count]) => count >= 5)
 		.sort((a, b) => b[1] - a[1]);
+});
 
+const createSeriesChart = () => {
 	// Series Chart
 	const seriesChart = document.getElementById(
 		'game-series-chart',
@@ -784,11 +802,11 @@ const createSeriesChart = () => {
 		new Chart(seriesChart, {
 			type: 'bar',
 			data: {
-				labels: topSeries.map(([name]) => name),
+				labels: topSeries.value.map(([name]) => name),
 				datasets: [
 					{
 						label: 'Number of Games',
-						data: topSeries.map(([, count]) => count),
+						data: topSeries.value.map(([, count]) => count),
 						backgroundColor: '#4CAF50',
 						borderWidth: 0,
 						barThickness: 12, // Reduce the bar height
@@ -823,7 +841,7 @@ const createSeriesChart = () => {
 				},
 				layout: {
 					padding: {
-						bottom: 50,
+						bottom: 10,
 					},
 				},
 			},
@@ -853,7 +871,7 @@ const createGamesByYearCharts = () => {
 			options: {
 				indexAxis: 'y',
 				responsive: true,
-				maintainAspectRatio: true,
+				maintainAspectRatio: false,
 				plugins: {
 					legend: {
 						labels: {
@@ -871,9 +889,14 @@ const createGamesByYearCharts = () => {
 						border: { display: false },
 					},
 					y: {
-						ticks: { color: 'white' },
+						ticks: { color: 'white', autoSkip: false },
 						grid: { color: 'rgba(255, 255, 255, 0.1)' },
 						border: { display: false },
+					},
+				},
+				layout: {
+					padding: {
+						bottom: 10,
 					},
 				},
 			},
@@ -901,7 +924,7 @@ const createGamesByYearCharts = () => {
 			options: {
 				indexAxis: 'y',
 				responsive: true,
-				maintainAspectRatio: true,
+				maintainAspectRatio: false,
 				plugins: {
 					legend: {
 						labels: {
@@ -919,9 +942,14 @@ const createGamesByYearCharts = () => {
 						border: { display: false },
 					},
 					y: {
-						ticks: { color: 'white' },
+						ticks: { color: 'white', autoSkip: false },
 						grid: { color: 'rgba(255, 255, 255, 0.1)' },
 						border: { display: false },
+					},
+				},
+				layout: {
+					padding: {
+						bottom: 10,
 					},
 				},
 			},
@@ -949,7 +977,7 @@ const createGamesByYearCharts = () => {
 			options: {
 				indexAxis: 'y',
 				responsive: true,
-				maintainAspectRatio: true,
+				maintainAspectRatio: false,
 				plugins: {
 					legend: {
 						labels: {
@@ -967,9 +995,14 @@ const createGamesByYearCharts = () => {
 						border: { display: false },
 					},
 					y: {
-						ticks: { color: 'white' },
+						ticks: { color: 'white', autoSkip: false },
 						grid: { color: 'rgba(255, 255, 255, 0.1)' },
 						border: { display: false },
+					},
+				},
+				layout: {
+					padding: {
+						bottom: 10,
 					},
 				},
 			},
@@ -1010,6 +1043,13 @@ const lastYearVisualNovels = computed(() => {
 	border-radius: 8px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	height: 100%;
+}
+
+/* New: Forces independent scrolling areas for massive list datasets */
+.custom-chart-scroll {
+	height: 500px !important; /* Forces an external layout bounding box */
+	overflow-y: auto; /* Triggers standard vertical scrollbars */
+	overflow-x: hidden; /* Prevents unwanted horizontal layout shifts */
 }
 
 .games-table th {
