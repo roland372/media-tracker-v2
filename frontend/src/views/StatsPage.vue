@@ -355,488 +355,6 @@
 
 		<v-row class="mt-n5">
 			<v-col cols="12">
-				<CardComponent title="Game Stats">
-					<v-row class="mx-n1 mx-n3 pt-2">
-						<v-col cols="12" sm="4">
-							<section class="stat-section text-color">
-								<h3 class="text-h6 mb-3">All Games</h3>
-								<div class="stat-table">
-									<div class="stat-row">
-										<span>Playing</span>
-										<span>{{ gameStatusCounts.playing }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													gameStatusCounts.playing,
-													totalGames,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>Completed</span>
-										<span>{{ gameStatusCounts.completed }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													gameStatusCounts.completed,
-													totalGames,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>On-Hold</span>
-										<span>{{ gameStatusCounts.onHold }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													gameStatusCounts.onHold,
-													totalGames,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>Dropped</span>
-										<span>{{ gameStatusCounts.dropped }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													gameStatusCounts.dropped,
-													totalGames,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>Plan to Play</span>
-										<span>{{ gameStatusCounts.planToPlay }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													gameStatusCounts.planToPlay,
-													totalGames,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row highlight">
-										<span>Favourites</span>
-										<span>{{ gameFavouritesCount }}</span>
-										<span
-											>{{
-												calculatePercentage(gameFavouritesCount, totalGames)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row highlight">
-										<span>Total Playtime (Hours)</span>
-										<span>{{ totalPlaytime }}</span>
-										<span></span>
-									</div>
-									<div class="stat-row highlight">
-										<span>Total Playtime (Days)</span>
-										<span>{{ (totalPlaytime / 24).toFixed(1) }}</span>
-										<span></span>
-									</div>
-									<div class="stat-row highlight">
-										<span>Total Games</span>
-										<span>{{ totalGames }}</span>
-										<span></span>
-									</div>
-								</div>
-							</section>
-						</v-col>
-
-						<v-col cols="12" sm="4">
-							<section class="stat-section text-color">
-								<h3 class="text-h6 mb-3">Games</h3>
-								<div class="stat-table">
-									<div class="stat-row">
-										<span>Playing</span>
-										<span>{{ standardGameStatusCounts.playing }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													standardGameStatusCounts.playing,
-													totalStandardGames,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>Completed</span>
-										<span>{{ standardGameStatusCounts.completed }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													standardGameStatusCounts.completed,
-													totalStandardGames,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>On-Hold</span>
-										<span>{{ standardGameStatusCounts.onHold }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													standardGameStatusCounts.onHold,
-													totalStandardGames,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>Dropped</span>
-										<span>{{ standardGameStatusCounts.dropped }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													standardGameStatusCounts.dropped,
-													totalStandardGames,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>Plan to Play</span>
-										<span>{{ standardGameStatusCounts.planToPlay }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													standardGameStatusCounts.planToPlay,
-													totalStandardGames,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row highlight">
-										<span>Favourites</span>
-										<span>{{ standardGameFavouritesCount }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													standardGameFavouritesCount,
-													totalStandardGames,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row highlight">
-										<span>Total Playtime (Hours)</span>
-										<span>{{ standardGamePlaytime }}</span>
-										<span></span>
-									</div>
-									<div class="stat-row highlight">
-										<span>Total Playtime (Days)</span>
-										<span>{{ (standardGamePlaytime / 24).toFixed(1) }}</span>
-										<span></span>
-									</div>
-									<div class="stat-row highlight">
-										<span>Total Games</span>
-										<span>{{ totalStandardGames }}</span>
-										<span></span>
-									</div>
-								</div>
-							</section>
-						</v-col>
-
-						<v-col cols="12" sm="4">
-							<section class="stat-section text-color">
-								<h3 class="text-h6 mb-3">Visual Novels</h3>
-								<div class="stat-table">
-									<div class="stat-row">
-										<span>Playing</span>
-										<span>{{ vnStatusCounts.playing }}</span>
-										<span
-											>{{
-												calculatePercentage(vnStatusCounts.playing, totalVNs)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>Completed</span>
-										<span>{{ vnStatusCounts.completed }}</span>
-										<span
-											>{{
-												calculatePercentage(vnStatusCounts.completed, totalVNs)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>On-Hold</span>
-										<span>{{ vnStatusCounts.onHold }}</span>
-										<span
-											>{{
-												calculatePercentage(vnStatusCounts.onHold, totalVNs)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>Dropped</span>
-										<span>{{ vnStatusCounts.dropped }}</span>
-										<span
-											>{{
-												calculatePercentage(vnStatusCounts.dropped, totalVNs)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row">
-										<span>Plan to Play</span>
-										<span>{{ vnStatusCounts.planToPlay }}</span>
-										<span
-											>{{
-												calculatePercentage(
-													vnStatusCounts.planToPlay,
-													totalVNs,
-												)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row highlight">
-										<span>Favourites</span>
-										<span>{{ vnFavouritesCount }}</span>
-										<span
-											>{{
-												calculatePercentage(vnFavouritesCount, totalVNs)
-											}}%</span
-										>
-									</div>
-									<div class="stat-row highlight">
-										<span>Total Playtime (Hours)</span>
-										<span>{{ vnPlaytime }}</span>
-										<span></span>
-									</div>
-									<div class="stat-row highlight">
-										<span>Total Playtime (Days)</span>
-										<span>{{ (vnPlaytime / 24).toFixed(1) }}</span>
-										<span></span>
-									</div>
-									<div class="stat-row highlight">
-										<span>Total Visual Novels</span>
-										<span>{{ totalVNs }}</span>
-										<span></span>
-									</div>
-								</div>
-							</section>
-						</v-col>
-					</v-row>
-
-					<v-row class="mt-6 text-color">
-						<v-col cols="12" md="4">
-							<div class="chart-container">
-								<h3 class="text-h6 mb-4">All Games Status</h3>
-								<canvas id="all-games-status-chart"></canvas>
-							</div>
-						</v-col>
-						<v-col cols="12" md="4">
-							<div class="chart-container">
-								<h3 class="text-h6 mb-4">Standard Games Status</h3>
-								<canvas id="standard-games-status-chart"></canvas>
-							</div>
-						</v-col>
-						<v-col cols="12" md="4">
-							<div class="chart-container">
-								<h3 class="text-h6 mb-4">Visual Novels Status</h3>
-								<canvas id="vn-status-chart"></canvas>
-							</div>
-						</v-col>
-					</v-row>
-
-					<v-row class="mt-6 text-color">
-						<v-col cols="12">
-							<div class="chart-container" style="height: 800px">
-								<h3 class="text-h6 mb-4">Top Developers</h3>
-								<canvas id="game-developers-chart"></canvas>
-							</div>
-						</v-col>
-					</v-row>
-
-					<v-row class="mt-6 text-color">
-						<v-col cols="12" md="4">
-							<div class="chart-container">
-								<h3 class="text-h6 mb-4">All Games by Year</h3>
-								<canvas id="all-games-by-year-chart"></canvas>
-							</div>
-						</v-col>
-						<v-col cols="12" md="4">
-							<div class="chart-container">
-								<h3 class="text-h6 mb-4">Standard Games by Year</h3>
-								<canvas id="standard-games-by-year-chart"></canvas>
-							</div>
-						</v-col>
-						<v-col cols="12" md="4">
-							<div class="chart-container">
-								<h3 class="text-h6 mb-4">Visual Novels by Year</h3>
-								<canvas id="vn-games-by-year-chart"></canvas>
-							</div>
-						</v-col>
-					</v-row>
-
-					<v-row class="mt-6 text-color">
-						<v-col cols="12">
-							<h3 class="text-h6 mb-4 text-left d-flex align-center flex-wrap">
-								<div class="d-flex align-center">
-									<v-icon color="amber" class="mr-2">mdi-gamepad-square</v-icon>
-									<span class="header-title">Games Completed This Year</span>
-								</div>
-								<div class="d-flex align-center flex-wrap stats-container">
-									<div class="stat-group mr-2">
-										<v-icon size="small" color="primary" class="mx-1"
-											>mdi-counter</v-icon
-										>
-										<span class="text-subtitle-1"
-											>{{ thisYearCompletedGames.length }} games</span
-										>
-									</div>
-
-									<div class="stat-group mx-2">
-										<v-icon size="small" color="secondary" class="mx-1"
-											>mdi-clock-outline</v-icon
-										>
-										<span class="text-subtitle-1 mr-2"
-											>{{ thisYearTotalPlaytime }} hours</span
-										>
-										<v-icon size="small" color="success" class="mx-1"
-											>mdi-calendar-clock</v-icon
-										>
-										<span class="text-subtitle-1"
-											>{{ Math.floor(thisYearTotalPlaytime / 24) }} days</span
-										>
-									</div>
-
-									<div class="stat-group ml-2">
-										<v-icon size="small" color="info" class="mx-1"
-											>mdi-controller</v-icon
-										>
-										<span class="text-subtitle-1 mr-2"
-											>{{ thisYearStandardGames.length }} games</span
-										>
-										<v-icon size="small" color="warning" class="mx-1"
-											>mdi-book-open-page-variant</v-icon
-										>
-										<span class="text-subtitle-1"
-											>{{ thisYearVisualNovels.length }} VNs</span
-										>
-									</div>
-								</div>
-							</h3>
-							<v-table
-								density="compact"
-								fixed-header
-								height="400px"
-								class="games-table"
-							>
-								<thead class="text-left">
-									<tr>
-										<th style="min-width: 250px">Title</th>
-										<th style="min-width: 150px">Type</th>
-										<th style="min-width: 50px">Playtime (Hours)</th>
-										<th style="min-width: 130px">Completion Date</th>
-									</tr>
-								</thead>
-								<tbody class="text-left">
-									<tr
-										v-for="(game, index) in thisYearCompletedGames"
-										:key="index"
-									>
-										<td>{{ game.title }}</td>
-										<td>{{ game.type }}</td>
-										<td>{{ game.playtime }}</td>
-										<td style="white-space: nowrap">
-											{{ formatDate(game.updatedAt) }}
-										</td>
-									</tr>
-								</tbody>
-							</v-table>
-						</v-col>
-					</v-row>
-
-					<v-row class="mt-6 text-color">
-						<v-col cols="12">
-							<h3 class="text-h6 mb-4 text-left d-flex align-center flex-wrap">
-								<div class="d-flex align-center">
-									<v-icon color="amber" class="mr-2">mdi-gamepad-square</v-icon>
-									<span class="header-title">Games Completed Last Year</span>
-								</div>
-								<div class="d-flex align-center flex-wrap stats-container">
-									<div class="stat-group mr-2">
-										<v-icon size="small" color="primary" class="mx-1"
-											>mdi-counter</v-icon
-										>
-										<span class="text-subtitle-1"
-											>{{ lastYearCompletedGames.length }} games</span
-										>
-									</div>
-
-									<div class="stat-group mx-2">
-										<v-icon size="small" color="secondary" class="mx-1"
-											>mdi-clock-outline</v-icon
-										>
-										<span class="text-subtitle-1 mr-2"
-											>{{ lastYearTotalPlaytime }} hours</span
-										>
-										<v-icon size="small" color="success" class="mx-1"
-											>mdi-calendar-clock</v-icon
-										>
-										<span class="text-subtitle-1"
-											>{{ Math.floor(lastYearTotalPlaytime / 24) }} days</span
-										>
-									</div>
-
-									<div class="stat-group ml-2">
-										<v-icon size="small" color="info" class="mx-1"
-											>mdi-controller</v-icon
-										>
-										<span class="text-subtitle-1 mr-2"
-											>{{ lastYearStandardGames.length }} games</span
-										>
-										<v-icon size="small" color="warning" class="mx-1"
-											>mdi-book-open-page-variant</v-icon
-										>
-										<span class="text-subtitle-1"
-											>{{ lastYearVisualNovels.length }} VNs</span
-										>
-									</div>
-								</div>
-							</h3>
-							<v-table
-								density="compact"
-								fixed-header
-								height="400px"
-								class="games-table"
-							>
-								<thead class="text-left">
-									<tr>
-										<th style="min-width: 250px">Title</th>
-										<th style="min-width: 150px">Type</th>
-										<th style="min-width: 50px">Playtime (Hours)</th>
-										<th style="min-width: 130px">Completion Date</th>
-									</tr>
-								</thead>
-								<tbody class="text-left">
-									<tr
-										v-for="(game, index) in lastYearCompletedGames"
-										:key="index"
-									>
-										<td>{{ game.title }}</td>
-										<td>{{ game.type }}</td>
-										<td>{{ game.playtime }}</td>
-										<td>{{ formatDate(game.updatedAt) }}</td>
-									</tr>
-								</tbody>
-							</v-table>
-						</v-col>
-					</v-row>
-				</CardComponent>
-			</v-col>
-		</v-row>
-
-		<v-row class="mt-n5">
-			<v-col cols="12">
 				<CardComponent title="Media Growth Over Time">
 					<v-row class="mt-2 text-color">
 						<v-col cols="12">
@@ -1260,7 +778,7 @@ const recentActivity = computed<ActivityItem[]>(() =>
 );
 
 // Helper functions
-function getStatusAction(status: string): string {
+const getStatusAction = (status: string): string => {
 	// Convert to lowercase for case-insensitive comparison
 	const statusLower = status.toLowerCase();
 
@@ -1282,9 +800,9 @@ function getStatusAction(status: string): string {
 		// If none of the above match, default to showing the original status
 		return status;
 	}
-}
+};
 
-function getStatusColor(status: string): string {
+const getStatusColor = (status: string): string => {
 	switch (status) {
 		case 'Completed':
 			return 'blue';
@@ -1299,9 +817,9 @@ function getStatusColor(status: string): string {
 		default:
 			return 'white';
 	}
-}
+};
 
-function getMediaTypeIcon(mediaType: EMediaType): string {
+const getMediaTypeIcon = (mediaType: EMediaType): string => {
 	switch (mediaType) {
 		case EMediaType.ANIME:
 			return 'mdi-cat';
@@ -1316,9 +834,9 @@ function getMediaTypeIcon(mediaType: EMediaType): string {
 		default:
 			return 'mdi-help-circle';
 	}
-}
+};
 
-function getMediaTypeColor(mediaType: EMediaType): string {
+const getMediaTypeColor = (mediaType: EMediaType): string => {
 	switch (mediaType) {
 		case EMediaType.ANIME:
 			return 'indigo';
@@ -1333,9 +851,9 @@ function getMediaTypeColor(mediaType: EMediaType): string {
 		default:
 			return 'grey';
 	}
-}
+};
 
-function formatDate(dateString: string | Date | undefined): string {
+const formatDate = (dateString: string | Date | undefined): string => {
 	if (!dateString) return 'Unknown';
 	const date = new Date(dateString);
 	return date.toLocaleDateString(undefined, {
@@ -1343,166 +861,7 @@ function formatDate(dateString: string | Date | undefined): string {
 		month: 'short',
 		day: 'numeric',
 	});
-}
-
-// Game Status Counts (specifically for game status chart)
-const gameStatusCounts = computed(() => ({
-	playing: filter(games.value, { status: 'Playing' }).length,
-	completed: filter(games.value, { status: 'Completed' }).length,
-	onHold: filter(games.value, { status: 'On-Hold' }).length,
-	dropped: filter(games.value, { status: 'Dropped' }).length,
-	planToPlay: filter(games.value, status => status.status.includes('Plan to'))
-		.length,
-}));
-
-// Helper function to calculate percentage
-function calculatePercentage(value: number, total: number): string {
-	if (total === 0) return '0.00';
-	return ((value / total) * 100).toFixed(2);
-}
-
-// Game calculations
-// All games
-const totalGames = computed(() => gamesCount.value);
-const gameFavouritesCount = computed(
-	() => games.value.filter(game => game.favourites).length,
-);
-
-// Standard games (excluding VNs)
-const standardGames = computed(() =>
-	games.value.filter(game => game.type === 'Game'),
-);
-const totalStandardGames = computed(() => standardGames.value.length);
-const standardGameFavouritesCount = computed(
-	() => standardGames.value.filter(game => game.favourites).length,
-);
-const standardGamePlaytime = computed(() =>
-	standardGames.value.reduce((acc, game) => acc + (game.playtime || 0), 0),
-);
-
-// Visual Novels
-const visualNovels = computed(() =>
-	games.value.filter(game => game.type === 'Visual Novel'),
-);
-const totalVNs = computed(() => visualNovels.value.length);
-const vnFavouritesCount = computed(
-	() => visualNovels.value.filter(game => game.favourites).length,
-);
-const vnPlaytime = computed(() =>
-	visualNovels.value.reduce((acc, game) => acc + (game.playtime || 0), 0),
-);
-
-// Status counts for each game type
-const standardGameStatusCounts = computed(() => ({
-	playing: filter(standardGames.value, { status: 'Playing' }).length,
-	completed: filter(standardGames.value, { status: 'Completed' }).length,
-	onHold: filter(standardGames.value, { status: 'On-Hold' }).length,
-	dropped: filter(standardGames.value, { status: 'Dropped' }).length,
-	planToPlay: filter(standardGames.value, (game: TGame) =>
-		game.status.includes('Plan to'),
-	).length,
-}));
-
-const vnStatusCounts = computed(() => ({
-	playing: filter(visualNovels.value, { status: 'Playing' }).length,
-	completed: filter(visualNovels.value, { status: 'Completed' }).length,
-	onHold: filter(visualNovels.value, { status: 'On-Hold' }).length,
-	dropped: filter(visualNovels.value, { status: 'Dropped' }).length,
-	planToPlay: filter(visualNovels.value, (game: TGame) =>
-		game.status.includes('Plan to'),
-	).length,
-}));
-
-// Games By Year (separated by type)
-const allGamesByYear = computed(() => {
-	const yearCounts: { [key: string]: number } = {};
-
-	(filter(games.value, { status: 'Completed' }) as TGame[]).forEach(game => {
-		if (game.updatedAt) {
-			const year = new Date(game.updatedAt).getFullYear().toString();
-			yearCounts[year] = (yearCounts[year] || 0) + 1;
-		}
-	});
-
-	return Object.entries(yearCounts).sort((a, b) => Number(a[0]) - Number(b[0]));
-});
-
-const standardGamesByYear = computed(() => {
-	const yearCounts: { [key: string]: number } = {};
-
-	(filter(standardGames.value, { status: 'Completed' }) as TGame[]).forEach(
-		game => {
-			if (game.updatedAt) {
-				const year = new Date(game.updatedAt).getFullYear().toString();
-				yearCounts[year] = (yearCounts[year] || 0) + 1;
-			}
-		},
-	);
-
-	return Object.entries(yearCounts).sort((a, b) => Number(a[0]) - Number(b[0]));
-});
-
-const vnGamesByYear = computed(() => {
-	const yearCounts: { [key: string]: number } = {};
-
-	(filter(visualNovels.value, { status: 'Completed' }) as TGame[]).forEach(
-		game => {
-			if (game.updatedAt) {
-				const year = new Date(game.updatedAt).getFullYear().toString();
-				yearCounts[year] = (yearCounts[year] || 0) + 1;
-			}
-		},
-	);
-
-	return Object.entries(yearCounts).sort((a, b) => Number(a[0]) - Number(b[0]));
-});
-
-// Games completed in the current year
-const thisYearCompletedGames = computed(() => {
-	const currentYear = new Date().getFullYear();
-
-	return orderBy(
-		filter(games.value, (game: TGame) => {
-			if (game.status !== 'Completed' || !game.updatedAt) return false;
-			const completionYear = new Date(game.updatedAt).getFullYear();
-			return completionYear === currentYear;
-		}),
-		['updatedAt'],
-		['desc'],
-	);
-});
-
-// Calculate total playtime for this year's completed games
-const thisYearTotalPlaytime = computed(() => {
-	return thisYearCompletedGames.value.reduce(
-		(total, game) => total + (game.playtime || 0),
-		0,
-	);
-});
-
-// Games completed in the previous year
-const lastYearCompletedGames = computed(() => {
-	const currentYear = new Date().getFullYear();
-	const lastYear = currentYear - 1;
-
-	return orderBy(
-		filter(games.value, (game: TGame) => {
-			if (game.status !== 'Completed' || !game.updatedAt) return false;
-			const completionYear = new Date(game.updatedAt).getFullYear();
-			return completionYear === lastYear;
-		}),
-		['updatedAt'],
-		['desc'],
-	);
-});
-
-// Calculate total playtime for last year's completed games
-const lastYearTotalPlaytime = computed(() => {
-	return lastYearCompletedGames.value.reduce(
-		(total, game) => total + (game.playtime || 0),
-		0,
-	);
-});
+};
 
 // Completed books only (manga volumes are tracked separately)
 const totalBooksRead = computed(
@@ -1559,369 +918,8 @@ const totalWatchTimeHours = computed(() => {
 
 // Chart initialization
 onMounted(() => {
-	// Create all the game stats charts
-	createGameStatusCharts();
-	createDeveloperChart();
-	createGamesByYearCharts();
-
-	// New media growth chart
 	createMediaGrowthChart();
 });
-
-function createGameStatusCharts() {
-	// All Games Status Chart
-	const allGamesStatusChart = document.getElementById(
-		'all-games-status-chart',
-	) as HTMLCanvasElement;
-	if (allGamesStatusChart) {
-		new Chart(allGamesStatusChart, {
-			type: 'pie',
-			data: {
-				labels: ['Playing', 'Completed', 'On-Hold', 'Dropped', 'Plan to Play'],
-				datasets: [
-					{
-						data: [
-							gameStatusCounts.value.playing,
-							gameStatusCounts.value.completed,
-							gameStatusCounts.value.onHold,
-							gameStatusCounts.value.dropped,
-							gameStatusCounts.value.planToPlay,
-						],
-						backgroundColor: [
-							'#4CAF50',
-							'#2196F3',
-							'#FFEB3B',
-							'#F44336',
-							'#FFFFFF',
-						],
-						borderWidth: 0,
-					},
-				],
-			},
-			options: {
-				responsive: true,
-				maintainAspectRatio: true,
-				plugins: {
-					legend: {
-						labels: {
-							color: 'white',
-							usePointStyle: true,
-							boxWidth: 10,
-							boxHeight: 10,
-						},
-					},
-				},
-			},
-		});
-	}
-
-	// Standard Games Status Chart
-	const standardGamesStatusChart = document.getElementById(
-		'standard-games-status-chart',
-	) as HTMLCanvasElement;
-	if (standardGamesStatusChart) {
-		new Chart(standardGamesStatusChart, {
-			type: 'pie',
-			data: {
-				labels: ['Playing', 'Completed', 'On-Hold', 'Dropped', 'Plan to Play'],
-				datasets: [
-					{
-						data: [
-							standardGameStatusCounts.value.playing,
-							standardGameStatusCounts.value.completed,
-							standardGameStatusCounts.value.onHold,
-							standardGameStatusCounts.value.dropped,
-							standardGameStatusCounts.value.planToPlay,
-						],
-						backgroundColor: [
-							'#4CAF50',
-							'#2196F3',
-							'#FFEB3B',
-							'#F44336',
-							'#FFFFFF',
-						],
-						borderWidth: 0,
-					},
-				],
-			},
-			options: {
-				responsive: true,
-				maintainAspectRatio: true,
-				plugins: {
-					legend: {
-						labels: {
-							color: 'white',
-							usePointStyle: true,
-							boxWidth: 10,
-							boxHeight: 10,
-						},
-					},
-				},
-			},
-		});
-	}
-
-	// Visual Novels Status Chart
-	const vnStatusChart = document.getElementById(
-		'vn-status-chart',
-	) as HTMLCanvasElement;
-	if (vnStatusChart) {
-		new Chart(vnStatusChart, {
-			type: 'pie',
-			data: {
-				labels: ['Playing', 'Completed', 'On-Hold', 'Dropped', 'Plan to Play'],
-				datasets: [
-					{
-						data: [
-							vnStatusCounts.value.playing,
-							vnStatusCounts.value.completed,
-							vnStatusCounts.value.onHold,
-							vnStatusCounts.value.dropped,
-							vnStatusCounts.value.planToPlay,
-						],
-						backgroundColor: [
-							'#4CAF50',
-							'#2196F3',
-							'#FFEB3B',
-							'#F44336',
-							'#FFFFFF',
-						],
-						borderWidth: 0,
-					},
-				],
-			},
-			options: {
-				responsive: true,
-				maintainAspectRatio: true,
-				plugins: {
-					legend: {
-						labels: {
-							color: 'white',
-							usePointStyle: true,
-							boxWidth: 10,
-							boxHeight: 10,
-						},
-					},
-				},
-			},
-		});
-	}
-}
-
-function createDeveloperChart() {
-	// Developer counts and filter for those with > 5 games
-	const developers: { [key: string]: number } = {};
-
-	games.value.forEach((game: TGame) => {
-		if (game.developer) {
-			developers[game.developer] = (developers[game.developer] || 0) + 1;
-		}
-	});
-
-	const topDevelopers = Object.entries(developers)
-		.filter(([, count]) => count >= 5)
-		.sort((a, b) => b[1] - a[1]);
-
-	// Developer Chart
-	const developersChart = document.getElementById(
-		'game-developers-chart',
-	) as HTMLCanvasElement;
-	if (developersChart) {
-		new Chart(developersChart, {
-			type: 'bar',
-			data: {
-				labels: topDevelopers.map(([name]) => name),
-				datasets: [
-					{
-						label: 'Number of Games',
-						data: topDevelopers.map(([, count]) => count),
-						backgroundColor: '#3F51B5',
-						borderWidth: 0,
-						barThickness: 12, // Reduce the bar height
-					},
-				],
-			},
-			options: {
-				indexAxis: 'y',
-				responsive: true,
-				maintainAspectRatio: false, // Allow the chart to adjust its height
-				plugins: {
-					legend: {
-						labels: {
-							color: 'white',
-							usePointStyle: true,
-							boxWidth: 10,
-							boxHeight: 10,
-						},
-					},
-				},
-				scales: {
-					x: {
-						ticks: { color: 'white' },
-						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false },
-					},
-					y: {
-						ticks: { color: 'white' },
-						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false },
-					},
-				},
-				layout: {
-					padding: {
-						bottom: 50,
-					},
-				},
-			},
-		});
-	}
-}
-
-function createGamesByYearCharts() {
-	// All Games by Year Chart
-	const allGamesYearChart = document.getElementById(
-		'all-games-by-year-chart',
-	) as HTMLCanvasElement;
-	if (allGamesYearChart) {
-		new Chart(allGamesYearChart, {
-			type: 'bar',
-			data: {
-				labels: allGamesByYear.value.map(([year]) => year),
-				datasets: [
-					{
-						label: 'Completed Games',
-						data: allGamesByYear.value.map(([, count]) => count),
-						backgroundColor: '#2196F3',
-						borderWidth: 0,
-					},
-				],
-			},
-			options: {
-				indexAxis: 'y',
-				responsive: true,
-				maintainAspectRatio: true,
-				plugins: {
-					legend: {
-						labels: {
-							color: 'white',
-							usePointStyle: true,
-							boxWidth: 10,
-							boxHeight: 10,
-						},
-					},
-				},
-				scales: {
-					x: {
-						ticks: { color: 'white' },
-						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false },
-					},
-					y: {
-						ticks: { color: 'white' },
-						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false },
-					},
-				},
-			},
-		});
-	}
-
-	// Standard Games by Year Chart
-	const standardGamesYearChart = document.getElementById(
-		'standard-games-by-year-chart',
-	) as HTMLCanvasElement;
-	if (standardGamesYearChart) {
-		new Chart(standardGamesYearChart, {
-			type: 'bar',
-			data: {
-				labels: standardGamesByYear.value.map(([year]) => year),
-				datasets: [
-					{
-						label: 'Completed Games',
-						data: standardGamesByYear.value.map(([, count]) => count),
-						backgroundColor: '#4CAF50',
-						borderWidth: 0,
-					},
-				],
-			},
-			options: {
-				indexAxis: 'y',
-				responsive: true,
-				maintainAspectRatio: true,
-				plugins: {
-					legend: {
-						labels: {
-							color: 'white',
-							usePointStyle: true,
-							boxWidth: 10,
-							boxHeight: 10,
-						},
-					},
-				},
-				scales: {
-					x: {
-						ticks: { color: 'white' },
-						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false },
-					},
-					y: {
-						ticks: { color: 'white' },
-						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false },
-					},
-				},
-			},
-		});
-	}
-
-	// VN Games by Year Chart
-	const vnGamesYearChart = document.getElementById(
-		'vn-games-by-year-chart',
-	) as HTMLCanvasElement;
-	if (vnGamesYearChart) {
-		new Chart(vnGamesYearChart, {
-			type: 'bar',
-			data: {
-				labels: vnGamesByYear.value.map(([year]) => year),
-				datasets: [
-					{
-						label: 'Completed VNs',
-						data: vnGamesByYear.value.map(([, count]) => count),
-						backgroundColor: '#FF5722',
-						borderWidth: 0,
-					},
-				],
-			},
-			options: {
-				indexAxis: 'y',
-				responsive: true,
-				maintainAspectRatio: true,
-				plugins: {
-					legend: {
-						labels: {
-							color: 'white',
-							usePointStyle: true,
-							boxWidth: 10,
-							boxHeight: 10,
-						},
-					},
-				},
-				scales: {
-					x: {
-						ticks: { color: 'white' },
-						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false },
-					},
-					y: {
-						ticks: { color: 'white' },
-						grid: { color: 'rgba(255, 255, 255, 0.1)' },
-						border: { display: false },
-					},
-				},
-			},
-		});
-	}
-}
 
 // Add todo items computed property
 const todoItems = computed<TodoItem[]>(() => {
@@ -1989,7 +987,7 @@ const todoItems = computed<TodoItem[]>(() => {
 });
 
 // Helper function to get todo status color
-function getTodoStatusColor(status: ETodoStatus | undefined): string {
+const getTodoStatusColor = (status: ETodoStatus | undefined): string => {
 	if (status === undefined) return 'grey';
 
 	switch (status) {
@@ -2004,10 +1002,10 @@ function getTodoStatusColor(status: ETodoStatus | undefined): string {
 		default:
 			return 'grey';
 	}
-}
+};
 
 // Helper function to get todo type label
-function getTodoTypeLabel(item: TodoItem): string {
+const getTodoTypeLabel = (item: TodoItem): string => {
 	switch (item.todoType) {
 		case 'charactersDone':
 			return 'Characters';
@@ -2016,33 +1014,7 @@ function getTodoTypeLabel(item: TodoItem): string {
 		default:
 			return item.todoType;
 	}
-}
-
-// Games completed in the current year - by type
-const thisYearStandardGames = computed(() => {
-	return thisYearCompletedGames.value.filter(
-		game => game.type !== 'Visual Novel',
-	);
-});
-
-const thisYearVisualNovels = computed(() => {
-	return thisYearCompletedGames.value.filter(
-		game => game.type === 'Visual Novel',
-	);
-});
-
-// Games completed in the previous year - by type
-const lastYearStandardGames = computed(() => {
-	return lastYearCompletedGames.value.filter(
-		game => game.type !== 'Visual Novel',
-	);
-});
-
-const lastYearVisualNovels = computed(() => {
-	return lastYearCompletedGames.value.filter(
-		game => game.type === 'Visual Novel',
-	);
-});
+};
 
 // Media Growth By Year calculations
 const mediaGrowthByYear = computed(() => {
@@ -2129,7 +1101,7 @@ const mediaGrowthByYear = computed(() => {
 });
 
 // Create the media growth chart
-function createMediaGrowthChart() {
+const createMediaGrowthChart = () => {
 	const mediaGrowthChart = document.getElementById(
 		'media-growth-chart',
 	) as HTMLCanvasElement;
@@ -2219,7 +1191,7 @@ function createMediaGrowthChart() {
 			},
 		});
 	}
-}
+};
 </script>
 
 <style scoped>
@@ -2229,86 +1201,12 @@ function createMediaGrowthChart() {
 	padding: 8px;
 }
 
-.bg-indigo {
-	background-color: rgba(63, 81, 181, 0.3);
-}
-
-.bg-green {
-	background-color: rgba(76, 175, 80, 0.3);
-}
-
-.bg-amber {
-	background-color: rgba(255, 193, 7, 0.3);
-}
-
-.bg-purple {
-	background-color: rgba(156, 39, 176, 0.3);
-}
-
-.bg-yellow {
-	background-color: rgba(255, 235, 59, 0.3);
-}
-
-.bg-red {
-	background-color: rgba(244, 67, 54, 0.3);
-}
-
-.stat-detail {
-	min-width: 150px;
-	flex: 1 0 150px;
-	text-align: center;
-	max-width: 200px;
-	background-color: rgba(255, 255, 255, 0.05);
-	border-radius: 8px;
-	transition: all 0.3s ease;
-	overflow: hidden;
-	word-break: break-word;
-}
-
-.stat-detail:hover {
-	background-color: rgba(255, 255, 255, 0.1);
-	transform: translateY(-2px);
-}
-
 .chart-container {
 	padding: 16px;
 	background-color: rgba(255, 255, 255, 0.05);
 	border-radius: 8px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	height: 100%;
-}
-
-.stat-section {
-	background-color: rgba(255, 255, 255, 0.05);
-	border-radius: 8px;
-	padding: 16px;
-	height: 100%;
-	margin-bottom: 16px;
-}
-
-.stat-table {
-	width: 100%;
-}
-
-.stat-row {
-	display: grid;
-	grid-template-columns: 50% 25% 25%;
-	padding: 6px 0;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.stat-row.highlight {
-	background-color: rgba(255, 255, 255, 0.05);
-	font-weight: bold;
-}
-
-:root {
-	--indigo-color-transparent: rgba(63, 81, 181, 0.2);
-	--green-color-transparent: rgba(76, 175, 80, 0.2);
-	--amber-color-transparent: rgba(255, 193, 7, 0.2);
-	--purple-color-transparent: rgba(156, 39, 176, 0.2);
-	--yellow-color-transparent: rgba(255, 235, 59, 0.2);
-	--red-color-transparent: rgba(244, 67, 54, 0.2);
 }
 
 .games-table th {
@@ -2333,14 +1231,6 @@ function createMediaGrowthChart() {
 		width: 100% !important;
 		flex: 0 0 100% !important;
 		max-width: none !important;
-	}
-
-	.stat-detail {
-		width: 100%;
-		min-width: 100%;
-		max-width: 100%;
-		margin: 8px 0;
-		padding: 12px 8px !important;
 	}
 
 	.consumption-stats-container {
@@ -2444,16 +1334,6 @@ function createMediaGrowthChart() {
 	}
 }
 
-.stat-group {
-	display: flex;
-	align-items: center;
-	padding: 4px 8px;
-	background-color: rgba(255, 255, 255, 0.05);
-	border: 1px solid rgba(255, 255, 255, 0.15);
-	border-radius: 6px;
-	margin-bottom: 4px;
-}
-
 .stats-container {
 	width: 100%;
 }
@@ -2463,11 +1343,6 @@ function createMediaGrowthChart() {
 		margin-left: 0 !important;
 		justify-content: flex-start !important;
 		margin-top: 8px;
-	}
-
-	.stat-group {
-		margin-left: 0 !important;
-		margin-right: 8px !important;
 	}
 }
 
