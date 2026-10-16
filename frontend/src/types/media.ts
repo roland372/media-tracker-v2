@@ -31,6 +31,11 @@ export type TMediaCount = {
 
 
 export type TMedia = TAnime | TBook | TCharacter | TGame | TManga | TMovie;
+export type TMediaGroupFilter = 'series' | 'developer';
+export type TMediaGroup = {
+  filter: TMediaGroupFilter;
+  value: string;
+};
 export type TNavLinks = {
   color: string;
   icon: string;

@@ -40,25 +40,26 @@
 			v-model="dialog"
 			:media="media"
 			:media-type="mediaType"
-			@open-series="handleOpenSeries"
+			@open-group="handleOpenGroup"
 			:title="
 				mediaType === EMediaType.CHARACTER
 					? (media as TCharacter).name
 					: (media as TAnime | TBook | TGame | TManga | TMovie).title
 			"
 		/>
-		<MediaSeriesModal
-			v-if="seriesDialog"
-			v-model="seriesDialog"
-			:series="selectedSeries"
+		<MediaGroupModal
+			v-if="groupDialog"
+			v-model="groupDialog"
+			:filter="selectedGroup.filter"
 			:media-type="mediaType"
-			@open-series="replaceSeries"
+			:value="selectedGroup.value"
+			@open-group="replaceGroup"
 		/>
 	</v-img>
 </template>
 <script setup lang="ts">
 import MediaModal from '@/components/media/MediaModal.vue';
-import MediaSeriesModal from '@/components/media/MediaSeriesModal.vue';
+import MediaGroupModal from '@/components/media/MediaGroupModal.vue';
 import {
 	EAnimeStatus,
 	EBookStatus,
@@ -73,6 +74,7 @@ import {
 	TGame,
 	TManga,
 	TMedia,
+	TMediaGroup,
 	TMovie,
 } from '@/types';
 import { placeholderImg } from '@/utils/mediaUtils';
@@ -82,34 +84,34 @@ import ChipComponent from '../ui/ChipComponent.vue';
 interface IMediaCardProps {
 	media: TMedia;
 	mediaType: EMediaType;
-	seriesModal?: boolean;
+	groupModal?: boolean;
 }
 
 const props = defineProps<IMediaCardProps>();
-const emit = defineEmits<{ (event: 'open-series', series: string): void }>();
+const emit = defineEmits<{ (event: 'open-group', group: TMediaGroup): void }>();
 
 const dialog = ref<boolean>(false);
-const seriesDialog = ref(false);
-const selectedSeries = ref('');
+const groupDialog = ref(false);
+const selectedGroup = ref<TMediaGroup>({ filter: 'series', value: '' });
 
-const handleOpenSeries = async (series: string) => {
+const handleOpenGroup = async (group: TMediaGroup) => {
 	dialog.value = false;
-	if (props.seriesModal) {
-		emit('open-series', series);
+	if (props.groupModal) {
+		emit('open-group', group);
 		return;
 	}
 
-	selectedSeries.value = series;
+	selectedGroup.value = group;
 	await nextTick();
-	seriesDialog.value = true;
+	groupDialog.value = true;
 };
 
-const replaceSeries = async (series: string) => {
-	seriesDialog.value = false;
+const replaceGroup = async (group: TMediaGroup) => {
+	groupDialog.value = false;
 	await nextTick();
-	selectedSeries.value = series;
+	selectedGroup.value = group;
 	await nextTick();
-	seriesDialog.value = true;
+	groupDialog.value = true;
 };
 
 const displayImageText = (media: TMedia) => {

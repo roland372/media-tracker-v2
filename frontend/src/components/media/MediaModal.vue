@@ -41,9 +41,9 @@
 							<div v-if="(media as TAnime).series">
 								<b>Series: </b>
 								<button
-									class="series-link"
+									class="group-link"
 									type="button"
-									@click="openSeries((media as TAnime).series)"
+									@click.stop="openGroup('series', (media as TAnime).series)"
 								>
 									{{ (media as TAnime).series }}
 								</button>
@@ -148,14 +148,31 @@
 							</div>
 							<div v-if="(media as TGame).developer">
 								<b>Developer: </b>
+								<button
+									class="group-link"
+									type="button"
+									@click.stop="
+										openGroup('developer', (media as TGame).developer)
+									"
+								>
+									{{ (media as TGame).developer }}
+								</button>
 								<a
 									v-if="(media as TGame).developerLink"
 									:href="(media as TGame).developerLink"
 									target="_blank"
+									rel="noopener noreferrer"
 								>
-									{{ (media as TGame).developer }}
+									<v-btn
+										aria-label="Open developer website"
+										class="developer-link-button"
+										density="compact"
+										icon="mdi-open-in-new"
+										size="x-small"
+										title="Open developer website"
+										variant="text"
+									/>
 								</a>
-								<span v-else>{{ (media as TGame).developer }}</span>
 							</div>
 							<div v-if="(media as TGame).characters">
 								<b>Characters: </b>
@@ -166,9 +183,9 @@
 							<div v-if="(media as TGame).series">
 								<b>Series: </b>
 								<button
-									class="series-link"
+									class="group-link"
 									type="button"
-									@click="openSeries((media as TGame).series)"
+									@click.stop="openGroup('series', (media as TGame).series)"
 								>
 									{{ (media as TGame).series }}
 								</button>
@@ -294,6 +311,8 @@ import {
 	TManga,
 	TMedia,
 	TMovie,
+	TMediaGroup,
+	TMediaGroupFilter,
 } from '@/types';
 import { placeholderImg } from '@/utils/mediaUtils';
 import { fetchAllSheetsData, findMediaRowIndex } from '@/utils/sheetsUtils';
@@ -320,7 +339,7 @@ interface IMediaModalProps {
 const props = defineProps<IMediaModalProps>();
 const emit = defineEmits<{
 	(e: 'update:modelValue', value: boolean): void;
-	(e: 'open-series', series: string): void;
+	(e: 'open-group', group: TMediaGroup): void;
 }>();
 const showEditForm = ref(false);
 const usersStore = useUsersStore();
@@ -334,8 +353,8 @@ const gamesStore = useGamesStore();
 const mangaStore = useMangaStore();
 const moviesStore = useMoviesStore();
 
-const openSeries = (series?: string) => {
-	if (series) emit('open-series', series);
+const openGroup = (filter: TMediaGroupFilter, value?: string) => {
+	if (value) emit('open-group', { filter, value });
 };
 
 const rowIndex = computed(() => {
@@ -513,7 +532,7 @@ const linkifyNotes = (text: string): string => {
 	white-space: normal;
 }
 
-.series-link {
+.group-link {
 	background: none;
 	border: 0;
 	color: inherit;
@@ -521,6 +540,11 @@ const linkifyNotes = (text: string): string => {
 	font: inherit;
 	padding: 0;
 	text-decoration: underline;
+}
+
+.developer-link-button {
+	vertical-align: middle;
+	padding-left: 5px;
 }
 
 .note-text {
