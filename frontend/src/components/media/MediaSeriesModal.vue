@@ -101,6 +101,7 @@ const seriesGridWidth = computed(() => {
 	gap: 12px;
 	grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
 	max-width: calc(90vw - 34px);
+	min-width: fit-content;
 }
 
 .series-media-card {
