@@ -99,7 +99,7 @@ const seriesGridWidth = computed(() => {
 .series-media-grid {
 	display: grid;
 	gap: 12px;
-	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
 	max-width: calc(90vw - 34px);
 }
 
