@@ -34,8 +34,9 @@
 import CardComponent from '@/components/media/CardComponent.vue';
 import MediaCard from '@/components/media/MediaCard.vue';
 import ButtonText from '@/components/ui/ButtonText.vue';
+import { mediaDisplayControlsKey } from '@/composables/mediaDisplayControls';
 import { EMediaType, TMedia } from '@/types';
-import { computed, defineProps, ref, withDefaults } from 'vue';
+import { computed, defineProps, inject, onBeforeUnmount, ref, watch, withDefaults } from 'vue';
 
 interface IMediaComponentProps {
 	allMedia?: boolean;
@@ -50,6 +51,27 @@ const props = withDefaults(defineProps<IMediaComponentProps>(), {
 
 const DEFAULT_DISPLAY_LIMIT = 20;
 const showAll = ref(false);
+const mediaDisplayControls = inject(mediaDisplayControlsKey, null);
+let unregisterCollapseHandler: (() => void) | undefined;
+
+watch(
+	showAll,
+	expanded => {
+		if (expanded && !unregisterCollapseHandler && mediaDisplayControls) {
+			unregisterCollapseHandler = mediaDisplayControls.registerCollapseHandler(
+				() => {
+					showAll.value = false;
+				},
+			);
+		} else if (!expanded && unregisterCollapseHandler) {
+			unregisterCollapseHandler();
+			unregisterCollapseHandler = undefined;
+		}
+	},
+	{ flush: 'sync' },
+);
+
+onBeforeUnmount(() => unregisterCollapseHandler?.());
 
 const displayLimit = computed(() =>
 	showAll.value ? props.media.length : DEFAULT_DISPLAY_LIMIT

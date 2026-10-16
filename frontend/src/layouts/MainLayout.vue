@@ -14,15 +14,14 @@
 			variant="tonal"
 		>
 			You're viewing demo data. Sign in to access your full library.
-			<router-link class="guest-banner__link ms-2" to="/login">Sign in</router-link>
+			<router-link class="guest-banner__link ms-2" to="/login"
+				>Sign in</router-link
+			>
 		</v-alert>
 		<NavbarComponent v-if="!mdAndUp" />
 		<v-layout>
 			<NavigationDrawer v-if="mdAndUp" />
-			<v-container
-				class="text-center rounded ms-md-14"
-				fluid
-			>
+			<v-container class="text-center rounded ms-md-14" fluid>
 				<router-view />
 			</v-container>
 		</v-layout>
@@ -37,15 +36,39 @@ import NavbarComponent from '@/components/ui/NavbarComponent.vue';
 import NavigationDrawer from '@/components/ui/NavigationDrawer.vue';
 import ScrollToTopButton from '@/components/ui/ScrollToTopButton.vue';
 import SnackbarComponent from '@/components/ui/SnackbarComponent.vue';
+import {
+	IMediaDisplayControls,
+	mediaDisplayControlsKey,
+} from '@/composables/mediaDisplayControls';
 import { useUsersStore } from '@/stores/useUsersStore';
 import { useUtilsStore } from '@/stores/useUtilsStore';
 import { storeToRefs } from 'pinia';
+import { provide, ref } from 'vue';
 import { useDisplay } from 'vuetify/lib/composables/display';
 
 const usersStore = useUsersStore();
 const utilsStore = useUtilsStore();
 const { snackbar, snackbarOptions } = storeToRefs(utilsStore);
 const { isAuthenticated } = storeToRefs(usersStore);
+
+const collapseHandlers = new Set<() => void>();
+const hasExpandedMedia = ref(false);
+const mediaDisplayControls: IMediaDisplayControls = {
+	hasExpandedMedia,
+	collapseAll: () => {
+		Array.from(collapseHandlers).forEach(collapse => collapse());
+	},
+	registerCollapseHandler: handler => {
+		collapseHandlers.add(handler);
+		hasExpandedMedia.value = true;
+		return () => {
+			collapseHandlers.delete(handler);
+			hasExpandedMedia.value = collapseHandlers.size > 0;
+		};
+	},
+};
+
+provide(mediaDisplayControlsKey, mediaDisplayControls);
 
 const onSnackbarAction = (actionId?: string) => {
 	if (actionId === 'reconnect-google') {
