@@ -40,16 +40,25 @@
 			v-model="dialog"
 			:media="media"
 			:media-type="mediaType"
+			@open-series="handleOpenSeries"
 			:title="
 				mediaType === EMediaType.CHARACTER
 					? (media as TCharacter).name
 					: (media as TAnime | TBook | TGame | TManga | TMovie).title
 			"
 		/>
+		<MediaSeriesModal
+			v-if="seriesDialog"
+			v-model="seriesDialog"
+			:series="selectedSeries"
+			:media-type="mediaType"
+			@open-series="replaceSeries"
+		/>
 	</v-img>
 </template>
 <script setup lang="ts">
 import MediaModal from '@/components/media/MediaModal.vue';
+import MediaSeriesModal from '@/components/media/MediaSeriesModal.vue';
 import {
 	EAnimeStatus,
 	EBookStatus,
@@ -67,17 +76,41 @@ import {
 	TMovie,
 } from '@/types';
 import { placeholderImg } from '@/utils/mediaUtils';
-import { defineProps, ref } from 'vue';
+import { defineEmits, defineProps, nextTick, ref } from 'vue';
 import ChipComponent from '../ui/ChipComponent.vue';
 
 interface IMediaCardProps {
 	media: TMedia;
 	mediaType: EMediaType;
+	seriesModal?: boolean;
 }
 
 const props = defineProps<IMediaCardProps>();
+const emit = defineEmits<{ (event: 'open-series', series: string): void }>();
 
 const dialog = ref<boolean>(false);
+const seriesDialog = ref(false);
+const selectedSeries = ref('');
+
+const handleOpenSeries = async (series: string) => {
+	dialog.value = false;
+	if (props.seriesModal) {
+		emit('open-series', series);
+		return;
+	}
+
+	selectedSeries.value = series;
+	await nextTick();
+	seriesDialog.value = true;
+};
+
+const replaceSeries = async (series: string) => {
+	seriesDialog.value = false;
+	await nextTick();
+	selectedSeries.value = series;
+	await nextTick();
+	seriesDialog.value = true;
+};
 
 const displayImageText = (media: TMedia) => {
 	let imageText = '';

@@ -1,5 +1,9 @@
 <template>
-	<v-dialog width="auto" :model-value="modelValue" @update:model-value="$emit('update:modelValue', $event)">
+	<v-dialog
+		width="auto"
+		:model-value="modelValue"
+		@update:model-value="$emit('update:modelValue', $event)"
+	>
 		<template v-slot:default>
 			<!-- <v-card max-width="450" class="pb-2">
 				<div class="bg-primary-light text-color px-5 py-3 text-h6"></div> -->
@@ -18,7 +22,10 @@
 							min-width="150px"
 							:src="media.imageURL || placeholderImg"
 						/>
-						<div v-if="rowIndex >= 0 && isAuthenticated" class="media-modal-edit-wrap mt-2 ms-2">
+						<div
+							v-if="rowIndex >= 0 && isAuthenticated"
+							class="media-modal-edit-wrap mt-2 ms-2"
+						>
 							<ButtonText
 								:on-click="() => (showEditForm = true)"
 								color="green"
@@ -33,7 +40,13 @@
 							<div><b>Type:</b> {{ (media as TAnime).type }}</div>
 							<div v-if="(media as TAnime).series">
 								<b>Series: </b>
-								<span>{{ (media as TAnime).series }}</span>
+								<button
+									class="series-link"
+									type="button"
+									@click="openSeries((media as TAnime).series)"
+								>
+									{{ (media as TAnime).series }}
+								</button>
 							</div>
 							<div v-if="(media as TAnime).characters">
 								<b>Characters: </b>
@@ -108,7 +121,9 @@
 							<div v-if="(media as TCharacter).notes">
 								<b>Notes:</b>
 								<div
-									v-for="(note, index) in formatNotes((media as TCharacter).notes)"
+									v-for="(note, index) in formatNotes(
+										(media as TCharacter).notes,
+									)"
 									:key="index"
 									class="pl-3 note-text"
 									v-html="linkifyNotes(note)"
@@ -150,7 +165,13 @@
 							</div>
 							<div v-if="(media as TGame).series">
 								<b>Series: </b>
-								<span>{{ (media as TGame).series }}</span>
+								<button
+									class="series-link"
+									type="button"
+									@click="openSeries((media as TGame).series)"
+								>
+									{{ (media as TGame).series }}
+								</button>
 							</div>
 							<div v-if="(media as TGame).youtubeLink">
 								<b>YouTube: </b>
@@ -287,7 +308,7 @@ import { useUsersStore } from '@/stores/useUsersStore';
 import EditFormComponent from '@/components/media/EditFormComponent.vue';
 import ButtonText from '@/components/ui/ButtonText.vue';
 import { storeToRefs } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, defineEmits, defineProps, ref } from 'vue';
 
 interface IMediaModalProps {
 	media: TMedia;
@@ -296,9 +317,11 @@ interface IMediaModalProps {
 	modelValue?: boolean;
 }
 
-/* eslint-disable no-undef -- defineEmits/defineProps are script-setup compiler macros */
 const props = defineProps<IMediaModalProps>();
-const emit = defineEmits<{ (e: 'update:modelValue', value: boolean): void }>();
+const emit = defineEmits<{
+	(e: 'update:modelValue', value: boolean): void;
+	(e: 'open-series', series: string): void;
+}>();
 const showEditForm = ref(false);
 const usersStore = useUsersStore();
 const { isAuthenticated } = storeToRefs(usersStore);
@@ -310,6 +333,10 @@ const charactersStore = useCharactersStore();
 const gamesStore = useGamesStore();
 const mangaStore = useMangaStore();
 const moviesStore = useMoviesStore();
+
+const openSeries = (series?: string) => {
+	if (series) emit('open-series', series);
+};
 
 const rowIndex = computed(() => {
 	const mediaObj = props.media as Record<string, unknown>;
@@ -403,59 +430,60 @@ const escapeHtml = (text: string): string => {
 		'"': '&quot;',
 		"'": '&#039;',
 	};
-	return text.replace(/[&<>"']/g, (m) => map[m]);
+	return text.replace(/[&<>"']/g, m => map[m]);
 };
 
 // Function to convert URLs in text to clickable links
 const linkifyNotes = (text: string): string => {
 	if (!text) return '';
-	
+
 	// URL regex pattern that matches http://, https://, and www. URLs
 	const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/gi;
-	
+
 	// Find all URL matches first
 	const matches: Array<{ url: string; index: number }> = [];
 	let match;
 	const regex = new RegExp(urlRegex.source, urlRegex.flags);
-	
+
 	while ((match = regex.exec(text)) !== null) {
 		matches.push({
 			url: match[0],
 			index: match.index,
 		});
 	}
-	
+
 	// If no URLs found, return escaped text
 	if (matches.length === 0) {
 		return escapeHtml(text);
 	}
-	
+
 	// Build the result by combining escaped text and linkified URLs
 	const parts: string[] = [];
 	let lastIndex = 0;
-	
+
 	for (const match of matches) {
 		// Add text before the URL (escaped)
 		if (match.index > lastIndex) {
 			parts.push(escapeHtml(text.substring(lastIndex, match.index)));
 		}
-		
+
 		// Add the URL as a clickable link
 		const url = match.url;
 		const href = url.startsWith('http') ? url : `https://${url}`;
-		parts.push(`<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer" class="note-link">${escapeHtml(url)}</a>`);
-		
+		parts.push(
+			`<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer" class="note-link">${escapeHtml(url)}</a>`,
+		);
+
 		lastIndex = match.index + url.length;
 	}
-	
+
 	// Add remaining text after the last URL (escaped)
 	if (lastIndex < text.length) {
 		parts.push(escapeHtml(text.substring(lastIndex)));
 	}
-	
+
 	return parts.join('');
 };
-
 </script>
 <style scoped>
 /* Default for larger screens */
@@ -483,6 +511,16 @@ const linkifyNotes = (text: string): string => {
 .media-modal-title {
 	word-wrap: break-word;
 	white-space: normal;
+}
+
+.series-link {
+	background: none;
+	border: 0;
+	color: inherit;
+	cursor: pointer;
+	font: inherit;
+	padding: 0;
+	text-decoration: underline;
 }
 
 .note-text {
