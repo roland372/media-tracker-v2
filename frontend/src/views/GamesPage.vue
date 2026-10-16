@@ -339,7 +339,7 @@ import {
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted } from 'vue';
+import { computed, onBeforeUnmount, onMounted, watch } from 'vue';
 import {
 	Chart,
 	PieController,
@@ -700,11 +700,31 @@ const lastYearTotalPlaytime = computed(() => {
 	);
 });
 
-// Chart initialization
-onMounted(() => {
+const gameChartIds = [
+	'game-developers-chart',
+	'game-series-chart',
+	'all-games-by-year-chart',
+	'standard-games-by-year-chart',
+	'vn-games-by-year-chart',
+];
+
+const initializeGameCharts = () => {
+	gameChartIds.forEach(id => {
+		const canvas = document.getElementById(id);
+		if (canvas) Chart.getChart(canvas as HTMLCanvasElement)?.destroy();
+	});
 	createDeveloperChart();
 	createSeriesChart();
 	createGamesByYearCharts();
+};
+
+onMounted(initializeGameCharts);
+watch(games, initializeGameCharts, { flush: 'post' });
+onBeforeUnmount(() => {
+	gameChartIds.forEach(id => {
+		const canvas = document.getElementById(id);
+		if (canvas) Chart.getChart(canvas as HTMLCanvasElement)?.destroy();
+	});
 });
 
 const topDevelopers = computed(() => {
