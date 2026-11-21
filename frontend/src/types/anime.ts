@@ -31,9 +31,13 @@ export type TAnime = {
   studio?: string;
   studioLink?: string;
   series?: string;
+  /** Position within a series (1, 2, 1.1, …). Sheet column: seriesOrder */
+  seriesOrder?: number;
   characters?: string;
   notes?: string;
   charactersDone?: ETodoStatus;
   createdAt?: Date;
   updatedAt?: Date;
 };
+
+export type TAnimeInput = TAnime;

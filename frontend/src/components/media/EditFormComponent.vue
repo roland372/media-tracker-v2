@@ -45,6 +45,15 @@
 								label="Series"
 								variant="outlined"
 							/>
+							<v-text-field
+								v-model.number="animeRef.seriesOrder"
+								class="mb-2"
+								density="compact"
+								hide-details="auto"
+								label="Series Order"
+								placeholder="1, 2, 1.1…"
+								variant="outlined"
+							/>
 							<v-select
 								v-model="animeRef.type"
 								class="mb-n3"
@@ -1019,4 +1028,3 @@ const handleCloseModal = () => {
 	overflow: visible !important;
 }
 </style>
-

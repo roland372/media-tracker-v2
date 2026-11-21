@@ -29,6 +29,23 @@
 								:rules="stringRules('Title')"
 								variant="outlined"
 							/>
+							<v-text-field
+								v-model="newAnime.series"
+								class="mb-2"
+								density="compact"
+								hide-details="auto"
+								label="Series"
+								variant="outlined"
+							/>
+							<v-text-field
+								v-model.number="newAnime.seriesOrder"
+								class="mb-2"
+								density="compact"
+								hide-details="auto"
+								label="Series Order"
+								placeholder="1, 2, 1.1…"
+								variant="outlined"
+							/>
 							<v-select
 								v-model="newAnime.type"
 								class="mb-n3"
@@ -650,6 +667,8 @@ const newAnime: TAnimeInput = reactive({
 	status: EAnimeStatus.PLAN_TO_WATCH,
 	title: '',
 	type: EAnimeType.TV_SHOW,
+	series: '',
+	seriesOrder: undefined,
 });
 
 const newBook: TBookInput = reactive({

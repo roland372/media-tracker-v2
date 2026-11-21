@@ -49,7 +49,7 @@ import {
 } from '@/types';
 import { useAnimeStore } from '@/stores/useAnimeStore';
 import { useGamesStore } from '@/stores/useGamesStore';
-import { compareGamesBySeries } from '@/utils/mediaUtils';
+import { compareAnimeBySeries, compareGamesBySeries } from '@/utils/mediaUtils';
 import { computed, defineEmits, defineProps } from 'vue';
 
 interface IMediaGroupModalProps {
@@ -79,7 +79,7 @@ const groupMedia = computed<TMedia[]>(() => {
 	if (props.mediaType === EMediaType.ANIME && props.filter === 'series') {
 		return animeStore.anime
 			.filter(anime => anime.series === props.value)
-			.sort((a, b) => a.title.localeCompare(b.title));
+			.sort((a, b) => compareAnimeBySeries(a, b, 'asc'));
 	}
 	return [];
 });

@@ -102,6 +102,7 @@ import {
 	sortBy,
 	advancedSearch,
 	isWithinDateRange,
+	compareAnimeBySeries,
 } from '@/utils/mediaUtils';
 import { filter, orderBy } from 'lodash';
 import { storeToRefs } from 'pinia';
@@ -120,7 +121,7 @@ const {
 	sortingOptions,
 	favouritesFilter,
 } = useMediaPageFilters(EMediaType.ANIME, {
-	sortField: 'title',
+	sortField: 'series',
 	typeFilter: animeTypeOptions,
 });
 
@@ -136,6 +137,10 @@ const sortFields = [
 	{
 		label: 'Title',
 		value: 'title',
+	},
+	{
+		label: 'Series',
+		value: 'series',
 	},
 	{
 		label: 'Type',
@@ -192,11 +197,16 @@ const filteredAnime = computed(() => {
 		additionalFilters
 	);
 
-	const sortedAnime = orderBy(
-		filteredItems,
-		[anime => sortBy(anime, sortingOptions.value.sortField as keyof TAnime)],
-		[sortingOptions.value.sortOrder]
-	);
+	const sortedAnime =
+		sortingOptions.value.sortField === 'series'
+			? [...filteredItems].sort((a, b) =>
+					compareAnimeBySeries(a, b, sortingOptions.value.sortOrder),
+				)
+			: orderBy(
+					filteredItems,
+					[anime => sortBy(anime, sortingOptions.value.sortField as keyof TAnime)],
+					[sortingOptions.value.sortOrder],
+				);
 
 	return sortedAnime;
 });

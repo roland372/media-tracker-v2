@@ -325,7 +325,7 @@ function getDefaultSortingOptions(): TSortingOptions {
 	const sortField =
 		props.mediaType === EMediaType.CHARACTER
 			? 'name'
-			: props.mediaType === EMediaType.GAME
+			: props.mediaType === EMediaType.GAME || props.mediaType === EMediaType.ANIME
 				? 'series'
 				: 'title';
 

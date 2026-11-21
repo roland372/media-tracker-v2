@@ -1,5 +1,5 @@
 import { TAnime } from '@/types';
-import { toNumber } from '@/utils/mediaUtils';
+import { parseSeriesOrder, toNumber } from '@/utils/mediaUtils';
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
@@ -14,6 +14,7 @@ export const useAnimeStore = defineStore("anime", () => {
       ...item,
       episodesMin: toNumber(item.episodesMin),
       episodesMax: toNumber(item.episodesMax),
+      seriesOrder: parseSeriesOrder(item.seriesOrder),
       favourites: (item.favourites as unknown as string) === "TRUE"
     }));
   };
