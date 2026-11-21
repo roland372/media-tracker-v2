@@ -48,9 +48,6 @@
 									{{ (media as TAnime).series }}
 								</button>
 							</div>
-							<div v-if="(media as TAnime).seriesOrder !== undefined">
-								<b>Series Order:</b> {{ (media as TAnime).seriesOrder }}
-							</div>
 							<div v-if="(media as TAnime).characters">
 								<b>Characters: </b>
 								<a :href="(media as TAnime).characters" target="_blank"
